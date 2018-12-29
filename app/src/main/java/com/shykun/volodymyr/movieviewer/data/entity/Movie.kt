@@ -1,4 +1,4 @@
-package com.shykun.volodymyr.movieviewer.data
+package com.shykun.volodymyr.movieviewer.data.entity
 
 import com.google.gson.annotations.SerializedName
 
@@ -18,3 +18,9 @@ data class Movie (
     @SerializedName("video") var video: Boolean,
     @SerializedName("vote_average") var voteAverage: Double
 )
+
+enum class MoviesType(val path: String) {
+    POPULAR("popular"),
+    TOP_RATED("top_rated"),
+    UPCOMING("upcoming")
+}

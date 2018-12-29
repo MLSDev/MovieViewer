@@ -1,5 +1,6 @@
-package com.shykun.volodymyr.movieviewer.data
+package com.shykun.volodymyr.movieviewer.data.network
 
+import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
@@ -7,8 +8,11 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class ApiClient {
+@Singleton
+class ApiClient @Inject constructor() {
     val apiService: ApiService
 
     init {
@@ -26,7 +30,7 @@ class ApiClient {
         apiService = retrofit.create(ApiService::class.java)
     }
 
-    fun getPopulatMovies() = apiService.getPopulatMovies()
+    fun getMovies(moviesType: MoviesType) = apiService.getMovies(moviesType.path)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 }

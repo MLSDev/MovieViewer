@@ -1,6 +1,7 @@
-package com.shykun.volodymyr.movieviewer.data
+package com.shykun.volodymyr.movieviewer.data.network.response
 
 import com.google.gson.annotations.SerializedName
+import com.shykun.volodymyr.movieviewer.data.entity.Movie
 
 data class GetMovieResponse (
         @SerializedName("page") val page: Int,
