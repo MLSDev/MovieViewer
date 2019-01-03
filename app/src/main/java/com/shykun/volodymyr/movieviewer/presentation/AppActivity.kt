@@ -2,11 +2,13 @@ package com.shykun.volodymyr.movieviewer.presentation
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.app.FragmentManager
 import android.view.Menu
 import android.view.MenuItem
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.presentation.di.AppComponent
 import com.shykun.volodymyr.movieviewer.presentation.di.DaggerAppComponent
+import com.shykun.volodymyr.movieviewer.presentation.movies.MoviesFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class AppActivity : AppCompatActivity() {
@@ -20,6 +22,12 @@ class AppActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         setSupportActionBar(appToolbar)
+
+        supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.fragmentContainer, MoviesFragment())
+                .commit()
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

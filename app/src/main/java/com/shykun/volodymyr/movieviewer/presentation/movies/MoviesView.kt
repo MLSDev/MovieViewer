@@ -4,6 +4,9 @@ import com.arellomobile.mvp.MvpView
 import com.shykun.volodymyr.movieviewer.data.entity.Movie
 
 interface MoviesView : MvpView {
-    fun showMovies(movies: ArrayList<Movie>)
+    fun showPopularMovies(movies: ArrayList<Movie>)
+    fun showTopRatedMovies(movies: ArrayList<Movie>)
+    fun showUpcompingMovies(movies: ArrayList<Movie>)
+
     fun showError()
 }

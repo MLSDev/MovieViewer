@@ -14,7 +14,7 @@ abstract class BaseViewHolder<T: Any>(itemView: View, clickSubject: PublishSubje
         }
     }
 
-    open fun bind(item: T) {
+    open fun bind(item: T, position: Int) {
         this.item = item
     }
 }

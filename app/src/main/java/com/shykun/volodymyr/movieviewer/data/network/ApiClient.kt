@@ -13,7 +13,7 @@ import javax.inject.Singleton
 
 @Singleton
 class ApiClient @Inject constructor() {
-    val apiService: ApiService
+    private val apiService: ApiService
 
     init {
         val interceptor = HttpLoggingInterceptor()

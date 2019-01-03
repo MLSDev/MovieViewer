@@ -6,10 +6,10 @@ import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import java.util.*
 
-abstract class BaseRecyclerViewAdapter<T: Any, VH: BaseViewHolder<T>> : RecyclerView.Adapter<VH>() {
+abstract class BaseRecyclerViewAdapter<T: Any, VH: BaseViewHolder<T>> (protected var items: ArrayList<T>) : RecyclerView.Adapter<VH>() {
 
-    private lateinit var items: ArrayList<T>
-    private lateinit var clickSubject: PublishSubject<T>
+//    protected lateinit var items: ArrayList<T>
+    val clickSubject: PublishSubject<T> = PublishSubject.create()
     val clickEvent: Observable<T> = clickSubject
 
     abstract override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH
@@ -18,12 +18,6 @@ abstract class BaseRecyclerViewAdapter<T: Any, VH: BaseViewHolder<T>> : Recycler
 
     override fun onBindViewHolder(viewHolder: VH, position: Int) {
         val item = items[position]
-        viewHolder.bind(item)
-    }
-
-    fun setItems(items: ArrayList<T>) {
-        this.items.clear()
-        this.items.addAll(items)
-        notifyDataSetChanged()
+        viewHolder.bind(item, position)
     }
 }
