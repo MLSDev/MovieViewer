@@ -1,25 +1,28 @@
-package com.shykun.volodymyr.movieviewer.presentation.movies
+package com.shykun.volodymyr.movieviewer.presentation.tv
 
 import android.util.Log
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
+import com.shykun.volodymyr.movieviewer.data.network.response.TVType
 import com.shykun.volodymyr.movieviewer.domain.GetMoviesUseCase
+import com.shykun.volodymyr.movieviewer.domain.GetTVUseCase
+import com.shykun.volodymyr.movieviewer.presentation.movies.MoviesView
 import javax.inject.Inject
 
 @InjectViewState
-class MoviesPresenter @Inject constructor(private val getMoviesUseCase: GetMoviesUseCase) : MvpPresenter<MoviesView>() {
+class TVPresenter @Inject constructor(private val getTVUseCase: GetTVUseCase) : MvpPresenter<TVView>() {
 
     fun onViewLoaded() {
-        getPopularMovies()
-        getTopRatedMovies()
-        getUpcomingMovies()
+        getPopularTV()
+        getTopRatedTV()
+        getTVOnTheAir()
     }
 
-    fun getPopularMovies() {
-        getMoviesUseCase.getMovies(MoviesType.POPULAR)
+    fun getPopularTV() {
+        getTVUseCase.getTV(TVType.POPULAR)
                 .doOnSuccess {
-                    viewState.showPopularMovies(it)
+                    viewState.showPopularTV(it)
                 }
                 .doOnError {
                     viewState.showError()
@@ -28,10 +31,10 @@ class MoviesPresenter @Inject constructor(private val getMoviesUseCase: GetMovie
                 .subscribe()
     }
 
-    fun getTopRatedMovies() {
-        getMoviesUseCase.getMovies(MoviesType.TOP_RATED)
+    fun getTopRatedTV() {
+        getTVUseCase.getTV(TVType.TOP_RATED)
                 .doOnSuccess {
-                    viewState.showTopRatedMovies(it)
+                    viewState.showTopRatedTV(it)
                 }
                 .doOnError {
                     viewState.showError()
@@ -40,10 +43,10 @@ class MoviesPresenter @Inject constructor(private val getMoviesUseCase: GetMovie
                 .subscribe()
     }
 
-    fun getUpcomingMovies() {
-        getMoviesUseCase.getMovies(MoviesType.UPCOMING)
+    fun getTVOnTheAir() {
+        getTVUseCase.getTV(TVType.ON_THE_AIR)
                 .doOnSuccess {
-                    viewState.showUpcompingMovies(it)
+                    viewState.showTVOnTheAir(it)
                 }
                 .doOnError {
                     viewState.showError()

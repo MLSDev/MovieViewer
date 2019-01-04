@@ -9,6 +9,8 @@ import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.presentation.di.AppComponent
 import com.shykun.volodymyr.movieviewer.presentation.di.DaggerAppComponent
 import com.shykun.volodymyr.movieviewer.presentation.movies.MoviesFragment
+import com.shykun.volodymyr.movieviewer.presentation.tabs.TabFragment
+import com.shykun.volodymyr.movieviewer.presentation.tv.TVFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class AppActivity : AppCompatActivity() {
@@ -22,10 +24,11 @@ class AppActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         setSupportActionBar(appToolbar)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
 
         supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.fragmentContainer, MoviesFragment())
+                .replace(R.id.fragmentContainer, TabFragment())
                 .commit()
 
     }

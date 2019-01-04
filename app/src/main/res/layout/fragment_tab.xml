@@ -3,18 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".presentation.CategoryFragment">
+    tools:context=".presentation.tabs.TabFragment"
+    android:orientation="vertical">
 
     <android.support.design.widget.TabLayout
-        android:id="@+id/categoryTabs"
-        app:tabMode="scrollable"
+        android:id="@+id/contentTabLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:tabBackground="@color/colorPrimary"
-        android:background="@color/colorPrimary"/>
+        android:layout_height="50dp"/>
 
     <android.support.v4.view.ViewPager
+        android:id="@+id/contentViewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

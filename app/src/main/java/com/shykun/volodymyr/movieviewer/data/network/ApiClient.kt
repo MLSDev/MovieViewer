@@ -1,6 +1,7 @@
 package com.shykun.volodymyr.movieviewer.data.network
 
 import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
+import com.shykun.volodymyr.movieviewer.data.network.response.TVType
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
@@ -31,6 +32,10 @@ class ApiClient @Inject constructor() {
     }
 
     fun getMovies(moviesType: MoviesType) = apiService.getMovies(moviesType.path)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+    fun getTV(tvType: TVType) = apiService.getTV(tvType.path)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 }

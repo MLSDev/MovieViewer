@@ -6,7 +6,7 @@
     app:cardCornerRadius="6dp"
     android:layout_margin="8dp"
     app:cardPreventCornerOverlap="false"
-    android:background="@color/colorPrimaryDark">
+    android:background="@color/tabLaoutColor">
 
 
     <ImageView
@@ -23,7 +23,7 @@
         android:layout_gravity="bottom"
         android:paddingLeft="4dp"
         android:paddingRight="4dp"
-        android:background="@color/colorPrimary">
+        android:background="@color/tabLaoutColor">
 
         <ImageView
             android:id="@+id/itemFooterIcon"
