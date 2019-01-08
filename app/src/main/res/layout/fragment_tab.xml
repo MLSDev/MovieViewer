@@ -5,13 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".presentation.tabs.TabFragment">
+    tools:context=".presentation.tabs.TabsFragment">
 
     <android.support.design.widget.TabLayout
         android:id="@+id/contentTabLayout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/tabLayoutColor"
+        android:background="@color/colorPrimary"
         app:tabSelectedTextColor="@color/white"
         app:tabTextColor="@color/darkGrey" />
 

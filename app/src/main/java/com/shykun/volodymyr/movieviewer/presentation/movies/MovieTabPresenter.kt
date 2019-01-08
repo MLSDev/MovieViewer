@@ -8,7 +8,7 @@ import com.shykun.volodymyr.movieviewer.domain.GetMoviesUseCase
 import javax.inject.Inject
 
 @InjectViewState
-class MoviesPresenter @Inject constructor(private val getMoviesUseCase: GetMoviesUseCase) : MvpPresenter<MoviesView>() {
+class MovieTabPresenter @Inject constructor(private val getMoviesUseCase: GetMoviesUseCase) : MvpPresenter<MovieTabView>() {
 
     fun onViewLoaded() {
         getPopularMovies()
@@ -17,7 +17,7 @@ class MoviesPresenter @Inject constructor(private val getMoviesUseCase: GetMovie
     }
 
     fun getPopularMovies() {
-        getMoviesUseCase.getMovies(MoviesType.POPULAR)
+        getMoviesUseCase.execute(MoviesType.POPULAR)
                 .doOnSuccess {
                     viewState.showPopularMovies(it)
                 }
@@ -29,7 +29,7 @@ class MoviesPresenter @Inject constructor(private val getMoviesUseCase: GetMovie
     }
 
     fun getTopRatedMovies() {
-        getMoviesUseCase.getMovies(MoviesType.TOP_RATED)
+        getMoviesUseCase.execute(MoviesType.TOP_RATED)
                 .doOnSuccess {
                     viewState.showTopRatedMovies(it)
                 }
@@ -41,7 +41,7 @@ class MoviesPresenter @Inject constructor(private val getMoviesUseCase: GetMovie
     }
 
     fun getUpcomingMovies() {
-        getMoviesUseCase.getMovies(MoviesType.UPCOMING)
+        getMoviesUseCase.execute(MoviesType.UPCOMING)
                 .doOnSuccess {
                     viewState.showUpcompingMovies(it)
                 }

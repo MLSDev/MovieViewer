@@ -5,10 +5,9 @@ import android.view.ViewGroup
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Movie
 import com.shykun.volodymyr.movieviewer.presentation.base.BaseRecyclerViewAdapter
-import javax.inject.Inject
 
-class GeneralMoviesAdapter(items: ArrayList<ArrayList<Movie>>)
-    : BaseRecyclerViewAdapter<ArrayList<Movie>, GeneralMoviesViewHolder>(items) {
+class GeneralMovieTabAdapter(items: ArrayList<ArrayList<Movie>>)
+    : BaseRecyclerViewAdapter<ArrayList<Movie>, GeneralMovieTabViewHolder>(items) {
 
     init {
         items.add(ArrayList())
@@ -16,12 +15,12 @@ class GeneralMoviesAdapter(items: ArrayList<ArrayList<Movie>>)
         items.add(ArrayList()) //TODO: убрать этот костыль
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GeneralMoviesViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GeneralMovieTabViewHolder {
         val view = LayoutInflater
                 .from(parent.context)
                 .inflate(R.layout.view_holder_horizontal_list, parent, false)
 
-        return GeneralMoviesViewHolder(view, clickSubject)
+        return GeneralMovieTabViewHolder(view, clickSubject)
     }
 
     fun addMovies(movies: ArrayList<Movie>, position: Int) {

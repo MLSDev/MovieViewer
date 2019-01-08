@@ -6,7 +6,7 @@
     app:cardCornerRadius="6dp"
     android:layout_margin="8dp"
     app:cardPreventCornerOverlap="false"
-    android:background="@color/tabLayoutColor">
+    android:background="@color/colorPrimary">
 
 
     <ImageView
@@ -15,7 +15,7 @@
         android:layout_height="200dp"
         android:scaleType="fitXY"
         android:src="@drawable/poster_example"
-        android:background="@color/tabLayoutColor"/>
+        android:background="@color/colorPrimary"/>
 
     <LinearLayout
         android:layout_width="130dp"
@@ -24,7 +24,7 @@
         android:layout_gravity="bottom"
         android:paddingLeft="4dp"
         android:paddingRight="4dp"
-        android:background="@color/tabLayoutColor">
+        android:background="@color/colorPrimary">
 
         <ImageView
             android:id="@+id/itemFooterIcon"

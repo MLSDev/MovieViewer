@@ -20,12 +20,12 @@ const val POPULAR_MOVIES = 0
 const val TOP_RATED_MOVIES = 1
 const val UPCOMING_MOVIES = 2
 
-class MoviesFragment : MvpAppCompatFragment(), MoviesView {
+class MovieTabFragment : MvpAppCompatFragment(), MovieTabView {
 
     @Inject
     @InjectPresenter
-    lateinit var presenter: MoviesPresenter
-    lateinit var generalMoviesAdapter: GeneralMoviesAdapter
+    lateinit var presenter: MovieTabPresenter
+    lateinit var generalMovieTabAdapter: GeneralMovieTabAdapter
 
     @ProvidePresenter
     fun provideMoviesPresenter() = (activity as AppActivity).appComponent.getMoviesPresenter()
@@ -39,23 +39,23 @@ class MoviesFragment : MvpAppCompatFragment(), MoviesView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         presenter.onViewLoaded()
-        generalMoviesAdapter = GeneralMoviesAdapter(ArrayList(3))
+        generalMovieTabAdapter = GeneralMovieTabAdapter(ArrayList(3))
         movieList.apply {
-            layoutManager = LinearLayoutManager(this@MoviesFragment.context, LinearLayoutManager.VERTICAL, false)
-            adapter = generalMoviesAdapter
+            layoutManager = LinearLayoutManager(this@MovieTabFragment.context, LinearLayoutManager.VERTICAL, false)
+            adapter = generalMovieTabAdapter
         }
     }
 
     override fun showPopularMovies(movies: ArrayList<Movie>) {
-        generalMoviesAdapter.addMovies(movies, POPULAR_MOVIES)
+        generalMovieTabAdapter.addMovies(movies, POPULAR_MOVIES)
     }
 
     override fun showTopRatedMovies(movies: ArrayList<Movie>) {
-        generalMoviesAdapter.addMovies(movies, TOP_RATED_MOVIES)
+        generalMovieTabAdapter.addMovies(movies, TOP_RATED_MOVIES)
     }
 
     override fun showUpcompingMovies(movies: ArrayList<Movie>) {
-        generalMoviesAdapter.addMovies(movies, UPCOMING_MOVIES)
+        generalMovieTabAdapter.addMovies(movies, UPCOMING_MOVIES)
     }
 
     override fun showError() {

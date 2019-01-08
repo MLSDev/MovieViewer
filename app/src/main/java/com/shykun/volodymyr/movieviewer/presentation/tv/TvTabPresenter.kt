@@ -3,12 +3,12 @@ package com.shykun.volodymyr.movieviewer.presentation.tv
 import android.util.Log
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
-import com.shykun.volodymyr.movieviewer.data.entity.TVType
+import com.shykun.volodymyr.movieviewer.data.entity.TvType
 import com.shykun.volodymyr.movieviewer.domain.GetTVUseCase
 import javax.inject.Inject
 
 @InjectViewState
-class TVPresenter @Inject constructor(private val getTVUseCase: GetTVUseCase) : MvpPresenter<TVView>() {
+class TvTabPresenter @Inject constructor(private val getTVUseCase: GetTVUseCase) : MvpPresenter<TvTabView>() {
 
     fun onViewLoaded() {
         getPopularTV()
@@ -17,7 +17,7 @@ class TVPresenter @Inject constructor(private val getTVUseCase: GetTVUseCase) : 
     }
 
     fun getPopularTV() {
-        getTVUseCase.getTV(TVType.POPULAR)
+        getTVUseCase.execute(TvType.POPULAR)
                 .doOnSuccess {
                     viewState.showPopularTV(it)
                 }
@@ -29,7 +29,7 @@ class TVPresenter @Inject constructor(private val getTVUseCase: GetTVUseCase) : 
     }
 
     fun getTopRatedTV() {
-        getTVUseCase.getTV(TVType.TOP_RATED)
+        getTVUseCase.execute(TvType.TOP_RATED)
                 .doOnSuccess {
                     viewState.showTopRatedTV(it)
                 }
@@ -41,7 +41,7 @@ class TVPresenter @Inject constructor(private val getTVUseCase: GetTVUseCase) : 
     }
 
     fun getTVOnTheAir() {
-        getTVUseCase.getTV(TVType.ON_THE_AIR)
+        getTVUseCase.execute(TvType.ON_THE_AIR)
                 .doOnSuccess {
                     viewState.showTVOnTheAir(it)
                 }

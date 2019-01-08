@@ -10,7 +10,7 @@ import com.arellomobile.mvp.MvpAppCompatFragment
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.shykun.volodymyr.movieviewer.R
-import com.shykun.volodymyr.movieviewer.data.entity.TV
+import com.shykun.volodymyr.movieviewer.data.entity.Tv
 import com.shykun.volodymyr.movieviewer.presentation.AppActivity
 import kotlinx.android.synthetic.main.fragment_movies.*
 import javax.inject.Inject
@@ -19,12 +19,12 @@ const val POPULAR_TV = 0
 const val TOP_RATED_TV = 1
 const val TV_ON_THE_AIR = 2
 
-class TVFragment : MvpAppCompatFragment(), TVView {
+class TvTabFragment : MvpAppCompatFragment(), TvTabView {
 
     @Inject
     @InjectPresenter
-    lateinit var presenter: TVPresenter
-    lateinit var generalTVAdapter: GeneralTVAdapter
+    lateinit var presenter: TvTabPresenter
+    lateinit var generalTvTabAdapter: GeneralTvTabAdapter
 
     @ProvidePresenter
     fun provideTVPresenter() = (activity as AppActivity).appComponent.getTVPresenter()
@@ -38,23 +38,23 @@ class TVFragment : MvpAppCompatFragment(), TVView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         presenter.onViewLoaded()
-        generalTVAdapter = GeneralTVAdapter(ArrayList(3))
+        generalTvTabAdapter = GeneralTvTabAdapter(ArrayList(3))
         movieList.apply {
-            layoutManager = LinearLayoutManager(this@TVFragment.context, LinearLayoutManager.VERTICAL, false)
-            adapter = generalTVAdapter
+            layoutManager = LinearLayoutManager(this@TvTabFragment.context, LinearLayoutManager.VERTICAL, false)
+            adapter = generalTvTabAdapter
         }
     }
 
-    override fun showPopularTV(tvList: ArrayList<TV>) {
-        generalTVAdapter.addTV(tvList, POPULAR_TV)
+    override fun showPopularTV(tvList: ArrayList<Tv>) {
+        generalTvTabAdapter.addTV(tvList, POPULAR_TV)
     }
 
-    override fun showTopRatedTV(tvList: ArrayList<TV>) {
-        generalTVAdapter.addTV(tvList, TOP_RATED_TV)
+    override fun showTopRatedTV(tvList: ArrayList<Tv>) {
+        generalTvTabAdapter.addTV(tvList, TOP_RATED_TV)
     }
 
-    override fun showTVOnTheAir(tvList: ArrayList<TV>) {
-        generalTVAdapter.addTV(tvList, TV_ON_THE_AIR)
+    override fun showTVOnTheAir(tvList: ArrayList<Tv>) {
+        generalTvTabAdapter.addTV(tvList, TV_ON_THE_AIR)
     }
 
     override fun showError() {

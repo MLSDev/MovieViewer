@@ -1,10 +1,9 @@
 package com.shykun.volodymyr.movieviewer.data.entity
 
-import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 
-data class TV (
+data class Tv (
     @SerializedName("poster_path") val posterPath: String,
     @SerializedName("popularity") val popularity: Double,
     @SerializedName("id") val id: Int,
@@ -20,7 +19,7 @@ data class TV (
     @SerializedName("original_name") val originalName: String
 )
 
-enum class TVType(val path: String) {
+enum class TvType(val path: String) {
     POPULAR("popular"),
     TOP_RATED("top_rated"),
     ON_THE_AIR("on_the_air")

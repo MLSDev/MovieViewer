@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark"
-    tools:context=".presentation.movies.MoviesFragment">
+    tools:context=".presentation.movies.MovieTabFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/movieList"

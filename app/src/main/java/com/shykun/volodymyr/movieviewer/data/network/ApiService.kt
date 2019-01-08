@@ -1,6 +1,7 @@
 package com.shykun.volodymyr.movieviewer.data.network
 
 import com.shykun.volodymyr.movieviewer.data.network.response.GetMovieResponse
+import com.shykun.volodymyr.movieviewer.data.network.response.GetPeopleResponse
 import com.shykun.volodymyr.movieviewer.data.network.response.GetTVResponse
 import io.reactivex.Single
 import retrofit2.http.GET
@@ -19,4 +20,6 @@ interface ApiService {
     fun getTV(@Path("tv_type") tvType: String,
               @Query("api_key") api_key: String = API_KEY): Single<GetTVResponse>
 
+    @GET("/person/popular")
+    fun getPopularPeople(@Query("api_key") api_key: String = API_KEY): Single<GetPeopleResponse>
 }
