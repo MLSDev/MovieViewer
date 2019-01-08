@@ -19,3 +19,9 @@ data class TV (
     @SerializedName("name") val name: String,
     @SerializedName("original_name") val originalName: String
 )
+
+enum class TVType(val path: String) {
+    POPULAR("popular"),
+    TOP_RATED("top_rated"),
+    ON_THE_AIR("on_the_air")
+}

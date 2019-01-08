@@ -9,9 +9,3 @@ data class GetTVResponse (
         @SerializedName("total_results") val totalResults: Int,
         @SerializedName("total_pages") val totalPages: Int
 )
-
-enum class TVType(val path: String) {
-    POPULAR("popular"),
-    TOP_RATED("top_rated"),
-    ON_THE_AIR("on_the_air")
-}

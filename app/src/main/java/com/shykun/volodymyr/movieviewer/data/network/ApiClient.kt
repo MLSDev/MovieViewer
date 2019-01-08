@@ -1,7 +1,7 @@
 package com.shykun.volodymyr.movieviewer.data.network
 
 import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
-import com.shykun.volodymyr.movieviewer.data.network.response.TVType
+import com.shykun.volodymyr.movieviewer.data.entity.TVType
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient

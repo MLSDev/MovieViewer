@@ -3,11 +3,8 @@ package com.shykun.volodymyr.movieviewer.presentation.tv
 import android.util.Log
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
-import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
-import com.shykun.volodymyr.movieviewer.data.network.response.TVType
-import com.shykun.volodymyr.movieviewer.domain.GetMoviesUseCase
+import com.shykun.volodymyr.movieviewer.data.entity.TVType
 import com.shykun.volodymyr.movieviewer.domain.GetTVUseCase
-import com.shykun.volodymyr.movieviewer.presentation.movies.MoviesView
 import javax.inject.Inject
 
 @InjectViewState
