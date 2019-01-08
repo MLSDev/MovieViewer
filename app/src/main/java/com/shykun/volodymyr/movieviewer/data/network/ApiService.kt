@@ -20,6 +20,6 @@ interface ApiService {
     fun getTV(@Path("tv_type") tvType: String,
               @Query("api_key") api_key: String = API_KEY): Single<GetTVResponse>
 
-    @GET("/person/popular")
+    @GET("person/popular")
     fun getPopularPeople(@Query("api_key") api_key: String = API_KEY): Single<GetPeopleResponse>
 }

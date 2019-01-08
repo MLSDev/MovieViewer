@@ -13,7 +13,6 @@ import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Tv
 import com.shykun.volodymyr.movieviewer.presentation.AppActivity
 import kotlinx.android.synthetic.main.fragment_movies.*
-import javax.inject.Inject
 
 const val POPULAR_TV = 0
 const val TOP_RATED_TV = 1
@@ -21,17 +20,15 @@ const val TV_ON_THE_AIR = 2
 
 class TvTabFragment : MvpAppCompatFragment(), TvTabView {
 
-    @Inject
     @InjectPresenter
     lateinit var presenter: TvTabPresenter
     lateinit var generalTvTabAdapter: GeneralTvTabAdapter
 
     @ProvidePresenter
-    fun provideTVPresenter() = (activity as AppActivity).appComponent.getTVPresenter()
+    fun provideTVPresenter() = (activity as AppActivity).appComponent.getTvPresenter()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-//        (activity as AppActivity).appComponent.inject(this)
         return inflater.inflate(R.layout.fragment_movies, container, false)
     }
 

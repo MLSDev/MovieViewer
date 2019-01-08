@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import com.shykun.volodymyr.movieviewer.presentation.movies.MovieTabFragment
+import com.shykun.volodymyr.movieviewer.presentation.people.PeopleTabFragment
 import com.shykun.volodymyr.movieviewer.presentation.tv.TvTabFragment
 
 class ContentViewPagerAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager) {
@@ -11,14 +12,16 @@ class ContentViewPagerAdapter(fragmentManager: FragmentManager) : FragmentPagerA
     override fun getItem(position: Int): Fragment? = when (position) {
         0 -> MovieTabFragment()
         1 -> TvTabFragment()
+        2 -> PeopleTabFragment()
         else -> null
     }
 
     override fun getPageTitle(position: Int): String? = when (position) {
         0 -> "Movies"
         1 -> "Tv"
+        2 -> "People"
         else -> null
     }
 
-    override fun getCount() = 2
+    override fun getCount() = 3
 }

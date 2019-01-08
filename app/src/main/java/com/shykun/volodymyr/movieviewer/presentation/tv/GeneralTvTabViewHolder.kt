@@ -14,9 +14,9 @@ import kotlinx.android.synthetic.main.view_holder_horizontal_list.view.*
 class GeneralTvTabViewHolder(itemView: View, clickSubject: PublishSubject<ArrayList<Tv>>)
     : BaseViewHolder<ArrayList<Tv>>(itemView, clickSubject) {
 
-    val title: TextView = itemView.horizontalListTitle
-    val list: RecyclerView = itemView.horizontalList
-    val progressBar: ProgressBar = itemView.horizontalListProgressBar
+    private val title: TextView = itemView.horizontalListTitle
+    private val list: RecyclerView = itemView.horizontalList
+    private val progressBar: ProgressBar = itemView.horizontalListProgressBar
 
     override fun bind(item: ArrayList<Tv>, position: Int) {
         super.bind(item, position)

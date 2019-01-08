@@ -14,9 +14,9 @@ import kotlinx.android.synthetic.main.view_holder_horizontal_list.view.*
 class GeneralMovieTabViewHolder(itemView: View, clickSubject: PublishSubject<ArrayList<Movie>>)
     : BaseViewHolder<ArrayList<Movie>>(itemView, clickSubject) {
 
-    val title: TextView = itemView.horizontalListTitle
-    val list: RecyclerView = itemView.horizontalList
-    val progressBar: ProgressBar = itemView.horizontalListProgressBar
+    private val title: TextView = itemView.horizontalListTitle
+    private val list: RecyclerView = itemView.horizontalList
+    private val progressBar: ProgressBar = itemView.horizontalListProgressBar
 
     override fun bind(item: ArrayList<Movie>, position: Int) {
         super.bind(item, position)

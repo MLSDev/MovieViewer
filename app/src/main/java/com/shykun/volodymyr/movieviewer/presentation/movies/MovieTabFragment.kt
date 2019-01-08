@@ -22,7 +22,6 @@ const val UPCOMING_MOVIES = 2
 
 class MovieTabFragment : MvpAppCompatFragment(), MovieTabView {
 
-    @Inject
     @InjectPresenter
     lateinit var presenter: MovieTabPresenter
     lateinit var generalMovieTabAdapter: GeneralMovieTabAdapter
@@ -32,12 +31,12 @@ class MovieTabFragment : MvpAppCompatFragment(), MovieTabView {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-//        (activity as AppActivity).appComponent.inject(this)
         return inflater.inflate(R.layout.fragment_movies, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         presenter.onViewLoaded()
         generalMovieTabAdapter = GeneralMovieTabAdapter(ArrayList(3))
         movieList.apply {

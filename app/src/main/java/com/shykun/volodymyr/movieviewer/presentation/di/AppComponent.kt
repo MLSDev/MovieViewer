@@ -2,6 +2,7 @@ package com.shykun.volodymyr.movieviewer.presentation.di
 
 import com.shykun.volodymyr.movieviewer.presentation.movies.MovieTabFragment
 import com.shykun.volodymyr.movieviewer.presentation.movies.MovieTabPresenter
+import com.shykun.volodymyr.movieviewer.presentation.people.PeopleTabPresenter
 import com.shykun.volodymyr.movieviewer.presentation.tv.TvTabPresenter
 import dagger.Component
 import javax.inject.Singleton
@@ -10,6 +11,7 @@ import javax.inject.Singleton
 @Component(modules = [AppModule::class])
 interface AppComponent {
     fun getMoviesPresenter(): MovieTabPresenter
-    fun getTVPresenter(): TvTabPresenter
+    fun getTvPresenter(): TvTabPresenter
+    fun getPeopleTabPresenter(): PeopleTabPresenter
     fun inject(target: MovieTabFragment)
 }

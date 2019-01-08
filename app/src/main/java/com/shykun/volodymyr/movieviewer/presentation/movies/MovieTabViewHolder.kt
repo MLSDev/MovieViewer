@@ -16,9 +16,9 @@ class MovieTabViewHolder(itemView: View, clickSubject: PublishSubject<Movie>)
 
     var type = -1
 
-    val poster: ImageView = itemView.itemImage
-    val footerText: TextView = itemView.itemFooterText
-    val footerIcon: ImageView = itemView.itemFooterIcon
+    private val poster: ImageView = itemView.itemImage
+    private val footerText: TextView = itemView.itemFooterText
+    private val footerIcon: ImageView = itemView.itemFooterIcon
 
 
     override fun bind(item: Movie, position: Int) {
