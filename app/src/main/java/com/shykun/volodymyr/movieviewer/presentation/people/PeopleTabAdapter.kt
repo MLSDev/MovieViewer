@@ -5,10 +5,11 @@ import android.view.ViewGroup
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Person
 import com.shykun.volodymyr.movieviewer.presentation.base.BaseRecyclerViewAdapter
-import java.util.zip.Inflater
 
 class PeopleTabAdapter(items: ArrayList<Person>)
     : BaseRecyclerViewAdapter<Person, PeopleTabViewHolder>(items) {
+
+    var lastLoadedPage = 1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PeopleTabViewHolder {
         val view = LayoutInflater

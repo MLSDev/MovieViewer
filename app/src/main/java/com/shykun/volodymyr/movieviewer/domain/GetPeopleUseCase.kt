@@ -6,5 +6,5 @@ import javax.inject.Inject
 
 class GetPeopleUseCase @Inject constructor(private val apiClient: ApiClient) {
 
-    fun execute() = apiClient.getPopularPeople().map { it.results }
+    fun execute(page: Int) = apiClient.getPopularPeople(page).map { it.results }
 }

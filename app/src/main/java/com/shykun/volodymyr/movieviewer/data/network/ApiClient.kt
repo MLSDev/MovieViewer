@@ -31,15 +31,15 @@ class ApiClient @Inject constructor() {
         apiService = retrofit.create(ApiService::class.java)
     }
 
-    fun getMovies(moviesType: MoviesType) = apiService.getMovies(moviesType.path)
+    fun getMovies(moviesType: MoviesType, page: Int = 1) = apiService.getMovies(moviesType.path, page)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
-    fun getTV(tvType: TvType) = apiService.getTV(tvType.path)
+    fun getTV(tvType: TvType, page: Int = 1) = apiService.getTV(tvType.path, page)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
-    fun getPopularPeople() = apiService.getPopularPeople()
+    fun getPopularPeople(page: Int = 1) = apiService.getPopularPeople(page)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 }

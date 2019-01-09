@@ -1,5 +1,7 @@
 package com.shykun.volodymyr.movieviewer.presentation.base
 
+import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import io.reactivex.Observable

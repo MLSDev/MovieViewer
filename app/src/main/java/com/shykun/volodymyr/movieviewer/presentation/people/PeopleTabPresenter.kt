@@ -9,10 +9,10 @@ import javax.inject.Inject
 class PeopleTabPresenter @Inject constructor(private val getPeopleUseCase: GetPeopleUseCase) : MvpPresenter<PeopleTabView>() {
 
     fun onViewLoaded() {
-        getPeople()
+        getPeople(1)
     }
 
-    fun getPeople() = getPeopleUseCase.execute()
+    fun getPeople(page: Int) = getPeopleUseCase.execute(page)
             .doOnSuccess {
                 viewState.showPeople(it)
             }

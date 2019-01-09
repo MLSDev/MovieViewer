@@ -14,6 +14,8 @@ import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Person
 import com.shykun.volodymyr.movieviewer.presentation.AppActivity
+import com.shykun.volodymyr.movieviewer.presentation.base.ScrollObservable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_people_tab.*
 
 class PeopleTabFragment : MvpAppCompatFragment(), PeopleTabView {
@@ -39,6 +41,19 @@ class PeopleTabFragment : MvpAppCompatFragment(), PeopleTabView {
             layoutManager = GridLayoutManager(this@PeopleTabFragment.context, 3)
             adapter = peopleTabAdapter
         }
+
+        subscribeScrollObervable()
+    }
+
+    fun subscribeScrollObervable() {
+        ScrollObservable.from(peopleList, 20)
+                .distinctUntilChanged()
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext {
+                    presenter.getPeople(peopleTabAdapter.lastLoadedPage + 1)
+                    peopleTabAdapter.lastLoadedPage++
+                }
+                .subscribe()
     }
 
     override fun showPeople(people: ArrayList<Person>) {

@@ -14,12 +14,16 @@ interface ApiService {
 
     @GET("movie/{movies_type}")
     fun getMovies(@Path("movies_type") moviesType: String,
+                  @Query("page") page: Int,
                   @Query("api_key") api_key: String = API_KEY): Single<GetMovieResponse>
 
     @GET("tv/{tv_type}")
     fun getTV(@Path("tv_type") tvType: String,
+              @Query("page") page: Int,
               @Query("api_key") api_key: String = API_KEY): Single<GetTVResponse>
 
     @GET("person/popular")
-    fun getPopularPeople(@Query("api_key") api_key: String = API_KEY): Single<GetPeopleResponse>
+    fun getPopularPeople(
+            @Query("page") page: Int,
+            @Query("api_key") api_key: String = API_KEY): Single<GetPeopleResponse>
 }
