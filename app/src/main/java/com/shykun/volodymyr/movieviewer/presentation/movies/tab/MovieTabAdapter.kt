@@ -1,4 +1,4 @@
-package com.shykun.volodymyr.movieviewer.presentation.movies
+package com.shykun.volodymyr.movieviewer.presentation.movies.tab
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

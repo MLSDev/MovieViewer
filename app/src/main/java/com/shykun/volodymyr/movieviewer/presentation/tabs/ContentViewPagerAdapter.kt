@@ -3,7 +3,7 @@ package com.shykun.volodymyr.movieviewer.presentation.tabs
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
-import com.shykun.volodymyr.movieviewer.presentation.movies.MovieTabFragment
+import com.shykun.volodymyr.movieviewer.presentation.movies.tab.MovieTabFragment
 import com.shykun.volodymyr.movieviewer.presentation.people.PeopleTabFragment
 import com.shykun.volodymyr.movieviewer.presentation.tv.TvTabFragment
 

@@ -26,9 +26,9 @@ class GeneralTvTabViewHolder(itemView: View, clickSubject: PublishSubject<ArrayL
         } else {
             progressBar.visibility = View.GONE
             title.text = when (position) {
-                POPULAR_TV -> "Popular Tv"
-                TOP_RATED_TV -> "Top rated Tv"
-                TV_ON_THE_AIR -> "Tv on the air"
+                POPULAR_TV -> "Popular TV"
+                TOP_RATED_TV -> "Top rated TV"
+                TV_ON_THE_AIR -> "TV on the air"
                 else -> ""
             }
             list.apply {

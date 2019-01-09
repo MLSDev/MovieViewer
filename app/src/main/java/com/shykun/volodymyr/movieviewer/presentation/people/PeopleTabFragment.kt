@@ -17,6 +17,7 @@ import com.shykun.volodymyr.movieviewer.presentation.AppActivity
 import com.shykun.volodymyr.movieviewer.presentation.base.ScrollObservable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_people_tab.*
+import java.text.ParsePosition
 
 class PeopleTabFragment : MvpAppCompatFragment(), PeopleTabView {
 

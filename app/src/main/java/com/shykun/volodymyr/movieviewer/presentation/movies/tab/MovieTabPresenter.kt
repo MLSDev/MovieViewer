@@ -1,4 +1,4 @@
-package com.shykun.volodymyr.movieviewer.presentation.movies
+package com.shykun.volodymyr.movieviewer.presentation.movies.tab
 
 import android.util.Log
 import com.arellomobile.mvp.InjectViewState

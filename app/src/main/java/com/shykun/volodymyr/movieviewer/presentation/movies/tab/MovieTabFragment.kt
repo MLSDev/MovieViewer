@@ -1,4 +1,4 @@
-package com.shykun.volodymyr.movieviewer.presentation.movies
+package com.shykun.volodymyr.movieviewer.presentation.movies.tab
 
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -14,7 +14,6 @@ import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Movie
 import com.shykun.volodymyr.movieviewer.presentation.AppActivity
 import kotlinx.android.synthetic.main.fragment_movies.*
-import javax.inject.Inject
 
 const val POPULAR_MOVIES = 0
 const val TOP_RATED_MOVIES = 1

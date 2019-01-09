@@ -10,7 +10,6 @@ import java.util.*
 
 abstract class BaseRecyclerViewAdapter<T: Any, VH: BaseViewHolder<T>> (protected var items: ArrayList<T>) : RecyclerView.Adapter<VH>() {
 
-//    protected lateinit var items: ArrayList<T>
     val clickSubject: PublishSubject<T> = PublishSubject.create()
     val clickEvent: Observable<T> = clickSubject
 

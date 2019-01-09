@@ -1,11 +1,9 @@
-package com.shykun.volodymyr.movieviewer.presentation.movies
+package com.shykun.volodymyr.movieviewer.presentation.movies.tab
 
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import com.bumptech.glide.Glide
 import com.shykun.volodymyr.movieviewer.data.entity.Movie
-import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
 import com.shykun.volodymyr.movieviewer.presentation.base.BaseViewHolder
 import com.shykun.volodymyr.movieviewer.presentation.glide.GlideApp
 import io.reactivex.subjects.PublishSubject

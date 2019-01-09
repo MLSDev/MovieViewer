@@ -11,7 +11,7 @@ import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.view_holder_person.view.*
 
 open class PeopleTabViewHolder(itemView: View, clickSubject: PublishSubject<Person>)
-    : BaseViewHolder<Person>(itemView, clickSubject) {
+    : BasePeopleViewHolder(itemView, clickSubject) {
 
     private val name: TextView = itemView.personName
     private val photo: ImageView = itemView.personPhoto
