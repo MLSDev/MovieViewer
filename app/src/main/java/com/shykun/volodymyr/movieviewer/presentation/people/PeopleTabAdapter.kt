@@ -6,8 +6,8 @@ import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Person
 import com.shykun.volodymyr.movieviewer.presentation.base.BaseRecyclerViewAdapter
 
-const val PERSON = 0
-const val LOADING = 1
+private const val PERSON = 0
+private const val LOADING = 1
 
 
 class PeopleTabAdapter(items: ArrayList<Person>)
@@ -19,16 +19,16 @@ class PeopleTabAdapter(items: ArrayList<Person>)
         val inflater = LayoutInflater.from(parent.context)
         return if (viewType == PERSON) {
             val view = inflater.inflate(R.layout.view_holder_person, parent, false)
-            PeopleTabViewHolder(view, clickSubject)
+            PeopleTabViewHolder(view)
         } else {
             val view = inflater.inflate(R.layout.view_holder_loading, parent, false)
-            LoadingViewHolder(view, clickSubject)
+            PeopleTabLoadingViewHolder(view)
         }
 
     }
 
     override fun onBindViewHolder(viewHolder: BasePeopleViewHolder, position: Int) {
-        if (viewHolder !is LoadingViewHolder)
+        if (viewHolder !is PeopleTabLoadingViewHolder)
             super.onBindViewHolder(viewHolder, position)
     }
 

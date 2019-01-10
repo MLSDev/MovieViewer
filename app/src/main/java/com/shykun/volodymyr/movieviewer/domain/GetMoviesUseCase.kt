@@ -6,5 +6,5 @@ import javax.inject.Inject
 
 class GetMoviesUseCase @Inject constructor(private val apiClient: ApiClient) {
 
-    fun execute(moviesType: MoviesType) = apiClient.getMovies(moviesType).map { it.results }
+    fun execute(moviesType: MoviesType, page: Int) = apiClient.getMovies(moviesType, page).map { it.results }
 }

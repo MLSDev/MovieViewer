@@ -20,7 +20,7 @@ class GeneralMovieTabAdapter(items: ArrayList<ArrayList<Movie>>)
                 .from(parent.context)
                 .inflate(R.layout.view_holder_horizontal_list, parent, false)
 
-        return GeneralMovieTabViewHolder(view, clickSubject)
+        return GeneralMovieTabViewHolder(view)
     }
 
     fun addMovies(movies: ArrayList<Movie>, position: Int) {

@@ -15,7 +15,7 @@ class TvTabAdapter(items: ArrayList<Tv>): BaseRecyclerViewAdapter<Tv, TvTabViewH
                 .from(parent.context)
                 .inflate(R.layout.view_holder_horizontal_item, parent, false)
 
-        return TvTabViewHolder(view, clickSubject)
+        return TvTabViewHolder(view)
     }
 
     override fun onBindViewHolder(viewHolder: TvTabViewHolder, position: Int) {

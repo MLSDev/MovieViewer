@@ -11,8 +11,8 @@ import com.shykun.volodymyr.movieviewer.presentation.base.BaseViewHolder
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.view_holder_horizontal_list.view.*
 
-class GeneralMovieTabViewHolder(itemView: View, clickSubject: PublishSubject<ArrayList<Movie>>)
-    : BaseViewHolder<ArrayList<Movie>>(itemView, clickSubject) {
+class GeneralMovieTabViewHolder(itemView: View)
+    : BaseViewHolder<ArrayList<Movie>>(itemView) {
 
     private val title: TextView = itemView.horizontalListTitle
     private val list: RecyclerView = itemView.horizontalList

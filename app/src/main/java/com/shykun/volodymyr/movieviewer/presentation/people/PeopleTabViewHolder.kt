@@ -10,8 +10,14 @@ import com.shykun.volodymyr.movieviewer.presentation.glide.GlideApp
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.view_holder_person.view.*
 
-open class PeopleTabViewHolder(itemView: View, clickSubject: PublishSubject<Person>)
-    : BasePeopleViewHolder(itemView, clickSubject) {
+open class BasePeopleViewHolder(itemView: View)
+    : BaseViewHolder<Person>(itemView)
+
+class PeopleTabLoadingViewHolder(itemView: View)
+    : BasePeopleViewHolder(itemView)
+
+class PeopleTabViewHolder(itemView: View)
+    : BasePeopleViewHolder(itemView) {
 
     private val name: TextView = itemView.personName
     private val photo: ImageView = itemView.personPhoto

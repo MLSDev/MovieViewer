@@ -15,12 +15,12 @@ class MovieTabAdapter(items: ArrayList<Movie>): BaseRecyclerViewAdapter<Movie, M
                 .from(parent.context)
                 .inflate(R.layout.view_holder_horizontal_item, parent, false)
 
-        return MovieTabViewHolder(view, clickSubject)
+        return MovieTabViewHolder(view)
     }
 
-    override fun onBindViewHolder(tabViewHolder: MovieTabViewHolder, position: Int) {
-        tabViewHolder.type = this.type
-        super.onBindViewHolder(tabViewHolder, position)
+    override fun onBindViewHolder(viewHolder: MovieTabViewHolder, position: Int) {
+        viewHolder.type = this.type
+        super.onBindViewHolder(viewHolder, position)
     }
 }
 

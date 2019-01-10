@@ -9,8 +9,8 @@ import com.shykun.volodymyr.movieviewer.presentation.glide.GlideApp
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.view_holder_horizontal_item.view.*
 
-class TvTabViewHolder(itemView: View, clickSubject: PublishSubject<Tv>)
-    : BaseViewHolder<Tv>(itemView, clickSubject) {
+class TvTabViewHolder(itemView: View)
+    : BaseViewHolder<Tv>(itemView) {
 
     var type = -1
 

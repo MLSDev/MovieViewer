@@ -20,7 +20,7 @@ class GeneralTvTabAdapter(items: ArrayList<ArrayList<Tv>>)
                 .from(parent.context)
                 .inflate(R.layout.view_holder_horizontal_list, parent, false)
 
-        return GeneralTvTabViewHolder(view, clickSubject)
+        return GeneralTvTabViewHolder(view)
     }
 
     fun addTV(tvList: ArrayList<Tv>, position: Int) {

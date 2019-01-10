@@ -36,7 +36,7 @@ class TvTabFragment : MvpAppCompatFragment(), TvTabView {
         super.onViewCreated(view, savedInstanceState)
         presenter.onViewLoaded()
         generalTvTabAdapter = GeneralTvTabAdapter(ArrayList(3))
-        movieList.apply {
+        movieCategoryList.apply {
             layoutManager = LinearLayoutManager(this@TvTabFragment.context, LinearLayoutManager.VERTICAL, false)
             adapter = generalTvTabAdapter
         }

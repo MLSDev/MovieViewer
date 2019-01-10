@@ -5,19 +5,21 @@ import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
 import com.shykun.volodymyr.movieviewer.domain.GetMoviesUseCase
+import com.shykun.volodymyr.movieviewer.presentation.App
+import com.shykun.volodymyr.movieviewer.presentation.movies.list.MOVIE_LIST_FRAGMENT_KEY
 import javax.inject.Inject
 
 @InjectViewState
 class MovieTabPresenter @Inject constructor(private val getMoviesUseCase: GetMoviesUseCase) : MvpPresenter<MovieTabView>() {
 
     fun onViewLoaded() {
-        getPopularMovies()
-        getTopRatedMovies()
-        getUpcomingMovies()
+        getPopularMovies(1)
+        getTopRatedMovies(1)
+        getUpcomingMovies(1)
     }
 
-    fun getPopularMovies() {
-        getMoviesUseCase.execute(MoviesType.POPULAR)
+    fun getPopularMovies(page: Int) {
+        getMoviesUseCase.execute(MoviesType.POPULAR, page)
                 .doOnSuccess {
                     viewState.showPopularMovies(it)
                 }
@@ -28,8 +30,8 @@ class MovieTabPresenter @Inject constructor(private val getMoviesUseCase: GetMov
                 .subscribe()
     }
 
-    fun getTopRatedMovies() {
-        getMoviesUseCase.execute(MoviesType.TOP_RATED)
+    fun getTopRatedMovies(page: Int) {
+        getMoviesUseCase.execute(MoviesType.TOP_RATED, page)
                 .doOnSuccess {
                     viewState.showTopRatedMovies(it)
                 }
@@ -40,8 +42,8 @@ class MovieTabPresenter @Inject constructor(private val getMoviesUseCase: GetMov
                 .subscribe()
     }
 
-    fun getUpcomingMovies() {
-        getMoviesUseCase.execute(MoviesType.UPCOMING)
+    fun getUpcomingMovies(page: Int) {
+        getMoviesUseCase.execute(MoviesType.UPCOMING, page)
                 .doOnSuccess {
                     viewState.showUpcompingMovies(it)
                 }
@@ -50,6 +52,10 @@ class MovieTabPresenter @Inject constructor(private val getMoviesUseCase: GetMov
                     Log.d("getMovieError", it.message)
                 }
                 .subscribe()
+    }
+
+    fun onViewAllButtonClicked(moviesType: MoviesType) {
+        App.instance.router.navigateTo(MOVIE_LIST_FRAGMENT_KEY, moviesType)
     }
 
 }

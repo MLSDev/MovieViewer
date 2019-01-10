@@ -10,9 +10,6 @@ import java.util.*
 
 abstract class BaseRecyclerViewAdapter<T: Any, VH: BaseViewHolder<T>> (protected var items: ArrayList<T>) : RecyclerView.Adapter<VH>() {
 
-    val clickSubject: PublishSubject<T> = PublishSubject.create()
-    val clickEvent: Observable<T> = clickSubject
-
     abstract override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH
 
     override fun getItemCount() = items.size
