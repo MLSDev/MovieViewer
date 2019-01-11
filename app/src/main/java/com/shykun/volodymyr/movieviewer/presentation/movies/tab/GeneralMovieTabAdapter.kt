@@ -5,9 +5,14 @@ import android.view.ViewGroup
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Movie
 import com.shykun.volodymyr.movieviewer.presentation.base.BaseRecyclerViewAdapter
+import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 
 class GeneralMovieTabAdapter(items: ArrayList<ArrayList<Movie>>)
     : BaseRecyclerViewAdapter<ArrayList<Movie>, GeneralMovieTabViewHolder>(items) {
+
+    private val clickSubject = PublishSubject.create<Int>()
+    val clickEvent : Observable<Int> = clickSubject
 
     init {
         items.add(ArrayList())
@@ -20,7 +25,7 @@ class GeneralMovieTabAdapter(items: ArrayList<ArrayList<Movie>>)
                 .from(parent.context)
                 .inflate(R.layout.view_holder_horizontal_list, parent, false)
 
-        return GeneralMovieTabViewHolder(view)
+        return GeneralMovieTabViewHolder(view, clickSubject)
     }
 
     fun addMovies(movies: ArrayList<Movie>, position: Int) {

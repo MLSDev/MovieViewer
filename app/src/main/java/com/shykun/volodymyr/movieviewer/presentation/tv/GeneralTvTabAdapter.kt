@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Tv
 import com.shykun.volodymyr.movieviewer.presentation.base.BaseRecyclerViewAdapter
+import io.reactivex.subjects.PublishSubject
 
 class GeneralTvTabAdapter(items: ArrayList<ArrayList<Tv>>)
     : BaseRecyclerViewAdapter<ArrayList<Tv>, GeneralTvTabViewHolder>(items) {

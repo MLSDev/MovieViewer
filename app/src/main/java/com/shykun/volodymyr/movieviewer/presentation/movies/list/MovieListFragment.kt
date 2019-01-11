@@ -2,22 +2,32 @@ package com.shykun.volodymyr.movieviewer.presentation.movies.list
 
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.arellomobile.mvp.MvpAppCompatFragment
-
+import com.arellomobile.mvp.presenter.InjectPresenter
+import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Movie
 import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
+import com.shykun.volodymyr.movieviewer.presentation.AppActivity
+import kotlinx.android.synthetic.main.fragment_movie_list.*
 
 const val MOVIE_LIST_FRAGMENT_KEY = "movie_list_fragment_key"
 private const val MOVIE_TYPE_KEY = "movie_type"
+private lateinit var movieListAdapter: MovieListAdapter
 
 class MovieListFragment : MvpAppCompatFragment(), MovieListVew {
 
     private lateinit var moviesType: MoviesType
+    @InjectPresenter
+    lateinit var presenter: MovieListPresenter
+
+    @ProvidePresenter
+    fun providePresenter() = (activity as AppActivity).appComponent.getMovieListPresenter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,12 +40,25 @@ class MovieListFragment : MvpAppCompatFragment(), MovieListVew {
         return inflater.inflate(R.layout.fragment_movie_list, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        movieListAdapter = MovieListAdapter(ArrayList())
+
+        movieList.apply {
+            layoutManager = LinearLayoutManager(this@MovieListFragment.context,
+                    LinearLayoutManager.VERTICAL,
+                    false)
+            adapter = movieListAdapter
+        }
+        presenter.onViewLoaded(moviesType)
+    }
+
     override fun showMovies(movieList: ArrayList<Movie>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        movieListAdapter.addMovies(movieList)
     }
 
     override fun showError() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        Toast.makeText(this.context, "Error", Toast.LENGTH_SHORT).show()
     }
 
     companion object {

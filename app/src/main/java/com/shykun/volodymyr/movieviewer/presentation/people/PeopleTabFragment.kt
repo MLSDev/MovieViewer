@@ -36,12 +36,12 @@ class PeopleTabFragment : MvpAppCompatFragment(), PeopleTabView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        presenter.onViewLoaded()
         peopleTabAdapter = PeopleTabAdapter(ArrayList())
         peopleList.apply {
             layoutManager = GridLayoutManager(this@PeopleTabFragment.context, 3)
             adapter = peopleTabAdapter
         }
+        presenter.onViewLoaded()
 
         subscribeScrollObervable()
     }

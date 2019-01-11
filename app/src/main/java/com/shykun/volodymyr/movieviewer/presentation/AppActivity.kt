@@ -1,12 +1,11 @@
 package com.shykun.volodymyr.movieviewer.presentation
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
 import com.shykun.volodymyr.movieviewer.presentation.di.AppComponent
@@ -15,16 +14,21 @@ import com.shykun.volodymyr.movieviewer.presentation.movies.list.MOVIE_LIST_FRAG
 import com.shykun.volodymyr.movieviewer.presentation.movies.list.MovieListFragment
 import com.shykun.volodymyr.movieviewer.presentation.tabs.TabsFragment
 import kotlinx.android.synthetic.main.activity_main.*
-import ru.terrakok.cicerone.android.SupportAppNavigator
+import ru.terrakok.cicerone.NavigatorHolder
+import ru.terrakok.cicerone.android.SupportFragmentNavigator
+import javax.inject.Inject
 
 class AppActivity : AppCompatActivity() {
     val appComponent: AppComponent by lazy {
         DaggerAppComponent.create()
     }
 
-    private val navigator = object : SupportAppNavigator(this, R.id.fragmentContainer) {
-        override fun createActivityIntent(context: Context?, screenKey: String?, data: Any?): Intent {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    @Inject
+    lateinit var navigatorHolder: NavigatorHolder
+
+    private val navigator = object : SupportFragmentNavigator(supportFragmentManager, R.id.fragmentContainer) {
+        override fun exit() {
+            finish()
         }
 
         override fun createFragment(screenKey: String?, data: Any?): Fragment {
@@ -32,6 +36,10 @@ class AppActivity : AppCompatActivity() {
                 MOVIE_LIST_FRAGMENT_KEY -> MovieListFragment.newInstance(data as MoviesType)
                 else -> throw RuntimeException("Unknown key")
             }
+        }
+
+        override fun showSystemMessage(message: String?) {
+            Toast.makeText(this@AppActivity, message, Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -41,6 +49,9 @@ class AppActivity : AppCompatActivity() {
 
         setSupportActionBar(appToolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
+
+        appComponent.inject(this)
+        navigatorHolder.setNavigator(navigator)
 
         supportFragmentManager
                 .beginTransaction()

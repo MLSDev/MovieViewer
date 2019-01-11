@@ -5,12 +5,15 @@ import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
 import com.shykun.volodymyr.movieviewer.domain.GetMoviesUseCase
-import com.shykun.volodymyr.movieviewer.presentation.App
 import com.shykun.volodymyr.movieviewer.presentation.movies.list.MOVIE_LIST_FRAGMENT_KEY
+import ru.terrakok.cicerone.Cicerone
+import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
 @InjectViewState
-class MovieTabPresenter @Inject constructor(private val getMoviesUseCase: GetMoviesUseCase) : MvpPresenter<MovieTabView>() {
+class MovieTabPresenter @Inject constructor(
+        private val getMoviesUseCase: GetMoviesUseCase,
+        private val router: Router) : MvpPresenter<MovieTabView>() {
 
     fun onViewLoaded() {
         getPopularMovies(1)
@@ -55,7 +58,7 @@ class MovieTabPresenter @Inject constructor(private val getMoviesUseCase: GetMov
     }
 
     fun onViewAllButtonClicked(moviesType: MoviesType) {
-        App.instance.router.navigateTo(MOVIE_LIST_FRAGMENT_KEY, moviesType)
+        router.navigateTo(MOVIE_LIST_FRAGMENT_KEY, moviesType)
     }
 
 }

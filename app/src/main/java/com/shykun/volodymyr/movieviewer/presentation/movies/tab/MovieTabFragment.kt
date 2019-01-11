@@ -12,8 +12,10 @@ import com.arellomobile.mvp.presenter.ProvidePresenter
 
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Movie
+import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
 import com.shykun.volodymyr.movieviewer.presentation.AppActivity
 import kotlinx.android.synthetic.main.fragment_movies.*
+import java.lang.Exception
 
 const val POPULAR_MOVIES = 0
 const val TOP_RATED_MOVIES = 1
@@ -41,6 +43,19 @@ class MovieTabFragment : MvpAppCompatFragment(), MovieTabView {
         movieCategoryList.apply {
             layoutManager = LinearLayoutManager(this@MovieTabFragment.context, LinearLayoutManager.VERTICAL, false)
             adapter = generalMovieTabAdapter
+        }
+        setupSeeAllClick()
+    }
+
+    private fun setupSeeAllClick() {
+        generalMovieTabAdapter.clickEvent.subscribe {
+            val moviesType = when (it) {
+                POPULAR_MOVIES -> MoviesType.POPULAR
+                TOP_RATED_MOVIES -> MoviesType.TOP_RATED
+                UPCOMING_MOVIES -> MoviesType.UPCOMING
+                else -> throw Exception("Undefined movies type")
+            }
+            presenter.onViewAllButtonClicked(moviesType)
         }
     }
 

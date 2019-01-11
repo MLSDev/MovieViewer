@@ -11,12 +11,13 @@ import com.shykun.volodymyr.movieviewer.presentation.base.BaseViewHolder
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.view_holder_horizontal_list.view.*
 
-class GeneralMovieTabViewHolder(itemView: View)
+class GeneralMovieTabViewHolder(itemView: View,  val clickSubject: PublishSubject<Int>)
     : BaseViewHolder<ArrayList<Movie>>(itemView) {
 
     private val title: TextView = itemView.horizontalListTitle
     private val list: RecyclerView = itemView.horizontalList
     private val progressBar: ProgressBar = itemView.horizontalListProgressBar
+    private val seeAll: TextView = itemView.seeAll
 
     override fun bind(item: ArrayList<Movie>, position: Int) {
         super.bind(item, position)
@@ -39,5 +40,7 @@ class GeneralMovieTabViewHolder(itemView: View)
 
             }
         }
+
+        seeAll.setOnClickListener { clickSubject.onNext(position) }
     }
 }

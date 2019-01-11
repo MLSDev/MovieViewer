@@ -13,6 +13,7 @@ class MovieListPresenter @Inject constructor(private val getMoviesUseCase: GetMo
 
     fun onViewLoaded(moviesType: MoviesType) {
         this.moviesType = moviesType
+        getMovies(1)
     }
 
     fun getMovies(page: Int) = getMoviesUseCase.execute(moviesType, page)

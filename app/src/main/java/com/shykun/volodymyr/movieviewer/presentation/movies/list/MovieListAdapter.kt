@@ -28,4 +28,10 @@ class MovieListAdapter(itemList: ArrayList<Movie>)
     }
 
     override fun getItemCount() = items.size + 1
+
+    fun addMovies(movies: ArrayList<Movie>) {
+        items.addAll(movies)
+        notifyDataSetChanged()
+
+    }
 }
