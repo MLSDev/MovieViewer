@@ -1,4 +1,4 @@
-package com.shykun.volodymyr.movieviewer.presentation.tv
+package com.shykun.volodymyr.movieviewer.presentation.tv.tab
 
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -11,8 +11,10 @@ import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Tv
+import com.shykun.volodymyr.movieviewer.data.entity.TvType
 import com.shykun.volodymyr.movieviewer.presentation.AppActivity
 import kotlinx.android.synthetic.main.fragment_movies.*
+import java.lang.Exception
 
 const val POPULAR_TV = 0
 const val TOP_RATED_TV = 1
@@ -34,11 +36,29 @@ class TvTabFragment : MvpAppCompatFragment(), TvTabView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupAdapter()
+        setupSeeAllClick()
         presenter.onViewLoaded()
-        generalTvTabAdapter = GeneralTvTabAdapter(ArrayList(3))
+
+    }
+
+    private fun setupAdapter() {
+        generalTvTabAdapter = GeneralTvTabAdapter(ArrayList())
         movieCategoryList.apply {
             layoutManager = LinearLayoutManager(this@TvTabFragment.context, LinearLayoutManager.VERTICAL, false)
             adapter = generalTvTabAdapter
+        }
+    }
+
+    private fun setupSeeAllClick() {
+        generalTvTabAdapter.clickEvent.subscribe {
+            val tvType = when (it) {
+                POPULAR_TV -> TvType.POPULAR
+                TOP_RATED_TV -> TvType.TOP_RATED
+                TV_ON_THE_AIR -> TvType.ON_THE_AIR
+                else -> throw Exception("Undefined tv type")
+            }
+            presenter.onViewAllButtonClicked(tvType)
         }
     }
 

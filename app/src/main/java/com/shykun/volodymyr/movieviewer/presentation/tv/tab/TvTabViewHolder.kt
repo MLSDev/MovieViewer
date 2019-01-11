@@ -1,4 +1,4 @@
-package com.shykun.volodymyr.movieviewer.presentation.tv
+package com.shykun.volodymyr.movieviewer.presentation.tv.tab
 
 import android.view.View
 import android.widget.ImageView
@@ -6,7 +6,6 @@ import android.widget.TextView
 import com.shykun.volodymyr.movieviewer.data.entity.Tv
 import com.shykun.volodymyr.movieviewer.presentation.base.BaseViewHolder
 import com.shykun.volodymyr.movieviewer.presentation.glide.GlideApp
-import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.view_holder_horizontal_item.view.*
 
 class TvTabViewHolder(itemView: View)

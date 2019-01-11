@@ -1,5 +1,4 @@
-package com.shykun.volodymyr.movieviewer.presentation.movies.list
-
+package com.shykun.volodymyr.movieviewer.presentation.tv.list
 
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -11,31 +10,31 @@ import com.arellomobile.mvp.MvpAppCompatFragment
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.shykun.volodymyr.movieviewer.R
-import com.shykun.volodymyr.movieviewer.data.entity.Movie
-import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
+import com.shykun.volodymyr.movieviewer.data.entity.Tv
+import com.shykun.volodymyr.movieviewer.data.entity.TvType
 import com.shykun.volodymyr.movieviewer.presentation.AppActivity
 import com.shykun.volodymyr.movieviewer.presentation.base.ScrollObservable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_movie_list.*
-import kotlinx.android.synthetic.main.fragment_people_tab.*
 
-const val MOVIE_LIST_FRAGMENT_KEY = "movie_list_fragment_key"
-private const val MOVIE_TYPE_KEY = "movie_type"
-private lateinit var movieListAdapter: MovieListAdapter
 
-class MovieListFragment : MvpAppCompatFragment(), MovieListVew {
+const val TV_LIST_FRAGMENT_KEY = "tv_list_fragment_key"
+private const val TV_TYPE_KEY = "tv_type"
+private lateinit var tvListAdapter: TvListAdapter
 
-    private lateinit var moviesType: MoviesType
+class TvListFragment : MvpAppCompatFragment(), TvListView {
+
+    private lateinit var tvType: TvType
     @InjectPresenter
-    lateinit var presenter: MovieListPresenter
+    lateinit var presenter: TvListPresenter
 
     @ProvidePresenter
-    fun providePresenter() = (activity as AppActivity).appComponent.getMovieListPresenter()
+    fun providePresenter() = (activity as AppActivity).appComponent.getTvListPresenter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        moviesType = arguments?.getSerializable(MOVIE_TYPE_KEY) as MoviesType
+        tvType = arguments?.getSerializable(TV_TYPE_KEY) as TvType
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -47,16 +46,16 @@ class MovieListFragment : MvpAppCompatFragment(), MovieListVew {
         super.onViewCreated(view, savedInstanceState)
         setupAdapter()
         subscribeScrollObervable()
-        presenter.onViewLoaded(moviesType)
+        presenter.onViewLoaded(tvType)
     }
 
     private fun setupAdapter() {
-        movieListAdapter = MovieListAdapter(ArrayList(), moviesType)
+        tvListAdapter = TvListAdapter(ArrayList(), tvType)
         movieList.apply {
-            layoutManager = LinearLayoutManager(this@MovieListFragment.context,
+            layoutManager = LinearLayoutManager(this@TvListFragment.context,
                     LinearLayoutManager.VERTICAL,
                     false)
-            adapter = movieListAdapter
+            adapter = tvListAdapter
         }
     }
 
@@ -65,14 +64,14 @@ class MovieListFragment : MvpAppCompatFragment(), MovieListVew {
                 .distinctUntilChanged()
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext {
-                    presenter.getMovies(movieListAdapter.lastLoadedPage + 1)
-                    movieListAdapter.lastLoadedPage++
+                    presenter.getTvList(tvListAdapter.lastLoadedPage + 1)
+                    tvListAdapter.lastLoadedPage++
                 }
                 .subscribe()
     }
 
-    override fun showMovies(movieList: ArrayList<Movie>) {
-        movieListAdapter.addMovies(movieList)
+    override fun showTvList(tvList: ArrayList<Tv>) {
+        tvListAdapter.addTvList(tvList)
     }
 
     override fun showError() {
@@ -80,13 +79,13 @@ class MovieListFragment : MvpAppCompatFragment(), MovieListVew {
     }
 
     companion object {
-        fun newInstance(moviesType: MoviesType): MovieListFragment {
-            val movieListFragment = MovieListFragment()
+        fun newInstance(tvType: TvType): TvListFragment {
+            val tvListFragment = TvListFragment()
             val args = Bundle()
-            args.putSerializable(MOVIE_TYPE_KEY, moviesType)
-            movieListFragment.arguments = args
+            args.putSerializable(TV_TYPE_KEY, tvType)
+            tvListFragment.arguments = args
 
-            return movieListFragment
+            return tvListFragment
         }
     }
 }

@@ -11,7 +11,7 @@ import com.shykun.volodymyr.movieviewer.presentation.base.BaseViewHolder
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.view_holder_horizontal_list.view.*
 
-class GeneralMovieTabViewHolder(itemView: View,  val clickSubject: PublishSubject<Int>)
+class GeneralMovieTabViewHolder(itemView: View, private val clickSubject: PublishSubject<Int>)
     : BaseViewHolder<ArrayList<Movie>>(itemView) {
 
     private val title: TextView = itemView.horizontalListTitle
@@ -26,12 +26,13 @@ class GeneralMovieTabViewHolder(itemView: View,  val clickSubject: PublishSubjec
             progressBar.visibility = View.VISIBLE
         } else {
             progressBar.visibility = View.GONE
-            title.text = when(position) {
+            title.text = when (position) {
                 POPULAR_MOVIES -> "Popular movies"
                 TOP_RATED_MOVIES -> "Top rated movies"
                 UPCOMING_MOVIES -> "Upcoming movies"
                 else -> ""
             }
+
             list.apply {
                 layoutManager = LinearLayoutManager(horizontalList.context, LinearLayout.HORIZONTAL, false)
                 val moviesAdapter = MovieTabAdapter(item)

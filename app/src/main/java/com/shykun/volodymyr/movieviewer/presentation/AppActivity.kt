@@ -8,11 +8,14 @@ import android.view.MenuItem
 import android.widget.Toast
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
+import com.shykun.volodymyr.movieviewer.data.entity.TvType
 import com.shykun.volodymyr.movieviewer.presentation.di.AppComponent
 import com.shykun.volodymyr.movieviewer.presentation.di.DaggerAppComponent
 import com.shykun.volodymyr.movieviewer.presentation.movies.list.MOVIE_LIST_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.movies.list.MovieListFragment
 import com.shykun.volodymyr.movieviewer.presentation.tabs.TabsFragment
+import com.shykun.volodymyr.movieviewer.presentation.tv.list.TV_LIST_FRAGMENT_KEY
+import com.shykun.volodymyr.movieviewer.presentation.tv.list.TvListFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import ru.terrakok.cicerone.NavigatorHolder
 import ru.terrakok.cicerone.android.SupportFragmentNavigator
@@ -34,6 +37,7 @@ class AppActivity : AppCompatActivity() {
         override fun createFragment(screenKey: String?, data: Any?): Fragment {
             return when (screenKey) {
                 MOVIE_LIST_FRAGMENT_KEY -> MovieListFragment.newInstance(data as MoviesType)
+                TV_LIST_FRAGMENT_KEY -> TvListFragment.newInstance(data as TvType)
                 else -> throw RuntimeException("Unknown key")
             }
         }

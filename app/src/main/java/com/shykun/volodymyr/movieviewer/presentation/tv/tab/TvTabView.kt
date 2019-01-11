@@ -1,4 +1,4 @@
-package com.shykun.volodymyr.movieviewer.presentation.tv
+package com.shykun.volodymyr.movieviewer.presentation.tv.tab
 
 import com.arellomobile.mvp.MvpView
 import com.shykun.volodymyr.movieviewer.data.entity.Tv
