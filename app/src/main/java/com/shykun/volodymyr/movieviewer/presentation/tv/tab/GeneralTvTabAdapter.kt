@@ -12,7 +12,7 @@ class GeneralTvTabAdapter(items: ArrayList<ArrayList<Tv>>)
     : BaseRecyclerViewAdapter<ArrayList<Tv>, GeneralTvTabViewHolder>(items) {
 
     private val clickSubject = PublishSubject.create<Int>()
-    val clickEvent : Observable<Int> = clickSubject
+    val clickEvent: Observable<Int> = clickSubject
 
     init {
         items.add(ArrayList())
@@ -28,7 +28,7 @@ class GeneralTvTabAdapter(items: ArrayList<ArrayList<Tv>>)
         return GeneralTvTabViewHolder(view, clickSubject)
     }
 
-    fun addTV(tvList: ArrayList<Tv>, position: Int) {
+    fun addTV(tvList: List<Tv>, position: Int) {
         items[position].addAll(tvList)
         notifyDataSetChanged()
     }

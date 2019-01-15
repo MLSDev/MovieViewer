@@ -12,7 +12,7 @@ class GeneralMovieTabAdapter(items: ArrayList<ArrayList<Movie>>)
     : BaseRecyclerViewAdapter<ArrayList<Movie>, GeneralMovieTabViewHolder>(items) {
 
     private val clickSubject = PublishSubject.create<Int>()
-    val clickEvent : Observable<Int> = clickSubject
+    val clickEvent: Observable<Int> = clickSubject
 
     init {
         items.add(ArrayList())
@@ -28,7 +28,7 @@ class GeneralMovieTabAdapter(items: ArrayList<ArrayList<Movie>>)
         return GeneralMovieTabViewHolder(view, clickSubject)
     }
 
-    fun addMovies(movies: ArrayList<Movie>, position: Int) {
+    fun addMovies(movies: List<Movie>, position: Int) {
         items[position].addAll(movies)
         notifyDataSetChanged()
     }

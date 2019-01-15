@@ -7,7 +7,7 @@ import io.reactivex.Observable
 
 object ScrollObservable {
     fun from(rv: RecyclerView, limit: Int): Observable<Int> {
-        return Observable.create({ subscriber ->
+        return Observable.create { subscriber ->
             val sl = object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     if (!subscriber.isDisposed) {
@@ -20,6 +20,6 @@ object ScrollObservable {
                 }
             }
             rv.addOnScrollListener(sl)
-        })
+        }
     }
 }

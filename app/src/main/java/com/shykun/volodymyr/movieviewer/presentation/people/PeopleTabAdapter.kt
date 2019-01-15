@@ -32,7 +32,7 @@ class PeopleTabAdapter(items: ArrayList<Person>)
             super.onBindViewHolder(viewHolder, position)
     }
 
-    fun addPeople(people: ArrayList<Person>) {
+    fun addPeople(people: List<Person>) {
         items.addAll(people)
         notifyDataSetChanged()
     }

@@ -38,7 +38,7 @@ class TvListAdapter(itemList: ArrayList<Tv>, val tvType: TvType)
             LOADING
     }
 
-    fun addTvList(tvList: ArrayList<Tv>) {
+    fun addTvList(tvList: List<Tv>) {
         items.addAll(tvList)
         notifyDataSetChanged()
 

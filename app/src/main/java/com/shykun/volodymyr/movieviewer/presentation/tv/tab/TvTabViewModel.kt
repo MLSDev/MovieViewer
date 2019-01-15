@@ -1,20 +1,28 @@
 package com.shykun.volodymyr.movieviewer.presentation.tv.tab
 
-import android.util.Log
-import com.arellomobile.mvp.InjectViewState
-import com.arellomobile.mvp.MvpPresenter
-import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.ViewModel
+import com.shykun.volodymyr.movieviewer.data.entity.Tv
 import com.shykun.volodymyr.movieviewer.data.entity.TvType
 import com.shykun.volodymyr.movieviewer.domain.GetTvUseCase
-import com.shykun.volodymyr.movieviewer.presentation.movies.list.MOVIE_LIST_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.tv.list.TV_LIST_FRAGMENT_KEY
 import ru.terrakok.cicerone.Router
-import javax.inject.Inject
 
-@InjectViewState
-class TvTabPresenter @Inject constructor(
+class TvTabViewModel(
         private val getTVUseCase: GetTvUseCase,
-        private val router: Router) : MvpPresenter<TvTabView>() {
+        private val router: Router) : ViewModel() {
+
+    private val popularTvMutableLiveData = MutableLiveData<List<Tv>>()
+    private val topRatedTvMutableLiveData = MutableLiveData<List<Tv>>()
+    private val tvOnTheAirMutableLiveData = MutableLiveData<List<Tv>>()
+    private val loadingErrorMutableLiveData = MutableLiveData<String>()
+
+    val popularTvLiveData: LiveData<List<Tv>> = popularTvMutableLiveData
+    val topRatedTvLiveData: LiveData<List<Tv>> = topRatedTvMutableLiveData
+    val tvOnTheAirLiveData: LiveData<List<Tv>> = tvOnTheAirMutableLiveData
+    val loadingErrorLiveData: LiveData<String> = loadingErrorMutableLiveData
+
 
     fun onViewLoaded() {
         getPopularTV(1)
@@ -25,11 +33,10 @@ class TvTabPresenter @Inject constructor(
     fun getPopularTV(page: Int) {
         getTVUseCase.execute(TvType.POPULAR, page)
                 .doOnSuccess {
-                    viewState.showPopularTV(it)
+                    popularTvMutableLiveData.value = it
                 }
                 .doOnError {
-                    viewState.showError()
-                    Log.d("getMovieError", it.message)
+                    loadingErrorMutableLiveData.value = it.message
                 }
                 .subscribe()
     }
@@ -37,11 +44,10 @@ class TvTabPresenter @Inject constructor(
     fun getTopRatedTV(page: Int) {
         getTVUseCase.execute(TvType.TOP_RATED, page)
                 .doOnSuccess {
-                    viewState.showTopRatedTV(it)
+                    topRatedTvMutableLiveData.value = it
                 }
                 .doOnError {
-                    viewState.showError()
-                    Log.d("getMovieError", it.message)
+                    loadingErrorMutableLiveData.value = it.message
                 }
                 .subscribe()
     }
@@ -49,11 +55,10 @@ class TvTabPresenter @Inject constructor(
     fun getTVOnTheAir(page: Int) {
         getTVUseCase.execute(TvType.ON_THE_AIR, page)
                 .doOnSuccess {
-                    viewState.showTVOnTheAir(it)
+                    tvOnTheAirMutableLiveData.value = it
                 }
                 .doOnError {
-                    viewState.showError()
-                    Log.d("getMovieError", it.message)
+                    loadingErrorMutableLiveData.value = it.message
                 }
                 .subscribe()
     }
