@@ -17,6 +17,8 @@ import com.shykun.volodymyr.movieviewer.presentation.base.ScrollObservable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_people_tab.*
 
+const val PEOPLE_TAB_FRAGMENT_KEY = "people_tab_fragment_key"
+
 class PeopleTabFragment : Fragment() {
 
     private lateinit var peopleTabAdapter: PeopleTabAdapter

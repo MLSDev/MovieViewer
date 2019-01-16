@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/colorPrimary"
-        app:tabSelectedTextColor="@color/white"
+        app:tabSelectedTextColor="@color/snow"
         app:tabTextColor="@color/darkGrey" />
 
     <com.shykun.volodymyr.movieviewer.presentation.tabs.NonSwipeableViewPager

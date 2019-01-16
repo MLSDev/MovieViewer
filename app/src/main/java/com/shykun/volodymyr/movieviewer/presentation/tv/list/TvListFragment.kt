@@ -19,6 +19,7 @@ import kotlinx.android.synthetic.main.fragment_movie_list.*
 
 
 const val TV_LIST_FRAGMENT_KEY = "tv_list_fragment_key"
+
 private const val TV_TYPE_KEY = "tv_type"
 private lateinit var tvListAdapter: TvListAdapter
 

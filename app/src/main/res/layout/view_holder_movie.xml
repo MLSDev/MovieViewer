@@ -31,7 +31,7 @@
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@id/poster"
             android:text="Interstellar(2016)"
-            android:textColor="@color/white"
+            android:textColor="@color/snow"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -52,7 +52,7 @@
             android:layout_marginLeft="5dp"
             android:layout_toRightOf="@id/starIcon"
             android:text="8.0"
-            android:textColor="@color/white"
+            android:textColor="@color/snow"
             android:textSize="15sp" />
 
         <TextView
@@ -63,7 +63,7 @@
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@id/poster"
             android:text="Comedy, drama"
-            android:textColor="@color/white" />
+            android:textColor="@color/snow" />
 
         <TextView
             android:id="@+id/popularity"
@@ -73,7 +73,7 @@
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@id/poster"
             android:text="#1"
-            android:textColor="@color/white"
+            android:textColor="@color/snow"
             android:textSize="18sp" />
 
         <TextView
@@ -83,7 +83,7 @@
             android:layout_below="@id/genres"
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@id/poster"
-            android:textColor="@color/white" />
+            android:textColor="@color/snow" />
 
 
     </RelativeLayout>

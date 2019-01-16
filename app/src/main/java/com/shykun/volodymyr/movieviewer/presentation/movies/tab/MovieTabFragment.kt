@@ -16,6 +16,8 @@ import com.shykun.volodymyr.movieviewer.presentation.AppActivity
 import kotlinx.android.synthetic.main.fragment_movies.*
 import java.lang.Exception
 
+const val MOVIE_TAB_FRAGMENT_KEY = "movie_tab_fragment_key"
+
 const val POPULAR_MOVIES = 0
 const val TOP_RATED_MOVIES = 1
 const val UPCOMING_MOVIES = 2

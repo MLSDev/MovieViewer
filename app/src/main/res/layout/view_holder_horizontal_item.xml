@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="9.9"
-            android:textColor="@color/white"
+            android:textColor="@color/snow"
             android:textSize="18sp" />
 
     </LinearLayout>

@@ -13,11 +13,17 @@ import com.shykun.volodymyr.movieviewer.presentation.di.AppComponent
 import com.shykun.volodymyr.movieviewer.presentation.di.DaggerAppComponent
 import com.shykun.volodymyr.movieviewer.presentation.movies.list.MOVIE_LIST_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.movies.list.MovieListFragment
-import com.shykun.volodymyr.movieviewer.presentation.tabs.TabsFragment
+import com.shykun.volodymyr.movieviewer.presentation.movies.tab.MOVIE_TAB_FRAGMENT_KEY
+import com.shykun.volodymyr.movieviewer.presentation.movies.tab.MovieTabFragment
+import com.shykun.volodymyr.movieviewer.presentation.people.PEOPLE_TAB_FRAGMENT_KEY
+import com.shykun.volodymyr.movieviewer.presentation.people.PeopleTabFragment
 import com.shykun.volodymyr.movieviewer.presentation.tv.list.TV_LIST_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.tv.list.TvListFragment
+import com.shykun.volodymyr.movieviewer.presentation.tv.tab.TV_TAB_FRAGMENT_KEY
+import com.shykun.volodymyr.movieviewer.presentation.tv.tab.TvTabFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import ru.terrakok.cicerone.NavigatorHolder
+import ru.terrakok.cicerone.Router
 import ru.terrakok.cicerone.android.SupportFragmentNavigator
 import javax.inject.Inject
 
@@ -28,6 +34,8 @@ class AppActivity : AppCompatActivity() {
 
     @Inject
     lateinit var navigatorHolder: NavigatorHolder
+    @Inject
+    lateinit var router: Router
 
     private val navigator = object : SupportFragmentNavigator(supportFragmentManager, R.id.fragmentContainer) {
         override fun exit() {
@@ -38,6 +46,9 @@ class AppActivity : AppCompatActivity() {
             return when (screenKey) {
                 MOVIE_LIST_FRAGMENT_KEY -> MovieListFragment.newInstance(data as MoviesType)
                 TV_LIST_FRAGMENT_KEY -> TvListFragment.newInstance(data as TvType)
+                MOVIE_TAB_FRAGMENT_KEY -> MovieTabFragment()
+                TV_TAB_FRAGMENT_KEY -> TvTabFragment()
+                PEOPLE_TAB_FRAGMENT_KEY -> PeopleTabFragment()
                 else -> throw RuntimeException("Unknown key")
             }
         }
@@ -59,8 +70,9 @@ class AppActivity : AppCompatActivity() {
 
         supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.fragmentContainer, TabsFragment())
+                .replace(R.id.fragmentContainer, MovieTabFragment())
                 .commit()
+        setupBottomNavigationClickListener()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -70,5 +82,17 @@ class AppActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun setupBottomNavigationClickListener() {
+        bottomNavigation.setOnNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.action_movies -> router.navigateTo(MOVIE_TAB_FRAGMENT_KEY)
+                R.id.action_tv -> router.navigateTo(TV_TAB_FRAGMENT_KEY)
+                R.id.action_people -> router.navigateTo(PEOPLE_TAB_FRAGMENT_KEY)
+                else -> false
+            }
+            true
+        }
     }
 }
