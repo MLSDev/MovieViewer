@@ -42,4 +42,8 @@ class ApiClient @Inject constructor() {
     fun getPopularPeople(page: Int = 1) = apiService.getPopularPeople(page)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+
+    fun getMovieDetails(movieId: Int) = apiService.getMovieDetails(movieId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
 }

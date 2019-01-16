@@ -3,7 +3,7 @@ package com.shykun.volodymyr.movieviewer.presentation.movies.list
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import com.shykun.volodymyr.movieviewer.data.entity.Genre
+import com.shykun.volodymyr.movieviewer.data.entity.GenreHelper
 import com.shykun.volodymyr.movieviewer.data.entity.Movie
 import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
 import com.shykun.volodymyr.movieviewer.presentation.base.BaseViewHolder
@@ -31,7 +31,7 @@ class MovieListViewHolder(itemView: View, val moviesType: MoviesType)
 
         title.text = item.title
         rating.text = item.voteAverage.toString()
-        genres.text = Genre.getGenres(item)
+        genres.text = GenreHelper.getGenres(item)
 
         when (moviesType) {
             MoviesType.TOP_RATED -> {

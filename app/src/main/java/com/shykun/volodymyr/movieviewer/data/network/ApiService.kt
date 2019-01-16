@@ -1,5 +1,6 @@
 package com.shykun.volodymyr.movieviewer.data.network
 
+import com.shykun.volodymyr.movieviewer.data.network.response.GetMovieDetailsResponse
 import com.shykun.volodymyr.movieviewer.data.network.response.GetMovieResponse
 import com.shykun.volodymyr.movieviewer.data.network.response.GetPeopleResponse
 import com.shykun.volodymyr.movieviewer.data.network.response.GetTVResponse
@@ -26,4 +27,9 @@ interface ApiService {
     fun getPopularPeople(
             @Query("page") page: Int,
             @Query("api_key") api_key: String = API_KEY): Single<GetPeopleResponse>
+
+    @GET("movie/{movie_id}")
+    fun getMovieDetails(
+            @Path("movie_id") movieId: Int,
+            @Query("qpi_key") api_key: String = API_KEY): Single<GetMovieDetailsResponse>
 }
