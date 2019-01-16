@@ -1,4 +1,4 @@
-package com.shykun.volodymyr.movieviewer.presentation.people
+package com.shykun.volodymyr.movieviewer.presentation.people.tab
 
 import android.view.View
 import android.widget.ImageView
@@ -16,7 +16,7 @@ open class BasePeopleViewHolder(itemView: View)
 class PeopleTabLoadingViewHolder(itemView: View)
     : BasePeopleViewHolder(itemView)
 
-class PeopleTabViewHolder(itemView: View)
+class PeopleTabViewHolder(itemView: View, private val personClickSubject: PublishSubject<Int>)
     : BasePeopleViewHolder(itemView) {
 
     private val name: TextView = itemView.personName
@@ -30,5 +30,7 @@ class PeopleTabViewHolder(itemView: View)
                 .load("http://image.tmdb.org/t/p/w185${item.profilePath}")
                 .error(R.drawable.ic_error)
                 .into(photo)
+
+        itemView.setOnClickListener { personClickSubject.onNext(item.id) }
     }
 }

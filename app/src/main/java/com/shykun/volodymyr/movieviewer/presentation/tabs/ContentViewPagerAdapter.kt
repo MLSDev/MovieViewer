@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import com.shykun.volodymyr.movieviewer.presentation.movies.tab.MovieTabFragment
-import com.shykun.volodymyr.movieviewer.presentation.people.PeopleTabFragment
+import com.shykun.volodymyr.movieviewer.presentation.people.tab.PeopleTabFragment
 import com.shykun.volodymyr.movieviewer.presentation.tv.tab.TvTabFragment
 
 class ContentViewPagerAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager) {

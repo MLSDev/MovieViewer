@@ -10,8 +10,12 @@ import com.shykun.volodymyr.movieviewer.data.entity.Tv
 import com.shykun.volodymyr.movieviewer.presentation.base.BaseViewHolder
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.view_holder_horizontal_list.view.*
+import java.util.*
 
-class GeneralTvTabViewHolder(itemView: View, private val clickSubject: PublishSubject<Int>)
+class GeneralTvTabViewHolder(
+        itemView: View,
+        private val seeAllClickSubject: PublishSubject<Int>,
+        private val tvClickSubject: PublishSubject<Int>)
     : BaseViewHolder<ArrayList<Tv>>(itemView) {
 
     private val title: TextView = itemView.horizontalListTitle
@@ -36,11 +40,12 @@ class GeneralTvTabViewHolder(itemView: View, private val clickSubject: PublishSu
             list.apply {
                 layoutManager = LinearLayoutManager(horizontalList.context, LinearLayout.HORIZONTAL, false)
                 val tvAdapter = TvTabAdapter(item)
+                tvAdapter.tvClickEvent.subscribe { tvClickSubject.onNext(it) }
                 tvAdapter.type = position
                 adapter = tvAdapter
             }
         }
 
-        seeAll.setOnClickListener { clickSubject.onNext(position) }
+        seeAll.setOnClickListener { seeAllClickSubject.onNext(position) }
     }
 }

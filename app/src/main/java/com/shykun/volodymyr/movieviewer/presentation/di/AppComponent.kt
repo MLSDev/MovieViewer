@@ -4,7 +4,7 @@ import com.shykun.volodymyr.movieviewer.presentation.AppActivity
 import com.shykun.volodymyr.movieviewer.presentation.movies.list.MovieListViewModelFactory
 import com.shykun.volodymyr.movieviewer.presentation.movies.tab.MovieTabFragment
 import com.shykun.volodymyr.movieviewer.presentation.movies.tab.MovieTabViewModelFactory
-import com.shykun.volodymyr.movieviewer.presentation.people.PeopleTabViewModelFactory
+import com.shykun.volodymyr.movieviewer.presentation.people.tab.PeopleTabViewModelFactory
 import com.shykun.volodymyr.movieviewer.presentation.tv.list.TvListViewModelFactory
 import com.shykun.volodymyr.movieviewer.presentation.tv.tab.TvTabViewModelFactory
 import dagger.Component

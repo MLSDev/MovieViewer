@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModel
 import com.shykun.volodymyr.movieviewer.data.entity.Tv
 import com.shykun.volodymyr.movieviewer.data.entity.TvType
 import com.shykun.volodymyr.movieviewer.domain.GetTvUseCase
+import com.shykun.volodymyr.movieviewer.presentation.tv.details.TV_DETAILS_FRAGMENT
 import com.shykun.volodymyr.movieviewer.presentation.tv.list.TV_LIST_FRAGMENT_KEY
 import ru.terrakok.cicerone.Router
 
@@ -65,5 +66,9 @@ class TvTabViewModel(
 
     fun onViewAllButtonClicked(tvType: TvType) {
         router.navigateTo(TV_LIST_FRAGMENT_KEY, tvType)
+    }
+
+    fun onTvClicked(tvId: Int) {
+        router.navigateTo(TV_DETAILS_FRAGMENT)
     }
 }

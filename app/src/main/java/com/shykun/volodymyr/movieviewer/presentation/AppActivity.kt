@@ -3,20 +3,24 @@ package com.shykun.volodymyr.movieviewer.presentation
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
-import android.view.Menu
-import android.view.MenuItem
 import android.widget.Toast
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
 import com.shykun.volodymyr.movieviewer.data.entity.TvType
 import com.shykun.volodymyr.movieviewer.presentation.di.AppComponent
 import com.shykun.volodymyr.movieviewer.presentation.di.DaggerAppComponent
+import com.shykun.volodymyr.movieviewer.presentation.movies.details.MOVIE_DETAILS_FRAGMENT_KEY
+import com.shykun.volodymyr.movieviewer.presentation.movies.details.MovieDetailsFragment
 import com.shykun.volodymyr.movieviewer.presentation.movies.list.MOVIE_LIST_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.movies.list.MovieListFragment
 import com.shykun.volodymyr.movieviewer.presentation.movies.tab.MOVIE_TAB_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.movies.tab.MovieTabFragment
-import com.shykun.volodymyr.movieviewer.presentation.people.PEOPLE_TAB_FRAGMENT_KEY
-import com.shykun.volodymyr.movieviewer.presentation.people.PeopleTabFragment
+import com.shykun.volodymyr.movieviewer.presentation.people.details.PERSON_DETAILS_FRAGMENT_KEY
+import com.shykun.volodymyr.movieviewer.presentation.people.details.PersonDetailsFragment
+import com.shykun.volodymyr.movieviewer.presentation.people.tab.PEOPLE_TAB_FRAGMENT_KEY
+import com.shykun.volodymyr.movieviewer.presentation.people.tab.PeopleTabFragment
+import com.shykun.volodymyr.movieviewer.presentation.tv.details.TV_DETAILS_FRAGMENT
+import com.shykun.volodymyr.movieviewer.presentation.tv.details.TvDetailsFragment
 import com.shykun.volodymyr.movieviewer.presentation.tv.list.TV_LIST_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.tv.list.TvListFragment
 import com.shykun.volodymyr.movieviewer.presentation.tv.tab.TV_TAB_FRAGMENT_KEY
@@ -49,6 +53,9 @@ class AppActivity : AppCompatActivity() {
                 MOVIE_TAB_FRAGMENT_KEY -> MovieTabFragment()
                 TV_TAB_FRAGMENT_KEY -> TvTabFragment()
                 PEOPLE_TAB_FRAGMENT_KEY -> PeopleTabFragment()
+                MOVIE_DETAILS_FRAGMENT_KEY -> MovieDetailsFragment()
+                TV_DETAILS_FRAGMENT -> TvDetailsFragment()
+                PERSON_DETAILS_FRAGMENT_KEY -> PersonDetailsFragment()
                 else -> throw RuntimeException("Unknown key")
             }
         }
@@ -62,7 +69,6 @@ class AppActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        setSupportActionBar(appToolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
         appComponent.inject(this)
@@ -73,15 +79,6 @@ class AppActivity : AppCompatActivity() {
                 .replace(R.id.fragmentContainer, MovieTabFragment())
                 .commit()
         setupBottomNavigationClickListener()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.manu_app, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return super.onOptionsItemSelected(item)
     }
 
     private fun setupBottomNavigationClickListener() {

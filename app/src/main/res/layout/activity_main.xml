@@ -8,11 +8,6 @@
     android:orientation="vertical"
     tools:context=".presentation.AppActivity">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/appToolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimary"/>
 
     <FrameLayout
         android:layout_weight="1"

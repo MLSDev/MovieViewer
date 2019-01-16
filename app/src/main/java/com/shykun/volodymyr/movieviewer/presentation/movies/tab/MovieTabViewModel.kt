@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModel
 import com.shykun.volodymyr.movieviewer.data.entity.Movie
 import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
 import com.shykun.volodymyr.movieviewer.domain.GetMoviesUseCase
+import com.shykun.volodymyr.movieviewer.presentation.movies.details.MOVIE_DETAILS_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.movies.list.MOVIE_LIST_FRAGMENT_KEY
 import ru.terrakok.cicerone.Router
 
@@ -65,5 +66,9 @@ class MovieTabViewModel(
 
     fun onViewAllButtonClicked(moviesType: MoviesType) {
         router.navigateTo(MOVIE_LIST_FRAGMENT_KEY, moviesType)
+    }
+
+    fun onMovieClicked(movieId: Int) {
+        router.navigateTo(MOVIE_DETAILS_FRAGMENT_KEY)
     }
 }

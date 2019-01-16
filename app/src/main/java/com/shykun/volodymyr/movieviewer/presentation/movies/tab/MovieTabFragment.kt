@@ -45,12 +45,13 @@ class MovieTabFragment : Fragment() {
 
         setupAdapter()
         setupSeeAllClick()
+        setupMovieClick()
         subscribeViewModel()
         viewModel.onViewLoaded()
     }
 
     private fun setupSeeAllClick() {
-        generalMovieTabAdapter.clickEvent.subscribe {
+        generalMovieTabAdapter.seeAllClickEvent.subscribe {
             val moviesType = when (it) {
                 POPULAR_MOVIES -> MoviesType.POPULAR
                 TOP_RATED_MOVIES -> MoviesType.TOP_RATED
@@ -58,6 +59,12 @@ class MovieTabFragment : Fragment() {
                 else -> throw Exception("Undefined movies type")
             }
             viewModel.onViewAllButtonClicked(moviesType)
+        }
+    }
+
+    private fun setupMovieClick() {
+        generalMovieTabAdapter.movieClickEvent.subscribe {
+            viewModel.onMovieClicked(it)
         }
     }
 

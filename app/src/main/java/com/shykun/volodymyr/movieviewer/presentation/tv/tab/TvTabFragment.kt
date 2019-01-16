@@ -43,6 +43,7 @@ class TvTabFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupAdapter()
         setupSeeAllClick()
+        setupTvClick()
         subscribeViewModel()
         viewModel.onViewLoaded()
 
@@ -64,7 +65,7 @@ class TvTabFragment : Fragment() {
     }
 
     private fun setupSeeAllClick() {
-        generalTvTabAdapter.clickEvent.subscribe {
+        generalTvTabAdapter.seeAllClickEvent.subscribe {
             val tvType = when (it) {
                 POPULAR_TV -> TvType.POPULAR
                 TOP_RATED_TV -> TvType.TOP_RATED
@@ -72,6 +73,12 @@ class TvTabFragment : Fragment() {
                 else -> throw Exception("Undefined tv type")
             }
             viewModel.onViewAllButtonClicked(tvType)
+        }
+    }
+
+    private fun setupTvClick() {
+        generalTvTabAdapter.tvClickEvent.subscribe {
+            viewModel.onTvClicked(it)
         }
     }
 

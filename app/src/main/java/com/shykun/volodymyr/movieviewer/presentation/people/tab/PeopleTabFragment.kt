@@ -1,4 +1,4 @@
-package com.shykun.volodymyr.movieviewer.presentation.people
+package com.shykun.volodymyr.movieviewer.presentation.people.tab
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -39,6 +39,7 @@ class PeopleTabFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupAdapter()
+        setupPersonClick()
         subscribeScrollObervable()
         subscribeViewModel()
         viewModel.onViewLoaded()
@@ -54,6 +55,12 @@ class PeopleTabFragment : Fragment() {
         peopleList.apply {
             layoutManager = GridLayoutManager(this@PeopleTabFragment.context, 3)
             adapter = peopleTabAdapter
+        }
+    }
+
+    private fun setupPersonClick() {
+        peopleTabAdapter.personClickEvent.subscribe {
+            viewModel.onPersonClicked(it)
         }
     }
 

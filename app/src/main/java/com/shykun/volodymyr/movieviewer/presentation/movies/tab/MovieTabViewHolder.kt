@@ -9,7 +9,7 @@ import com.shykun.volodymyr.movieviewer.presentation.glide.GlideApp
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.view_holder_horizontal_item.view.*
 
-class MovieTabViewHolder(itemView: View)
+class MovieTabViewHolder(itemView: View, private val movieClickSubject: PublishSubject<Int>)
     : BaseViewHolder<Movie>(itemView) {
 
     var type = -1
@@ -35,5 +35,7 @@ class MovieTabViewHolder(itemView: View)
         GlideApp.with(itemView)
                 .load("http://image.tmdb.org/t/p/w185${item.posterPath}")
                 .into(poster)
+
+        itemView.setOnClickListener { movieClickSubject.onNext(item.id) }
     }
 }

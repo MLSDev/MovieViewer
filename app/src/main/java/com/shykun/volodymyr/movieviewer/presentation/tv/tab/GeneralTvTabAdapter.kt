@@ -11,8 +11,11 @@ import io.reactivex.subjects.PublishSubject
 class GeneralTvTabAdapter(items: ArrayList<ArrayList<Tv>>)
     : BaseRecyclerViewAdapter<ArrayList<Tv>, GeneralTvTabViewHolder>(items) {
 
-    private val clickSubject = PublishSubject.create<Int>()
-    val clickEvent: Observable<Int> = clickSubject
+    private val seeAllClickSubject = PublishSubject.create<Int>()
+    private val tvClickSubject = PublishSubject.create<Int>()
+
+    val seeAllClickEvent: Observable<Int> = seeAllClickSubject
+    val tvClickEvent: Observable<Int> = tvClickSubject
 
     init {
         items.add(ArrayList())
@@ -25,7 +28,7 @@ class GeneralTvTabAdapter(items: ArrayList<ArrayList<Tv>>)
                 .from(parent.context)
                 .inflate(R.layout.view_holder_horizontal_list, parent, false)
 
-        return GeneralTvTabViewHolder(view, clickSubject)
+        return GeneralTvTabViewHolder(view, seeAllClickSubject, tvClickSubject)
     }
 
     fun addTV(tvList: List<Tv>, position: Int) {
