@@ -1,6 +1,7 @@
 package com.shykun.volodymyr.movieviewer.presentation.di
 
 import com.shykun.volodymyr.movieviewer.presentation.AppActivity
+import com.shykun.volodymyr.movieviewer.presentation.movies.details.MovieDetailsViewModelFactory
 import com.shykun.volodymyr.movieviewer.presentation.movies.list.MovieListViewModelFactory
 import com.shykun.volodymyr.movieviewer.presentation.movies.tab.MovieTabFragment
 import com.shykun.volodymyr.movieviewer.presentation.movies.tab.MovieTabViewModelFactory
@@ -18,6 +19,7 @@ interface AppComponent {
     fun getPeopleTabViewModelFactory(): PeopleTabViewModelFactory
     fun getTvListViewModelFactory(): TvListViewModelFactory
     fun getTvTabViewModelFactory(): TvTabViewModelFactory
+    fun getMovieDetailsViewModelFactory(): MovieDetailsViewModelFactory
 
     fun inject(target: MovieTabFragment)
     fun inject(target: AppActivity)

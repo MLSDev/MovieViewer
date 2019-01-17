@@ -5,5 +5,7 @@ import javax.inject.Inject
 
 class GetMovieDetailsUseCase @Inject constructor(private val apiClient: ApiClient) {
 
-    fun execute(movieId: Int) = apiClient.getMovieDetails(movieId)
+    fun getMovieDetails(movieId: Int) = apiClient.getMovieDetails(movieId)
+
+    fun getMoviCast(movieId: Int) = apiClient.getMovieCredits(movieId).map { it.cast }
 }

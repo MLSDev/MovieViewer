@@ -69,6 +69,6 @@ class MovieTabViewModel(
     }
 
     fun onMovieClicked(movieId: Int) {
-        router.navigateTo(MOVIE_DETAILS_FRAGMENT_KEY)
+        router.navigateTo(MOVIE_DETAILS_FRAGMENT_KEY, movieId)
     }
 }

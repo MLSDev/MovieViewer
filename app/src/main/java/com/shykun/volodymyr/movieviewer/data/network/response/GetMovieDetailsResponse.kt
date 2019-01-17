@@ -20,7 +20,7 @@ data class GetMovieDetailsResponse(
         @SerializedName("original_title") val originalTitle: String,
         @SerializedName("overview") val overview: String,
         @SerializedName("popularity") val popularity: Double,
-        @SerializedName("poster_path") val posterPath: Any,
+        @SerializedName("poster_path") val posterPath: String,
         @SerializedName("production_companies") val productionCompanies: List<Company>,
         @SerializedName("production_countries") val productionCountries: List<Country>,
         @SerializedName("release_date") val releaseDate: String,
@@ -31,5 +31,5 @@ data class GetMovieDetailsResponse(
         @SerializedName("tagline") val tagline: String,
         @SerializedName("title") val title: String,
         @SerializedName("video") val video: Boolean,
-        @SerializedName("vote_average") val voteAverage: Double,
+        @SerializedName("vote_average") val voteAverage: Float,
         @SerializedName("vote_count") val voteCount: Int)

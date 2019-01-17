@@ -19,8 +19,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_movie_list.*
 
 const val MOVIE_LIST_FRAGMENT_KEY = "movie_list_fragment_key"
-
 private const val MOVIE_TYPE_KEY = "movie_type"
+
 private lateinit var movieListAdapter: MovieListAdapter
 
 class MovieListFragment : Fragment() {

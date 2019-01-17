@@ -53,7 +53,7 @@ class AppActivity : AppCompatActivity() {
                 MOVIE_TAB_FRAGMENT_KEY -> MovieTabFragment()
                 TV_TAB_FRAGMENT_KEY -> TvTabFragment()
                 PEOPLE_TAB_FRAGMENT_KEY -> PeopleTabFragment()
-                MOVIE_DETAILS_FRAGMENT_KEY -> MovieDetailsFragment()
+                MOVIE_DETAILS_FRAGMENT_KEY -> MovieDetailsFragment.newInstance(data as Int)
                 TV_DETAILS_FRAGMENT -> TvDetailsFragment()
                 PERSON_DETAILS_FRAGMENT_KEY -> PersonDetailsFragment()
                 else -> throw RuntimeException("Unknown key")

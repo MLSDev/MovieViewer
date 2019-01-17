@@ -1,9 +1,6 @@
 package com.shykun.volodymyr.movieviewer.data.network
 
-import com.shykun.volodymyr.movieviewer.data.network.response.GetMovieDetailsResponse
-import com.shykun.volodymyr.movieviewer.data.network.response.GetMovieResponse
-import com.shykun.volodymyr.movieviewer.data.network.response.GetPeopleResponse
-import com.shykun.volodymyr.movieviewer.data.network.response.GetTVResponse
+import com.shykun.volodymyr.movieviewer.data.network.response.*
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -31,5 +28,10 @@ interface ApiService {
     @GET("movie/{movie_id}")
     fun getMovieDetails(
             @Path("movie_id") movieId: Int,
-            @Query("qpi_key") api_key: String = API_KEY): Single<GetMovieDetailsResponse>
+            @Query("api_key") api_key: String = API_KEY): Single<GetMovieDetailsResponse>
+
+    @GET("movie/{movie_id}/credits")
+    fun getMovieCredits(
+            @Path("movie_id") movieId: Int,
+            @Query("api_key") api_key: String = API_KEY): Single<GetMovieCreditsResponse>
 }

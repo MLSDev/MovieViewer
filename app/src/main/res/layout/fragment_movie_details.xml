@@ -6,9 +6,12 @@
 
     <data>
 
+        <import type="com.shykun.volodymyr.movieviewer.data.network.response.GetMovieDetailsResponse"/>
+        <import type="com.shykun.volodymyr.movieviewer.data.entity.GenreHelper"/>
+
         <variable
             name="movieDetails"
-            type="com.shykun.volodymyr.movieviewer.data.network.response.GetMovieDetailsResponse" />
+            type="GetMovieDetailsResponse" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout
@@ -35,14 +38,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:scaleType="centerCrop"
-                    app:layout_collapseMode="parallax" />
+                    app:layout_collapseMode="parallax"
+                    app:url="@{movieDetails.backdropPath}"/>
 
                 <android.support.v7.widget.Toolbar
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     app:layout_collapseMode="pin"
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
-                    app:title="@{movieDetails.title}" />
+                    app:title="@{movieDetails.title}"
+                    app:titleTextColor="@color/snow"/>
 
             </android.support.design.widget.CollapsingToolbarLayout>
 
@@ -62,13 +67,14 @@
                     android:id="@+id/moviePoster"
                     android:layout_width="130dp"
                     android:layout_height="200dp"
-                    android:src="@drawable/poster_example" />
+                    android:src="@drawable/poster_example"
+                    app:url="@{movieDetails.posterPath}"/>
 
                 <TextView
                     android:id="@+id/movieRating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:layout_toEndOf="@+id/moviePoster"
                     android:text="@{String.valueOf(movieDetails.voteAverage)}" />
 
@@ -80,7 +86,8 @@
                     android:layout_below="@+id/movieRating"
                     android:layout_marginStart="10dp"
                     android:layout_toEndOf="@+id/moviePoster"
-                    android:numStars="10" />
+                    android:numStars="10"
+                    android:rating="@{movieDetails.voteAverage}"/>
 
                 <TextView
                     android:id="@+id/movieCountry"
@@ -89,16 +96,16 @@
                     android:layout_below="@+id/movieRatingBar"
                     android:layout_marginStart="10dp"
                     android:layout_toEndOf="@+id/moviePoster"
-                    android:text="USA" />
+                    android:text="@{movieDetails.productionCountries}"/>
 
                 <TextView
                     android:id="@+id/movieYear"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/movieCountry"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:layout_toEndOf="@+id/moviePoster"
-                    android:text="2016" />
+                    android:text="@{movieDetails.releaseDate}" />
 
                 <TextView
                     android:id="@+id/movieGenres"
@@ -107,7 +114,7 @@
                     android:layout_below="@+id/movieYear"
                     android:layout_marginStart="10dp"
                     android:layout_toEndOf="@+id/moviePoster"
-                    android:text="Adventure" />
+                    android:text="@{movieDetails.genres}"/>
 
                 <TextView
                     android:id="@+id/movieOverview"
@@ -115,10 +122,10 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_below="@+id/moviePoster"
-                    android:text="Very cool movie" />
+                    android:text="@{movieDetails.overview}" />
 
                 <android.support.v7.widget.RecyclerView
-                    android:id="@+id/movieActors"
+                    android:id="@+id/movieCast"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"

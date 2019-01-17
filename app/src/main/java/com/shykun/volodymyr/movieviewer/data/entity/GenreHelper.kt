@@ -44,4 +44,6 @@ object GenreHelper {
             genres.add(this.genres[id]!!)
         return genres.joinToString()
     }
+
+    fun getGenres(genres: List<Genre>) = genres.joinToString { it.name }
 }
