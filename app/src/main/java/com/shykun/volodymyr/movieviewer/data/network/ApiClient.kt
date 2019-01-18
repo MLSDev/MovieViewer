@@ -50,4 +50,12 @@ class ApiClient @Inject constructor() {
     fun getMovieCredits(movieId: Int) = apiService.getMovieCredits(movieId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+
+    fun getMovieReviews(movieId: Int) = apiService.getMovieReviews(movieId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+    fun getRecommendedMovies(movieId: Int) = apiService.getRecommendedMovies(movieId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
 }

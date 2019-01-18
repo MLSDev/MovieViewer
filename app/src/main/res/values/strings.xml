@@ -8,4 +8,7 @@
     <string name="tv">TV</string>
     <string name="people">People</string>
     <string name="explore">Explore</string>
+    <string name="popular_movies">Popular movies</string>
+    <string name="top_rated_movies">Top rated movies</string>
+    <string name="upcoming_movies">Upcoming movies</string>
 </resources>

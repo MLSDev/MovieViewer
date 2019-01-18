@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
+import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Movie
 import com.shykun.volodymyr.movieviewer.presentation.base.BaseViewHolder
 import io.reactivex.subjects.PublishSubject
@@ -30,9 +31,9 @@ class GeneralMovieTabViewHolder(
         } else {
             progressBar.visibility = View.GONE
             title.text = when (position) {
-                POPULAR_MOVIES -> "Popular movies"
-                TOP_RATED_MOVIES -> "Top rated movies"
-                UPCOMING_MOVIES -> "Upcoming movies"
+                POPULAR_MOVIES -> itemView.context.getString(R.string.popular_movies)
+                TOP_RATED_MOVIES -> itemView.context.getString(R.string.top_rated_movies)
+                UPCOMING_MOVIES -> itemView.context.getString(R.string.upcoming_movies)
                 else -> ""
             }
 

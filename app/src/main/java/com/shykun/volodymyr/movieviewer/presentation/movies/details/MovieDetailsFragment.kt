@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Actor
+import com.shykun.volodymyr.movieviewer.data.entity.Movie
+import com.shykun.volodymyr.movieviewer.data.entity.Review
 import com.shykun.volodymyr.movieviewer.data.network.response.GetMovieDetailsResponse
 import com.shykun.volodymyr.movieviewer.databinding.FragmentMovieDetailsBinding
 import com.shykun.volodymyr.movieviewer.presentation.AppActivity
@@ -26,6 +29,8 @@ class MovieDetailsFragment : Fragment() {
     private lateinit var viewModel: MovieDetailsViewModel
     private lateinit var binding: FragmentMovieDetailsBinding
     private lateinit var castAdapter: CastAdapter
+    private lateinit var reviewsAdapter: MovieReviewAdapter
+    private lateinit var recommendedMoviesAdapter: RecommendedMoviesAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,12 +51,16 @@ class MovieDetailsFragment : Fragment() {
 
         subscribeViewModel()
         setupCastAdapter()
+        setupReviewsAdapter()
+        setuoRecommendedMoviesAdapter()
         viewModel.onViewLoaded(movieId)
     }
 
     private fun subscribeViewModel() {
         viewModel.movieDetailsLiveData.observe(this, Observer { showMovieDetails(it) })
         viewModel.movieCastLiveData.observe(this, Observer { showMovieCast(it) })
+        viewModel.movieReviewLiveData.observe(this, Observer { showReviews(it) })
+        viewModel.recommendedMoviesLiveData.observe(this, Observer { showRecommendedMovies(it) })
         viewModel.loadingErrorLiveData.observe(this, Observer { showLoadingError(it) })
     }
 
@@ -65,6 +74,18 @@ class MovieDetailsFragment : Fragment() {
         }
     }
 
+    private fun showReviews(reviews: List<Review>?) {
+        if (reviews != null) {
+            reviewsAdapter.addReviews(reviews)
+        }
+    }
+
+    private fun showRecommendedMovies(movies: List<Movie>?) {
+        if (movies != null) {
+            recommendedMoviesAdapter.addMovies(movies)
+        }
+    }
+
     private fun showLoadingError(message: String?) {
         Toast.makeText(this.context, message, Toast.LENGTH_SHORT).show()
     }
@@ -74,6 +95,23 @@ class MovieDetailsFragment : Fragment() {
         movieCast.apply {
             layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
             adapter = castAdapter
+        }
+    }
+
+    private fun setupReviewsAdapter() {
+        reviewsAdapter = MovieReviewAdapter(ArrayList())
+        movieReviews.apply {
+            layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
+            isNestedScrollingEnabled = false
+            adapter = reviewsAdapter
+        }
+    }
+
+    private fun setuoRecommendedMoviesAdapter() {
+        recommendedMoviesAdapter = RecommendedMoviesAdapter(ArrayList())
+        recommendedMovies.apply {
+            layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
+            adapter = recommendedMoviesAdapter
         }
     }
 

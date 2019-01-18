@@ -13,7 +13,7 @@ interface ApiService {
     @GET("movie/{movies_type}")
     fun getMovies(@Path("movies_type") moviesType: String,
                   @Query("page") page: Int,
-                  @Query("api_key") api_key: String = API_KEY): Single<GetMovieResponse>
+                  @Query("api_key") api_key: String = API_KEY): Single<GetMoviesResponse>
 
     @GET("tv/{tv_type}")
     fun getTV(@Path("tv_type") tvType: String,
@@ -34,4 +34,13 @@ interface ApiService {
     fun getMovieCredits(
             @Path("movie_id") movieId: Int,
             @Query("api_key") api_key: String = API_KEY): Single<GetMovieCreditsResponse>
+
+    @GET("movie/{movie_id}/reviews")
+    fun getMovieReviews(
+            @Path("movie_id") movieId: Int,
+            @Query("api_key") api_key: String = API_KEY): Single<GetMovieReviewsResponse>
+
+    @GET("movie/{movie_id}/recommendations")
+    fun getRecommendedMovies(@Path("movie_id") movieId: Int,
+                             @Query("api_key") api_key: String = API_KEY): Single<GetMoviesResponse>
 }
