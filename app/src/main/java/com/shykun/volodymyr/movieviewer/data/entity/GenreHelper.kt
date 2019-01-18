@@ -30,20 +30,4 @@ object GenreHelper {
             10767 to "Talk",
             10768 to "War & Politics"
     )
-
-    fun getGenres(movie: Movie): String {
-        val genres = ArrayList<String>()
-        for (id in movie.genreIds)
-            genres.add(this.genres[id]!!)
-        return genres.joinToString()
-    }
-
-    fun getGenres(tv: Tv): String {
-        val genres = ArrayList<String>()
-        for (id in tv.genreIds)
-            genres.add(this.genres[id]!!)
-        return genres.joinToString()
-    }
-
-    fun getGenres(genres: List<Genre>) = genres.joinToString { it.name }
 }

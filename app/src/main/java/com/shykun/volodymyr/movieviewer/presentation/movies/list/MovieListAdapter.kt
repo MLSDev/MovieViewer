@@ -1,10 +1,13 @@
 package com.shykun.volodymyr.movieviewer.presentation.movies.list
 
+import android.databinding.DataBindingUtil
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Movie
 import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
+import com.shykun.volodymyr.movieviewer.databinding.ViewHolderLoadingBinding
+import com.shykun.volodymyr.movieviewer.databinding.ViewHolderMovieBinding
 import com.shykun.volodymyr.movieviewer.presentation.base.BaseRecyclerViewAdapter
 
 private const val MOVIE = 0
@@ -17,10 +20,21 @@ class MovieListAdapter(itemList: ArrayList<Movie>, val moviesType: MoviesType)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseMovieListViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        return if (viewType == MOVIE)
-            MovieListViewHolder(inflater.inflate(R.layout.view_holder_movie, parent, false), moviesType)
-        else
-            MovieListLoadingViewHolder(inflater.inflate(R.layout.view_holder_loading, parent, false))
+        if (viewType == MOVIE) {
+            val binding = DataBindingUtil.inflate<ViewHolderMovieBinding>(
+                    inflater,
+                    R.layout.view_holder_movie,
+                    parent,
+                    false)
+            return MovieListViewHolder(binding, moviesType)
+        } else {
+            val binding = DataBindingUtil.inflate<ViewHolderLoadingBinding>(
+                    inflater,
+                    R.layout.view_holder_loading,
+                    parent,
+                    false)
+            return MovieListLoadingViewHolder(binding)
+        }
     }
 
     override fun onBindViewHolder(viewHolder: BaseMovieListViewHolder, position: Int) {

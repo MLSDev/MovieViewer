@@ -4,41 +4,41 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.LinearLayout
-import android.widget.ProgressBar
 import android.widget.TextView
+import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Tv
+import com.shykun.volodymyr.movieviewer.databinding.ViewHolderHorizontalTvListBinding
 import com.shykun.volodymyr.movieviewer.presentation.base.BaseViewHolder
 import io.reactivex.subjects.PublishSubject
-import kotlinx.android.synthetic.main.view_holder_horizontal_list.view.*
+import kotlinx.android.synthetic.main.view_holder_horizontal_tv_list.view.*
 import java.util.*
 
 class GeneralTvTabViewHolder(
-        itemView: View,
+        private val binding: ViewHolderHorizontalTvListBinding,
         private val seeAllClickSubject: PublishSubject<Int>,
         private val tvClickSubject: PublishSubject<Int>)
-    : BaseViewHolder<ArrayList<Tv>>(itemView) {
+    : BaseViewHolder<ArrayList<Tv>>(binding) {
 
-    private val title: TextView = itemView.horizontalListTitle
-    private val list: RecyclerView = itemView.horizontalList
-    private val progressBar: ProgressBar = itemView.horizontalListProgressBar
-    private val seeAll: TextView = itemView.seeAll
+    private val tvList: RecyclerView = itemView.horizontalTvList
+    private val seeAllTv: TextView = itemView.seeAllTv
+
+    lateinit var title: String
+    var progressBarVisibility = View.VISIBLE
 
     override fun bind(item: ArrayList<Tv>, position: Int) {
         super.bind(item, position)
 
-        if (item.isEmpty()) {
-            progressBar.visibility = View.VISIBLE
-        } else {
-            progressBar.visibility = View.GONE
-            title.text = when (position) {
-                POPULAR_TV -> "Popular TV"
-                TOP_RATED_TV -> "Top rated TV"
-                TV_ON_THE_AIR -> "TV on the air"
+        if (item.isNotEmpty()) {
+            progressBarVisibility = View.GONE
+            title = when (position) {
+                POPULAR_TV -> itemView.context.getString(R.string.popular_tv)
+                TOP_RATED_TV -> itemView.context.getString(R.string.top_rated_tv)
+                TV_ON_THE_AIR -> itemView.context.getString(R.string.tv_on_the_air)
                 else -> ""
             }
 
-            list.apply {
-                layoutManager = LinearLayoutManager(horizontalList.context, LinearLayout.HORIZONTAL, false)
+            tvList.apply {
+                layoutManager = LinearLayoutManager(this.context, LinearLayout.HORIZONTAL, false)
                 val tvAdapter = TvTabAdapter(item)
                 tvAdapter.tvClickEvent.subscribe { tvClickSubject.onNext(it) }
                 tvAdapter.type = position
@@ -46,6 +46,13 @@ class GeneralTvTabViewHolder(
             }
         }
 
-        seeAll.setOnClickListener { seeAllClickSubject.onNext(position) }
+        seeAllTv.setOnClickListener { seeAllClickSubject.onNext(position) }
+
+        executeBinding()
+    }
+
+    private fun executeBinding() {
+        binding.generalTvTabViewHolder = this
+        binding.executePendingBindings()
     }
 }

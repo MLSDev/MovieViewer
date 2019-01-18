@@ -1,9 +1,12 @@
 package com.shykun.volodymyr.movieviewer.presentation.people.tab
 
+import android.databinding.DataBindingUtil
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Person
+import com.shykun.volodymyr.movieviewer.databinding.ViewHolderLoadingBinding
+import com.shykun.volodymyr.movieviewer.databinding.ViewHolderPersonBinding
 import com.shykun.volodymyr.movieviewer.presentation.base.BaseRecyclerViewAdapter
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
@@ -23,11 +26,21 @@ class PeopleTabAdapter(items: ArrayList<Person>)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BasePeopleViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return if (viewType == PERSON) {
-            val view = inflater.inflate(R.layout.view_holder_person, parent, false)
-            PeopleTabViewHolder(view, personClickSubject)
+            val binding = DataBindingUtil.inflate<ViewHolderPersonBinding>(
+                    inflater,
+                    R.layout.view_holder_person,
+                    parent,
+                    false)
+
+            PeopleTabViewHolder(binding, personClickSubject)
         } else {
-            val view = inflater.inflate(R.layout.view_holder_loading, parent, false)
-            PeopleTabLoadingViewHolder(view)
+            val binding = DataBindingUtil.inflate<ViewHolderLoadingBinding>(
+                    inflater,
+                    R.layout.view_holder_loading,
+                    parent,
+                    false)
+
+            PeopleTabLoadingViewHolder(binding)
         }
 
     }

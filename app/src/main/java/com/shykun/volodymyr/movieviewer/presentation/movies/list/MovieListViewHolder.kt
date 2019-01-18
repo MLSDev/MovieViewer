@@ -1,57 +1,55 @@
 package com.shykun.volodymyr.movieviewer.presentation.movies.list
 
+import android.databinding.ViewDataBinding
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.shykun.volodymyr.movieviewer.data.entity.GenreHelper
 import com.shykun.volodymyr.movieviewer.data.entity.Movie
 import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
+import com.shykun.volodymyr.movieviewer.databinding.ViewHolderLoadingBinding
+import com.shykun.volodymyr.movieviewer.databinding.ViewHolderMovieBinding
 import com.shykun.volodymyr.movieviewer.presentation.base.BaseViewHolder
 import com.shykun.volodymyr.movieviewer.presentation.glide.GlideApp
 import kotlinx.android.synthetic.main.view_holder_movie.view.*
 
-open class BaseMovieListViewHolder(itemView: View)
-    : BaseViewHolder<Movie>(itemView)
+open class BaseMovieListViewHolder(viewDataBinding: ViewDataBinding)
+    : BaseViewHolder<Movie>(viewDataBinding)
 
-class MovieListLoadingViewHolder(itemView: View)
-    : BaseMovieListViewHolder(itemView)
+class MovieListLoadingViewHolder(binding: ViewHolderLoadingBinding)
+    : BaseMovieListViewHolder(binding)
 
-class MovieListViewHolder(itemView: View, val moviesType: MoviesType)
-    : BaseMovieListViewHolder(itemView) {
+class MovieListViewHolder(private val binding: ViewHolderMovieBinding, val moviesType: MoviesType)
+    : BaseMovieListViewHolder(binding) {
 
-    private val poster: ImageView = itemView.poster
-    private val title: TextView = itemView.title
-    private val rating: TextView = itemView.rating
-    private val popularity: TextView = itemView.popularity
-    private val genres: TextView = itemView.genres
-    private val releaseDate: TextView = itemView.releaseDate
+    var popularityVisibility = View.VISIBLE
+    var releaseDateVisibility = View.VISIBLE
+
+    lateinit var popularity: String
 
     override fun bind(item: Movie, position: Int) {
         super.bind(item, position)
 
-        title.text = item.title
-        rating.text = item.voteAverage.toString()
-        genres.text = GenreHelper.getGenres(item)
-
         when (moviesType) {
             MoviesType.TOP_RATED -> {
-                popularity.visibility = View.GONE
-                releaseDate.visibility = View.GONE
+                popularityVisibility = View.GONE
+                releaseDateVisibility = View.GONE
             }
             MoviesType.POPULAR -> {
-                popularity.text = "#${position + 1}"
-                releaseDate.visibility = View.GONE
+                popularity = "#${position + 1}"
+                releaseDateVisibility = View.GONE
             }
             MoviesType.UPCOMING -> {
-                releaseDate.text = item.releaseDate
-                popularity.visibility = View.GONE
+                popularityVisibility = View.GONE
             }
         }
 
-        GlideApp.with(itemView)
-                .load("http://image.tmdb.org/t/p/w185${item.posterPath}")
-                .into(poster)
-
+        executeBinding(item)
     }
 
+    private fun executeBinding(movie: Movie) {
+        binding.movie = movie
+        binding.viewHolder = this
+        binding.executePendingBindings()
+    }
 }
