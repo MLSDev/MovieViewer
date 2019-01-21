@@ -1,11 +1,11 @@
 package com.shykun.volodymyr.movieviewer.data.network.response
 
 import com.google.gson.annotations.SerializedName
-import com.shykun.volodymyr.movieviewer.data.entity.Person
+import com.shykun.volodymyr.movieviewer.data.entity.Tv
 
-data class GetPeopleResponse(
+data class TVResponse (
         @SerializedName("page") val page: Int,
-        @SerializedName("results") val results: ArrayList<Person>,
+        @SerializedName("results") val results: ArrayList<Tv>,
         @SerializedName("total_results") val totalResults: Int,
         @SerializedName("total_pages") val totalPages: Int
 )

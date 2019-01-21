@@ -6,19 +6,19 @@ import android.arch.lifecycle.ViewModel
 import com.shykun.volodymyr.movieviewer.data.entity.Actor
 import com.shykun.volodymyr.movieviewer.data.entity.Movie
 import com.shykun.volodymyr.movieviewer.data.entity.Review
-import com.shykun.volodymyr.movieviewer.data.network.response.GetMovieDetailsResponse
-import com.shykun.volodymyr.movieviewer.domain.GetMovieDetailsUseCase
+import com.shykun.volodymyr.movieviewer.data.network.response.MovieDetailsResponse
+import com.shykun.volodymyr.movieviewer.domain.MovieDetailsUseCase
 
 class MovieDetailsViewModel(
-        private val getMovieDetailsUseCase: GetMovieDetailsUseCase) : ViewModel() {
+        private val movieDetailsUseCase: MovieDetailsUseCase) : ViewModel() {
 
-    private val movieDetailsMutableLiveData = MutableLiveData<GetMovieDetailsResponse>()
+    private val movieDetailsMutableLiveData = MutableLiveData<MovieDetailsResponse>()
     private val movieCastMutableLiveData = MutableLiveData<List<Actor>>()
     private val movieReviewsMutableLiveData = MutableLiveData<List<Review>>()
     private val recommendedMoviesMutableLiveData = MutableLiveData<List<Movie>>()
     private val loadingErrorMutableLiveData = MutableLiveData<String>()
 
-    val movieDetailsLiveData: LiveData<GetMovieDetailsResponse> = movieDetailsMutableLiveData
+    val movieDetailsLiveData: LiveData<MovieDetailsResponse> = movieDetailsMutableLiveData
     val movieCastLiveData: LiveData<List<Actor>> = movieCastMutableLiveData
     val movieReviewLiveData: LiveData<List<Review>> = movieReviewsMutableLiveData
     val recommendedMoviesLiveData: LiveData<List<Movie>> = recommendedMoviesMutableLiveData
@@ -33,7 +33,7 @@ class MovieDetailsViewModel(
     }
 
     fun getMovieDetails(movieId: Int) {
-        getMovieDetailsUseCase.getMovieDetails(movieId)
+        movieDetailsUseCase.getMovieDetails(movieId)
                 .doOnSuccess {
                     movieDetailsMutableLiveData.value = it
                 }
@@ -44,7 +44,7 @@ class MovieDetailsViewModel(
     }
 
     fun getMovieCast(movieId: Int) {
-        getMovieDetailsUseCase.getMovieCredits(movieId)
+        movieDetailsUseCase.getMovieCredits(movieId)
                 .doOnSuccess {
                     movieCastMutableLiveData.value = it
                 }
@@ -55,7 +55,7 @@ class MovieDetailsViewModel(
     }
 
     fun getMovieReviews(movieId: Int) {
-        getMovieDetailsUseCase.getMovieReviews(movieId)
+        movieDetailsUseCase.getMovieReviews(movieId)
                 .doOnSuccess {
                     movieReviewsMutableLiveData.value = it
                 }
@@ -66,7 +66,7 @@ class MovieDetailsViewModel(
     }
 
     fun getRecommendedMovies(movieId: Int) {
-        getMovieDetailsUseCase.getRecommendedMovies(movieId)
+        movieDetailsUseCase.getRecommendedMovies(movieId)
                 .doOnSuccess {
                     recommendedMoviesMutableLiveData.value = it
                 }

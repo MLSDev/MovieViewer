@@ -4,7 +4,7 @@ import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
 import com.shykun.volodymyr.movieviewer.data.network.ApiClient
 import javax.inject.Inject
 
-class GetPeopleUseCase @Inject constructor(private val apiClient: ApiClient) {
+class MoviesUseCase @Inject constructor(private val apiClient: ApiClient) {
 
-    fun execute(page: Int) = apiClient.getPopularPeople(page).map { it.results }
+    fun execute(moviesType: MoviesType, page: Int) = apiClient.getMovies(moviesType, page).map { it.results }
 }

@@ -5,9 +5,9 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.shykun.volodymyr.movieviewer.data.entity.Movie
 import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
-import com.shykun.volodymyr.movieviewer.domain.GetMoviesUseCase
+import com.shykun.volodymyr.movieviewer.domain.MoviesUseCase
 
-class MovieListViewModel(private val getMoviesUseCase: GetMoviesUseCase) : ViewModel() {
+class MovieListViewModel(private val moviesUseCase: MoviesUseCase) : ViewModel() {
 
     lateinit var moviesType: MoviesType
     private val moviesLiveData = MutableLiveData<List<Movie>>()
@@ -21,7 +21,7 @@ class MovieListViewModel(private val getMoviesUseCase: GetMoviesUseCase) : ViewM
         getMovies(1)
     }
 
-    fun getMovies(page: Int) = getMoviesUseCase.execute(moviesType, page)
+    fun getMovies(page: Int) = moviesUseCase.execute(moviesType, page)
             .doOnSuccess {
                 moviesLiveData.value = it
             }

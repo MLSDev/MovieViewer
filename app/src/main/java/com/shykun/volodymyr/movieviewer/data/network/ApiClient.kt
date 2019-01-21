@@ -80,4 +80,12 @@ class ApiClient @Inject constructor() {
     fun getPopularPeople(page: Int = 1) = apiService.getPopularPeople(page)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+
+    fun getPersonDetails(personId: Int) = apiService.getPersonDetails(personId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+    fun getPersonCimbinedCredits(personId: Int) = apiService.getPersonCombinedCredits(personId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
 }

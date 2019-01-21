@@ -14,7 +14,7 @@ import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Actor
 import com.shykun.volodymyr.movieviewer.data.entity.Movie
 import com.shykun.volodymyr.movieviewer.data.entity.Review
-import com.shykun.volodymyr.movieviewer.data.network.response.GetMovieDetailsResponse
+import com.shykun.volodymyr.movieviewer.data.network.response.MovieDetailsResponse
 import com.shykun.volodymyr.movieviewer.databinding.FragmentMovieDetailsBinding
 import com.shykun.volodymyr.movieviewer.presentation.AppActivity
 import kotlinx.android.synthetic.main.fragment_movie_details.*
@@ -63,7 +63,7 @@ class MovieDetailsFragment : Fragment() {
         viewModel.loadingErrorLiveData.observe(this, Observer { showLoadingError(it) })
     }
 
-    private fun showMovieDetails(movieDetails: GetMovieDetailsResponse?) {
+    private fun showMovieDetails(movieDetails: MovieDetailsResponse?) {
         binding.movieDetails = movieDetails
     }
 

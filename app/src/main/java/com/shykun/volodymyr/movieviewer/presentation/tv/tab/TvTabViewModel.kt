@@ -5,13 +5,13 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.shykun.volodymyr.movieviewer.data.entity.Tv
 import com.shykun.volodymyr.movieviewer.data.entity.TvType
-import com.shykun.volodymyr.movieviewer.domain.GetTvUseCase
+import com.shykun.volodymyr.movieviewer.domain.TvUseCase
 import com.shykun.volodymyr.movieviewer.presentation.tv.details.TV_DETAILS_FRAGMENT
 import com.shykun.volodymyr.movieviewer.presentation.tv.list.TV_LIST_FRAGMENT_KEY
 import ru.terrakok.cicerone.Router
 
 class TvTabViewModel(
-        private val getTVUseCase: GetTvUseCase,
+        private val TVUseCase: TvUseCase,
         private val router: Router) : ViewModel() {
 
     private val popularTvMutableLiveData = MutableLiveData<List<Tv>>()
@@ -32,7 +32,7 @@ class TvTabViewModel(
     }
 
     fun getPopularTV(page: Int) {
-        getTVUseCase.execute(TvType.POPULAR, page)
+        TVUseCase.execute(TvType.POPULAR, page)
                 .doOnSuccess {
                     popularTvMutableLiveData.value = it
                 }
@@ -43,7 +43,7 @@ class TvTabViewModel(
     }
 
     fun getTopRatedTV(page: Int) {
-        getTVUseCase.execute(TvType.TOP_RATED, page)
+        TVUseCase.execute(TvType.TOP_RATED, page)
                 .doOnSuccess {
                     topRatedTvMutableLiveData.value = it
                 }
@@ -54,7 +54,7 @@ class TvTabViewModel(
     }
 
     fun getTVOnTheAir(page: Int) {
-        getTVUseCase.execute(TvType.ON_THE_AIR, page)
+        TVUseCase.execute(TvType.ON_THE_AIR, page)
                 .doOnSuccess {
                     tvOnTheAirMutableLiveData.value = it
                 }

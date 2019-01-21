@@ -6,12 +6,12 @@
 
     <data>
 
-        <import type="com.shykun.volodymyr.movieviewer.data.network.response.GetMovieDetailsResponse"/>
+        <import type="com.shykun.volodymyr.movieviewer.data.network.response.MovieDetailsResponse"/>
         <import type="com.shykun.volodymyr.movieviewer.data.entity.GenreHelper"/>
 
         <variable
             name="movieDetails"
-            type="GetMovieDetailsResponse" />
+            type="MovieDetailsResponse" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout

@@ -5,13 +5,13 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.shykun.volodymyr.movieviewer.data.entity.Movie
 import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
-import com.shykun.volodymyr.movieviewer.domain.GetMoviesUseCase
+import com.shykun.volodymyr.movieviewer.domain.MoviesUseCase
 import com.shykun.volodymyr.movieviewer.presentation.movies.details.MOVIE_DETAILS_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.movies.list.MOVIE_LIST_FRAGMENT_KEY
 import ru.terrakok.cicerone.Router
 
 class MovieTabViewModel(
-        private val getMoviesUseCase: GetMoviesUseCase,
+        private val moviesUseCase: MoviesUseCase,
         private val router: Router) : ViewModel() {
 
     private val popularMoviesMutableLiveData = MutableLiveData<List<Movie>>()
@@ -32,7 +32,7 @@ class MovieTabViewModel(
     }
 
     private fun getPopularMovies(page: Int) {
-        getMoviesUseCase.execute(MoviesType.POPULAR, page)
+        moviesUseCase.execute(MoviesType.POPULAR, page)
                 .doOnSuccess {
                     popularMoviesMutableLiveData.value = it
                 }
@@ -43,7 +43,7 @@ class MovieTabViewModel(
     }
 
     private fun getTopRatedMovies(page: Int) {
-        getMoviesUseCase.execute(MoviesType.TOP_RATED, page)
+        moviesUseCase.execute(MoviesType.TOP_RATED, page)
                 .doOnSuccess {
                     topRatedMoviesMutableLiveData.value = it
                 }
@@ -54,7 +54,7 @@ class MovieTabViewModel(
     }
 
     private fun getUpcomingMovies(page: Int) {
-        getMoviesUseCase.execute(MoviesType.UPCOMING, page)
+        moviesUseCase.execute(MoviesType.UPCOMING, page)
                 .doOnSuccess {
                     upcomingMoviesMutableLiveData.value = it
                 }

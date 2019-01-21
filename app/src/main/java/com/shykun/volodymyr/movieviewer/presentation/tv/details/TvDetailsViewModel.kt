@@ -7,9 +7,9 @@ import com.shykun.volodymyr.movieviewer.data.entity.Actor
 import com.shykun.volodymyr.movieviewer.data.entity.Review
 import com.shykun.volodymyr.movieviewer.data.entity.Tv
 import com.shykun.volodymyr.movieviewer.data.network.response.TvDetailsResponse
-import com.shykun.volodymyr.movieviewer.domain.GetTvDetailsUseCase
+import com.shykun.volodymyr.movieviewer.domain.TvDetailsUseCase
 
-class TvDetailsViewModel(private val gtTvDetailsUseCase: GetTvDetailsUseCase) : ViewModel() {
+class TvDetailsViewModel(private val gtTvDetailsUseCase: TvDetailsUseCase) : ViewModel() {
 
     private val tvDetailsMutableLiveData = MutableLiveData<TvDetailsResponse>()
     private val recommendedTvMutableLiveData = MutableLiveData<List<Tv>>()

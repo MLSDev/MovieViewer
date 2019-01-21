@@ -7,7 +7,7 @@ import com.shykun.volodymyr.movieviewer.data.entity.Genre
 import com.shykun.volodymyr.movieviewer.data.entity.Language
 
 
-data class GetMovieDetailsResponse(
+data class MovieDetailsResponse(
         @SerializedName("adult") val adult: Boolean,
         @SerializedName("backdrop_path") val backdropPath: String,
         @SerializedName("belongs_to_collection") val belongsToCollection: Any,

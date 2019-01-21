@@ -4,12 +4,12 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.shykun.volodymyr.movieviewer.data.entity.Person
-import com.shykun.volodymyr.movieviewer.domain.GetPeopleUseCase
+import com.shykun.volodymyr.movieviewer.domain.PeopleUseCase
 import com.shykun.volodymyr.movieviewer.presentation.people.details.PERSON_DETAILS_FRAGMENT_KEY
 import ru.terrakok.cicerone.Router
 
 class PeopleTabViewModel(
-        private val getPeopleUseCase: GetPeopleUseCase,
+        private val peopleUseCase: PeopleUseCase,
         private val router: Router) : ViewModel() {
 
     private val peopleMutableLiveData = MutableLiveData<List<Person>>()
@@ -22,7 +22,7 @@ class PeopleTabViewModel(
         getPeople(1)
     }
 
-    fun getPeople(page: Int) = getPeopleUseCase.execute(page)
+    fun getPeople(page: Int) = peopleUseCase.execute(page)
             .doOnSuccess {
                 peopleMutableLiveData.value = it
             }
@@ -32,6 +32,6 @@ class PeopleTabViewModel(
             .subscribe()
 
     fun onPersonClicked(personId: Int) {
-        router.navigateTo(PERSON_DETAILS_FRAGMENT_KEY)
+        router.navigateTo(PERSON_DETAILS_FRAGMENT_KEY, personId)
     }
 }

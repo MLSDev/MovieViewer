@@ -5,9 +5,9 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.shykun.volodymyr.movieviewer.data.entity.Tv
 import com.shykun.volodymyr.movieviewer.data.entity.TvType
-import com.shykun.volodymyr.movieviewer.domain.GetTvUseCase
+import com.shykun.volodymyr.movieviewer.domain.TvUseCase
 
-class TvListViewModel(private val getTvUseCase: GetTvUseCase) : ViewModel() {
+class TvListViewModel(private val tvUseCase: TvUseCase) : ViewModel() {
 
     lateinit var tvType: TvType
 
@@ -22,7 +22,7 @@ class TvListViewModel(private val getTvUseCase: GetTvUseCase) : ViewModel() {
         getTvList(1)
     }
 
-    fun getTvList(page: Int) = getTvUseCase.execute(tvType, page)
+    fun getTvList(page: Int) = tvUseCase.execute(tvType, page)
             .doOnSuccess {
                 tvListMutableLiveData.value = it
             }

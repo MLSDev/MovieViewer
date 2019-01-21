@@ -3,7 +3,7 @@ package com.shykun.volodymyr.movieviewer.domain
 import com.shykun.volodymyr.movieviewer.data.network.ApiClient
 import javax.inject.Inject
 
-class GetTvDetailsUseCase @Inject constructor(private val apiClient: ApiClient) {
+class TvDetailsUseCase @Inject constructor(private val apiClient: ApiClient) {
 
     fun getTvDetails(tvId: Int) = apiClient.getTvDetails(tvId)
 
