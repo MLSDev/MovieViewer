@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import com.shykun.volodymyr.movieviewer.data.entity.Review
 
 
-data class GetMovieReviewsResponse(
+data class GetReviewsResponse(
         @SerializedName("id") var id: Int,
         @SerializedName("page") var page: Int,
         @SerializedName("results") var results: List<Review>,

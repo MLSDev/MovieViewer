@@ -11,7 +11,7 @@
 
         <variable
             name="viewHolder"
-            type="com.shykun.volodymyr.movieviewer.presentation.movies.details.MovieReviewViewHolder" />
+            type="com.shykun.volodymyr.movieviewer.presentation.movies.details.ReviewViewHolder" />
     </data>
 
     <LinearLayout

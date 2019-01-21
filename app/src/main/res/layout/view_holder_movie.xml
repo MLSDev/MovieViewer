@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <import type="android.view.View"/>
         <variable
             name="movie"
             type="com.shykun.volodymyr.movieviewer.data.entity.Movie" />
@@ -45,7 +46,6 @@
                 android:layout_marginStart="10dp"
                 android:layout_toEndOf="@id/poster"
                 android:text="@{movie.title}"
-                android:textColor="@color/snow"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -66,7 +66,6 @@
                 android:layout_marginStart="5dp"
                 android:layout_toEndOf="@id/starIcon"
                 android:text="@{movie.voteAverage}"
-                android:textColor="@color/snow"
                 android:textSize="15sp" />
 
             <TextView
@@ -76,8 +75,7 @@
                 android:layout_below="@id/rating"
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/poster"
-                android:text="@{movie.genreIds}"
-                android:textColor="@color/snow" />
+                android:text="@{movie.genreIds}" />
 
             <TextView
                 android:id="@+id/popularity"
@@ -87,7 +85,6 @@
                 android:layout_marginStart="10dp"
                 android:layout_toEndOf="@id/poster"
                 android:text="@{viewHolder.popularity}"
-                android:textColor="@color/snow"
                 android:textSize="18sp"
                 android:visibility="@{viewHolder.popularityVisibility}" />
 
@@ -99,7 +96,6 @@
                 android:layout_marginStart="10dp"
                 android:layout_toEndOf="@id/poster"
                 android:text="@{movie.releaseDate}"
-                android:textColor="@color/snow"
                 android:visibility="@{viewHolder.releaseDateVisibility}" />
 
 

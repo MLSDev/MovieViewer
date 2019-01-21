@@ -25,7 +25,7 @@ class MovieListViewHolder(private val binding: ViewHolderMovieBinding, val movie
     var popularityVisibility = View.VISIBLE
     var releaseDateVisibility = View.VISIBLE
 
-    lateinit var popularity: String
+    var popularity: String = ""
 
     override fun bind(item: Movie, position: Int) {
         super.bind(item, position)

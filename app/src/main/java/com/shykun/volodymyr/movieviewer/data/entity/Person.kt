@@ -1,8 +1,6 @@
 package com.shykun.volodymyr.movieviewer.data.entity
 
-import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-
 
 data class Person(
         @SerializedName("profile_path") val profilePath: String,

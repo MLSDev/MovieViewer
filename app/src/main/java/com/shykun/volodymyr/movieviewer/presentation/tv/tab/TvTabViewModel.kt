@@ -69,6 +69,6 @@ class TvTabViewModel(
     }
 
     fun onTvClicked(tvId: Int) {
-        router.navigateTo(TV_DETAILS_FRAGMENT)
+        router.navigateTo(TV_DETAILS_FRAGMENT, tvId)
     }
 }

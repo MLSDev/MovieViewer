@@ -44,7 +44,7 @@ class MovieDetailsViewModel(
     }
 
     fun getMovieCast(movieId: Int) {
-        getMovieDetailsUseCase.getMoviCast(movieId)
+        getMovieDetailsUseCase.getMovieCredits(movieId)
                 .doOnSuccess {
                     movieCastMutableLiveData.value = it
                 }

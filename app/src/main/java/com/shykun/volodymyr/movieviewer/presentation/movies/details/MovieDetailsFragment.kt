@@ -5,7 +5,6 @@ import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -29,7 +28,7 @@ class MovieDetailsFragment : Fragment() {
     private lateinit var viewModel: MovieDetailsViewModel
     private lateinit var binding: FragmentMovieDetailsBinding
     private lateinit var castAdapter: CastAdapter
-    private lateinit var reviewsAdapter: MovieReviewAdapter
+    private lateinit var reviewsAdapter: ReviewAdapter
     private lateinit var recommendedMoviesAdapter: RecommendedMoviesAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,7 +51,7 @@ class MovieDetailsFragment : Fragment() {
         subscribeViewModel()
         setupCastAdapter()
         setupReviewsAdapter()
-        setuoRecommendedMoviesAdapter()
+        setupRecommendedMoviesAdapter()
         viewModel.onViewLoaded(movieId)
     }
 
@@ -99,7 +98,7 @@ class MovieDetailsFragment : Fragment() {
     }
 
     private fun setupReviewsAdapter() {
-        reviewsAdapter = MovieReviewAdapter(ArrayList())
+        reviewsAdapter = ReviewAdapter(ArrayList())
         movieReviews.apply {
             layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
             isNestedScrollingEnabled = false
@@ -107,7 +106,7 @@ class MovieDetailsFragment : Fragment() {
         }
     }
 
-    private fun setuoRecommendedMoviesAdapter() {
+    private fun setupRecommendedMoviesAdapter() {
         recommendedMoviesAdapter = RecommendedMoviesAdapter(ArrayList())
         recommendedMovies.apply {
             layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)

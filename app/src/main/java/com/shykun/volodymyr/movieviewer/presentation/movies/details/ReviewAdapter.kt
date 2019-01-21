@@ -8,16 +8,16 @@ import com.shykun.volodymyr.movieviewer.data.entity.Review
 import com.shykun.volodymyr.movieviewer.databinding.ViewHolderReviewItemBinding
 import com.shykun.volodymyr.movieviewer.presentation.base.BaseRecyclerViewAdapter
 
-class MovieReviewAdapter(items: ArrayList<Review>) : BaseRecyclerViewAdapter<Review, MovieReviewViewHolder>(items) {
+class ReviewAdapter(items: ArrayList<Review>) : BaseRecyclerViewAdapter<Review, ReviewViewHolder>(items) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieReviewViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReviewViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = DataBindingUtil.inflate<ViewHolderReviewItemBinding>(
                 inflater,
                 R.layout.view_holder_review_item,
                 parent,
                 false)
-        return MovieReviewViewHolder(binding)
+        return ReviewViewHolder(binding)
     }
 
     fun addReviews(reviews: List<Review>) {

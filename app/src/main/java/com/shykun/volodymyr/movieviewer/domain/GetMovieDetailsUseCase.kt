@@ -7,7 +7,7 @@ class GetMovieDetailsUseCase @Inject constructor(private val apiClient: ApiClien
 
     fun getMovieDetails(movieId: Int) = apiClient.getMovieDetails(movieId)
 
-    fun getMoviCast(movieId: Int) = apiClient.getMovieCredits(movieId).map { it.cast }
+    fun getMovieCredits(movieId: Int) = apiClient.getMovieCredits(movieId).map { it.cast }
 
     fun getMovieReviews(movieId: Int) = apiClient.getMovieReviews(movieId).map { it.results }
 

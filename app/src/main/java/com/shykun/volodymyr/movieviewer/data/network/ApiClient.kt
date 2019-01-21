@@ -31,15 +31,9 @@ class ApiClient @Inject constructor() {
         apiService = retrofit.create(ApiService::class.java)
     }
 
+    //movie
+
     fun getMovies(moviesType: MoviesType, page: Int = 1) = apiService.getMovies(moviesType.path, page)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-
-    fun getTV(tvType: TvType, page: Int = 1) = apiService.getTV(tvType.path, page)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-
-    fun getPopularPeople(page: Int = 1) = apiService.getPopularPeople(page)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
@@ -56,6 +50,34 @@ class ApiClient @Inject constructor() {
             .observeOn(AndroidSchedulers.mainThread())
 
     fun getRecommendedMovies(movieId: Int) = apiService.getRecommendedMovies(movieId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+    //tv
+
+    fun getTV(tvType: TvType, page: Int = 1) = apiService.getTV(tvType.path, page)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+    fun getTvDetails(tvId: Int) = apiService.getTvDetails(tvId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+    fun getTvCredits(tvId: Int) = apiService.getTvCredits(tvId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+    fun getRecommedndedTv(tvId: Int) = apiService.getRecommendedTv(tvId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+    fun getTvReviews(tvId: Int) = apiService.getTvReviews(tvId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+    //people
+
+    fun getPopularPeople(page: Int = 1) = apiService.getPopularPeople(page)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 }

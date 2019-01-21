@@ -66,8 +66,8 @@
 
                 <ImageView
                     android:id="@+id/moviePoster"
-                    android:layout_width="130dp"
-                    android:layout_height="200dp"
+                    android:layout_width="170dp"
+                    android:layout_height="260dp"
                     android:src="@drawable/poster_example"
                     app:url="@{movieDetails.posterPath}"
                     android:layout_marginLeft="10dp"/>
@@ -139,16 +139,16 @@
                     android:layout_below="@+id/movieOverview"/>
 
                 <android.support.v7.widget.RecyclerView
-                    android:id="@+id/movieReviews"
+                    android:id="@+id/recommendedMovies"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/movieCast"/>
 
                 <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recommendedMovies"
+                    android:id="@+id/movieReviews"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/movieReviews"/>
+                    android:layout_below="@id/recommendedMovies"/>
 
             </RelativeLayout>
 

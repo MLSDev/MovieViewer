@@ -22,7 +22,9 @@ fun genresToString(genres: List<Genre>?) = genres?.joinToString { it.name }
 fun countriesToString(countries: List<Country>?) = countries?.joinToString { it.name }
 
 @BindingConversion
-fun getGenres(genreIds: List<Int>): String {
+fun getGenres(genreIds: List<Int>?): String {
+    if (genreIds == null)
+        return ""
     val genres = ArrayList<String>()
     for (id in genreIds)
         genres.add(GenreHelper.genres[id]!!)
@@ -33,3 +35,6 @@ fun getGenres(genreIds: List<Int>): String {
 fun doubleToString(value: Double): String {
     return value.toString()
 }
+
+@BindingConversion
+fun listToString(value: List<String>?) = value?.joinToString()

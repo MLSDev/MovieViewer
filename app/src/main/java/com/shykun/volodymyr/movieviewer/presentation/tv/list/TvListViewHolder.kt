@@ -19,7 +19,7 @@ open class BaseTvListViewHolder(viewDataBinding: ViewDataBinding)
 class TvListLoadingViewHolder(binding: ViewHolderLoadingBinding)
     : BaseTvListViewHolder(binding)
 
-class TvListViewHolder(binding: ViewHolderTvBinding, val tvType: TvType)
+class TvListViewHolder(private val binding: ViewHolderTvBinding, val tvType: TvType)
     : BaseTvListViewHolder(binding) {
 
     lateinit var popularity: String
@@ -42,5 +42,12 @@ class TvListViewHolder(binding: ViewHolderTvBinding, val tvType: TvType)
                 popularityVisibility = View.GONE
             }
         }
+
+        executeBinding(item)
+    }
+
+    private fun executeBinding(tv: Tv) {
+        binding.tv = tv
+        binding.executePendingBindings()
     }
 }
