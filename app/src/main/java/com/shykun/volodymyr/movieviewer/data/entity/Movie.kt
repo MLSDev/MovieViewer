@@ -3,20 +3,20 @@ package com.shykun.volodymyr.movieviewer.data.entity
 import com.google.gson.annotations.SerializedName
 
 data class Movie (
-    @SerializedName("poster_path") var posterPath: String,
-    @SerializedName("adult") var adult: Boolean,
-    @SerializedName("overview") var overview: String,
-    @SerializedName("release_date") var releaseDate: String,
-    @SerializedName("genre_ids") var genreIds: List<Int>,
-    @SerializedName("id") var id: Int,
-    @SerializedName("original_title") var originalTitle: String,
-    @SerializedName("original_language") var originalLanguage: String,
-    @SerializedName("title") var title: String,
-    @SerializedName("backdrop_path") var backdropPath: String,
-    @SerializedName("popularity") var popularity: Double,
-    @SerializedName("vote_count") var voteCount: Int,
-    @SerializedName("video") var video: Boolean,
-    @SerializedName("vote_average") var voteAverage: Double
+    @SerializedName("poster_path") val posterPath: String,
+    @SerializedName("adult") val adult: Boolean,
+    @SerializedName("overview") val overview: String,
+    @SerializedName("release_date") val releaseDate: String,
+    @SerializedName("genre_ids") val genreIds: List<Int>,
+    @SerializedName("id") val id: Int,
+    @SerializedName("original_title") val originalTitle: String,
+    @SerializedName("original_language") val originalLanguage: String,
+    @SerializedName("title") val title: String,
+    @SerializedName("backdrop_path") val backdropPath: String,
+    @SerializedName("popularity") val popularity: Double,
+    @SerializedName("vote_count") val voteCount: Int,
+    @SerializedName("video") val video: Boolean,
+    @SerializedName("vote_average") val voteAverage: Double
 )
 
 enum class MoviesType(val path: String) {

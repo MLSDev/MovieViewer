@@ -8,16 +8,23 @@
     android:orientation="vertical"
     tools:context=".presentation.AppActivity">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/appToolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimary"/>
 
     <FrameLayout
+        android:layout_weight="1"
         android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="0dp"/>
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/bottomNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:menu="@menu/menu_navigation_view"
+        android:layout_gravity="bottom"
+        android:background="@color/colorPrimary"
+        app:itemIconTint="@color/bottom_nav_view_item_selector"
+        app:itemTextColor="@color/bottom_nav_view_item_selector"
+        app:labelVisibilityMode="labeled"/>
 
 
 </LinearLayout>

@@ -1,14 +1,14 @@
 package com.shykun.volodymyr.movieviewer.presentation.tv.tab
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.arellomobile.mvp.MvpAppCompatFragment
-import com.arellomobile.mvp.presenter.InjectPresenter
-import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Tv
 import com.shykun.volodymyr.movieviewer.data.entity.TvType
@@ -16,18 +16,23 @@ import com.shykun.volodymyr.movieviewer.presentation.AppActivity
 import kotlinx.android.synthetic.main.fragment_movies.*
 import java.lang.Exception
 
+const val TV_TAB_FRAGMENT_KEY = "tv_tab_fragment_key"
+
 const val POPULAR_TV = 0
 const val TOP_RATED_TV = 1
 const val TV_ON_THE_AIR = 2
 
-class TvTabFragment : MvpAppCompatFragment(), TvTabView {
+class TvTabFragment : Fragment() {
 
-    @InjectPresenter
-    lateinit var presenter: TvTabPresenter
-    lateinit var generalTvTabAdapter: GeneralTvTabAdapter
+    private lateinit var generalTvTabAdapter: GeneralTvTabAdapter
+    private lateinit var viewModel: TvTabViewModel
 
-    @ProvidePresenter
-    fun provideTVPresenter() = (activity as AppActivity).appComponent.getTvPresenter()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        viewModel = ViewModelProviders.of(this, (activity as AppActivity).appComponent.getTvTabViewModelFactory())
+                .get(TvTabViewModel::class.java)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -38,8 +43,17 @@ class TvTabFragment : MvpAppCompatFragment(), TvTabView {
         super.onViewCreated(view, savedInstanceState)
         setupAdapter()
         setupSeeAllClick()
-        presenter.onViewLoaded()
+        setupTvClick()
+        subscribeViewModel()
+        viewModel.onViewLoaded()
 
+    }
+
+    private fun subscribeViewModel() {
+        viewModel.popularTvLiveData.observe(this, Observer { showPopularTV(it) })
+        viewModel.topRatedTvLiveData.observe(this, Observer { showTopRatedTV(it) })
+        viewModel.tvOnTheAirLiveData.observe(this, Observer { showTVOnTheAir(it) })
+        viewModel.loadingErrorLiveData.observe(this, Observer { showError(it) })
     }
 
     private fun setupAdapter() {
@@ -51,30 +65,42 @@ class TvTabFragment : MvpAppCompatFragment(), TvTabView {
     }
 
     private fun setupSeeAllClick() {
-        generalTvTabAdapter.clickEvent.subscribe {
+        generalTvTabAdapter.seeAllClickEvent.subscribe {
             val tvType = when (it) {
                 POPULAR_TV -> TvType.POPULAR
                 TOP_RATED_TV -> TvType.TOP_RATED
                 TV_ON_THE_AIR -> TvType.ON_THE_AIR
                 else -> throw Exception("Undefined tv type")
             }
-            presenter.onViewAllButtonClicked(tvType)
+            viewModel.onViewAllButtonClicked(tvType)
         }
     }
 
-    override fun showPopularTV(tvList: ArrayList<Tv>) {
-        generalTvTabAdapter.addTV(tvList, POPULAR_TV)
+    private fun setupTvClick() {
+        generalTvTabAdapter.tvClickEvent.subscribe {
+            viewModel.onTvClicked(it)
+        }
     }
 
-    override fun showTopRatedTV(tvList: ArrayList<Tv>) {
-        generalTvTabAdapter.addTV(tvList, TOP_RATED_TV)
+    fun showPopularTV(tvList: List<Tv>?) {
+        if (tvList != null) {
+            generalTvTabAdapter.addTV(tvList, POPULAR_TV)
+        }
     }
 
-    override fun showTVOnTheAir(tvList: ArrayList<Tv>) {
-        generalTvTabAdapter.addTV(tvList, TV_ON_THE_AIR)
+    fun showTopRatedTV(tvList: List<Tv>?) {
+        if (tvList != null) {
+            generalTvTabAdapter.addTV(tvList, TOP_RATED_TV)
+        }
     }
 
-    override fun showError() {
-        Toast.makeText(this.context, "Error", Toast.LENGTH_SHORT).show()
+    fun showTVOnTheAir(tvList: List<Tv>?) {
+        if (tvList != null) {
+            generalTvTabAdapter.addTV(tvList, TV_ON_THE_AIR)
+        }
+    }
+
+    fun showError(message: String?) {
+        Toast.makeText(this.context, message, Toast.LENGTH_SHORT).show()
     }
 }

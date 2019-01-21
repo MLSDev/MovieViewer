@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="personDetails"
+            type="com.shykun.volodymyr.movieviewer.data.network.response.PersonDetailsResponse" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/personDetailsToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            app:layout_collapseMode="pin"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
+            app:title="@{personDetails.name}" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <ImageView
+                android:id="@+id/personProfilePhoto"
+                android:layout_width="170dp"
+                android:layout_height="260dp"
+                android:layout_margin="10dp"
+                app:url="@{personDetails.profilePath}" />
+
+            <TextView
+                android:id="@+id/personBirthDay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/personProfilePhoto"
+                android:layout_marginTop="10dp"
+                android:text="@{personDetails.birthday}"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/personPlaceOfBirth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/personBirthDay"
+                android:layout_toEndOf="@+id/personProfilePhoto"
+                android:text="@{personDetails.placeOfBirth}"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/personBioGraphy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/personProfilePhoto"
+                android:text="@{personDetails.biography}" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/personCast"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/personBioGraphy"
+                android:layout_marginTop="10dp" />
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+    </LinearLayout>
+
+</layout>

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.shykun.volodymyr.movieviewer.data.network.response.MovieDetailsResponse"/>
+        <import type="com.shykun.volodymyr.movieviewer.data.entity.GenreHelper"/>
+
+        <variable
+            name="movieDetails"
+            type="MovieDetailsResponse" />
+    </data>
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".presentation.movies.details.MovieDetailsFragment">
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="false">
+
+
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="?attr/actionBarSize"
+                app:contentScrim="@color/colorPrimary"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+                <ImageView
+                    android:id="@+id/movieHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:scaleType="centerCrop"
+                    app:layout_collapseMode="parallax"
+                    app:url="@{movieDetails.backdropPath}"
+                    android:background="@color/colorPrimary"/>
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/movieDetailsToolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:layout_collapseMode="pin"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
+                    app:title="@{movieDetails.title}"/>
+
+            </android.support.design.widget.CollapsingToolbarLayout>
+
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+                <ImageView
+                    android:id="@+id/moviePoster"
+                    android:layout_width="170dp"
+                    android:layout_height="260dp"
+                    android:src="@drawable/poster_example"
+                    app:url="@{movieDetails.posterPath}"
+                    android:layout_marginLeft="10dp"/>
+
+                <TextView
+                    android:id="@+id/movieRating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/moviePoster"
+                    android:textSize="18sp"
+                    android:text="@{String.valueOf(movieDetails.voteAverage)}" />
+
+                <android.support.v7.widget.AppCompatRatingBar
+                    android:id="@+id/movieRatingBar"
+                    style="@style/Base.Widget.AppCompat.RatingBar.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/movieRating"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/moviePoster"
+                    android:numStars="10"
+                    android:rating="@{movieDetails.voteAverage}"/>
+
+                <TextView
+                    android:id="@+id/movieCountry"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/movieRatingBar"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/moviePoster"
+                    android:textSize="18sp"
+                    android:text="@{movieDetails.productionCountries}"/>
+
+                <TextView
+                    android:id="@+id/movieYear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/movieCountry"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/moviePoster"
+                    android:textSize="18sp"
+                    android:text="@{movieDetails.releaseDate}" />
+
+                <TextView
+                    android:id="@+id/movieGenres"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/movieYear"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/moviePoster"
+                    android:textSize="18sp"
+                    android:text="@{movieDetails.genres}"/>
+
+                <TextView
+                    android:layout_margin="10dp"
+                    android:id="@+id/movieOverview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/moviePoster"
+                    android:textSize="18sp"
+                    android:text="@{movieDetails.overview}" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/movieCast"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/movieOverview"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recommendedMovies"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/movieCast"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/movieReviews"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/recommendedMovies"/>
+
+            </RelativeLayout>
+
+        </android.support.v4.widget.NestedScrollView>
+
+    </android.support.design.widget.CoordinatorLayout>
+
+</layout>
