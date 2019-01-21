@@ -28,3 +28,8 @@ fun getGenres(genreIds: List<Int>): String {
         genres.add(GenreHelper.genres[id]!!)
     return genres.joinToString()
 }
+
+@BindingConversion
+fun doubleToString(value: Double): String {
+    return value.toString()
+}

@@ -26,14 +26,15 @@ class GeneralMovieTabViewHolder(
     override fun bind(item: ArrayList<Movie>, position: Int) {
         super.bind(item, position)
 
+        title = when (position) {
+            POPULAR_MOVIES -> itemView.context.getString(R.string.popular_movies)
+            TOP_RATED_MOVIES -> itemView.context.getString(R.string.top_rated_movies)
+            UPCOMING_MOVIES -> itemView.context.getString(R.string.upcoming_movies)
+            else -> ""
+        }
+
         if (item.isNotEmpty()) {
             progressBarVisibility = View.GONE
-            title = when (position) {
-                POPULAR_MOVIES -> itemView.context.getString(R.string.popular_movies)
-                TOP_RATED_MOVIES -> itemView.context.getString(R.string.top_rated_movies)
-                UPCOMING_MOVIES -> itemView.context.getString(R.string.upcoming_movies)
-                else -> ""
-            }
 
             movieList.apply {
                 layoutManager = LinearLayoutManager(this.context, LinearLayout.HORIZONTAL, false)

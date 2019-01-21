@@ -28,14 +28,15 @@ class GeneralTvTabViewHolder(
     override fun bind(item: ArrayList<Tv>, position: Int) {
         super.bind(item, position)
 
+        title = when (position) {
+            POPULAR_TV -> itemView.context.getString(R.string.popular_tv)
+            TOP_RATED_TV -> itemView.context.getString(R.string.top_rated_tv)
+            TV_ON_THE_AIR -> itemView.context.getString(R.string.tv_on_the_air)
+            else -> ""
+        }
+
         if (item.isNotEmpty()) {
             progressBarVisibility = View.GONE
-            title = when (position) {
-                POPULAR_TV -> itemView.context.getString(R.string.popular_tv)
-                TOP_RATED_TV -> itemView.context.getString(R.string.top_rated_tv)
-                TV_ON_THE_AIR -> itemView.context.getString(R.string.tv_on_the_air)
-                else -> ""
-            }
 
             tvList.apply {
                 layoutManager = LinearLayoutManager(this.context, LinearLayout.HORIZONTAL, false)

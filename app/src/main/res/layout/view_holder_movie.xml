@@ -65,7 +65,7 @@
                 android:layout_below="@id/title"
                 android:layout_marginStart="5dp"
                 android:layout_toEndOf="@id/starIcon"
-                android:text="@{movie.voteAverage.toString}"
+                android:text="@{movie.voteAverage}"
                 android:textColor="@color/snow"
                 android:textSize="15sp" />
 

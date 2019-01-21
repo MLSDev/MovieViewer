@@ -1,22 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tool="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:animateLayoutChanges="true">
 
-    <TextView
-        android:id="@+id/reviewAuthor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tool:text="Author Name" />
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tool="http://schemas.android.com/tools">
 
-    <TextView
-        android:maxLines="1"
-        android:id="@+id/reviewContent"
+    <data>
+
+        <variable
+            name="review"
+            type="com.shykun.volodymyr.movieviewer.data.entity.Review" />
+
+        <variable
+            name="viewHolder"
+            type="com.shykun.volodymyr.movieviewer.presentation.movies.details.MovieReviewViewHolder" />
+    </data>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tool:text="Very cool movie" />
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
+        android:orientation="vertical">
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/reviewAuthor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tool:text="@{review.author}" />
+
+        <TextView
+            android:id="@+id/reviewContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="@{viewHolder.maxLines}"
+            android:textSize="18sp"
+            tool:text="@{review.content}" />
+
+    </LinearLayout>
+
+</layout>
