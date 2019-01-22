@@ -88,4 +88,16 @@ class ApiClient @Inject constructor() {
     fun getPersonCimbinedCredits(personId: Int) = apiService.getPersonCombinedCredits(personId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+
+    //discover
+
+    fun discoverMovies(year: Int?, voteAverage: Int?, genres: String?) = apiService
+            .discoverMovies(year, voteAverage, genres)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+    fun discoverTv(airDate: String?, voteAverage: Int?, genres: String?) = apiService
+            .discoverTV(airDate, voteAverage, genres)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
 }

@@ -13,4 +13,9 @@
     <string name="popular_tv">Popular TV</string>
     <string name="top_rated_tv">Top rated TV</string>
     <string name="tv_on_the_air">TV on the air</string>
+    <string name="filters">Filters</string>
+    <string name="genres">Genres</string>
+    <string name="min_rating">Min rating</string>
+    <string name="min_release_year">Min release year</string>
+    <string name="show_results">Show results</string>
 </resources>

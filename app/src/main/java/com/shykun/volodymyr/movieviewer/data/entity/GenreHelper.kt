@@ -28,6 +28,5 @@ object GenreHelper {
             10765 to "Sci-Fi & Fantasy",
             10766 to "Soap",
             10767 to "Talk",
-            10768 to "War & Politics"
-    )
+            10768 to "War & Politics")
 }
