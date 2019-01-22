@@ -5,9 +5,9 @@ import com.shykun.volodymyr.movieviewer.presentation.base.BaseViewHolder
 
 class ViewHolderSingleSelection(
         private val binding: ViewHolderSingleSelectionItemBinding,
-        private val clickListener: OnItemClickListener) : BaseViewHolder<String>(binding) {
+        private val clickListener: OnItemClickListener) : BaseViewHolder<Int>(binding) {
 
-    fun bind(item: String, position: Int, isChecked: Boolean) {
+    fun bind(item: Int, position: Int, isChecked: Boolean) {
         super.bind(item, position)
 
         binding.root.setOnClickListener { clickListener.onItemClicked(position) }
@@ -15,7 +15,7 @@ class ViewHolderSingleSelection(
         executeBinding(item, isChecked)
     }
 
-    private fun executeBinding(filterName: String, isChecked: Boolean) {
+    private fun executeBinding(filterName: Int, isChecked: Boolean) {
         binding.filterName = filterName
         binding.isChecked = isChecked
         binding.executePendingBindings()

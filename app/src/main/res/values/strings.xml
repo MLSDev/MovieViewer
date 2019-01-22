@@ -18,4 +18,6 @@
     <string name="min_rating">Min rating</string>
     <string name="min_release_year">Min release year</string>
     <string name="show_results">Show results</string>
+    <string name="reset">Reset</string>
+    <string name="clear">Clear</string>
 </resources>

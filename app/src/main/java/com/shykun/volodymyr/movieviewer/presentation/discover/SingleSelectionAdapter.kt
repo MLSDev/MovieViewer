@@ -7,10 +7,10 @@ import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.databinding.ViewHolderSingleSelectionItemBinding
 import com.shykun.volodymyr.movieviewer.presentation.base.BaseRecyclerViewAdapter
 
-class SingleSelectionAdapter(items: ArrayList<String>)
-    : BaseRecyclerViewAdapter<String, ViewHolderSingleSelection>(items), OnItemClickListener {
+class SingleSelectionAdapter(items: ArrayList<Int>)
+    : BaseRecyclerViewAdapter<Int, ViewHolderSingleSelection>(items), OnItemClickListener {
 
-    var lastClickedPosition = -1
+    var lastClickedPosition: Int = -1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderSingleSelection {
         val inflater = LayoutInflater.from(parent.context)

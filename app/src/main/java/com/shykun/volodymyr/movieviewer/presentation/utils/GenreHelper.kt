@@ -1,4 +1,4 @@
-package com.shykun.volodymyr.movieviewer.data.entity
+package com.shykun.volodymyr.movieviewer.presentation.utils
 
 object GenreHelper {
     val genres = mapOf(

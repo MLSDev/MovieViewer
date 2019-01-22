@@ -2,16 +2,11 @@ package com.shykun.volodymyr.movieviewer.presentation.tv.list
 
 import android.databinding.ViewDataBinding
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
-import com.shykun.volodymyr.movieviewer.data.entity.GenreHelper
 import com.shykun.volodymyr.movieviewer.data.entity.Tv
 import com.shykun.volodymyr.movieviewer.data.entity.TvType
 import com.shykun.volodymyr.movieviewer.databinding.ViewHolderLoadingBinding
 import com.shykun.volodymyr.movieviewer.databinding.ViewHolderTvBinding
 import com.shykun.volodymyr.movieviewer.presentation.base.BaseViewHolder
-import com.shykun.volodymyr.movieviewer.presentation.glide.GlideApp
-import kotlinx.android.synthetic.main.view_holder_movie.view.*
 
 open class BaseTvListViewHolder(viewDataBinding: ViewDataBinding)
     : BaseViewHolder<Tv>(viewDataBinding)

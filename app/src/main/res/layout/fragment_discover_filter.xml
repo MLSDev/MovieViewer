@@ -1,21 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tool="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".presentation.discover.DiscoverFilterFragment">
+    tools:context=".presentation.discover.DiscoverFragment">
 
     <TextView
-        android:layout_width="match_parent"
+        android:id="@+id/filtersTitle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:text="@string/filters"
         android:textSize="30sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/filtersTitle"
+        android:layout_alignEnd="@+id/genreField"
+        android:text="@string/clear"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
+
 
     <RelativeLayout
+        android:layout_below="@id/filtersTitle"
+        android:id="@+id/genreField"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_marginBottom="10dp"
@@ -59,6 +72,8 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:layout_below="@id/genreField"
+        android:id="@+id/ratingField"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_marginBottom="10dp"
@@ -102,6 +117,8 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:layout_below="@id/ratingField"
+        android:id="@+id/releaseYearField"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_marginBottom="10dp"
@@ -145,6 +162,8 @@
     </RelativeLayout>
 
     <RadioGroup
+        android:layout_below="@id/releaseYearField"
+        android:id="@+id/typeRadioGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
@@ -167,19 +186,15 @@
             android:textSize="20sp" />
     </RadioGroup>
 
-    <RelativeLayout
+    <Button
+        android:id="@+id/showResultsButton"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
+        android:background="@drawable/button_rounded"
+        android:text="@string/show_results"
+        android:textStyle="bold" />
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_alignParentBottom="true"
-            android:layout_margin="16dp"
-            android:background="@drawable/button_rounded"
-            android:text="@string/show_results"
-            android:textStyle="bold"/>
 
-    </RelativeLayout>
-
-</LinearLayout>
+</RelativeLayout>

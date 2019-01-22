@@ -7,7 +7,7 @@
     <data>
 
         <import type="com.shykun.volodymyr.movieviewer.data.network.response.MovieDetailsResponse"/>
-        <import type="com.shykun.volodymyr.movieviewer.data.entity.GenreHelper"/>
+        <import type="com.shykun.volodymyr.movieviewer.presentation.utils.GenreHelper"/>
 
         <variable
             name="movieDetails"

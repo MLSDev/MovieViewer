@@ -3,10 +3,11 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+        <import type="String"/>
 
         <variable
             name="filterName"
-            type="String" />
+            type="Integer" />
 
         <variable
             name="isChecked"
@@ -24,7 +25,7 @@
             android:layout_marginStart="16dp"
             android:buttonTint="@color/colorAccent"
             android:checked="@{isChecked}"
-            android:text="@{filterName}"
+            android:text="@{String.valueOf(filterName)}"
             android:textColor="@color/snow" />
 
     </RelativeLayout>
