@@ -4,13 +4,14 @@ import android.databinding.DataBindingUtil
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.shykun.volodymyr.movieviewer.R
+import com.shykun.volodymyr.movieviewer.data.entity.Genre
 import com.shykun.volodymyr.movieviewer.databinding.ViewHolderMultipleSelectionItemBinding
 import com.shykun.volodymyr.movieviewer.presentation.base.BaseRecyclerViewAdapter
 
 class MultipleSelectionAdapter(items: ArrayList<String>)
     : BaseRecyclerViewAdapter<String, ViewHolderMultipleSelection>(items), OnItemClickListener {
 
-    var checkedItems = HashSet<String>()
+    var checkedItems = HashMap<String, Boolean>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderMultipleSelection {
         val inflater = LayoutInflater.from(parent.context)
@@ -26,16 +27,28 @@ class MultipleSelectionAdapter(items: ArrayList<String>)
 
     override fun onItemClicked(position: Int) {
         val item = items[position]
+        val isChecked = checkedItems[item]
 
-        if (checkedItems.contains(item))
-            checkedItems.remove(item)
+        if (isChecked == null)
+            checkedItems[item] = true
         else
-            checkedItems.add(item)
+            checkedItems[item] = !isChecked
+
+        notifyItemChanged(position)
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolderMultipleSelection, position: Int) {
         val item = items[position]
-        val isChecked = checkedItems.contains(item)
+        val isChecked = checkedItems[item] ?: false
         viewHolder.bind(item, position, isChecked)
+    }
+
+    fun getCheckedItems(): ArrayList<String> {
+        val res = ArrayList<String>()
+        for ((item, isChecked) in checkedItems) {
+            if (isChecked)
+                res.add(item)
+        }
+        return res
     }
 }

@@ -55,6 +55,10 @@ class TvListAdapter(itemList: ArrayList<Tv>, val tvType: TvType)
     fun addTvList(tvList: List<Tv>) {
         items.addAll(tvList)
         notifyDataSetChanged()
+    }
 
+    fun setTvList(tvList: List<Tv>) {
+        items.clear()
+        addTvList(tvList)
     }
 }

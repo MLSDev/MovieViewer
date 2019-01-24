@@ -16,10 +16,10 @@ fun loadImage(imageView: ImageView, url: String?) {
 }
 
 @BindingConversion
-fun genresToString(genres: List<Genre>?) = genres?.joinToString { it.name }
+fun genresToString(genres: ArrayList<Genre>?): String? = genres?.joinToString { it.name }
 
 @BindingConversion
-fun countriesToString(countries: List<Country>?) = countries?.joinToString { it.name }
+fun countriesToString(countries: List<Country>?): String? = countries?.joinToString { it.name }
 
 @BindingConversion
 fun getGenres(genreIds: List<Int>?): String {

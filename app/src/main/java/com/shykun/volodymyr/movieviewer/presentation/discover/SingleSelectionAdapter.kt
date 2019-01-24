@@ -29,6 +29,10 @@ class SingleSelectionAdapter(items: ArrayList<Int>)
     }
 
     override fun onItemClicked(position: Int) {
+        notifyItemChanged(lastClickedPosition)
         lastClickedPosition = position
+        notifyItemChanged(lastClickedPosition)
     }
+
+    fun getChosenItem() = items[lastClickedPosition]
 }

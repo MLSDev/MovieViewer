@@ -22,7 +22,7 @@
         android:title="@string/people"
         app:showAsAction="always"/>
     <item
-        android:id="@+id/action_search"
+        android:id="@+id/action_discover"
         android:enabled="true"
         android:icon="@drawable/ic_search"
         android:title="@string/search"

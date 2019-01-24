@@ -1,5 +1,7 @@
 package com.shykun.volodymyr.movieviewer.presentation.utils
 
+import com.shykun.volodymyr.movieviewer.data.entity.Genre
+
 object GenreHelper {
     val genres = mapOf(
             28 to "Action",
@@ -29,4 +31,13 @@ object GenreHelper {
             10766 to "Soap",
             10767 to "Talk",
             10768 to "War & Politics")
+
+    fun getGenresByNames(names: ArrayList<String>): ArrayList<Genre> {
+        val res = ArrayList<Genre>()
+        for ((id, name) in genres) {
+            if (names.contains(name))
+                res.add(Genre(id, name))
+        }
+        return res
+    }
 }

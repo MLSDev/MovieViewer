@@ -9,6 +9,7 @@ import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
 import com.shykun.volodymyr.movieviewer.data.entity.TvType
 import com.shykun.volodymyr.movieviewer.presentation.di.AppComponent
 import com.shykun.volodymyr.movieviewer.presentation.di.DaggerAppComponent
+import com.shykun.volodymyr.movieviewer.presentation.discover.*
 import com.shykun.volodymyr.movieviewer.presentation.movies.details.MOVIE_DETAILS_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.movies.details.MovieDetailsFragment
 import com.shykun.volodymyr.movieviewer.presentation.movies.list.MOVIE_LIST_FRAGMENT_KEY
@@ -56,6 +57,9 @@ class AppActivity : AppCompatActivity() {
                 MOVIE_DETAILS_FRAGMENT_KEY -> MovieDetailsFragment.newInstance(data as Int)
                 TV_DETAILS_FRAGMENT -> TvDetailsFragment.newInstance(data as Int)
                 PERSON_DETAILS_FRAGMENT_KEY -> PersonDetailsFragment.newInstance(data as Int)
+                DISCOVER_FRAGMENT_KEY -> DiscoverFragment()
+                DISCOVER_LIST_FRAGMENT_KEY -> DiscoverListFragment()
+                FILTER_LIST_FRAGMENT_KEY -> FilterListFragment.newInstance(data as FilterType)
                 else -> throw RuntimeException("Unknown key")
             }
         }
@@ -87,6 +91,7 @@ class AppActivity : AppCompatActivity() {
                 R.id.action_movies -> router.navigateTo(MOVIE_TAB_FRAGMENT_KEY)
                 R.id.action_tv -> router.navigateTo(TV_TAB_FRAGMENT_KEY)
                 R.id.action_people -> router.navigateTo(PEOPLE_TAB_FRAGMENT_KEY)
+                R.id.action_discover -> router.navigateTo(DISCOVER_FRAGMENT_KEY)
                 else -> false
             }
             true

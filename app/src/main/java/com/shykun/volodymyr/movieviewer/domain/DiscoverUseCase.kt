@@ -5,8 +5,8 @@ import javax.inject.Inject
 
 class DiscoverUseCase @Inject constructor(private val apiClient: ApiClient) {
 
-    fun discoverMovies(year: Int?, voteAverage: Int?, genres: String?) = apiClient
-            .discoverMovies(year, voteAverage, genres)
+    fun discoverMovies(year: Int?, rating: Int?, genres: String?) = apiClient
+            .discoverMovies(year, rating, genres)
             .map { it.results }
 
     fun discoverTv(airDate: String?, voteAverage: Int?, genres: String?) = apiClient

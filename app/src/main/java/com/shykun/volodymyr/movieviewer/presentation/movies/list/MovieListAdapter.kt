@@ -55,6 +55,10 @@ class MovieListAdapter(itemList: ArrayList<Movie>, val moviesType: MoviesType)
     fun addMovies(movies: List<Movie>) {
         items.addAll(movies)
         notifyDataSetChanged()
+    }
 
+    fun setMovies(movies: List<Movie>) {
+        items.clear()
+        addMovies(movies)
     }
 }

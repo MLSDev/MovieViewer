@@ -1,7 +1,11 @@
 package com.shykun.volodymyr.movieviewer.presentation.di
 
 import com.shykun.volodymyr.movieviewer.presentation.AppActivity
+import com.shykun.volodymyr.movieviewer.presentation.discover.DiscoverFragment
+import com.shykun.volodymyr.movieviewer.presentation.discover.DiscoverListFragment
+import com.shykun.volodymyr.movieviewer.presentation.discover.FilterListFragment
 import com.shykun.volodymyr.movieviewer.presentation.movies.details.MovieDetailsViewModelFactory
+import com.shykun.volodymyr.movieviewer.presentation.movies.list.MovieListFragment
 import com.shykun.volodymyr.movieviewer.presentation.movies.list.MovieListViewModelFactory
 import com.shykun.volodymyr.movieviewer.presentation.movies.tab.MovieTabFragment
 import com.shykun.volodymyr.movieviewer.presentation.movies.tab.MovieTabViewModelFactory
@@ -27,4 +31,8 @@ interface AppComponent {
 
     fun inject(target: MovieTabFragment)
     fun inject(target: AppActivity)
+    fun inject(target: DiscoverFragment)
+    fun inject(target: FilterListFragment)
+    fun inject(target: MovieListFragment)
+    fun inject(ratget: DiscoverListFragment)
 }

@@ -25,7 +25,9 @@
             android:layout_height="wrap_content"
             android:buttonTint="@color/colorAccent"
             android:text="@{filterName}"
-            android:textColor="@color/snow" />
+            android:checked="@{isChecked}"
+            android:textColor="@color/snow"
+            android:clickable="false"/>
     </RelativeLayout>
 
 </layout>
