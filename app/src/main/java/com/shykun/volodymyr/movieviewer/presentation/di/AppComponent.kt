@@ -4,6 +4,7 @@ import com.shykun.volodymyr.movieviewer.presentation.AppActivity
 import com.shykun.volodymyr.movieviewer.presentation.discover.DiscoverFragment
 import com.shykun.volodymyr.movieviewer.presentation.discover.DiscoverListFragment
 import com.shykun.volodymyr.movieviewer.presentation.discover.FilterListFragment
+import com.shykun.volodymyr.movieviewer.presentation.movies.details.MovieDetailsFragment
 import com.shykun.volodymyr.movieviewer.presentation.movies.details.MovieDetailsViewModelFactory
 import com.shykun.volodymyr.movieviewer.presentation.movies.list.MovieListFragment
 import com.shykun.volodymyr.movieviewer.presentation.movies.list.MovieListViewModelFactory
@@ -12,6 +13,7 @@ import com.shykun.volodymyr.movieviewer.presentation.movies.tab.MovieTabViewMode
 import com.shykun.volodymyr.movieviewer.presentation.people.details.PersonDetailsViewModelFactory
 import com.shykun.volodymyr.movieviewer.presentation.people.tab.PeopleTabViewModelFactory
 import com.shykun.volodymyr.movieviewer.presentation.tv.details.TvDetailsViewModelFactory
+import com.shykun.volodymyr.movieviewer.presentation.tv.list.TvListFragment
 import com.shykun.volodymyr.movieviewer.presentation.tv.list.TvListViewModelFactory
 import com.shykun.volodymyr.movieviewer.presentation.tv.tab.TvTabViewModelFactory
 import dagger.Component
@@ -34,5 +36,7 @@ interface AppComponent {
     fun inject(target: DiscoverFragment)
     fun inject(target: FilterListFragment)
     fun inject(target: MovieListFragment)
-    fun inject(ratget: DiscoverListFragment)
+    fun inject(target: TvListFragment)
+    fun inject(target: DiscoverListFragment)
+    fun inject(target: MovieDetailsFragment)
 }

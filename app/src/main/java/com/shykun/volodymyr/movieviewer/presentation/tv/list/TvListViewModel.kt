@@ -9,7 +9,7 @@ import com.shykun.volodymyr.movieviewer.domain.TvUseCase
 
 class TvListViewModel(private val tvUseCase: TvUseCase) : ViewModel() {
 
-    lateinit var tvType: TvType
+//    lateinit var tvType: TvType
 
     private val tvListMutableLiveData = MutableLiveData<List<Tv>>()
     private val loadingErrorMutableLiveData = MutableLiveData<String>()
@@ -17,12 +17,12 @@ class TvListViewModel(private val tvUseCase: TvUseCase) : ViewModel() {
     val tvListLiveData: LiveData<List<Tv>> = tvListMutableLiveData
     val loadingErrorLiveData: LiveData<String> = loadingErrorMutableLiveData
 
-    fun onViewLoaded(tvType: TvType) {
-        this.tvType = tvType
-        getTvList(1)
-    }
+//    fun onViewLoaded(tvType: TvType) {
+//        this.tvType = tvType
+//        getTvList(1)
+//    }
 
-    fun getTvList(page: Int) = tvUseCase.execute(tvType, page)
+    fun getTvList(page: Int, tvType: TvType) = tvUseCase.execute(tvType, page)
             .doOnSuccess {
                 tvListMutableLiveData.value = it
             }

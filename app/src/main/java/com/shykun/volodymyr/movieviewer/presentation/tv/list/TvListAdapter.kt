@@ -9,6 +9,8 @@ import com.shykun.volodymyr.movieviewer.data.entity.TvType
 import com.shykun.volodymyr.movieviewer.databinding.ViewHolderLoadingBinding
 import com.shykun.volodymyr.movieviewer.databinding.ViewHolderTvBinding
 import com.shykun.volodymyr.movieviewer.presentation.base.BaseRecyclerViewAdapter
+import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 
 private const val TV = 0
 private const val LOADING = 1
@@ -17,23 +19,25 @@ class TvListAdapter(itemList: ArrayList<Tv>, val tvType: TvType)
     : BaseRecyclerViewAdapter<Tv, BaseTvListViewHolder>(itemList) {
 
     var lastLoadedPage = 1
+    private val tvClickSubject = PublishSubject.create<Int>()
+    val tvClickEvent: Observable<Int> = tvClickSubject
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseTvListViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        if (viewType == TV) {
+        return if (viewType == TV) {
             val binding = DataBindingUtil.inflate<ViewHolderTvBinding>(
                     inflater,
                     R.layout.view_holder_tv,
                     parent,
                     false)
-            return TvListViewHolder(binding, tvType)
+            TvListViewHolder(binding, tvType, tvClickSubject)
         } else {
             val binding = DataBindingUtil.inflate<ViewHolderLoadingBinding>(
                     inflater,
                     R.layout.view_holder_loading,
                     parent,
                     false)
-            return TvListLoadingViewHolder(binding)
+            TvListLoadingViewHolder(binding)
         }
     }
 

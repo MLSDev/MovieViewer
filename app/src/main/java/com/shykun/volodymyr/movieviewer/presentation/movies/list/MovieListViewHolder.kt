@@ -7,6 +7,7 @@ import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
 import com.shykun.volodymyr.movieviewer.databinding.ViewHolderLoadingBinding
 import com.shykun.volodymyr.movieviewer.databinding.ViewHolderMovieBinding
 import com.shykun.volodymyr.movieviewer.presentation.base.BaseViewHolder
+import io.reactivex.subjects.PublishSubject
 
 open class BaseMovieListViewHolder(viewDataBinding: ViewDataBinding)
     : BaseViewHolder<Movie>(viewDataBinding)
@@ -14,7 +15,10 @@ open class BaseMovieListViewHolder(viewDataBinding: ViewDataBinding)
 class MovieListLoadingViewHolder(binding: ViewHolderLoadingBinding)
     : BaseMovieListViewHolder(binding)
 
-class MovieListViewHolder(private val binding: ViewHolderMovieBinding, val moviesType: MoviesType)
+class MovieListViewHolder(
+        private val binding: ViewHolderMovieBinding,
+        private val moviesType: MoviesType,
+        private val movieClickSubject: PublishSubject<Int>)
     : BaseMovieListViewHolder(binding) {
 
     var popularityVisibility = View.VISIBLE
@@ -38,6 +42,8 @@ class MovieListViewHolder(private val binding: ViewHolderMovieBinding, val movie
                 popularityVisibility = View.GONE
             }
         }
+
+        itemView.setOnClickListener { movieClickSubject.onNext(item.id) }
 
         executeBinding(item)
     }

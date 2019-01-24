@@ -17,8 +17,11 @@ import com.shykun.volodymyr.movieviewer.data.entity.Review
 import com.shykun.volodymyr.movieviewer.data.network.response.MovieDetailsResponse
 import com.shykun.volodymyr.movieviewer.databinding.FragmentMovieDetailsBinding
 import com.shykun.volodymyr.movieviewer.presentation.AppActivity
+import com.shykun.volodymyr.movieviewer.presentation.movies.list.MOVIE_LIST_FRAGMENT_KEY
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 import kotlinx.android.synthetic.main.fragment_person_details.*
+import ru.terrakok.cicerone.Router
+import javax.inject.Inject
 
 const val MOVIE_DETAILS_FRAGMENT_KEY = "movie_details_fragment_key"
 private const val MOVIE_ID_KEY = "movie_id_key"
@@ -32,12 +35,18 @@ class MovieDetailsFragment : Fragment() {
     private lateinit var reviewsAdapter: ReviewAdapter
     private lateinit var recommendedMoviesAdapter: RecommendedMoviesAdapter
 
+    @Inject
+    lateinit var viewModelFactory: MovieDetailsViewModelFactory
+    @Inject
+    lateinit var router: Router
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        (activity as AppActivity).appComponent.inject(this)
         movieId = arguments?.getInt(MOVIE_ID_KEY)!!
         viewModel = ViewModelProviders
-                .of(this, (activity as AppActivity).appComponent.getMovieDetailsViewModelFactory())
+                .of(this, viewModelFactory)
                 .get(MovieDetailsViewModel::class.java)
     }
 
@@ -60,7 +69,7 @@ class MovieDetailsFragment : Fragment() {
     private fun setupBackButton() {
         movieDetailsToolbar.setNavigationIcon(R.drawable.ic_arrow_back)
         movieDetailsToolbar.setNavigationOnClickListener {
-            activity?.onBackPressed()
+            router.backTo(MOVIE_LIST_FRAGMENT_KEY)
         }
     }
 

@@ -15,26 +15,33 @@ import com.shykun.volodymyr.movieviewer.data.entity.Movie
 import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
 import com.shykun.volodymyr.movieviewer.presentation.AppActivity
 import com.shykun.volodymyr.movieviewer.presentation.base.ScrollObservable
+import com.shykun.volodymyr.movieviewer.presentation.movies.details.MOVIE_DETAILS_FRAGMENT_KEY
 import io.reactivex.android.schedulers.AndroidSchedulers
-import kotlinx.android.synthetic.main.fragment_filter_list.*
 import kotlinx.android.synthetic.main.fragment_movie_list.*
+import ru.terrakok.cicerone.Router
+import javax.inject.Inject
 
 const val MOVIE_LIST_FRAGMENT_KEY = "movie_list_fragment_key"
 private const val MOVIE_TYPE_KEY = "movie_type"
-
-private lateinit var movieListAdapter: MovieListAdapter
 
 class MovieListFragment : Fragment() {
 
     private lateinit var moviesType: MoviesType
     private lateinit var viewModel: MovieListViewModel
+    private lateinit var movieListAdapter: MovieListAdapter
+
+    @Inject
+    lateinit var viewModelFactory: MovieListViewModelFactory
+    @Inject
+    lateinit var router: Router
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        (activity as AppActivity).appComponent.inject(this)
         moviesType = arguments?.getSerializable(MOVIE_TYPE_KEY) as MoviesType
         viewModel = ViewModelProviders
-                .of(this, (activity as AppActivity).appComponent.getMovieListViewModelFactory())
+                .of(this, viewModelFactory)
                 .get(MovieListViewModel::class.java)
     }
 
@@ -47,15 +54,31 @@ class MovieListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupBackButton()
         setupAdapter()
+        setupMovieClick()
         subscribeViewModel()
         subscribeScrollObervable()
-        viewModel.onViewLoaded(moviesType)
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+
     }
 
     private fun setupBackButton() {
         movieListToolbar.setNavigationIcon(R.drawable.ic_arrow_back)
         movieListToolbar.setNavigationOnClickListener {
             activity?.onBackPressed()
+        }
+    }
+
+    private fun setupMovieClick() {
+        movieListAdapter.movieClickEvent.subscribe {
+            router.navigateTo(MOVIE_DETAILS_FRAGMENT_KEY, it)
         }
     }
 
@@ -80,7 +103,7 @@ class MovieListFragment : Fragment() {
                 .distinctUntilChanged()
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext {
-                    viewModel.getMovies(movieListAdapter.lastLoadedPage + 1)
+                    viewModel.getMovies(movieListAdapter.lastLoadedPage + 1, moviesType)
                     movieListAdapter.lastLoadedPage++
                 }
                 .subscribe()

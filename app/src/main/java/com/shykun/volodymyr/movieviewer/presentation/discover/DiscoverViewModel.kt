@@ -51,12 +51,12 @@ class DiscoverViewModel(private val discoverUseCase: DiscoverUseCase) : ViewMode
 
     private fun discoverMovies(page: Int): Disposable? {
 
-        val y = if (year.get() == -1) null else year.get()
-        val r = if (rating.get() == -1) null else rating.get()
-        val g = if (genres.get()!!.isEmpty()) null else genres.get()!!.joinToString { it.id.toString() }
+        val tmpYear = if (year.get() == -1) null else year.get()
+        val tmpRating = if (rating.get() == -1) null else rating.get()
+        val tmpGenres = if (genres.get()!!.isEmpty()) null else genres.get()!!.joinToString { it.id.toString() }
 
         return discoverUseCase
-                .discoverMovies(y, r, g, page)
+                .discoverMovies(tmpYear, tmpRating, tmpGenres, page)
                 .doOnSuccess {
                     discoveredMoviesMutableLiveData.value = it
                 }
@@ -67,12 +67,12 @@ class DiscoverViewModel(private val discoverUseCase: DiscoverUseCase) : ViewMode
     }
 
     private fun discoverTv(page: Int) {
-        val y = if (year.get() == -1) null else year.get()
-        val r = if (rating.get() == -1) null else rating.get()
-        val g = if (genres.get()!!.isEmpty()) null else genres.get()!!.joinToString { it.id.toString() }
+        val tmpYear = if (year.get() == -1) null else year.get()
+        val tmpRating = if (rating.get() == -1) null else rating.get()
+        val tmpGenres = if (genres.get()!!.isEmpty()) null else genres.get()!!.joinToString { it.id.toString() }
 
         discoverUseCase
-                .discoverTv("$y-01-01", r, g, page)
+                .discoverTv("$tmpYear-01-01", tmpRating, tmpGenres, page)
                 .doOnSuccess {
                     discoveredTvMutableLiveData.value = it
                 }

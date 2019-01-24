@@ -9,6 +9,8 @@ import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
 import com.shykun.volodymyr.movieviewer.databinding.ViewHolderLoadingBinding
 import com.shykun.volodymyr.movieviewer.databinding.ViewHolderMovieBinding
 import com.shykun.volodymyr.movieviewer.presentation.base.BaseRecyclerViewAdapter
+import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 
 private const val MOVIE = 0
 private const val LOADING = 1
@@ -16,7 +18,9 @@ private const val LOADING = 1
 class MovieListAdapter(itemList: ArrayList<Movie>, val moviesType: MoviesType)
     : BaseRecyclerViewAdapter<Movie, BaseMovieListViewHolder>(itemList) {
 
-    var lastLoadedPage = 1
+    private val movieClickSubject = PublishSubject.create<Int>()
+    val movieClickEvent: Observable<Int> = movieClickSubject
+    var lastLoadedPage = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseMovieListViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -26,7 +30,7 @@ class MovieListAdapter(itemList: ArrayList<Movie>, val moviesType: MoviesType)
                     R.layout.view_holder_movie,
                     parent,
                     false)
-            return MovieListViewHolder(binding, moviesType)
+            return MovieListViewHolder(binding, moviesType, movieClickSubject)
         } else {
             val binding = DataBindingUtil.inflate<ViewHolderLoadingBinding>(
                     inflater,

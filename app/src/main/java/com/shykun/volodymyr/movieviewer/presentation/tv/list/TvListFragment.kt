@@ -16,23 +16,27 @@ import com.shykun.volodymyr.movieviewer.presentation.AppActivity
 import com.shykun.volodymyr.movieviewer.presentation.base.ScrollObservable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_movie_list.*
+import ru.terrakok.cicerone.Router
+import javax.inject.Inject
 
 
 const val TV_LIST_FRAGMENT_KEY = "tv_list_fragment_key"
 
 private const val TV_TYPE_KEY = "tv_type"
-private lateinit var tvListAdapter: TvListAdapter
 
 class TvListFragment : Fragment() {
 
     private lateinit var tvType: TvType
     private lateinit var viewModel: TvListViewModel
+    private lateinit var tvListAdapter: TvListAdapter
+    @Inject lateinit var viewModelFactory: TvListViewModelFactory
+    @Inject lateinit var router: Router
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         tvType = arguments?.getSerializable(TV_TYPE_KEY) as TvType
-        viewModel = ViewModelProviders.of(this, (activity as AppActivity).appComponent.getTvListViewModelFactory())
+        viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(TvListViewModel::class.java)
     }
 
@@ -45,15 +49,21 @@ class TvListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupBackButton()
         setupAdapter()
+        setupTvClick()
         subscribeScrollObervable()
         subscribeViewModel()
-        viewModel.onViewLoaded(tvType)
     }
 
     private fun setupBackButton() {
         movieListToolbar.setNavigationIcon(R.drawable.ic_arrow_back)
         movieListToolbar.setNavigationOnClickListener {
             activity?.onBackPressed()
+        }
+    }
+
+    private fun setupTvClick() {
+        tvListAdapter.tvClickEvent.subscribe {
+            router.navigateTo(TV_LIST_FRAGMENT_KEY, it)
         }
     }
 
@@ -77,7 +87,7 @@ class TvListFragment : Fragment() {
                 .distinctUntilChanged()
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext {
-                    viewModel.getTvList(tvListAdapter.lastLoadedPage + 1)
+                    viewModel.getTvList(tvListAdapter.lastLoadedPage + 1, tvType)
                     tvListAdapter.lastLoadedPage++
                 }
                 .subscribe()
