@@ -15,8 +15,11 @@ import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
 import com.shykun.volodymyr.movieviewer.data.entity.Tv
 import com.shykun.volodymyr.movieviewer.data.entity.TvType
 import com.shykun.volodymyr.movieviewer.presentation.AppActivity
+import com.shykun.volodymyr.movieviewer.presentation.base.ScrollObservable
 import com.shykun.volodymyr.movieviewer.presentation.movies.list.MovieListAdapter
 import com.shykun.volodymyr.movieviewer.presentation.tv.list.TvListAdapter
+import io.reactivex.android.schedulers.AndroidSchedulers
+import kotlinx.android.synthetic.main.fragment_filter_list.*
 import kotlinx.android.synthetic.main.fragment_movie_list.*
 import javax.inject.Inject
 
@@ -28,7 +31,8 @@ class DiscoverListFragment : Fragment() {
     private lateinit var movieListAdapter: MovieListAdapter
     private lateinit var tvListAdapter: TvListAdapter
 
-    @Inject lateinit var viewModelFactory: DiscoverViewModelFactory
+    @Inject
+    lateinit var viewModelFactory: DiscoverViewModelFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,13 +51,22 @@ class DiscoverListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupBackButton()
         subscribeViewModel()
+        subscribeScrollObervable()
         if (viewModel.type.get() == MOVIE_TYPE)
             setupMovieListAdapter()
         else
             setupTvListAdapter()
 
-        viewModel.onViewLoaded()
+        viewModel.load()
+    }
+
+    private fun setupBackButton() {
+        movieListToolbar.setNavigationIcon(R.drawable.ic_arrow_back)
+        movieListToolbar.setNavigationOnClickListener {
+            activity?.onBackPressed()
+        }
     }
 
     private fun subscribeViewModel() {
@@ -62,15 +75,23 @@ class DiscoverListFragment : Fragment() {
         viewModel.loadingErrorLiveData.observe(this, Observer { showLoadingError(it) })
     }
 
+    private fun subscribeScrollObervable() {
+        ScrollObservable.from(movieList, 10)
+                .distinctUntilChanged()
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext { viewModel.load() }
+                .subscribe()
+    }
+
     private fun showMovieList(movieList: List<Movie>?) {
         if (movieList != null) {
-            movieListAdapter.setMovies(movieList)
+            movieListAdapter.addMovies(movieList)
         }
     }
 
     private fun showTvList(tvList: List<Tv>?) {
         if (tvList != null) {
-            tvListAdapter.setTvList(tvList)
+            tvListAdapter.addTvList(tvList)
         }
     }
 

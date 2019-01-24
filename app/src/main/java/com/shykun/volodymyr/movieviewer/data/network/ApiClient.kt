@@ -91,13 +91,13 @@ class ApiClient @Inject constructor() {
 
     //discover
 
-    fun discoverMovies(year: Int?, voteAverage: Int?, genres: String?) = apiService
-            .discoverMovies(year, voteAverage, genres)
+    fun discoverMovies(year: Int?, voteAverage: Int?, genres: String?, page: Int) = apiService
+            .discoverMovies(page, year, voteAverage, genres)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
-    fun discoverTv(airDate: String?, voteAverage: Int?, genres: String?) = apiService
-            .discoverTV(airDate, voteAverage, genres)
+    fun discoverTv(airDate: String?, voteAverage: Int?, genres: String?, page: Int) = apiService
+            .discoverTV(page, airDate, voteAverage, genres)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 }

@@ -16,6 +16,7 @@ import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
 import com.shykun.volodymyr.movieviewer.presentation.AppActivity
 import com.shykun.volodymyr.movieviewer.presentation.base.ScrollObservable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import kotlinx.android.synthetic.main.fragment_filter_list.*
 import kotlinx.android.synthetic.main.fragment_movie_list.*
 
 const val MOVIE_LIST_FRAGMENT_KEY = "movie_list_fragment_key"
@@ -44,10 +45,18 @@ class MovieListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupBackButton()
         setupAdapter()
         subscribeViewModel()
         subscribeScrollObervable()
         viewModel.onViewLoaded(moviesType)
+    }
+
+    private fun setupBackButton() {
+        movieListToolbar.setNavigationIcon(R.drawable.ic_arrow_back)
+        movieListToolbar.setNavigationOnClickListener {
+            activity?.onBackPressed()
+        }
     }
 
     private fun subscribeViewModel() {

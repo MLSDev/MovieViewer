@@ -63,7 +63,11 @@ class FilterListFragment : Fragment() {
                 val checkedItems = genreListAdapter.getCheckedItems()
                 viewModel.genres.get()?.clear()
                 viewModel.genres.set(GenreHelper.getGenresByNames(checkedItems))
-                viewModel.genreNames.set(checkedItems.joinToString())
+                viewModel.genreNames.set(
+                        if (checkedItems.isNotEmpty())
+                            checkedItems.joinToString()
+                        else
+                            "All genres")
             }
             FilterType.RATING -> {
                 viewModel.rating.set(ratingListAdapter.getChosenItem())
@@ -88,7 +92,6 @@ class FilterListFragment : Fragment() {
             activity?.onBackPressed()
         }
     }
-
 
     private fun setupYearsList() {
         val years = ArrayList<Int>()

@@ -43,10 +43,18 @@ class TvListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupBackButton()
         setupAdapter()
         subscribeScrollObervable()
         subscribeViewModel()
         viewModel.onViewLoaded(tvType)
+    }
+
+    private fun setupBackButton() {
+        movieListToolbar.setNavigationIcon(R.drawable.ic_arrow_back)
+        movieListToolbar.setNavigationOnClickListener {
+            activity?.onBackPressed()
+        }
     }
 
     private fun subscribeViewModel() {

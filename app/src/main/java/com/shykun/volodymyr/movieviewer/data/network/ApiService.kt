@@ -88,6 +88,7 @@ interface ApiService {
 
     @GET("discover/movie")
     fun discoverMovies(
+            @Query("page") page: Int,
             @Query("release_date.gte") year: Int?,
             @Query("vote_average.gte") voteAverage: Int?,
             @Query("with_genres") genres: String?,
@@ -95,6 +96,7 @@ interface ApiService {
 
     @GET("discover/tv")
     fun discoverTV(
+            @Query("page") page: Int,
             @Query("first_air_date.gte") airDate: String?,
             @Query("vote_average.gte") voteAverage: Int?,
             @Query("with_genres") genres: String?,

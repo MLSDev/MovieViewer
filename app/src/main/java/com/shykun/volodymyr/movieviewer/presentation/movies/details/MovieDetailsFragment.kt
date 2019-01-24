@@ -18,6 +18,7 @@ import com.shykun.volodymyr.movieviewer.data.network.response.MovieDetailsRespon
 import com.shykun.volodymyr.movieviewer.databinding.FragmentMovieDetailsBinding
 import com.shykun.volodymyr.movieviewer.presentation.AppActivity
 import kotlinx.android.synthetic.main.fragment_movie_details.*
+import kotlinx.android.synthetic.main.fragment_person_details.*
 
 const val MOVIE_DETAILS_FRAGMENT_KEY = "movie_details_fragment_key"
 private const val MOVIE_ID_KEY = "movie_id_key"
@@ -48,11 +49,19 @@ class MovieDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupBackButton()
         subscribeViewModel()
         setupCastAdapter()
         setupReviewsAdapter()
         setupRecommendedMoviesAdapter()
         viewModel.onViewLoaded(movieId)
+    }
+
+    private fun setupBackButton() {
+        movieDetailsToolbar.setNavigationIcon(R.drawable.ic_arrow_back)
+        movieDetailsToolbar.setNavigationOnClickListener {
+            activity?.onBackPressed()
+        }
     }
 
     private fun subscribeViewModel() {

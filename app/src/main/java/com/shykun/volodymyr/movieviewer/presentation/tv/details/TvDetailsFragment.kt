@@ -22,6 +22,7 @@ import com.shykun.volodymyr.movieviewer.presentation.AppActivity
 import com.shykun.volodymyr.movieviewer.presentation.movies.details.CastAdapter
 import com.shykun.volodymyr.movieviewer.presentation.movies.details.ReviewAdapter
 import kotlinx.android.synthetic.main.fragment_movie_details.*
+import kotlinx.android.synthetic.main.fragment_person_details.*
 import kotlinx.android.synthetic.main.fragment_tv_details.*
 
 const val TV_DETAILS_FRAGMENT = "tv_details_fragment"
@@ -54,11 +55,19 @@ class TvDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupBackButton()
         subscribeViewModel()
         setupCastAdapter()
         setupReviewsAdapter()
         setupRecommendedTvAdapter()
         viewModel.onViewLoaded(tvId)
+    }
+
+    private fun setupBackButton() {
+        tvDetailsToolbar.setNavigationIcon(R.drawable.ic_arrow_back)
+        tvDetailsToolbar.setNavigationOnClickListener {
+            activity?.onBackPressed()
+        }
     }
 
     private fun subscribeViewModel() {
