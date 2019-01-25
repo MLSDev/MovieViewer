@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".presentation.discover.DiscoverFragment">
+        tools:context=".presentation.discover.tab.DiscoverFragment">
 
         <TextView
             android:id="@+id/filtersTitle"

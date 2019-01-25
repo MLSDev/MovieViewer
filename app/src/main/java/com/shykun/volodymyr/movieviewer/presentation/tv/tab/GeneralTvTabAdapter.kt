@@ -5,10 +5,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Tv
-import com.shykun.volodymyr.movieviewer.databinding.ViewHolderHorizontalMovieListBinding
-import com.shykun.volodymyr.movieviewer.databinding.ViewHolderHorizontalTvListBinding
+import com.shykun.volodymyr.movieviewer.databinding.ItemHorizontalTvListBinding
 import com.shykun.volodymyr.movieviewer.presentation.base.BaseRecyclerViewAdapter
-import com.shykun.volodymyr.movieviewer.presentation.movies.tab.GeneralMovieTabViewHolder
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 
@@ -24,14 +22,14 @@ class GeneralTvTabAdapter(items: ArrayList<ArrayList<Tv>>)
     init {
         items.add(ArrayList())
         items.add(ArrayList())
-        items.add(ArrayList()) //TODO: убрать этот костыль
+        items.add(ArrayList()) //TODO: Remove this workaround
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GeneralTvTabViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding = DataBindingUtil.inflate<ViewHolderHorizontalTvListBinding>(
+        val binding = DataBindingUtil.inflate<ItemHorizontalTvListBinding>(
                 inflater,
-                R.layout.view_holder_horizontal_tv_list,
+                R.layout.item_horizontal_tv_list,
                 parent,
                 false)
 

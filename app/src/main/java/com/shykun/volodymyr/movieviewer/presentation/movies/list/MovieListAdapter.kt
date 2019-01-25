@@ -6,8 +6,8 @@ import android.view.ViewGroup
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Movie
 import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
-import com.shykun.volodymyr.movieviewer.databinding.ViewHolderLoadingBinding
-import com.shykun.volodymyr.movieviewer.databinding.ViewHolderMovieBinding
+import com.shykun.volodymyr.movieviewer.databinding.ItemLoadingBinding
+import com.shykun.volodymyr.movieviewer.databinding.ItemMovieBinding
 import com.shykun.volodymyr.movieviewer.presentation.base.BaseRecyclerViewAdapter
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
@@ -25,16 +25,16 @@ class MovieListAdapter(itemList: ArrayList<Movie>, val moviesType: MoviesType)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseMovieListViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         if (viewType == MOVIE) {
-            val binding = DataBindingUtil.inflate<ViewHolderMovieBinding>(
+            val binding = DataBindingUtil.inflate<ItemMovieBinding>(
                     inflater,
-                    R.layout.view_holder_movie,
+                    R.layout.item_movie,
                     parent,
                     false)
             return MovieListViewHolder(binding, moviesType, movieClickSubject)
         } else {
-            val binding = DataBindingUtil.inflate<ViewHolderLoadingBinding>(
+            val binding = DataBindingUtil.inflate<ItemLoadingBinding>(
                     inflater,
-                    R.layout.view_holder_loading,
+                    R.layout.item_loading,
                     parent,
                     false)
             return MovieListLoadingViewHolder(binding)

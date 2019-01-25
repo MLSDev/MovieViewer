@@ -1,10 +1,10 @@
-package com.shykun.volodymyr.movieviewer.presentation.discover
+package com.shykun.volodymyr.movieviewer.presentation.discover.filter
 
-import com.shykun.volodymyr.movieviewer.databinding.ViewHolderSingleSelectionItemBinding
+import com.shykun.volodymyr.movieviewer.databinding.ItemSingleSelectionBinding
 import com.shykun.volodymyr.movieviewer.presentation.base.BaseViewHolder
 
 class ViewHolderSingleSelection(
-        private val binding: ViewHolderSingleSelectionItemBinding,
+        private val binding: ItemSingleSelectionBinding,
         private val clickListener: OnItemClickListener) : BaseViewHolder<Int>(binding) {
 
     fun bind(item: Int, position: Int, isChecked: Boolean) {

@@ -2,12 +2,12 @@ package com.shykun.volodymyr.movieviewer.presentation.movies.tab
 
 import android.view.View
 import com.shykun.volodymyr.movieviewer.data.entity.Movie
-import com.shykun.volodymyr.movieviewer.databinding.ViewHolderHorizontalItemMovieBinding
+import com.shykun.volodymyr.movieviewer.databinding.ItemHorizontalMovieBinding
 import com.shykun.volodymyr.movieviewer.presentation.base.BaseViewHolder
 import io.reactivex.subjects.PublishSubject
 
 class MovieTabViewHolder(
-        private val binding: ViewHolderHorizontalItemMovieBinding,
+        private val binding: ItemHorizontalMovieBinding,
         private val movieClickSubject: PublishSubject<Int>) : BaseViewHolder<Movie>(binding) {
 
     var type = -1

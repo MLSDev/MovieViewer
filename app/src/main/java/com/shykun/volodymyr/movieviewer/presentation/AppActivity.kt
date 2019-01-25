@@ -9,7 +9,13 @@ import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
 import com.shykun.volodymyr.movieviewer.data.entity.TvType
 import com.shykun.volodymyr.movieviewer.presentation.di.AppComponent
 import com.shykun.volodymyr.movieviewer.presentation.di.DaggerAppComponent
-import com.shykun.volodymyr.movieviewer.presentation.discover.*
+import com.shykun.volodymyr.movieviewer.presentation.discover.filter.FILTER_LIST_FRAGMENT_KEY
+import com.shykun.volodymyr.movieviewer.presentation.discover.filter.FilterListFragment
+import com.shykun.volodymyr.movieviewer.presentation.discover.filter.FilterType
+import com.shykun.volodymyr.movieviewer.presentation.discover.list.DISCOVER_LIST_FRAGMENT_KEY
+import com.shykun.volodymyr.movieviewer.presentation.discover.list.DiscoverListFragment
+import com.shykun.volodymyr.movieviewer.presentation.discover.tab.DISCOVER_FRAGMENT_KEY
+import com.shykun.volodymyr.movieviewer.presentation.discover.tab.DiscoverFragment
 import com.shykun.volodymyr.movieviewer.presentation.movies.details.MOVIE_DETAILS_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.movies.details.MovieDetailsFragment
 import com.shykun.volodymyr.movieviewer.presentation.movies.list.MOVIE_LIST_FRAGMENT_KEY

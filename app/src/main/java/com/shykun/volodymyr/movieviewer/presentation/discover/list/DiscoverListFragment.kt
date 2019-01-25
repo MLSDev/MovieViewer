@@ -1,4 +1,4 @@
-package com.shykun.volodymyr.movieviewer.presentation.discover
+package com.shykun.volodymyr.movieviewer.presentation.discover.list
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -16,10 +16,12 @@ import com.shykun.volodymyr.movieviewer.data.entity.Tv
 import com.shykun.volodymyr.movieviewer.data.entity.TvType
 import com.shykun.volodymyr.movieviewer.presentation.AppActivity
 import com.shykun.volodymyr.movieviewer.presentation.base.ScrollObservable
+import com.shykun.volodymyr.movieviewer.presentation.discover.DiscoverViewModel
+import com.shykun.volodymyr.movieviewer.presentation.discover.DiscoverViewModelFactory
+import com.shykun.volodymyr.movieviewer.presentation.discover.MOVIE_TYPE
 import com.shykun.volodymyr.movieviewer.presentation.movies.list.MovieListAdapter
 import com.shykun.volodymyr.movieviewer.presentation.tv.list.TvListAdapter
 import io.reactivex.android.schedulers.AndroidSchedulers
-import kotlinx.android.synthetic.main.fragment_filter_list.*
 import kotlinx.android.synthetic.main.fragment_movie_list.*
 import javax.inject.Inject
 

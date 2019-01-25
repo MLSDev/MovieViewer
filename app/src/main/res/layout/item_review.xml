@@ -24,7 +24,9 @@
             android:id="@+id/reviewAuthor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tool:text="@{review.author}" />
+            tool:text="@{review.author}"
+            android:textSize="16sp"
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/reviewContent"
@@ -32,7 +34,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="@{viewHolder.maxLines}"
-            android:textSize="18sp"
+            android:textSize="16sp"
             tool:text="@{review.content}" />
 
     </LinearLayout>

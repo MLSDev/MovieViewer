@@ -1,4 +1,4 @@
-package com.shykun.volodymyr.movieviewer.presentation.discover
+package com.shykun.volodymyr.movieviewer.presentation.discover.tab
 
 import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
@@ -10,6 +10,11 @@ import android.view.ViewGroup
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.databinding.FragmentDiscoverBinding
 import com.shykun.volodymyr.movieviewer.presentation.AppActivity
+import com.shykun.volodymyr.movieviewer.presentation.discover.DiscoverViewModel
+import com.shykun.volodymyr.movieviewer.presentation.discover.DiscoverViewModelFactory
+import com.shykun.volodymyr.movieviewer.presentation.discover.filter.FILTER_LIST_FRAGMENT_KEY
+import com.shykun.volodymyr.movieviewer.presentation.discover.filter.FilterType
+import com.shykun.volodymyr.movieviewer.presentation.discover.list.DISCOVER_LIST_FRAGMENT_KEY
 import kotlinx.android.synthetic.main.fragment_discover.*
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject

@@ -1,9 +1,9 @@
 package com.shykun.volodymyr.movieviewer.presentation.di
 
 import com.shykun.volodymyr.movieviewer.presentation.AppActivity
-import com.shykun.volodymyr.movieviewer.presentation.discover.DiscoverFragment
-import com.shykun.volodymyr.movieviewer.presentation.discover.DiscoverListFragment
-import com.shykun.volodymyr.movieviewer.presentation.discover.FilterListFragment
+import com.shykun.volodymyr.movieviewer.presentation.discover.tab.DiscoverFragment
+import com.shykun.volodymyr.movieviewer.presentation.discover.list.DiscoverListFragment
+import com.shykun.volodymyr.movieviewer.presentation.discover.filter.FilterListFragment
 import com.shykun.volodymyr.movieviewer.presentation.movies.details.MovieDetailsFragment
 import com.shykun.volodymyr.movieviewer.presentation.movies.details.MovieDetailsViewModelFactory
 import com.shykun.volodymyr.movieviewer.presentation.movies.list.MovieListFragment

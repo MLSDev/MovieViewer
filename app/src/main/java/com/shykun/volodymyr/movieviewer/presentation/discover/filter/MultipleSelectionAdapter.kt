@@ -1,11 +1,10 @@
-package com.shykun.volodymyr.movieviewer.presentation.discover
+package com.shykun.volodymyr.movieviewer.presentation.discover.filter
 
 import android.databinding.DataBindingUtil
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.shykun.volodymyr.movieviewer.R
-import com.shykun.volodymyr.movieviewer.data.entity.Genre
-import com.shykun.volodymyr.movieviewer.databinding.ViewHolderMultipleSelectionItemBinding
+import com.shykun.volodymyr.movieviewer.databinding.ItemMultipleSelectionBinding
 import com.shykun.volodymyr.movieviewer.presentation.base.BaseRecyclerViewAdapter
 
 class MultipleSelectionAdapter(items: ArrayList<String>)
@@ -15,9 +14,9 @@ class MultipleSelectionAdapter(items: ArrayList<String>)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderMultipleSelection {
         val inflater = LayoutInflater.from(parent.context)
-        val binding = DataBindingUtil.inflate<ViewHolderMultipleSelectionItemBinding>(
+        val binding = DataBindingUtil.inflate<ItemMultipleSelectionBinding>(
                 inflater,
-                R.layout.view_holder_multiple_selection_item,
+                R.layout.item_multiple_selection,
                 parent,
                 false)
 

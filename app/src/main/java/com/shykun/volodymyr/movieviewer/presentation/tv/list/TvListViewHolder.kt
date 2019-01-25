@@ -4,19 +4,19 @@ import android.databinding.ViewDataBinding
 import android.view.View
 import com.shykun.volodymyr.movieviewer.data.entity.Tv
 import com.shykun.volodymyr.movieviewer.data.entity.TvType
-import com.shykun.volodymyr.movieviewer.databinding.ViewHolderLoadingBinding
-import com.shykun.volodymyr.movieviewer.databinding.ViewHolderTvBinding
+import com.shykun.volodymyr.movieviewer.databinding.ItemLoadingBinding
+import com.shykun.volodymyr.movieviewer.databinding.ItemTvBinding
 import com.shykun.volodymyr.movieviewer.presentation.base.BaseViewHolder
 import io.reactivex.subjects.PublishSubject
 
 open class BaseTvListViewHolder(viewDataBinding: ViewDataBinding)
     : BaseViewHolder<Tv>(viewDataBinding)
 
-class TvListLoadingViewHolder(binding: ViewHolderLoadingBinding)
+class TvListLoadingViewHolder(binding: ItemLoadingBinding)
     : BaseTvListViewHolder(binding)
 
 class TvListViewHolder(
-        private val binding: ViewHolderTvBinding,
+        private val binding: ItemTvBinding,
         private val tvType: TvType,
         private val tvClickSubject: PublishSubject<Int>)
     : BaseTvListViewHolder(binding) {

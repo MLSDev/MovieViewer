@@ -20,4 +20,10 @@
     <string name="show_results">Show results</string>
     <string name="reset">Reset</string>
     <string name="clear">Clear</string>
+    <string name="recommended_movies">Recommended Movies</string>
+    <string name="actors">Actors</string>
+    <string name="recommended_tv">Recommended TV</string>
+    <string name="reviews">Reviews</string>
+    <string name="biography">Biography</string>
+    <string name="overview">Overview</string>
 </resources>

@@ -4,19 +4,19 @@ import android.databinding.ViewDataBinding
 import android.view.View
 import com.shykun.volodymyr.movieviewer.data.entity.Movie
 import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
-import com.shykun.volodymyr.movieviewer.databinding.ViewHolderLoadingBinding
-import com.shykun.volodymyr.movieviewer.databinding.ViewHolderMovieBinding
+import com.shykun.volodymyr.movieviewer.databinding.ItemLoadingBinding
+import com.shykun.volodymyr.movieviewer.databinding.ItemMovieBinding
 import com.shykun.volodymyr.movieviewer.presentation.base.BaseViewHolder
 import io.reactivex.subjects.PublishSubject
 
 open class BaseMovieListViewHolder(viewDataBinding: ViewDataBinding)
     : BaseViewHolder<Movie>(viewDataBinding)
 
-class MovieListLoadingViewHolder(binding: ViewHolderLoadingBinding)
+class MovieListLoadingViewHolder(binding: ItemLoadingBinding)
     : BaseMovieListViewHolder(binding)
 
 class MovieListViewHolder(
-        private val binding: ViewHolderMovieBinding,
+        private val binding: ItemMovieBinding,
         private val moviesType: MoviesType,
         private val movieClickSubject: PublishSubject<Int>)
     : BaseMovieListViewHolder(binding) {

@@ -1,10 +1,10 @@
-package com.shykun.volodymyr.movieviewer.presentation.discover
+package com.shykun.volodymyr.movieviewer.presentation.discover.filter
 
 import android.databinding.DataBindingUtil
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.shykun.volodymyr.movieviewer.R
-import com.shykun.volodymyr.movieviewer.databinding.ViewHolderSingleSelectionItemBinding
+import com.shykun.volodymyr.movieviewer.databinding.ItemSingleSelectionBinding
 import com.shykun.volodymyr.movieviewer.presentation.base.BaseRecyclerViewAdapter
 
 class SingleSelectionAdapter(items: ArrayList<Int>)
@@ -14,9 +14,9 @@ class SingleSelectionAdapter(items: ArrayList<Int>)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderSingleSelection {
         val inflater = LayoutInflater.from(parent.context)
-        val binding = DataBindingUtil.inflate<ViewHolderSingleSelectionItemBinding>(
+        val binding = DataBindingUtil.inflate<ItemSingleSelectionBinding>(
                 inflater,
-                R.layout.view_holder_single_selection_item,
+                R.layout.item_single_selection,
                 parent,
                 false)
 

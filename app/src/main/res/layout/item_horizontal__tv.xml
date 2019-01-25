@@ -4,8 +4,11 @@
 
     <data>
         <variable
-            name="movie"
-            type="com.shykun.volodymyr.movieviewer.data.entity.Movie"/>
+            name="tv"
+            type="com.shykun.volodymyr.movieviewer.data.entity.Tv"/>
+        <variable
+            name="tvViewHolder"
+            type="com.shykun.volodymyr.movieviewer.presentation.tv.tab.TvTabViewHolder"/>
     </data>
 
     <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -23,8 +26,8 @@
             android:layout_height="200dp"
             android:background="@color/colorPrimary"
             android:scaleType="centerCrop"
-            android:src="@drawable/poster_example"
-            app:url="@{movie.posterPath}"/>
+            android:src="@drawable/stub_image_poster"
+            app:url="@{tv.posterPath}"/>
 
         <LinearLayout
             android:layout_width="130dp"
@@ -41,14 +44,15 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginEnd="4dp"
-                android:src="@drawable/ic_star"/>
+                android:src="@drawable/ic_star"
+                android:visibility="@{tvViewHolder.footerIconVisibility}"/>
 
             <TextView
                 android:id="@+id/movieFooterText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="@{movie.voteAverage}"
+                android:text="@{tvViewHolder.footerText}"
                 android:textColor="@color/snow"
                 android:textSize="18sp" />
 

@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Actor
-import com.shykun.volodymyr.movieviewer.databinding.ViewHolderHorizontalItemActorBinding
+import com.shykun.volodymyr.movieviewer.databinding.ItemHorizontalActorBinding
 import com.shykun.volodymyr.movieviewer.presentation.base.BaseRecyclerViewAdapter
 
 class CastAdapter(private val cast: ArrayList<Actor>)
@@ -13,9 +13,9 @@ class CastAdapter(private val cast: ArrayList<Actor>)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CastViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding = DataBindingUtil.inflate<ViewHolderHorizontalItemActorBinding>(
+        val binding = DataBindingUtil.inflate<ItemHorizontalActorBinding>(
                 inflater,
-                R.layout.view_holder_horizontal_item_actor,
+                R.layout.item_horizontal_actor,
                 parent,
                 false)
 

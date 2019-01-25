@@ -6,8 +6,8 @@ import android.view.ViewGroup
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Tv
 import com.shykun.volodymyr.movieviewer.data.entity.TvType
-import com.shykun.volodymyr.movieviewer.databinding.ViewHolderLoadingBinding
-import com.shykun.volodymyr.movieviewer.databinding.ViewHolderTvBinding
+import com.shykun.volodymyr.movieviewer.databinding.ItemLoadingBinding
+import com.shykun.volodymyr.movieviewer.databinding.ItemTvBinding
 import com.shykun.volodymyr.movieviewer.presentation.base.BaseRecyclerViewAdapter
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
@@ -25,16 +25,16 @@ class TvListAdapter(itemList: ArrayList<Tv>, val tvType: TvType)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseTvListViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return if (viewType == TV) {
-            val binding = DataBindingUtil.inflate<ViewHolderTvBinding>(
+            val binding = DataBindingUtil.inflate<ItemTvBinding>(
                     inflater,
-                    R.layout.view_holder_tv,
+                    R.layout.item_tv,
                     parent,
                     false)
             TvListViewHolder(binding, tvType, tvClickSubject)
         } else {
-            val binding = DataBindingUtil.inflate<ViewHolderLoadingBinding>(
+            val binding = DataBindingUtil.inflate<ItemLoadingBinding>(
                     inflater,
-                    R.layout.view_holder_loading,
+                    R.layout.item_loading,
                     parent,
                     false)
             TvListLoadingViewHolder(binding)

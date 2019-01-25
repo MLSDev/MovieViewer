@@ -1,4 +1,4 @@
-package com.shykun.volodymyr.movieviewer.presentation.discover
+package com.shykun.volodymyr.movieviewer.presentation.discover.filter
 
 
 import android.arch.lifecycle.ViewModelProviders
@@ -10,6 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.presentation.AppActivity
+import com.shykun.volodymyr.movieviewer.presentation.discover.DiscoverViewModel
+import com.shykun.volodymyr.movieviewer.presentation.discover.DiscoverViewModelFactory
 import com.shykun.volodymyr.movieviewer.presentation.utils.GenreHelper
 import kotlinx.android.synthetic.main.fragment_filter_list.*
 import java.util.*
