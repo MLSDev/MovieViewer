@@ -2,7 +2,7 @@ package com.shykun.volodymyr.movieviewer.presentation.movies.details
 
 import com.shykun.volodymyr.movieviewer.data.entity.Actor
 import com.shykun.volodymyr.movieviewer.databinding.ItemHorizontalActorBinding
-import com.shykun.volodymyr.movieviewer.presentation.base.BaseViewHolder
+import com.shykun.volodymyr.movieviewer.presentation.common.BaseViewHolder
 
 class CastViewHolder(private val binding: ItemHorizontalActorBinding) : BaseViewHolder<Actor>(binding) {
 

@@ -3,7 +3,7 @@ package com.shykun.volodymyr.movieviewer.presentation.movies.details
 import android.databinding.ObservableField
 import com.shykun.volodymyr.movieviewer.data.entity.Review
 import com.shykun.volodymyr.movieviewer.databinding.ItemReviewBinding
-import com.shykun.volodymyr.movieviewer.presentation.base.BaseViewHolder
+import com.shykun.volodymyr.movieviewer.presentation.common.BaseViewHolder
 
 class ReviewViewHolder(private val binding: ItemReviewBinding) : BaseViewHolder<Review>(binding) {
 

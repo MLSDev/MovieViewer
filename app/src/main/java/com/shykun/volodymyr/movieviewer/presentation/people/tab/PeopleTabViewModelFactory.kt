@@ -7,11 +7,9 @@ import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
 class PeopleTabViewModelFactory @Inject constructor(
-        private val peopleUseCase: PeopleUseCase,
-        private val router: Router)
-    : ViewModelProvider.NewInstanceFactory() {
+        private val peopleUseCase: PeopleUseCase) : ViewModelProvider.NewInstanceFactory() {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return PeopleTabViewModel(peopleUseCase, router) as T
+        return PeopleTabViewModel(peopleUseCase) as T
     }
 }

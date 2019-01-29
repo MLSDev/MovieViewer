@@ -12,8 +12,10 @@ import android.widget.Toast
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Tv
 import com.shykun.volodymyr.movieviewer.data.entity.TvType
-import com.shykun.volodymyr.movieviewer.presentation.AppActivity
-import com.shykun.volodymyr.movieviewer.presentation.base.ScrollObservable
+import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
+import com.shykun.volodymyr.movieviewer.presentation.common.ScrollObservable
+import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
+import com.shykun.volodymyr.movieviewer.presentation.tv.details.TV_DETAILS_FRAGMENT
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_movie_list.*
 import ru.terrakok.cicerone.Router
@@ -24,16 +26,19 @@ const val TV_LIST_FRAGMENT_KEY = "tv_list_fragment_key"
 
 private const val TV_TYPE_KEY = "tv_type"
 
-class TvListFragment : Fragment() {
+class TvListFragment : Fragment(), BackButtonListener {
 
     private lateinit var tvType: TvType
     private lateinit var viewModel: TvListViewModel
     private lateinit var tvListAdapter: TvListAdapter
-    @Inject lateinit var viewModelFactory: TvListViewModelFactory
-    @Inject lateinit var router: Router
+    @Inject
+    lateinit var viewModelFactory: TvListViewModelFactory
+    @Inject
+    lateinit var router: Router
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        (parentFragment as TabNavigationFragment).component?.inject(this)
 
         tvType = arguments?.getSerializable(TV_TYPE_KEY) as TvType
         viewModel = ViewModelProviders.of(this, viewModelFactory)
@@ -56,14 +61,12 @@ class TvListFragment : Fragment() {
 
     private fun setupBackButton() {
         movieListToolbar.setNavigationIcon(R.drawable.ic_arrow_back)
-        movieListToolbar.setNavigationOnClickListener {
-            activity?.onBackPressed()
-        }
+        movieListToolbar.setNavigationOnClickListener { onBackClicked() }
     }
 
     private fun setupTvClick() {
         tvListAdapter.tvClickEvent.subscribe {
-            router.navigateTo(TV_LIST_FRAGMENT_KEY, it)
+            router.navigateTo(TV_DETAILS_FRAGMENT, it)
         }
     }
 
@@ -101,6 +104,12 @@ class TvListFragment : Fragment() {
 
     fun showError(message: String?) {
         Toast.makeText(this.context, message, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onBackClicked(): Boolean {
+        router.exit()
+
+        return true
     }
 
     companion object {

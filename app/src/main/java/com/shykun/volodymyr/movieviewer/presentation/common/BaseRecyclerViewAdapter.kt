@@ -1,11 +1,7 @@
-package com.shykun.volodymyr.movieviewer.presentation.base
+package com.shykun.volodymyr.movieviewer.presentation.common
 
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
-import io.reactivex.Observable
-import io.reactivex.subjects.PublishSubject
 import java.util.*
 
 abstract class BaseRecyclerViewAdapter<T: Any, VH: BaseViewHolder<T>> (protected var items: ArrayList<T>) : RecyclerView.Adapter<VH>() {

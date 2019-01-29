@@ -10,11 +10,13 @@ import android.view.View
 import android.view.ViewGroup
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.presentation.AppActivity
-import com.shykun.volodymyr.movieviewer.presentation.base.TabNavigationFragment
+import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
+import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
 import com.shykun.volodymyr.movieviewer.presentation.discover.DiscoverViewModel
 import com.shykun.volodymyr.movieviewer.presentation.discover.DiscoverViewModelFactory
 import com.shykun.volodymyr.movieviewer.presentation.utils.GenreHelper
 import kotlinx.android.synthetic.main.fragment_filter_list.*
+import ru.terrakok.cicerone.Router
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
@@ -26,15 +28,18 @@ enum class FilterType {
     GENRE, YEAR, RATING
 }
 
-class FilterListFragment : Fragment() {
+class FilterListFragment : Fragment(), BackButtonListener {
 
     private lateinit var type: FilterType
     private lateinit var genreListAdapter: MultipleSelectionAdapter
     private lateinit var ratingListAdapter: SingleSelectionAdapter
     private lateinit var yearsListAdapter: SingleSelectionAdapter
     private lateinit var viewModel: DiscoverViewModel
+
     @Inject
     lateinit var viewModelFactory: DiscoverViewModelFactory
+    @Inject
+    lateinit var router: Router
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,9 +96,7 @@ class FilterListFragment : Fragment() {
 
     private fun setupBackButton() {
         filterListToolbar.setNavigationIcon(R.drawable.ic_arrow_back)
-        filterListToolbar.setNavigationOnClickListener {
-            activity?.onBackPressed()
-        }
+        filterListToolbar.setNavigationOnClickListener { onBackClicked() }
     }
 
     private fun setupYearsList() {
@@ -137,6 +140,12 @@ class FilterListFragment : Fragment() {
             layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
             adapter = ratingListAdapter
         }
+    }
+
+    override fun onBackClicked(): Boolean {
+        router.exit()
+
+        return true
     }
 
     companion object {

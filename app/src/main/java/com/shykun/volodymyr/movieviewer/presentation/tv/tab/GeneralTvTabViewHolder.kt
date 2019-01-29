@@ -8,7 +8,7 @@ import android.widget.TextView
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Tv
 import com.shykun.volodymyr.movieviewer.databinding.ItemHorizontalTvListBinding
-import com.shykun.volodymyr.movieviewer.presentation.base.BaseViewHolder
+import com.shykun.volodymyr.movieviewer.presentation.common.BaseViewHolder
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.item_horizontal_tv_list.view.*
 import java.util.*

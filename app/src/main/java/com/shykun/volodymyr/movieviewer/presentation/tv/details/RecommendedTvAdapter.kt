@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Tv
 import com.shykun.volodymyr.movieviewer.databinding.ItemRecommendedTvBinding
-import com.shykun.volodymyr.movieviewer.presentation.base.BaseRecyclerViewAdapter
+import com.shykun.volodymyr.movieviewer.presentation.common.BaseRecyclerViewAdapter
 
 class RecommendedTvAdapter(private val tvList: ArrayList<Tv>) : BaseRecyclerViewAdapter<Tv, RecommendedTvViewHolder>(tvList) {
 

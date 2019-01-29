@@ -11,8 +11,7 @@ import com.shykun.volodymyr.movieviewer.presentation.tv.list.TV_LIST_FRAGMENT_KE
 import ru.terrakok.cicerone.Router
 
 class TvTabViewModel(
-        private val TVUseCase: TvUseCase,
-        private val router: Router) : ViewModel() {
+        private val TVUseCase: TvUseCase) : ViewModel() {
 
     private val popularTvMutableLiveData = MutableLiveData<List<Tv>>()
     private val topRatedTvMutableLiveData = MutableLiveData<List<Tv>>()
@@ -62,13 +61,5 @@ class TvTabViewModel(
                     loadingErrorMutableLiveData.value = it.message
                 }
                 .subscribe()
-    }
-
-    fun onViewAllButtonClicked(tvType: TvType) {
-        router.navigateTo(TV_LIST_FRAGMENT_KEY, tvType)
-    }
-
-    fun onTvClicked(tvId: Int) {
-        router.navigateTo(TV_DETAILS_FRAGMENT, tvId)
     }
 }

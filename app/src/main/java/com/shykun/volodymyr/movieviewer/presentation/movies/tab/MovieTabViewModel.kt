@@ -10,9 +10,7 @@ import com.shykun.volodymyr.movieviewer.presentation.movies.details.MOVIE_DETAIL
 import com.shykun.volodymyr.movieviewer.presentation.movies.list.MOVIE_LIST_FRAGMENT_KEY
 import ru.terrakok.cicerone.Router
 
-class MovieTabViewModel(
-        private val moviesUseCase: MoviesUseCase,
-        private val router: Router) : ViewModel() {
+class MovieTabViewModel(private val moviesUseCase: MoviesUseCase) : ViewModel() {
 
     private val popularMoviesMutableLiveData = MutableLiveData<List<Movie>>()
     private val topRatedMoviesMutableLiveData = MutableLiveData<List<Movie>>()
@@ -62,13 +60,5 @@ class MovieTabViewModel(
                     loadingErrorMutableLiveData.value = it.message
                 }
                 .subscribe()
-    }
-
-    fun onViewAllButtonClicked(moviesType: MoviesType) {
-        router.navigateTo(MOVIE_LIST_FRAGMENT_KEY, moviesType)
-    }
-
-    fun onMovieClicked(movieId: Int) {
-        router.navigateTo(MOVIE_DETAILS_FRAGMENT_KEY, movieId)
     }
 }

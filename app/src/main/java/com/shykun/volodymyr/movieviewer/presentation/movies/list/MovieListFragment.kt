@@ -13,8 +13,9 @@ import android.widget.Toast
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Movie
 import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
-import com.shykun.volodymyr.movieviewer.presentation.base.ScrollObservable
-import com.shykun.volodymyr.movieviewer.presentation.base.TabNavigationFragment
+import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
+import com.shykun.volodymyr.movieviewer.presentation.common.ScrollObservable
+import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
 import com.shykun.volodymyr.movieviewer.presentation.movies.details.MOVIE_DETAILS_FRAGMENT_KEY
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_movie_list.*
@@ -24,7 +25,7 @@ import javax.inject.Inject
 const val MOVIE_LIST_FRAGMENT_KEY = "movie_list_fragment_key"
 private const val MOVIE_TYPE_KEY = "movie_type"
 
-class MovieListFragment : Fragment() {
+class MovieListFragment : Fragment(), BackButtonListener {
 
     private lateinit var moviesType: MoviesType
     private lateinit var viewModel: MovieListViewModel
@@ -59,21 +60,9 @@ class MovieListFragment : Fragment() {
         subscribeScrollObervable()
     }
 
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-
-
-    }
-
     private fun setupBackButton() {
         movieListToolbar.setNavigationIcon(R.drawable.ic_arrow_back)
-        movieListToolbar.setNavigationOnClickListener {
-            activity?.onBackPressed()
-        }
+        movieListToolbar.setNavigationOnClickListener { onBackClicked() }
     }
 
     private fun setupMovieClick() {
@@ -117,6 +106,12 @@ class MovieListFragment : Fragment() {
 
     fun showError(message: String?) {
         Toast.makeText(this.context, message, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onBackClicked(): Boolean {
+        router.exit()
+
+        return true
     }
 
     companion object {

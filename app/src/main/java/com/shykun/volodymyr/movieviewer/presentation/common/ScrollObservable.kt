@@ -1,4 +1,4 @@
-package com.shykun.volodymyr.movieviewer.presentation.base
+package com.shykun.volodymyr.movieviewer.presentation.common
 
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView

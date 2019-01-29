@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.databinding.ItemSingleSelectionBinding
-import com.shykun.volodymyr.movieviewer.presentation.base.BaseRecyclerViewAdapter
+import com.shykun.volodymyr.movieviewer.presentation.common.BaseRecyclerViewAdapter
 
 class SingleSelectionAdapter(items: ArrayList<Int>)
     : BaseRecyclerViewAdapter<Int, ViewHolderSingleSelection>(items), OnItemClickListener {

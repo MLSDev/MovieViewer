@@ -2,7 +2,7 @@ package com.shykun.volodymyr.movieviewer.presentation.di
 
 import android.support.v4.app.FragmentActivity
 import android.support.v4.app.FragmentManager
-import com.shykun.volodymyr.movieviewer.presentation.base.FlowNavigator
+import com.shykun.volodymyr.movieviewer.presentation.common.FlowNavigator
 import dagger.Module
 import dagger.Provides
 import ru.terrakok.cicerone.Cicerone
@@ -30,5 +30,5 @@ class AppModule(val activity: FragmentActivity, val fragmentManager: FragmentMan
 
     @Provides
     @Singleton
-    fun provideFlowNavigator(): FlowNavigator = FlowNavigator(activity, fragmentManager, containerId)
+    fun provideFlowNavigator(): FlowNavigator = FlowNavigator(fragmentManager, containerId)
 }

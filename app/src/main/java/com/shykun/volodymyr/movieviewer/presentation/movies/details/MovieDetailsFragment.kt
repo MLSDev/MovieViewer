@@ -16,8 +16,10 @@ import com.shykun.volodymyr.movieviewer.data.entity.Movie
 import com.shykun.volodymyr.movieviewer.data.entity.Review
 import com.shykun.volodymyr.movieviewer.data.network.response.MovieDetailsResponse
 import com.shykun.volodymyr.movieviewer.databinding.FragmentMovieDetailsBinding
-import com.shykun.volodymyr.movieviewer.presentation.base.TabNavigationFragment
+import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
+import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
 import com.shykun.volodymyr.movieviewer.presentation.movies.list.MOVIE_LIST_FRAGMENT_KEY
+import com.shykun.volodymyr.movieviewer.presentation.movies.tab.MOVIE_TAB_FRAGMENT_KEY
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject
@@ -25,7 +27,7 @@ import javax.inject.Inject
 const val MOVIE_DETAILS_FRAGMENT_KEY = "movie_details_fragment_key"
 private const val MOVIE_ID_KEY = "movie_id_key"
 
-class MovieDetailsFragment : Fragment() {
+class MovieDetailsFragment : Fragment(), BackButtonListener {
 
     private var movieId = -1
     private lateinit var viewModel: MovieDetailsViewModel
@@ -68,7 +70,7 @@ class MovieDetailsFragment : Fragment() {
     private fun setupBackButton() {
         movieDetailsToolbar.setNavigationIcon(R.drawable.ic_arrow_back)
         movieDetailsToolbar.setNavigationOnClickListener {
-            router.backTo(MOVIE_LIST_FRAGMENT_KEY)
+            onBackClicked()
         }
     }
 
@@ -129,6 +131,13 @@ class MovieDetailsFragment : Fragment() {
             layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
             adapter = recommendedMoviesAdapter
         }
+    }
+
+    override fun onBackClicked(): Boolean {
+//        router.backTo(MOVIE_TAB_FRAGMENT_KEY)
+        router.exit()
+
+        return true
     }
 
     companion object {

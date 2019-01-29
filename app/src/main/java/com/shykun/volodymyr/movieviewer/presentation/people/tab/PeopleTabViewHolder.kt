@@ -4,7 +4,7 @@ import android.databinding.ViewDataBinding
 import com.shykun.volodymyr.movieviewer.data.entity.Person
 import com.shykun.volodymyr.movieviewer.databinding.ItemLoadingBinding
 import com.shykun.volodymyr.movieviewer.databinding.ItemPersonBinding
-import com.shykun.volodymyr.movieviewer.presentation.base.BaseViewHolder
+import com.shykun.volodymyr.movieviewer.presentation.common.BaseViewHolder
 import io.reactivex.subjects.PublishSubject
 
 open class BasePeopleViewHolder(viewDataBinding: ViewDataBinding)

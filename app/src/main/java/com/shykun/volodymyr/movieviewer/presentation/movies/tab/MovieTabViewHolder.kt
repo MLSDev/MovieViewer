@@ -3,7 +3,7 @@ package com.shykun.volodymyr.movieviewer.presentation.movies.tab
 import android.view.View
 import com.shykun.volodymyr.movieviewer.data.entity.Movie
 import com.shykun.volodymyr.movieviewer.databinding.ItemHorizontalMovieBinding
-import com.shykun.volodymyr.movieviewer.presentation.base.BaseViewHolder
+import com.shykun.volodymyr.movieviewer.presentation.common.BaseViewHolder
 import io.reactivex.subjects.PublishSubject
 
 class MovieTabViewHolder(

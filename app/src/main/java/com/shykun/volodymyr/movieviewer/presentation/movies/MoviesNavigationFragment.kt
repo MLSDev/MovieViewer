@@ -2,7 +2,7 @@ package com.shykun.volodymyr.movieviewer.presentation.movies
 
 import android.os.Bundle
 import com.shykun.volodymyr.movieviewer.R
-import com.shykun.volodymyr.movieviewer.presentation.base.TabNavigationFragment
+import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
 import com.shykun.volodymyr.movieviewer.presentation.movies.tab.MOVIE_TAB_FRAGMENT_KEY
 
 class MoviesNavigationFragment : TabNavigationFragment() {
@@ -13,6 +13,6 @@ class MoviesNavigationFragment : TabNavigationFragment() {
         super.onActivityCreated(savedInstanceState)
 
         if (childFragmentManager.findFragmentById(R.id.navigationFragmentContainer) == null)
-            cicerone.router.replaceScreen(MOVIE_TAB_FRAGMENT_KEY)
+            cicerone.router.navigateTo(MOVIE_TAB_FRAGMENT_KEY)
     }
 }

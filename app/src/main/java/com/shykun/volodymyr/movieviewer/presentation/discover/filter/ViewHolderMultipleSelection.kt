@@ -1,7 +1,7 @@
 package com.shykun.volodymyr.movieviewer.presentation.discover.filter
 
 import com.shykun.volodymyr.movieviewer.databinding.ItemMultipleSelectionBinding
-import com.shykun.volodymyr.movieviewer.presentation.base.BaseViewHolder
+import com.shykun.volodymyr.movieviewer.presentation.common.BaseViewHolder
 
 class ViewHolderMultipleSelection(
         private val binding: ItemMultipleSelectionBinding,

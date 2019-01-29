@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
 import com.shykun.volodymyr.movieviewer.R
-import com.shykun.volodymyr.movieviewer.presentation.base.TabNavigationFragment
+import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
 import com.shykun.volodymyr.movieviewer.presentation.discover.DiscoverNavigationFragment
 import com.shykun.volodymyr.movieviewer.presentation.movies.MoviesNavigationFragment
 import com.shykun.volodymyr.movieviewer.presentation.people.PeopleNavigationFragment
@@ -17,6 +17,7 @@ import ru.terrakok.cicerone.commands.Back
 import ru.terrakok.cicerone.commands.Command
 import ru.terrakok.cicerone.commands.Replace
 import ru.terrakok.cicerone.commands.SystemMessage
+import kotlin.math.round
 
 private const val CURRENT_TAB_KEY = "current_tab_key"
 
@@ -124,5 +125,11 @@ class AppActivity : AppCompatActivity() {
                 commit()
             }
         }
+    }
+
+    override fun onBackPressed() {
+        val currentFragment = (supportFragmentManager.findFragmentByTag(currentTab) as TabNavigationFragment)
+        if (!currentFragment.onBackClicked())
+            finish()
     }
 }

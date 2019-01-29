@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Review
 import com.shykun.volodymyr.movieviewer.databinding.ItemReviewBinding
-import com.shykun.volodymyr.movieviewer.presentation.base.BaseRecyclerViewAdapter
+import com.shykun.volodymyr.movieviewer.presentation.common.BaseRecyclerViewAdapter
 
 class ReviewAdapter(items: ArrayList<Review>) : BaseRecyclerViewAdapter<Review, ReviewViewHolder>(items) {
 

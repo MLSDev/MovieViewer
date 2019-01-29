@@ -12,9 +12,14 @@ import android.widget.Toast
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Tv
 import com.shykun.volodymyr.movieviewer.data.entity.TvType
-import com.shykun.volodymyr.movieviewer.presentation.base.TabNavigationFragment
+import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
+import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
+import com.shykun.volodymyr.movieviewer.presentation.tv.details.TV_DETAILS_FRAGMENT
+import com.shykun.volodymyr.movieviewer.presentation.tv.list.TV_LIST_FRAGMENT_KEY
 import kotlinx.android.synthetic.main.fragment_movies.*
+import ru.terrakok.cicerone.Router
 import java.lang.Exception
+import javax.inject.Inject
 
 const val TV_TAB_FRAGMENT_KEY = "tv_tab_fragment_key"
 
@@ -22,16 +27,23 @@ const val POPULAR_TV = 0
 const val TOP_RATED_TV = 1
 const val TV_ON_THE_AIR = 2
 
-class TvTabFragment : Fragment() {
+class TvTabFragment : Fragment(), BackButtonListener {
 
     private lateinit var generalTvTabAdapter: GeneralTvTabAdapter
     private lateinit var viewModel: TvTabViewModel
 
+    @Inject
+    lateinit var viewModelFactory: TvTabViewModelFactory
+    @Inject
+    lateinit var router: Router
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        (parentFragment as TabNavigationFragment).component?.inject(this)
+
         generalTvTabAdapter = GeneralTvTabAdapter(ArrayList())
-        viewModel = ViewModelProviders.of(this, (parentFragment as TabNavigationFragment).component?.getTvTabViewModelFactory())
+        viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(TvTabViewModel::class.java)
         subscribeViewModel()
     }
@@ -73,14 +85,12 @@ class TvTabFragment : Fragment() {
                 TV_ON_THE_AIR -> TvType.ON_THE_AIR
                 else -> throw Exception("Undefined tv type")
             }
-            viewModel.onViewAllButtonClicked(tvType)
+            router.navigateTo(TV_LIST_FRAGMENT_KEY, tvType)
         }
     }
 
     private fun setupTvClick() {
-        generalTvTabAdapter.tvClickEvent.subscribe {
-            viewModel.onTvClicked(it)
-        }
+        generalTvTabAdapter.tvClickEvent.subscribe { router.navigateTo(TV_DETAILS_FRAGMENT, it) }
     }
 
     fun showPopularTV(tvList: List<Tv>?) {
@@ -103,5 +113,11 @@ class TvTabFragment : Fragment() {
 
     fun showError(message: String?) {
         Toast.makeText(this.context, message, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onBackClicked(): Boolean {
+        router.exit()
+
+        return true
     }
 }

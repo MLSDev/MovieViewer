@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Role
 import com.shykun.volodymyr.movieviewer.databinding.ItemHorizontalRoleBinding
-import com.shykun.volodymyr.movieviewer.presentation.base.BaseRecyclerViewAdapter
+import com.shykun.volodymyr.movieviewer.presentation.common.BaseRecyclerViewAdapter
 
 class PersonCastAdapter(private val roles: ArrayList<Role>) : BaseRecyclerViewAdapter<Role, PersonCastViewHolder>(roles) {
 

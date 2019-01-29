@@ -6,7 +6,7 @@ import com.shykun.volodymyr.movieviewer.data.entity.Tv
 import com.shykun.volodymyr.movieviewer.data.entity.TvType
 import com.shykun.volodymyr.movieviewer.databinding.ItemLoadingBinding
 import com.shykun.volodymyr.movieviewer.databinding.ItemTvBinding
-import com.shykun.volodymyr.movieviewer.presentation.base.BaseViewHolder
+import com.shykun.volodymyr.movieviewer.presentation.common.BaseViewHolder
 import io.reactivex.subjects.PublishSubject
 
 open class BaseTvListViewHolder(viewDataBinding: ViewDataBinding)

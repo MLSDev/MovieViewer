@@ -1,4 +1,4 @@
-package com.shykun.volodymyr.movieviewer.presentation.base
+package com.shykun.volodymyr.movieviewer.presentation.common
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -14,7 +14,7 @@ import ru.terrakok.cicerone.Cicerone
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
-abstract class TabNavigationFragment : Fragment() {
+abstract class TabNavigationFragment : Fragment(), BackButtonListener {
     @Inject
     lateinit var cicerone: Cicerone<Router>
 
@@ -46,5 +46,10 @@ abstract class TabNavigationFragment : Fragment() {
         super.onPause()
     }
 
-
+    override fun onBackClicked(): Boolean {
+        return if(isAdded) {
+            val childFragment = childFragmentManager.findFragmentById(R.id.navigationFragmentContainer)
+            childFragment != null && childFragment is BackButtonListener && childFragment.onBackClicked()
+        } else false
+    }
 }

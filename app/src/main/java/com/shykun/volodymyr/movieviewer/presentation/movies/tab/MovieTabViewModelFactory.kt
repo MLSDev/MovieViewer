@@ -7,10 +7,9 @@ import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
 class MovieTabViewModelFactory @Inject constructor(
-        private val moviesUseCase: MoviesUseCase,
-        private val router: Router) : ViewModelProvider.NewInstanceFactory() {
+        private val moviesUseCase: MoviesUseCase) : ViewModelProvider.NewInstanceFactory() {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return MovieTabViewModel(moviesUseCase, router) as T
+        return MovieTabViewModel(moviesUseCase) as T
     }
 }

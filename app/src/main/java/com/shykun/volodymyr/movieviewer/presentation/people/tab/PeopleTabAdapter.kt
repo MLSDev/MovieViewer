@@ -7,7 +7,7 @@ import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Person
 import com.shykun.volodymyr.movieviewer.databinding.ItemLoadingBinding
 import com.shykun.volodymyr.movieviewer.databinding.ItemPersonBinding
-import com.shykun.volodymyr.movieviewer.presentation.base.BaseRecyclerViewAdapter
+import com.shykun.volodymyr.movieviewer.presentation.common.BaseRecyclerViewAdapter
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 

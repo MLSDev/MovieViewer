@@ -14,24 +14,34 @@ import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Role
 import com.shykun.volodymyr.movieviewer.data.network.response.PersonDetailsResponse
 import com.shykun.volodymyr.movieviewer.databinding.FragmentPersonDetailsBinding
-import com.shykun.volodymyr.movieviewer.presentation.base.TabNavigationFragment
+import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
+import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
 import kotlinx.android.synthetic.main.fragment_person_details.*
+import ru.terrakok.cicerone.Router
+import javax.inject.Inject
 
 const val PERSON_DETAILS_FRAGMENT_KEY = "person_details_fragment_key"
 private const val PERSON_ID_KEY = "person_id_key"
 
-class PersonDetailsFragment : Fragment() {
+class PersonDetailsFragment : Fragment(), BackButtonListener {
 
     private var personId = -1
     private lateinit var viewModel: PersonDetailsViewModel
     private lateinit var binding: FragmentPersonDetailsBinding
     private lateinit var personCastAdapter: PersonCastAdapter
 
+    @Inject
+    lateinit var viewModelFactory: PersonDetailsViewModelFactory
+    @Inject
+    lateinit var router: Router
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        (parentFragment as TabNavigationFragment).component?.inject(this)
+
         personId = arguments?.getInt(PERSON_ID_KEY)!!
-        viewModel = ViewModelProviders.of(this, (parentFragment as TabNavigationFragment).component?.getPersonDetailsViewModelFactory())
+        viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(PersonDetailsViewModel::class.java)
     }
 
@@ -56,9 +66,7 @@ class PersonDetailsFragment : Fragment() {
 
     private fun setupBackButton() {
         personDetailsToolbar.setNavigationIcon(R.drawable.ic_arrow_back)
-        personDetailsToolbar.setNavigationOnClickListener {
-            activity?.onBackPressed()
-        }
+        personDetailsToolbar.setNavigationOnClickListener { onBackClicked() }
     }
 
     private fun setupPersonCastAdapter() {
@@ -87,6 +95,12 @@ class PersonDetailsFragment : Fragment() {
 
     private fun showLoadingError(message: String?) {
         Toast.makeText(this.context, message, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onBackClicked(): Boolean {
+        router.exit()
+
+        return true
     }
 
     companion object {

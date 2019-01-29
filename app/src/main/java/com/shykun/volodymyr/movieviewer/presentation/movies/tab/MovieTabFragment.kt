@@ -12,9 +12,14 @@ import android.widget.Toast
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Movie
 import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
-import com.shykun.volodymyr.movieviewer.presentation.base.TabNavigationFragment
+import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
+import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
+import com.shykun.volodymyr.movieviewer.presentation.movies.details.MOVIE_DETAILS_FRAGMENT_KEY
+import com.shykun.volodymyr.movieviewer.presentation.movies.list.MOVIE_LIST_FRAGMENT_KEY
 import kotlinx.android.synthetic.main.fragment_movies.*
+import ru.terrakok.cicerone.Router
 import java.lang.Exception
+import javax.inject.Inject
 
 const val MOVIE_TAB_FRAGMENT_KEY = "movie_tab_fragment_key"
 
@@ -22,15 +27,22 @@ const val POPULAR_MOVIES = 0
 const val TOP_RATED_MOVIES = 1
 const val UPCOMING_MOVIES = 2
 
-class MovieTabFragment : Fragment() {
+class MovieTabFragment : Fragment(), BackButtonListener {
 
     private lateinit var generalMovieTabAdapter: GeneralMovieTabAdapter
     private lateinit var viewModel: MovieTabViewModel
 
+    @Inject
+    lateinit var viewModelFactory: MovieTabViewModelFactory
+    @Inject
+    lateinit var router: Router
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        (parentFragment as TabNavigationFragment).component?.inject(this)
+
         generalMovieTabAdapter = GeneralMovieTabAdapter(ArrayList(3))
-        viewModel = ViewModelProviders.of(this, (parentFragment as TabNavigationFragment).component?.getMovieTabViewModelFactory())
+        viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(MovieTabViewModel::class.java)
         subscribeViewModel()
 
@@ -59,13 +71,13 @@ class MovieTabFragment : Fragment() {
                 UPCOMING_MOVIES -> MoviesType.UPCOMING
                 else -> throw Exception("Undefined movies type")
             }
-            viewModel.onViewAllButtonClicked(moviesType)
+            router.navigateTo(MOVIE_LIST_FRAGMENT_KEY, moviesType)
         }
     }
 
     private fun setupMovieClick() {
         generalMovieTabAdapter.movieClickEvent.subscribe {
-            viewModel.onMovieClicked(it)
+            router.navigateTo(MOVIE_DETAILS_FRAGMENT_KEY, it)
         }
     }
 
@@ -103,5 +115,11 @@ class MovieTabFragment : Fragment() {
 
     private fun showError(message: String?) {
         Toast.makeText(this.context, message, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onBackClicked(): Boolean {
+        router.exit()
+
+        return true
     }
 }

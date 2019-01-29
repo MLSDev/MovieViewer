@@ -15,8 +15,9 @@ import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
 import com.shykun.volodymyr.movieviewer.data.entity.Tv
 import com.shykun.volodymyr.movieviewer.data.entity.TvType
 import com.shykun.volodymyr.movieviewer.presentation.AppActivity
-import com.shykun.volodymyr.movieviewer.presentation.base.ScrollObservable
-import com.shykun.volodymyr.movieviewer.presentation.base.TabNavigationFragment
+import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
+import com.shykun.volodymyr.movieviewer.presentation.common.ScrollObservable
+import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
 import com.shykun.volodymyr.movieviewer.presentation.discover.DiscoverViewModel
 import com.shykun.volodymyr.movieviewer.presentation.discover.DiscoverViewModelFactory
 import com.shykun.volodymyr.movieviewer.presentation.discover.MOVIE_TYPE
@@ -24,11 +25,12 @@ import com.shykun.volodymyr.movieviewer.presentation.movies.list.MovieListAdapte
 import com.shykun.volodymyr.movieviewer.presentation.tv.list.TvListAdapter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_movie_list.*
+import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
 const val DISCOVER_LIST_FRAGMENT_KEY = "discover_list_fragment_key"
 
-class DiscoverListFragment : Fragment() {
+class DiscoverListFragment : Fragment(), BackButtonListener {
 
     private lateinit var viewModel: DiscoverViewModel
     private lateinit var movieListAdapter: MovieListAdapter
@@ -36,6 +38,8 @@ class DiscoverListFragment : Fragment() {
 
     @Inject
     lateinit var viewModelFactory: DiscoverViewModelFactory
+    @Inject
+    lateinit var router: Router
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,9 +71,7 @@ class DiscoverListFragment : Fragment() {
 
     private fun setupBackButton() {
         movieListToolbar.setNavigationIcon(R.drawable.ic_arrow_back)
-        movieListToolbar.setNavigationOnClickListener {
-            activity?.onBackPressed()
-        }
+        movieListToolbar.setNavigationOnClickListener { onBackClicked() }
     }
 
     private fun subscribeViewModel() {
@@ -116,5 +118,11 @@ class DiscoverListFragment : Fragment() {
             layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
             adapter = tvListAdapter
         }
+    }
+
+    override fun onBackClicked(): Boolean {
+        router.exit()
+
+        return true
     }
 }

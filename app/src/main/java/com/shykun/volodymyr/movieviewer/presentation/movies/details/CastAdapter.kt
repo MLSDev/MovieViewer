@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Actor
 import com.shykun.volodymyr.movieviewer.databinding.ItemHorizontalActorBinding
-import com.shykun.volodymyr.movieviewer.presentation.base.BaseRecyclerViewAdapter
+import com.shykun.volodymyr.movieviewer.presentation.common.BaseRecyclerViewAdapter
 
 class CastAdapter(private val cast: ArrayList<Actor>)
     : BaseRecyclerViewAdapter<Actor, CastViewHolder>(cast) {

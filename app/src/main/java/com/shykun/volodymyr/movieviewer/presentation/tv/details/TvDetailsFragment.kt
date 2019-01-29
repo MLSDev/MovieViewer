@@ -17,15 +17,18 @@ import com.shykun.volodymyr.movieviewer.data.entity.Review
 import com.shykun.volodymyr.movieviewer.data.entity.Tv
 import com.shykun.volodymyr.movieviewer.data.network.response.TvDetailsResponse
 import com.shykun.volodymyr.movieviewer.databinding.FragmentTvDetailsBinding
-import com.shykun.volodymyr.movieviewer.presentation.base.TabNavigationFragment
+import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
+import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
 import com.shykun.volodymyr.movieviewer.presentation.movies.details.CastAdapter
 import com.shykun.volodymyr.movieviewer.presentation.movies.details.ReviewAdapter
 import kotlinx.android.synthetic.main.fragment_tv_details.*
+import ru.terrakok.cicerone.Router
+import javax.inject.Inject
 
 const val TV_DETAILS_FRAGMENT = "tv_details_fragment"
 private const val TV_ID_KEY = "tv_id_key"
 
-class TvDetailsFragment : Fragment() {
+class TvDetailsFragment : Fragment(), BackButtonListener {
 
     private var tvId = -1
     private lateinit var binding: FragmentTvDetailsBinding
@@ -34,12 +37,19 @@ class TvDetailsFragment : Fragment() {
     private lateinit var reviewsAdapter: ReviewAdapter
     private lateinit var recommendedTvAdapter: RecommendedTvAdapter
 
+    @Inject
+    lateinit var viewModelFactory: TvDetailsViewModelFactory
+    @Inject
+    lateinit var router: Router
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        (parentFragment as TabNavigationFragment).component?.inject(this)
+
         tvId = arguments?.getInt(TV_ID_KEY)!!
         viewModel = ViewModelProviders
-                .of(this, (parentFragment as TabNavigationFragment).component?.getTvDetailsViewModelFactory())
+                .of(this, viewModelFactory)
                 .get(TvDetailsViewModel::class.java)
     }
 
@@ -62,9 +72,7 @@ class TvDetailsFragment : Fragment() {
 
     private fun setupBackButton() {
         tvDetailsToolbar.setNavigationIcon(R.drawable.ic_arrow_back)
-        tvDetailsToolbar.setNavigationOnClickListener {
-            activity?.onBackPressed()
-        }
+        tvDetailsToolbar.setNavigationOnClickListener { onBackClicked() }
     }
 
     private fun subscribeViewModel() {
@@ -124,6 +132,12 @@ class TvDetailsFragment : Fragment() {
             layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
             adapter = recommendedTvAdapter
         }
+    }
+
+    override fun onBackClicked(): Boolean {
+        router.exit()
+
+        return true
     }
 
     companion object {

@@ -9,8 +9,7 @@ import com.shykun.volodymyr.movieviewer.presentation.people.details.PERSON_DETAI
 import ru.terrakok.cicerone.Router
 
 class PeopleTabViewModel(
-        private val peopleUseCase: PeopleUseCase,
-        private val router: Router) : ViewModel() {
+        private val peopleUseCase: PeopleUseCase) : ViewModel() {
 
     private val peopleMutableLiveData = MutableLiveData<List<Person>>()
     private val loadingErrorMutableLiveData = MutableLiveData<String>()
@@ -30,8 +29,4 @@ class PeopleTabViewModel(
                 loadingErrorMutableLiveData.value = it.message
             }
             .subscribe()
-
-    fun onPersonClicked(personId: Int) {
-        router.navigateTo(PERSON_DETAILS_FRAGMENT_KEY, personId)
-    }
 }

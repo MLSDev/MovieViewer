@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.databinding.ItemMultipleSelectionBinding
-import com.shykun.volodymyr.movieviewer.presentation.base.BaseRecyclerViewAdapter
+import com.shykun.volodymyr.movieviewer.presentation.common.BaseRecyclerViewAdapter
 
 class MultipleSelectionAdapter(items: ArrayList<String>)
     : BaseRecyclerViewAdapter<String, ViewHolderMultipleSelection>(items), OnItemClickListener {

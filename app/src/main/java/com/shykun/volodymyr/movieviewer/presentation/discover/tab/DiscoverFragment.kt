@@ -10,7 +10,8 @@ import android.view.ViewGroup
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.databinding.FragmentDiscoverBinding
 import com.shykun.volodymyr.movieviewer.presentation.AppActivity
-import com.shykun.volodymyr.movieviewer.presentation.base.TabNavigationFragment
+import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
+import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
 import com.shykun.volodymyr.movieviewer.presentation.discover.DiscoverViewModel
 import com.shykun.volodymyr.movieviewer.presentation.discover.DiscoverViewModelFactory
 import com.shykun.volodymyr.movieviewer.presentation.discover.filter.FILTER_LIST_FRAGMENT_KEY
@@ -22,7 +23,7 @@ import javax.inject.Inject
 
 const val DISCOVER_FRAGMENT_KEY = "discover_fragment_key"
 
-class DiscoverFragment : Fragment() {
+class DiscoverFragment : Fragment(), BackButtonListener {
 
     @Inject
     lateinit var router: Router
@@ -58,5 +59,11 @@ class DiscoverFragment : Fragment() {
         releaseYearField.setOnClickListener { router.navigateTo(FILTER_LIST_FRAGMENT_KEY, FilterType.YEAR) }
         clearFiltersButton.setOnClickListener { viewModel.clearFilters() }
         showResultsButton.setOnClickListener { router.navigateTo(DISCOVER_LIST_FRAGMENT_KEY) }
+    }
+
+    override fun onBackClicked(): Boolean {
+        router.exit()
+
+        return true
     }
 }
