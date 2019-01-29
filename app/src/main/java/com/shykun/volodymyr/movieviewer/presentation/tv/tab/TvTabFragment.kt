@@ -12,7 +12,7 @@ import android.widget.Toast
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Tv
 import com.shykun.volodymyr.movieviewer.data.entity.TvType
-import com.shykun.volodymyr.movieviewer.presentation.AppActivity
+import com.shykun.volodymyr.movieviewer.presentation.base.TabNavigationFragment
 import kotlinx.android.synthetic.main.fragment_movies.*
 import java.lang.Exception
 
@@ -30,8 +30,10 @@ class TvTabFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel = ViewModelProviders.of(this, (activity as AppActivity).appComponent.getTvTabViewModelFactory())
+        generalTvTabAdapter = GeneralTvTabAdapter(ArrayList())
+        viewModel = ViewModelProviders.of(this, (parentFragment as TabNavigationFragment).component?.getTvTabViewModelFactory())
                 .get(TvTabViewModel::class.java)
+        subscribeViewModel()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -44,8 +46,8 @@ class TvTabFragment : Fragment() {
         setupAdapter()
         setupSeeAllClick()
         setupTvClick()
-        subscribeViewModel()
-        viewModel.onViewLoaded()
+        if (viewModel.topRatedTvLiveData.value == null)
+            viewModel.onViewLoaded()
 
     }
 
@@ -57,7 +59,6 @@ class TvTabFragment : Fragment() {
     }
 
     private fun setupAdapter() {
-        generalTvTabAdapter = GeneralTvTabAdapter(ArrayList())
         movieCategoryList.apply {
             layoutManager = LinearLayoutManager(this@TvTabFragment.context, LinearLayoutManager.VERTICAL, false)
             adapter = generalTvTabAdapter

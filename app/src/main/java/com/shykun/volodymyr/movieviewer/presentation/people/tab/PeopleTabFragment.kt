@@ -9,11 +9,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Person
-import com.shykun.volodymyr.movieviewer.presentation.AppActivity
 import com.shykun.volodymyr.movieviewer.presentation.base.ScrollObservable
+import com.shykun.volodymyr.movieviewer.presentation.base.TabNavigationFragment
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_people_tab.*
 
@@ -26,8 +25,12 @@ class PeopleTabFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this, (activity as AppActivity).appComponent.getPeopleTabViewModelFactory())
+
+        peopleTabAdapter = PeopleTabAdapter(ArrayList())
+
+        viewModel = ViewModelProviders.of(this, (parentFragment as TabNavigationFragment).component?.getPeopleTabViewModelFactory())
                 .get(PeopleTabViewModel::class.java)
+        subscribeViewModel()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -41,8 +44,8 @@ class PeopleTabFragment : Fragment() {
         setupAdapter()
         setupPersonClick()
         subscribeScrollObervable()
-        subscribeViewModel()
-        viewModel.onViewLoaded()
+        if (viewModel.peopleLiveData.value == null)
+            viewModel.onViewLoaded()
     }
 
     private fun subscribeViewModel() {
@@ -51,7 +54,6 @@ class PeopleTabFragment : Fragment() {
     }
 
     private fun setupAdapter() {
-        peopleTabAdapter = PeopleTabAdapter(ArrayList())
         peopleList.apply {
             layoutManager = GridLayoutManager(this@PeopleTabFragment.context, 3)
             adapter = peopleTabAdapter

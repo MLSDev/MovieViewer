@@ -12,7 +12,7 @@ import android.widget.Toast
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Movie
 import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
-import com.shykun.volodymyr.movieviewer.presentation.AppActivity
+import com.shykun.volodymyr.movieviewer.presentation.base.TabNavigationFragment
 import kotlinx.android.synthetic.main.fragment_movies.*
 import java.lang.Exception
 
@@ -29,9 +29,10 @@ class MovieTabFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        viewModel = ViewModelProviders.of(this, (activity as AppActivity).appComponent.getMovieTabViewModelFactory())
+        generalMovieTabAdapter = GeneralMovieTabAdapter(ArrayList(3))
+        viewModel = ViewModelProviders.of(this, (parentFragment as TabNavigationFragment).component?.getMovieTabViewModelFactory())
                 .get(MovieTabViewModel::class.java)
+        subscribeViewModel()
 
     }
 
@@ -46,8 +47,8 @@ class MovieTabFragment : Fragment() {
         setupAdapter()
         setupSeeAllClick()
         setupMovieClick()
-        subscribeViewModel()
-        viewModel.onViewLoaded()
+        if (viewModel.popularMoviesLiveData.value == null)
+            viewModel.onViewLoaded()
     }
 
     private fun setupSeeAllClick() {
@@ -69,39 +70,38 @@ class MovieTabFragment : Fragment() {
     }
 
     private fun setupAdapter() {
-        generalMovieTabAdapter = GeneralMovieTabAdapter(ArrayList(3))
         movieCategoryList.apply {
             layoutManager = LinearLayoutManager(this@MovieTabFragment.context, LinearLayoutManager.VERTICAL, false)
             adapter = generalMovieTabAdapter
         }
     }
 
-    fun subscribeViewModel() {
+    private fun subscribeViewModel() {
         viewModel.popularMoviesLiveData.observe(this, Observer { showPopularMovies(it) })
         viewModel.topRatedMoviesLiveData.observe(this, Observer { showTopRatedMovies(it) })
         viewModel.upcomingMoviesLiveData.observe(this, Observer { showUpcompingMovies(it) })
         viewModel.loadingErrorLiveData.observe(this, Observer { showError(it) })
     }
 
-    fun showPopularMovies(movies: List<Movie>?) {
+    private fun showPopularMovies(movies: List<Movie>?) {
         if (movies != null) {
             generalMovieTabAdapter.addMovies(movies, POPULAR_MOVIES)
         }
     }
 
-    fun showTopRatedMovies(movies: List<Movie>?) {
+    private fun showTopRatedMovies(movies: List<Movie>?) {
         if (movies != null) {
             generalMovieTabAdapter.addMovies(movies, TOP_RATED_MOVIES)
         }
     }
 
-    fun showUpcompingMovies(movies: List<Movie>?) {
+    private fun showUpcompingMovies(movies: List<Movie>?) {
         if (movies != null) {
             generalMovieTabAdapter.addMovies(movies, UPCOMING_MOVIES)
         }
     }
 
-    fun showError(message: String?) {
+    private fun showError(message: String?) {
         Toast.makeText(this.context, message, Toast.LENGTH_SHORT).show()
     }
 }

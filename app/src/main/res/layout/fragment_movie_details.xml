@@ -7,8 +7,8 @@
     <data>
 
         <import type="com.shykun.volodymyr.movieviewer.data.network.response.MovieDetailsResponse" />
-
         <import type="com.shykun.volodymyr.movieviewer.presentation.utils.GenreHelper" />
+        <import type="android.view.View"/>
 
         <variable
             name="movieDetails"
@@ -24,7 +24,8 @@
             android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fitsSystemWindows="false">
+            android:fitsSystemWindows="false"
+            android:visibility="@{movieDetails != null? View.VISIBLE: View.GONE}">
 
 
             <android.support.design.widget.CollapsingToolbarLayout
@@ -58,7 +59,8 @@
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:visibility="@{movieDetails != null? View.VISIBLE: View.GONE}">
 
             <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
@@ -70,7 +72,6 @@
                     android:layout_width="140dp"
                     android:layout_height="220dp"
                     android:layout_marginLeft="10dp"
-                    android:src="@drawable/stub_image_poster"
                     app:url="@{movieDetails.posterPath}" />
 
                 <TextView
@@ -194,6 +195,12 @@
             </RelativeLayout>
 
         </android.support.v4.widget.NestedScrollView>
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="@{movieDetails == null? View.VISIBLE: View.GONE}"/>
 
     </android.support.design.widget.CoordinatorLayout>
 

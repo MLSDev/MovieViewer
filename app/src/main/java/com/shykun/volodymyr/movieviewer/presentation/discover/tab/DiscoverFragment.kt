@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.databinding.FragmentDiscoverBinding
 import com.shykun.volodymyr.movieviewer.presentation.AppActivity
+import com.shykun.volodymyr.movieviewer.presentation.base.TabNavigationFragment
 import com.shykun.volodymyr.movieviewer.presentation.discover.DiscoverViewModel
 import com.shykun.volodymyr.movieviewer.presentation.discover.DiscoverViewModelFactory
 import com.shykun.volodymyr.movieviewer.presentation.discover.filter.FILTER_LIST_FRAGMENT_KEY
@@ -23,14 +24,16 @@ const val DISCOVER_FRAGMENT_KEY = "discover_fragment_key"
 
 class DiscoverFragment : Fragment() {
 
-    @Inject lateinit var router: Router
-    @Inject lateinit var viewModelFactory: DiscoverViewModelFactory
+    @Inject
+    lateinit var router: Router
+    @Inject
+    lateinit var viewModelFactory: DiscoverViewModelFactory
     private lateinit var viewModel: DiscoverViewModel
     private lateinit var binding: FragmentDiscoverBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (activity as AppActivity).appComponent.inject(this)
+        (parentFragment as TabNavigationFragment).component?.inject(this)
 
         viewModel = ViewModelProviders.of(activity as AppActivity, viewModelFactory)
                 .get(DiscoverViewModel::class.java)

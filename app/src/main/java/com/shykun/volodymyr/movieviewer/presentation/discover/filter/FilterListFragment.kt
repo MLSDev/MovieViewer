@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.presentation.AppActivity
+import com.shykun.volodymyr.movieviewer.presentation.base.TabNavigationFragment
 import com.shykun.volodymyr.movieviewer.presentation.discover.DiscoverViewModel
 import com.shykun.volodymyr.movieviewer.presentation.discover.DiscoverViewModelFactory
 import com.shykun.volodymyr.movieviewer.presentation.utils.GenreHelper
@@ -38,7 +39,7 @@ class FilterListFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        (activity as AppActivity).appComponent.inject(this)
+        (parentFragment as TabNavigationFragment).component?.inject(this)
 
         type = arguments?.getSerializable(FILTER_TYPE_KEY) as FilterType
         viewModel = ViewModelProviders.of(activity as AppActivity, viewModelFactory)

@@ -16,6 +16,7 @@ import com.shykun.volodymyr.movieviewer.data.entity.Tv
 import com.shykun.volodymyr.movieviewer.data.entity.TvType
 import com.shykun.volodymyr.movieviewer.presentation.AppActivity
 import com.shykun.volodymyr.movieviewer.presentation.base.ScrollObservable
+import com.shykun.volodymyr.movieviewer.presentation.base.TabNavigationFragment
 import com.shykun.volodymyr.movieviewer.presentation.discover.DiscoverViewModel
 import com.shykun.volodymyr.movieviewer.presentation.discover.DiscoverViewModelFactory
 import com.shykun.volodymyr.movieviewer.presentation.discover.MOVIE_TYPE
@@ -39,7 +40,7 @@ class DiscoverListFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        (activity as AppActivity).appComponent.inject(this)
+        (parentFragment as TabNavigationFragment).component?.inject(this)
 
         viewModel = ViewModelProviders.of(activity as AppActivity, viewModelFactory)
                 .get(DiscoverViewModel::class.java)

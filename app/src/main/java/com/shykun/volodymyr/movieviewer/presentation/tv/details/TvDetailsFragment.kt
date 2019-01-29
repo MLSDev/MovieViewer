@@ -11,18 +11,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Actor
 import com.shykun.volodymyr.movieviewer.data.entity.Review
 import com.shykun.volodymyr.movieviewer.data.entity.Tv
 import com.shykun.volodymyr.movieviewer.data.network.response.TvDetailsResponse
 import com.shykun.volodymyr.movieviewer.databinding.FragmentTvDetailsBinding
-import com.shykun.volodymyr.movieviewer.presentation.AppActivity
+import com.shykun.volodymyr.movieviewer.presentation.base.TabNavigationFragment
 import com.shykun.volodymyr.movieviewer.presentation.movies.details.CastAdapter
 import com.shykun.volodymyr.movieviewer.presentation.movies.details.ReviewAdapter
-import kotlinx.android.synthetic.main.fragment_movie_details.*
-import kotlinx.android.synthetic.main.fragment_person_details.*
 import kotlinx.android.synthetic.main.fragment_tv_details.*
 
 const val TV_DETAILS_FRAGMENT = "tv_details_fragment"
@@ -42,7 +39,7 @@ class TvDetailsFragment : Fragment() {
 
         tvId = arguments?.getInt(TV_ID_KEY)!!
         viewModel = ViewModelProviders
-                .of(this, (activity as AppActivity).appComponent.getTvDetailsViewModelFactory())
+                .of(this, (parentFragment as TabNavigationFragment).component?.getTvDetailsViewModelFactory())
                 .get(TvDetailsViewModel::class.java)
     }
 

@@ -14,8 +14,7 @@ import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Role
 import com.shykun.volodymyr.movieviewer.data.network.response.PersonDetailsResponse
 import com.shykun.volodymyr.movieviewer.databinding.FragmentPersonDetailsBinding
-import com.shykun.volodymyr.movieviewer.presentation.AppActivity
-import kotlinx.android.synthetic.main.fragment_movie_list.*
+import com.shykun.volodymyr.movieviewer.presentation.base.TabNavigationFragment
 import kotlinx.android.synthetic.main.fragment_person_details.*
 
 const val PERSON_DETAILS_FRAGMENT_KEY = "person_details_fragment_key"
@@ -32,17 +31,17 @@ class PersonDetailsFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         personId = arguments?.getInt(PERSON_ID_KEY)!!
-        viewModel = ViewModelProviders.of(this, (activity as AppActivity).appComponent.getPersonDetailsViewModelFactory())
+        viewModel = ViewModelProviders.of(this, (parentFragment as TabNavigationFragment).component?.getPersonDetailsViewModelFactory())
                 .get(PersonDetailsViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-         binding = DataBindingUtil.inflate(
-                 inflater,
-                 R.layout.fragment_person_details,
-                 container,
-                 false)
+        binding = DataBindingUtil.inflate(
+                inflater,
+                R.layout.fragment_person_details,
+                container,
+                false)
         return binding.root
     }
 
