@@ -18,9 +18,9 @@ private const val LOADING = 1
 class PeopleTabAdapter(items: ArrayList<Person>)
     : BaseRecyclerViewAdapter<Person, BasePeopleViewHolder>(items) {
 
-    private val personClickSubject = PublishSubject.create<Int>()
+    private val clickSubject = PublishSubject.create<Int>()
 
-    val personClickEvent: Observable<Int> = personClickSubject
+    val personClickEvent: Observable<Int> = clickSubject
     var lastLoadedPage = 1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BasePeopleViewHolder {
@@ -32,7 +32,7 @@ class PeopleTabAdapter(items: ArrayList<Person>)
                     parent,
                     false)
 
-            PeopleTabViewHolder(binding, personClickSubject)
+            PeopleTabViewHolder(binding, clickSubject)
         } else {
             val binding = DataBindingUtil.inflate<ItemLoadingBinding>(
                     inflater,

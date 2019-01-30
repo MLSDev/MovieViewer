@@ -7,8 +7,13 @@ import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Tv
 import com.shykun.volodymyr.movieviewer.databinding.ItemRecommendedTvBinding
 import com.shykun.volodymyr.movieviewer.presentation.common.BaseRecyclerViewAdapter
+import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 
 class RecommendedTvAdapter(private val tvList: ArrayList<Tv>) : BaseRecyclerViewAdapter<Tv, RecommendedTvViewHolder>(tvList) {
+
+    private val clickSubject = PublishSubject.create<Int>()
+    val clickObservable: Observable<Int> = clickSubject
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecommendedTvViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -18,7 +23,7 @@ class RecommendedTvAdapter(private val tvList: ArrayList<Tv>) : BaseRecyclerView
                 parent,
                 false)
 
-        return RecommendedTvViewHolder(binding)
+        return RecommendedTvViewHolder(binding, clickSubject)
     }
 
     fun addTvList(tvList: List<Tv>) {

@@ -41,7 +41,7 @@ class GeneralTvTabViewHolder(
             tvList.apply {
                 layoutManager = LinearLayoutManager(this.context, LinearLayout.HORIZONTAL, false)
                 val tvAdapter = TvTabAdapter(item)
-                tvAdapter.tvClickEvent.subscribe { tvClickSubject.onNext(it) }
+                tvAdapter.clickObservable.subscribe { tvClickSubject.onNext(it) }
                 tvAdapter.type = position
                 adapter = tvAdapter
             }

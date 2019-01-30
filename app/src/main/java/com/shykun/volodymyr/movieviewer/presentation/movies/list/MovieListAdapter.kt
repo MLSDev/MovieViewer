@@ -18,8 +18,8 @@ private const val LOADING = 1
 class MovieListAdapter(itemList: ArrayList<Movie>, val moviesType: MoviesType)
     : BaseRecyclerViewAdapter<Movie, BaseMovieListViewHolder>(itemList) {
 
-    private val movieClickSubject = PublishSubject.create<Int>()
-    val movieClickEvent: Observable<Int> = movieClickSubject
+    private val clickSubject = PublishSubject.create<Int>()
+    val clickEvent: Observable<Int> = clickSubject
     var lastLoadedPage = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseMovieListViewHolder {
@@ -30,7 +30,7 @@ class MovieListAdapter(itemList: ArrayList<Movie>, val moviesType: MoviesType)
                     R.layout.item_movie,
                     parent,
                     false)
-            return MovieListViewHolder(binding, moviesType, movieClickSubject)
+            return MovieListViewHolder(binding, moviesType, clickSubject)
         } else {
             val binding = DataBindingUtil.inflate<ItemLoadingBinding>(
                     inflater,

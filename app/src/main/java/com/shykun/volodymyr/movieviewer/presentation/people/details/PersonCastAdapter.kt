@@ -7,8 +7,13 @@ import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Role
 import com.shykun.volodymyr.movieviewer.databinding.ItemHorizontalRoleBinding
 import com.shykun.volodymyr.movieviewer.presentation.common.BaseRecyclerViewAdapter
+import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 
 class PersonCastAdapter(private val roles: ArrayList<Role>) : BaseRecyclerViewAdapter<Role, PersonCastViewHolder>(roles) {
+
+    private val clickSubject = PublishSubject.create<Role>()
+    val clickObservable: Observable<Role> = clickSubject
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PersonCastViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -18,7 +23,7 @@ class PersonCastAdapter(private val roles: ArrayList<Role>) : BaseRecyclerViewAd
                 parent,
                 false)
 
-        return PersonCastViewHolder(binding)
+        return PersonCastViewHolder(binding, clickSubject)
     }
 
     fun addRoles(roles: List<Role>) {

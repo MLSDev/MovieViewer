@@ -8,7 +8,7 @@ import io.reactivex.subjects.PublishSubject
 
 class TvTabViewHolder(
         private val binding: ItemHorizontalTvBinding,
-        private val tvClickSubject: PublishSubject<Int>) : BaseViewHolder<Tv>(binding) {
+        private val clickSubject: PublishSubject<Int>) : BaseViewHolder<Tv>(binding) {
 
     var type = -1
     lateinit var footerText: String
@@ -29,7 +29,7 @@ class TvTabViewHolder(
 
         }
 
-        itemView.setOnClickListener { tvClickSubject.onNext(item.id) }
+        itemView.setOnClickListener { clickSubject.onNext(item.id) }
 
         executeBinding(item)
     }

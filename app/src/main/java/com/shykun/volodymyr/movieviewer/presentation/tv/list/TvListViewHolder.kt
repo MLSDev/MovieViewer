@@ -18,7 +18,7 @@ class TvListLoadingViewHolder(binding: ItemLoadingBinding)
 class TvListViewHolder(
         private val binding: ItemTvBinding,
         private val tvType: TvType,
-        private val tvClickSubject: PublishSubject<Int>)
+        private val clickSubject: PublishSubject<Int>)
     : BaseTvListViewHolder(binding) {
 
     lateinit var popularity: String
@@ -42,7 +42,7 @@ class TvListViewHolder(
             }
         }
 
-        itemView.setOnClickListener { tvClickSubject.onNext(item.id) }
+        itemView.setOnClickListener { clickSubject.onNext(item.id) }
 
         executeBinding(item)
     }

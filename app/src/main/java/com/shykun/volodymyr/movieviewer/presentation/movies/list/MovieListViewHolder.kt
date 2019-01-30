@@ -18,7 +18,7 @@ class MovieListLoadingViewHolder(binding: ItemLoadingBinding)
 class MovieListViewHolder(
         private val binding: ItemMovieBinding,
         private val moviesType: MoviesType,
-        private val movieClickSubject: PublishSubject<Int>)
+        internal val clickSubject: PublishSubject<Int>)
     : BaseMovieListViewHolder(binding) {
 
     var popularityVisibility = View.VISIBLE
@@ -43,7 +43,7 @@ class MovieListViewHolder(
             }
         }
 
-        itemView.setOnClickListener { movieClickSubject.onNext(item.id) }
+        itemView.setOnClickListener { clickSubject.onNext(item.id) }
 
         executeBinding(item)
     }

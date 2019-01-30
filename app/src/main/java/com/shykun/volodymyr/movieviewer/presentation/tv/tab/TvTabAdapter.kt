@@ -12,9 +12,9 @@ import io.reactivex.subjects.PublishSubject
 
 class TvTabAdapter(items: ArrayList<Tv>): BaseRecyclerViewAdapter<Tv, TvTabViewHolder>(items) {
 
-    private val tvClickSubject = PublishSubject.create<Int>()
+    private val clickSubject = PublishSubject.create<Int>()
 
-    val tvClickEvent: Observable<Int> = tvClickSubject
+    val clickObservable: Observable<Int> = clickSubject
     var type: Int = -1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TvTabViewHolder {
@@ -25,7 +25,7 @@ class TvTabAdapter(items: ArrayList<Tv>): BaseRecyclerViewAdapter<Tv, TvTabViewH
                 parent,
                 false)
 
-        return TvTabViewHolder(binding, tvClickSubject)
+        return TvTabViewHolder(binding, clickSubject)
     }
 
     override fun onBindViewHolder(viewHolder: TvTabViewHolder, position: Int) {

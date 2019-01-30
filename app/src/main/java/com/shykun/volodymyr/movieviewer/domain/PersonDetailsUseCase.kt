@@ -7,5 +7,5 @@ class PersonDetailsUseCase @Inject constructor(private val apiClient: ApiClient)
 
     fun getPersonDetails(personId: Int) = apiClient.getPersonDetails(personId)
 
-    fun getPersonCast(personId: Int) = apiClient.getPersonCimbinedCredits(personId).map { it.cast }
+    fun getPersonCast(personId: Int) = apiClient.getPersonCombinedCredits(personId).map { it.cast }
 }

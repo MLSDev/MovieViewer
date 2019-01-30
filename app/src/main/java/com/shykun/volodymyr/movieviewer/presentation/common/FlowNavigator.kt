@@ -21,7 +21,7 @@ import com.shykun.volodymyr.movieviewer.presentation.people.details.PERSON_DETAI
 import com.shykun.volodymyr.movieviewer.presentation.people.details.PersonDetailsFragment
 import com.shykun.volodymyr.movieviewer.presentation.people.tab.PEOPLE_TAB_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.people.tab.PeopleTabFragment
-import com.shykun.volodymyr.movieviewer.presentation.tv.details.TV_DETAILS_FRAGMENT
+import com.shykun.volodymyr.movieviewer.presentation.tv.details.TV_DETAILS_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.tv.details.TvDetailsFragment
 import com.shykun.volodymyr.movieviewer.presentation.tv.list.TV_LIST_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.tv.list.TvListFragment
@@ -53,7 +53,7 @@ class FlowNavigator(private val fragmentManager: FragmentManager, private val co
 
                     TV_TAB_FRAGMENT_KEY -> openNextFragment(TvTabFragment())
                     TV_LIST_FRAGMENT_KEY -> openNextFragment(TvListFragment.newInstance(command.transitionData as TvType))
-                    TV_DETAILS_FRAGMENT -> openNextFragment(TvDetailsFragment.newInstance(command.transitionData as Int))
+                    TV_DETAILS_FRAGMENT_KEY -> openNextFragment(TvDetailsFragment.newInstance(command.transitionData as Int))
 
                     PEOPLE_TAB_FRAGMENT_KEY -> openNextFragment(PeopleTabFragment())
                     PERSON_DETAILS_FRAGMENT_KEY -> openNextFragment(PersonDetailsFragment.newInstance(command.transitionData as Int))

@@ -21,11 +21,12 @@ import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
 import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
 import com.shykun.volodymyr.movieviewer.presentation.movies.details.CastAdapter
 import com.shykun.volodymyr.movieviewer.presentation.movies.details.ReviewAdapter
+import com.shykun.volodymyr.movieviewer.presentation.people.details.PERSON_DETAILS_FRAGMENT_KEY
 import kotlinx.android.synthetic.main.fragment_tv_details.*
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
-const val TV_DETAILS_FRAGMENT = "tv_details_fragment"
+const val TV_DETAILS_FRAGMENT_KEY = "tv_details_fragment"
 private const val TV_ID_KEY = "tv_id_key"
 
 class TvDetailsFragment : Fragment(), BackButtonListener {
@@ -65,8 +66,10 @@ class TvDetailsFragment : Fragment(), BackButtonListener {
         setupBackButton()
         subscribeViewModel()
         setupCastAdapter()
-        setupReviewsAdapter()
         setupRecommendedTvAdapter()
+        setupReviewsAdapter()
+        setupRecommendedTvClick()
+        setupActorClick()
         viewModel.onViewLoaded(tvId)
     }
 
@@ -117,6 +120,14 @@ class TvDetailsFragment : Fragment(), BackButtonListener {
         }
     }
 
+    private fun setupRecommendedTvAdapter() {
+        recommendedTvAdapter = RecommendedTvAdapter(ArrayList())
+        recommendedTv.apply {
+            layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
+            adapter = recommendedTvAdapter
+        }
+    }
+
     private fun setupReviewsAdapter() {
         reviewsAdapter = ReviewAdapter(ArrayList())
         tvReviews.apply {
@@ -126,12 +137,12 @@ class TvDetailsFragment : Fragment(), BackButtonListener {
         }
     }
 
-    private fun setupRecommendedTvAdapter() {
-        recommendedTvAdapter = RecommendedTvAdapter(ArrayList())
-        recommendedTv.apply {
-            layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = recommendedTvAdapter
-        }
+    private fun setupRecommendedTvClick() {
+        recommendedTvAdapter.clickObservable.subscribe { router.navigateTo(TV_DETAILS_FRAGMENT_KEY, it) }
+    }
+
+    private fun setupActorClick() {
+        castAdapter.clickObservable.subscribe { router.navigateTo(PERSON_DETAILS_FRAGMENT_KEY, it) }
     }
 
     override fun onBackClicked(): Boolean {

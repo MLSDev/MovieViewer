@@ -14,7 +14,7 @@ import com.shykun.volodymyr.movieviewer.data.entity.Tv
 import com.shykun.volodymyr.movieviewer.data.entity.TvType
 import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
 import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
-import com.shykun.volodymyr.movieviewer.presentation.tv.details.TV_DETAILS_FRAGMENT
+import com.shykun.volodymyr.movieviewer.presentation.tv.details.TV_DETAILS_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.tv.list.TV_LIST_FRAGMENT_KEY
 import kotlinx.android.synthetic.main.fragment_movies.*
 import ru.terrakok.cicerone.Router
@@ -90,7 +90,7 @@ class TvTabFragment : Fragment(), BackButtonListener {
     }
 
     private fun setupTvClick() {
-        generalTvTabAdapter.tvClickEvent.subscribe { router.navigateTo(TV_DETAILS_FRAGMENT, it) }
+        generalTvTabAdapter.tvClickEvent.subscribe { router.navigateTo(TV_DETAILS_FRAGMENT_KEY, it) }
     }
 
     fun showPopularTV(tvList: List<Tv>?) {

@@ -16,6 +16,8 @@ import com.shykun.volodymyr.movieviewer.data.network.response.PersonDetailsRespo
 import com.shykun.volodymyr.movieviewer.databinding.FragmentPersonDetailsBinding
 import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
 import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
+import com.shykun.volodymyr.movieviewer.presentation.movies.details.MOVIE_DETAILS_FRAGMENT_KEY
+import com.shykun.volodymyr.movieviewer.presentation.tv.details.TV_DETAILS_FRAGMENT_KEY
 import kotlinx.android.synthetic.main.fragment_person_details.*
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject
@@ -60,6 +62,7 @@ class PersonDetailsFragment : Fragment(), BackButtonListener {
 
         setupBackButton()
         setupPersonCastAdapter()
+        setupPersonCastCLick()
         subscribeViewModel()
         viewModel.onViewLoaded(personId)
     }
@@ -96,6 +99,16 @@ class PersonDetailsFragment : Fragment(), BackButtonListener {
     private fun showLoadingError(message: String?) {
         Toast.makeText(this.context, message, Toast.LENGTH_SHORT).show()
     }
+
+    private fun setupPersonCastCLick() {
+        personCastAdapter.clickObservable.subscribe {
+            when (it.mediaType) {
+                "tv" -> router.navigateTo(TV_DETAILS_FRAGMENT_KEY, it.id)
+                "movie" -> router.navigateTo(MOVIE_DETAILS_FRAGMENT_KEY, it.id)
+            }
+        }
+    }
+
 
     override fun onBackClicked(): Boolean {
         router.exit()

@@ -66,7 +66,7 @@ class MovieListFragment : Fragment(), BackButtonListener {
     }
 
     private fun setupMovieClick() {
-        movieListAdapter.movieClickEvent.subscribe {
+        movieListAdapter.clickEvent.subscribe {
             router.navigateTo(MOVIE_DETAILS_FRAGMENT_KEY, it)
         }
     }

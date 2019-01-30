@@ -85,7 +85,7 @@ class ApiClient @Inject constructor() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
-    fun getPersonCimbinedCredits(personId: Int) = apiService.getPersonCombinedCredits(personId)
+    fun getPersonCombinedCredits(personId: Int) = apiService.getPersonCombinedCredits(personId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 

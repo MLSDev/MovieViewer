@@ -15,7 +15,7 @@ import com.shykun.volodymyr.movieviewer.data.entity.TvType
 import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
 import com.shykun.volodymyr.movieviewer.presentation.common.ScrollObservable
 import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
-import com.shykun.volodymyr.movieviewer.presentation.tv.details.TV_DETAILS_FRAGMENT
+import com.shykun.volodymyr.movieviewer.presentation.tv.details.TV_DETAILS_FRAGMENT_KEY
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_movie_list.*
 import ru.terrakok.cicerone.Router
@@ -65,8 +65,8 @@ class TvListFragment : Fragment(), BackButtonListener {
     }
 
     private fun setupTvClick() {
-        tvListAdapter.tvClickEvent.subscribe {
-            router.navigateTo(TV_DETAILS_FRAGMENT, it)
+        tvListAdapter.clickObservable.subscribe {
+            router.navigateTo(TV_DETAILS_FRAGMENT_KEY, it)
         }
     }
 

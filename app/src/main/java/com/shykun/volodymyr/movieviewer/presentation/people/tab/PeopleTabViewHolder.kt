@@ -13,13 +13,13 @@ open class BasePeopleViewHolder(viewDataBinding: ViewDataBinding)
 class PeopleTabLoadingViewHolder(binding: ItemLoadingBinding)
     : BasePeopleViewHolder(binding)
 
-class PeopleTabViewHolder(private val binding: ItemPersonBinding, private val personClickSubject: PublishSubject<Int>)
+class PeopleTabViewHolder(private val binding: ItemPersonBinding, private val clickSubject: PublishSubject<Int>)
     : BasePeopleViewHolder(binding) {
 
     override fun bind(item: Person, position: Int) {
         super.bind(item, position)
 
-        itemView.setOnClickListener { personClickSubject.onNext(item.id) }
+        itemView.setOnClickListener { clickSubject.onNext(item.id) }
         executeBinding(item)
     }
 

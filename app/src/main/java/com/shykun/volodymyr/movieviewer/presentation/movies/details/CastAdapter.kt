@@ -7,9 +7,14 @@ import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Actor
 import com.shykun.volodymyr.movieviewer.databinding.ItemHorizontalActorBinding
 import com.shykun.volodymyr.movieviewer.presentation.common.BaseRecyclerViewAdapter
+import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 
 class CastAdapter(private val cast: ArrayList<Actor>)
     : BaseRecyclerViewAdapter<Actor, CastViewHolder>(cast) {
+
+    private val clickSubject = PublishSubject.create<Int>()
+    val clickObservable: Observable<Int> = clickSubject
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CastViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -19,7 +24,7 @@ class CastAdapter(private val cast: ArrayList<Actor>)
                 parent,
                 false)
 
-        return CastViewHolder(binding)
+        return CastViewHolder(binding, clickSubject)
     }
 
     fun addCast(actors: List<Actor>) {

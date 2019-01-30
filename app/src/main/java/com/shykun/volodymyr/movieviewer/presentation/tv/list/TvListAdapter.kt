@@ -19,8 +19,8 @@ class TvListAdapter(itemList: ArrayList<Tv>, val tvType: TvType)
     : BaseRecyclerViewAdapter<Tv, BaseTvListViewHolder>(itemList) {
 
     var lastLoadedPage = 1
-    private val tvClickSubject = PublishSubject.create<Int>()
-    val tvClickEvent: Observable<Int> = tvClickSubject
+    private val clickSubject = PublishSubject.create<Int>()
+    val clickObservable: Observable<Int> = clickSubject
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseTvListViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -30,7 +30,7 @@ class TvListAdapter(itemList: ArrayList<Tv>, val tvType: TvType)
                     R.layout.item_tv,
                     parent,
                     false)
-            TvListViewHolder(binding, tvType, tvClickSubject)
+            TvListViewHolder(binding, tvType, clickSubject)
         } else {
             val binding = DataBindingUtil.inflate<ItemLoadingBinding>(
                     inflater,

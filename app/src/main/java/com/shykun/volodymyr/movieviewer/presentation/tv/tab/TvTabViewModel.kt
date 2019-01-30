@@ -6,9 +6,6 @@ import android.arch.lifecycle.ViewModel
 import com.shykun.volodymyr.movieviewer.data.entity.Tv
 import com.shykun.volodymyr.movieviewer.data.entity.TvType
 import com.shykun.volodymyr.movieviewer.domain.TvUseCase
-import com.shykun.volodymyr.movieviewer.presentation.tv.details.TV_DETAILS_FRAGMENT
-import com.shykun.volodymyr.movieviewer.presentation.tv.list.TV_LIST_FRAGMENT_KEY
-import ru.terrakok.cicerone.Router
 
 class TvTabViewModel(
         private val TVUseCase: TvUseCase) : ViewModel() {
