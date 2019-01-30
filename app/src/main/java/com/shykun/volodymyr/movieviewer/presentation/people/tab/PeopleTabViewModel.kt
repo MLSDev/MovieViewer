@@ -22,11 +22,8 @@ class PeopleTabViewModel(
     }
 
     fun getPeople(page: Int) = peopleUseCase.execute(page)
-            .doOnSuccess {
-                peopleMutableLiveData.value = it
-            }
-            .doOnError {
-                loadingErrorMutableLiveData.value = it.message
-            }
-            .subscribe()
+            .subscribe(
+                    { response -> peopleMutableLiveData.value = response },
+                    { error -> loadingErrorMutableLiveData.value = error.message }
+            )
 }

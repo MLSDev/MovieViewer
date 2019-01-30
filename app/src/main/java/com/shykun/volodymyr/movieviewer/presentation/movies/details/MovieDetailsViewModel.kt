@@ -34,45 +34,33 @@ class MovieDetailsViewModel(
 
     fun getMovieDetails(movieId: Int) {
         movieDetailsUseCase.getMovieDetails(movieId)
-                .doOnSuccess {
-                    movieDetailsMutableLiveData.value = it
-                }
-                .doOnError {
-                    loadingErrorMutableLiveData.value = it.message
-                }
-                .subscribe()
+                .subscribe(
+                        { response -> movieDetailsMutableLiveData.value = response },
+                        { error -> loadingErrorMutableLiveData.value = error.message }
+                )
     }
 
     fun getMovieCast(movieId: Int) {
         movieDetailsUseCase.getMovieCredits(movieId)
-                .doOnSuccess {
-                    movieCastMutableLiveData.value = it
-                }
-                .doOnError {
-                    loadingErrorMutableLiveData.value = it.message
-                }
-                .subscribe()
+                .subscribe(
+                        { response -> movieCastMutableLiveData.value = response },
+                        { error -> loadingErrorMutableLiveData.value = error.message }
+                )
     }
 
     fun getMovieReviews(movieId: Int) {
         movieDetailsUseCase.getMovieReviews(movieId)
-                .doOnSuccess {
-                    movieReviewsMutableLiveData.value = it
-                }
-                .doOnError {
-                    loadingErrorMutableLiveData.value = it.message
-                }
-                .subscribe()
+                .subscribe(
+                        { response -> movieReviewsMutableLiveData.value = response },
+                        { error -> loadingErrorMutableLiveData.value = error.message }
+                )
     }
 
     fun getRecommendedMovies(movieId: Int) {
         movieDetailsUseCase.getRecommendedMovies(movieId)
-                .doOnSuccess {
-                    recommendedMoviesMutableLiveData.value = it
-                }
-                .doOnError {
-                    loadingErrorMutableLiveData.value = it.message
-                }
-                .subscribe()
+                .subscribe(
+                        { response -> recommendedMoviesMutableLiveData.value = response },
+                        { error -> loadingErrorMutableLiveData.value = error.message }
+                )
     }
 }

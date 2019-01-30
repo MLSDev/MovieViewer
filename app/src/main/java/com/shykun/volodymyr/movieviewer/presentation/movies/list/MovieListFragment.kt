@@ -72,8 +72,8 @@ class MovieListFragment : Fragment(), BackButtonListener {
     }
 
     private fun subscribeViewModel() {
-        viewModel.movies.observe(this, Observer<List<Movie>> { showMovies(it) })
-        viewModel.loadingError.observe(this, Observer { showError(it) })
+        viewModel.moviesLiveData.observe(this, Observer<List<Movie>> { showMovies(it) })
+        viewModel.loadingErrorLiveData.observe(this, Observer { showError(it) })
 
     }
 

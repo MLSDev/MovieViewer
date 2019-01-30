@@ -57,13 +57,10 @@ class DiscoverViewModel(private val discoverUseCase: DiscoverUseCase) : ViewMode
 
         return discoverUseCase
                 .discoverMovies(tmpYear, tmpRating, tmpGenres, page)
-                .doOnSuccess {
-                    discoveredMoviesMutableLiveData.value = it
-                }
-                .doOnError {
-                    loadingErrorMutableLiveData.value = it.message
-                }
-                .subscribe()
+                .subscribe(
+                        { response -> discoveredMoviesMutableLiveData.value = response },
+                        { error -> loadingErrorMutableLiveData.value = error.message }
+                )
     }
 
     private fun discoverTv(page: Int) {
@@ -73,13 +70,10 @@ class DiscoverViewModel(private val discoverUseCase: DiscoverUseCase) : ViewMode
 
         discoverUseCase
                 .discoverTv("$tmpYear-01-01", tmpRating, tmpGenres, page)
-                .doOnSuccess {
-                    discoveredTvMutableLiveData.value = it
-                }
-                .doOnError {
-                    loadingErrorMutableLiveData.value = it.message
-                }
-                .subscribe()
+                .subscribe(
+                        { response -> discoveredTvMutableLiveData.value = response },
+                        { error -> loadingErrorMutableLiveData.value = error.message }
+                )
     }
 }
 

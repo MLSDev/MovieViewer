@@ -23,20 +23,14 @@ class PersonDetailsViewModel(private val personDetailsUseCase: PersonDetailsUseC
     }
 
     private fun getPersonDetails(personId: Int) = personDetailsUseCase.getPersonDetails(personId)
-            .doOnSuccess {
-                personDetailsMutableLiveData.value = it
-            }
-            .doOnError {
-                loadingErrorMutableLiveData.value = it.message
-            }
-            .subscribe()
+            .subscribe(
+                    { response -> personDetailsMutableLiveData.value = response },
+                    { error -> loadingErrorMutableLiveData.value = error.message }
+            )
 
     private fun getPersonCast(personId: Int) = personDetailsUseCase.getPersonCast(personId)
-            .doOnSuccess {
-                personCastMutableLiveData.value = it
-            }
-            .doOnError {
-                loadingErrorMutableLiveData.value = it.message
-            }
-            .subscribe()
+            .subscribe(
+                    { response -> personCastMutableLiveData.value = response },
+                    { error -> loadingErrorMutableLiveData.value = error.message }
+            )
 }

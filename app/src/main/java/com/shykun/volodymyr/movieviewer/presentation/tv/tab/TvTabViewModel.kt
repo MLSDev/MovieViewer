@@ -29,34 +29,25 @@ class TvTabViewModel(
 
     fun getPopularTV(page: Int) {
         TVUseCase.execute(TvType.POPULAR, page)
-                .doOnSuccess {
-                    popularTvMutableLiveData.value = it
-                }
-                .doOnError {
-                    loadingErrorMutableLiveData.value = it.message
-                }
-                .subscribe()
+                .subscribe(
+                        { response -> popularTvMutableLiveData.value = response },
+                        { error -> loadingErrorMutableLiveData.value = error.message }
+                )
     }
 
     fun getTopRatedTV(page: Int) {
         TVUseCase.execute(TvType.TOP_RATED, page)
-                .doOnSuccess {
-                    topRatedTvMutableLiveData.value = it
-                }
-                .doOnError {
-                    loadingErrorMutableLiveData.value = it.message
-                }
-                .subscribe()
+                .subscribe(
+                        { response -> topRatedTvMutableLiveData.value = response },
+                        { error -> loadingErrorMutableLiveData.value = error.message }
+                )
     }
 
     fun getTVOnTheAir(page: Int) {
         TVUseCase.execute(TvType.ON_THE_AIR, page)
-                .doOnSuccess {
-                    tvOnTheAirMutableLiveData.value = it
-                }
-                .doOnError {
-                    loadingErrorMutableLiveData.value = it.message
-                }
-                .subscribe()
+                .subscribe(
+                        { response -> tvOnTheAirMutableLiveData.value = response },
+                        { error -> loadingErrorMutableLiveData.value = error.message }
+                )
     }
 }

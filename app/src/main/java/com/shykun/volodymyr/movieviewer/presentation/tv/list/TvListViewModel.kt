@@ -16,11 +16,8 @@ class TvListViewModel(private val tvUseCase: TvUseCase) : ViewModel() {
     val loadingErrorLiveData: LiveData<String> = loadingErrorMutableLiveData
 
     fun getTvList(page: Int, tvType: TvType) = tvUseCase.execute(tvType, page)
-            .doOnSuccess {
-                tvListMutableLiveData.value = it
-            }
-            .doOnError {
-                loadingErrorMutableLiveData.value = it.message
-            }
-            .subscribe()
+            .subscribe(
+                    { response -> tvListMutableLiveData.value = response },
+                    { error -> loadingErrorMutableLiveData.value = error.message }
+            )
 }

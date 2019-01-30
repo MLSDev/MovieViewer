@@ -31,34 +31,25 @@ class MovieTabViewModel(private val moviesUseCase: MoviesUseCase) : ViewModel() 
 
     private fun getPopularMovies(page: Int) {
         moviesUseCase.execute(MoviesType.POPULAR, page)
-                .doOnSuccess {
-                    popularMoviesMutableLiveData.value = it
-                }
-                .doOnError {
-                    loadingErrorMutableLiveData.value = it.message
-                }
-                .subscribe()
+                .subscribe(
+                        { response -> popularMoviesMutableLiveData.value = response },
+                        { error -> loadingErrorMutableLiveData.value = error.message }
+                )
     }
 
     private fun getTopRatedMovies(page: Int) {
         moviesUseCase.execute(MoviesType.TOP_RATED, page)
-                .doOnSuccess {
-                    topRatedMoviesMutableLiveData.value = it
-                }
-                .doOnError {
-                    loadingErrorMutableLiveData.value = it.message
-                }
-                .subscribe()
+                .subscribe(
+                        { response -> topRatedMoviesMutableLiveData.value = response },
+                        { error -> loadingErrorMutableLiveData.value = error.message }
+                )
     }
 
     private fun getUpcomingMovies(page: Int) {
         moviesUseCase.execute(MoviesType.UPCOMING, page)
-                .doOnSuccess {
-                    upcomingMoviesMutableLiveData.value = it
-                }
-                .doOnError {
-                    loadingErrorMutableLiveData.value = it.message
-                }
-                .subscribe()
+                .subscribe(
+                        { response -> upcomingMoviesMutableLiveData.value = response },
+                        { error -> loadingErrorMutableLiveData.value = error.message }
+                )
     }
 }

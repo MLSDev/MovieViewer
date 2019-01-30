@@ -31,38 +31,26 @@ class TvDetailsViewModel(private val gtTvDetailsUseCase: TvDetailsUseCase) : Vie
     }
 
     private fun getTvDetails(tvId: Int) = gtTvDetailsUseCase.getTvDetails(tvId)
-            .doOnSuccess {
-                tvDetailsMutableLiveData.value = it
-            }
-            .doOnError {
-                loadingErrorMutableLiveData.value = it.message
-            }
-            .subscribe()
+            .subscribe(
+                    { response -> tvDetailsMutableLiveData.value = response },
+                    { error -> loadingErrorMutableLiveData.value = error.message }
+            )
 
     private fun getRecommendedTv(tvId: Int) = gtTvDetailsUseCase.getRecommendedTv(tvId)
-            .doOnSuccess {
-                recommendedTvMutableLiveData.value = it
-            }
-            .doOnError {
-                loadingErrorMutableLiveData.value = it.message
-            }
-            .subscribe()
+            .subscribe(
+                    { response -> recommendedTvMutableLiveData.value = response },
+                    { error -> loadingErrorMutableLiveData.value = error.message }
+            )
 
     private fun getTvReviews(tvId: Int) = gtTvDetailsUseCase.getTvReviews(tvId)
-            .doOnSuccess {
-                tvReviewsMutableLiveData.value = it
-            }
-            .doOnError {
-                loadingErrorMutableLiveData.value = it.message
-            }
-            .subscribe()
+            .subscribe(
+                    { response -> tvReviewsMutableLiveData.value = response },
+                    { error -> loadingErrorMutableLiveData.value = error.message }
+            )
 
     private fun getTvCast(tvId: Int) = gtTvDetailsUseCase.getTvCast(tvId)
-            .doOnSuccess {
-                tvCastMutableLiveData.value = it
-            }
-            .doOnError {
-                loadingErrorMutableLiveData.value = it.message
-            }
-            .subscribe()
+            .subscribe(
+                    { response -> tvCastMutableLiveData.value = response },
+                    { error -> loadingErrorMutableLiveData.value = error.message }
+            )
 }

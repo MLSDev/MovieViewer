@@ -69,7 +69,7 @@ class MovieTabFragment : Fragment(), BackButtonListener {
                 POPULAR_MOVIES -> MoviesType.POPULAR
                 TOP_RATED_MOVIES -> MoviesType.TOP_RATED
                 UPCOMING_MOVIES -> MoviesType.UPCOMING
-                else -> throw Exception("Undefined movies type")
+                else -> throw Exception("Undefined moviesLiveData type")
             }
             router.navigateTo(MOVIE_LIST_FRAGMENT_KEY, moviesType)
         }
