@@ -18,7 +18,7 @@ import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragmen
 import com.shykun.volodymyr.movieviewer.presentation.movies.details.MOVIE_DETAILS_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.movies.list.MOVIE_LIST_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.movies.search.MOVIES_SEARCH_FRAGMENT_KEY
-import kotlinx.android.synthetic.main.fragment_movies.*
+import kotlinx.android.synthetic.main.fragment_movies_tab.*
 import ru.terrakok.cicerone.Router
 import java.lang.Exception
 import javax.inject.Inject
@@ -52,7 +52,7 @@ class MovieTabFragment : Fragment(), BackButtonListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_movies, container, false)
+        return inflater.inflate(R.layout.fragment_movies_tab, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -77,9 +77,6 @@ class MovieTabFragment : Fragment(), BackButtonListener {
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return true
-    }
 
     private fun setupSeeAllClick() {
         generalMovieTabAdapter.seeAllClickEvent.subscribe {

@@ -15,17 +15,20 @@ import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
 import com.shykun.volodymyr.movieviewer.presentation.common.ScrollObservable
 import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
 import com.shykun.volodymyr.movieviewer.presentation.people.details.PERSON_DETAILS_FRAGMENT_KEY
+import com.shykun.volodymyr.movieviewer.presentation.people.search.PEOPLE_SEARCH_FRAGMENT_KEY
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_people_tab.*
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
 const val PEOPLE_TAB_FRAGMENT_KEY = "people_tab_fragment_key"
+const val PEOPLE_SEARCH_QUERY_KEY = "people_search_query"
 
 class PeopleTabFragment : Fragment(), BackButtonListener {
 
     private lateinit var peopleTabAdapter: PeopleTabAdapter
     private lateinit var viewModel: PeopleTabViewModel
+    private var searchQuery: String? = null
 
     @Inject
     lateinit var viewModelFactory: PeopleTabViewModelFactory
@@ -37,6 +40,7 @@ class PeopleTabFragment : Fragment(), BackButtonListener {
 
         (parentFragment as TabNavigationFragment).component?.inject(this)
 
+        searchQuery = arguments?.getString(PEOPLE_SEARCH_QUERY_KEY, null)
         peopleTabAdapter = PeopleTabAdapter(ArrayList())
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(PeopleTabViewModel::class.java)
@@ -51,11 +55,20 @@ class PeopleTabFragment : Fragment(), BackButtonListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupToolbar()
         setupAdapter()
         setupPersonClick()
         subscribeScrollObervable()
-        if (viewModel.peopleLiveData.value == null)
-            viewModel.onViewLoaded()
+    }
+
+    private fun setupToolbar() {
+        peopleToolbar.inflateMenu(R.menu.manu_app)
+        peopleToolbar.setOnMenuItemClickListener { menuItem ->
+            when(menuItem.itemId) {
+                R.id.action_search -> router.navigateTo(PEOPLE_SEARCH_FRAGMENT_KEY)
+            }
+            true
+        }
     }
 
     private fun subscribeViewModel() {
@@ -81,7 +94,10 @@ class PeopleTabFragment : Fragment(), BackButtonListener {
                 .distinctUntilChanged()
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext {
-                    viewModel.getPeople(peopleTabAdapter.lastLoadedPage + 1)
+                    if (searchQuery == null)
+                        viewModel.getPeople(peopleTabAdapter.lastLoadedPage + 1)
+                    else
+                        viewModel.searchPeople(searchQuery!!, peopleTabAdapter.lastLoadedPage + 1)
                     peopleTabAdapter.lastLoadedPage++
                 }
                 .subscribe()
@@ -101,5 +117,14 @@ class PeopleTabFragment : Fragment(), BackButtonListener {
         router.exit()
 
         return true
+    }
+
+    companion object {
+        fun newInstance(args: Bundle?): PeopleTabFragment {
+            val peopleTabFragment = PeopleTabFragment()
+            peopleTabFragment.arguments = args
+
+            return peopleTabFragment
+        }
     }
 }

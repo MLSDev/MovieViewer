@@ -95,6 +95,12 @@ interface ApiService {
             @Path("person_id") personId: Int,
             @Query("api_key") api_key: String = API_KEY): Single<PersonCreditsResponse>
 
+    @GET("search/person")
+    fun searchPeople(
+            @Query("query") query: String,
+            @Query("page") page: Int,
+            @Query("api_key") api_key: String = API_KEY): Single<PeopleResponse>
+
 
     //discover
 

@@ -14,11 +14,10 @@ import com.shykun.volodymyr.movieviewer.data.entity.Tv
 import com.shykun.volodymyr.movieviewer.data.entity.TvType
 import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
 import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
-import com.shykun.volodymyr.movieviewer.presentation.movies.search.MOVIES_SEARCH_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.tv.details.TV_DETAILS_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.tv.list.TV_LIST_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.tv.search.TV_SEARCH_FRAGMENT_KEY
-import kotlinx.android.synthetic.main.fragment_movies.*
+import kotlinx.android.synthetic.main.fragment_movies_tab.*
 import ru.terrakok.cicerone.Router
 import java.lang.Exception
 import javax.inject.Inject
@@ -52,7 +51,7 @@ class TvTabFragment : Fragment(), BackButtonListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_movies, container, false)
+        return inflater.inflate(R.layout.fragment_movies_tab, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
