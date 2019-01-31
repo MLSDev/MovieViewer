@@ -13,6 +13,7 @@ import com.shykun.volodymyr.movieviewer.presentation.people.details.PersonDetail
 import com.shykun.volodymyr.movieviewer.presentation.people.tab.PeopleTabFragment
 import com.shykun.volodymyr.movieviewer.presentation.tv.details.TvDetailsFragment
 import com.shykun.volodymyr.movieviewer.presentation.tv.list.TvListFragment
+import com.shykun.volodymyr.movieviewer.presentation.tv.search.TvSearchFragment
 import com.shykun.volodymyr.movieviewer.presentation.tv.tab.TvTabFragment
 import dagger.Component
 import javax.inject.Singleton
@@ -35,4 +36,5 @@ interface AppComponent {
     fun inject(target: PeopleTabFragment)
     fun inject(target: PersonDetailsFragment)
     fun inject(target: MovieSearchFragment)
+    fun inject(target: TvSearchFragment)
 }

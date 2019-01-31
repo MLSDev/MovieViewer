@@ -37,7 +37,7 @@ class MovieSearchFragment : Fragment(), BackButtonListener {
     private lateinit var movieSearchAdapter: MovieSearchAdapter
 
     @Inject
-    lateinit var viewModelFactory: SearchViewModelFactory
+    lateinit var viewModelFactory: MovieSearchViewModelFactory
     @Inject
     lateinit var router: Router
 
@@ -112,6 +112,11 @@ class MovieSearchFragment : Fragment(), BackButtonListener {
         imm?.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
     }
 
+    private fun hideKeyboard() {
+        val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+        imm?.hideSoftInputFromWindow(searchView.windowToken, 0)
+    }
+
     private fun subscribeViewModel() {
         viewModel.searchedMoviesLiveData.observe(this, Observer { showSearchedMovies(it) })
         viewModel.loadingErrorLiveData.observe(this, Observer { showLoadingError(it) })
@@ -134,6 +139,7 @@ class MovieSearchFragment : Fragment(), BackButtonListener {
     }
 
     override fun onBackClicked(): Boolean {
+        hideKeyboard()
         router.exit()
 
         return true

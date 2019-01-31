@@ -27,4 +27,5 @@
     <string name="biography">Biography</string>
     <string name="overview">Overview</string>
     <string name="search_movies">Search for movies</string>
+    <string name="search_tv">Search fo TV</string>
 </resources>

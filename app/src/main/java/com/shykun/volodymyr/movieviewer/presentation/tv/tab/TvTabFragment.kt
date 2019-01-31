@@ -14,8 +14,10 @@ import com.shykun.volodymyr.movieviewer.data.entity.Tv
 import com.shykun.volodymyr.movieviewer.data.entity.TvType
 import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
 import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
+import com.shykun.volodymyr.movieviewer.presentation.movies.search.MOVIES_SEARCH_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.tv.details.TV_DETAILS_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.tv.list.TV_LIST_FRAGMENT_KEY
+import com.shykun.volodymyr.movieviewer.presentation.tv.search.TV_SEARCH_FRAGMENT_KEY
 import kotlinx.android.synthetic.main.fragment_movies.*
 import ru.terrakok.cicerone.Router
 import java.lang.Exception
@@ -56,11 +58,22 @@ class TvTabFragment : Fragment(), BackButtonListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupAdapter()
+        setupToolbar()
         setupSeeAllClick()
         setupTvClick()
         if (viewModel.topRatedTvLiveData.value == null)
             viewModel.onViewLoaded()
 
+    }
+
+    private fun setupToolbar() {
+        moviesToolbar.inflateMenu(R.menu.manu_app)
+        moviesToolbar.setOnMenuItemClickListener { menuItem ->
+            when(menuItem.itemId) {
+                R.id.action_search -> router.navigateTo(TV_SEARCH_FRAGMENT_KEY)
+            }
+            true
+        }
     }
 
     private fun subscribeViewModel() {

@@ -72,6 +72,12 @@ interface ApiService {
             @Path("tv_id") tvId: Int,
             @Query("api_key") api_key: String = API_KEY): Single<ReviewsResponse>
 
+    @GET("search/tv")
+    fun searchTv(
+            @Query("query") query: String,
+            @Query("page") page: Int,
+            @Query("api_key") api_key: String = API_KEY): Single<TvResponse>
+
     //people
 
     @GET("person/popular")

@@ -20,4 +20,10 @@ class TvListViewModel(private val tvUseCase: TvUseCase) : ViewModel() {
                     { response -> tvListMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
+
+    fun searchTv(query: String, page: Int) = tvUseCase.searchTv(query, page)
+            .subscribe(
+                    { response -> tvListMutableLiveData.value = response },
+                    { error -> loadingErrorMutableLiveData.value = error.message }
+            )
 }

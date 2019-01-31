@@ -79,6 +79,10 @@ class ApiClient @Inject constructor() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
+    fun searchTv(query: String, page: Int) = apiService.searchTv(query, page)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
     //people
 
     fun getPopularPeople(page: Int) = apiService.getPopularPeople(page)

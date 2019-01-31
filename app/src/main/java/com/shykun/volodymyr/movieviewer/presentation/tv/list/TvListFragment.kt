@@ -23,14 +23,16 @@ import javax.inject.Inject
 
 
 const val TV_LIST_FRAGMENT_KEY = "tv_list_fragment_key"
-
-private const val TV_TYPE_KEY = "tv_type"
+const val TV_TYPE_KEY = "tv_type"
+const val SEARCH_QUERY_KEY = "query_search_key"
 
 class TvListFragment : Fragment(), BackButtonListener {
 
     private lateinit var tvType: TvType
     private lateinit var viewModel: TvListViewModel
     private lateinit var tvListAdapter: TvListAdapter
+    private var searchQuery: String? = null
+
     @Inject
     lateinit var viewModelFactory: TvListViewModelFactory
     @Inject
@@ -41,6 +43,7 @@ class TvListFragment : Fragment(), BackButtonListener {
         (parentFragment as TabNavigationFragment).component?.inject(this)
 
         tvType = arguments?.getSerializable(TV_TYPE_KEY) as TvType
+        searchQuery = arguments?.getString(SEARCH_QUERY_KEY, null)
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(TvListViewModel::class.java)
     }
@@ -90,7 +93,10 @@ class TvListFragment : Fragment(), BackButtonListener {
                 .distinctUntilChanged()
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext {
-                    viewModel.getTvList(tvListAdapter.lastLoadedPage + 1, tvType)
+                    if (tvType != TvType.SEARCHED)
+                        viewModel.getTvList(tvListAdapter.lastLoadedPage + 1, tvType)
+                    else
+                        viewModel.searchTv(searchQuery!!,tvListAdapter.lastLoadedPage + 1)
                     tvListAdapter.lastLoadedPage++
                 }
                 .subscribe()
@@ -113,10 +119,8 @@ class TvListFragment : Fragment(), BackButtonListener {
     }
 
     companion object {
-        fun newInstance(tvType: TvType): TvListFragment {
+        fun newInstance(args: Bundle): TvListFragment {
             val tvListFragment = TvListFragment()
-            val args = Bundle()
-            args.putSerializable(TV_TYPE_KEY, tvType)
             tvListFragment.arguments = args
 
             return tvListFragment
