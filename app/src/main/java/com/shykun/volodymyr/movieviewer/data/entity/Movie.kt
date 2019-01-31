@@ -23,4 +23,5 @@ enum class MoviesType(val path: String) {
     POPULAR("popular"),
     TOP_RATED("top_rated"),
     UPCOMING("upcoming"),
+    SEARCHED("query")
 }

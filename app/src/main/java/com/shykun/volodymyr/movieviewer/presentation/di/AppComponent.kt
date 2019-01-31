@@ -6,21 +6,14 @@ import com.shykun.volodymyr.movieviewer.presentation.discover.filter.FilterListF
 import com.shykun.volodymyr.movieviewer.presentation.discover.list.DiscoverListFragment
 import com.shykun.volodymyr.movieviewer.presentation.discover.tab.DiscoverFragment
 import com.shykun.volodymyr.movieviewer.presentation.movies.details.MovieDetailsFragment
-import com.shykun.volodymyr.movieviewer.presentation.movies.details.MovieDetailsViewModelFactory
 import com.shykun.volodymyr.movieviewer.presentation.movies.list.MovieListFragment
-import com.shykun.volodymyr.movieviewer.presentation.movies.list.MovieListViewModelFactory
+import com.shykun.volodymyr.movieviewer.presentation.movies.search.MovieSearchFragment
 import com.shykun.volodymyr.movieviewer.presentation.movies.tab.MovieTabFragment
-import com.shykun.volodymyr.movieviewer.presentation.movies.tab.MovieTabViewModelFactory
 import com.shykun.volodymyr.movieviewer.presentation.people.details.PersonDetailsFragment
-import com.shykun.volodymyr.movieviewer.presentation.people.details.PersonDetailsViewModelFactory
 import com.shykun.volodymyr.movieviewer.presentation.people.tab.PeopleTabFragment
-import com.shykun.volodymyr.movieviewer.presentation.people.tab.PeopleTabViewModelFactory
 import com.shykun.volodymyr.movieviewer.presentation.tv.details.TvDetailsFragment
-import com.shykun.volodymyr.movieviewer.presentation.tv.details.TvDetailsViewModelFactory
 import com.shykun.volodymyr.movieviewer.presentation.tv.list.TvListFragment
-import com.shykun.volodymyr.movieviewer.presentation.tv.list.TvListViewModelFactory
 import com.shykun.volodymyr.movieviewer.presentation.tv.tab.TvTabFragment
-import com.shykun.volodymyr.movieviewer.presentation.tv.tab.TvTabViewModelFactory
 import dagger.Component
 import javax.inject.Singleton
 
@@ -41,4 +34,5 @@ interface AppComponent {
     fun inject(target: TvDetailsFragment)
     fun inject(target: PeopleTabFragment)
     fun inject(target: PersonDetailsFragment)
+    fun inject(target: MovieSearchFragment)
 }

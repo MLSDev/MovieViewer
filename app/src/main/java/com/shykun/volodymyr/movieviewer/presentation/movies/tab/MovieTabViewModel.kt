@@ -6,9 +6,6 @@ import android.arch.lifecycle.ViewModel
 import com.shykun.volodymyr.movieviewer.data.entity.Movie
 import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
 import com.shykun.volodymyr.movieviewer.domain.MoviesUseCase
-import com.shykun.volodymyr.movieviewer.presentation.movies.details.MOVIE_DETAILS_FRAGMENT_KEY
-import com.shykun.volodymyr.movieviewer.presentation.movies.list.MOVIE_LIST_FRAGMENT_KEY
-import ru.terrakok.cicerone.Router
 
 class MovieTabViewModel(private val moviesUseCase: MoviesUseCase) : ViewModel() {
 
@@ -30,7 +27,7 @@ class MovieTabViewModel(private val moviesUseCase: MoviesUseCase) : ViewModel() 
     }
 
     private fun getPopularMovies(page: Int) {
-        moviesUseCase.execute(MoviesType.POPULAR, page)
+        moviesUseCase.getMovies(MoviesType.POPULAR, page)
                 .subscribe(
                         { response -> popularMoviesMutableLiveData.value = response },
                         { error -> loadingErrorMutableLiveData.value = error.message }
@@ -38,7 +35,7 @@ class MovieTabViewModel(private val moviesUseCase: MoviesUseCase) : ViewModel() 
     }
 
     private fun getTopRatedMovies(page: Int) {
-        moviesUseCase.execute(MoviesType.TOP_RATED, page)
+        moviesUseCase.getMovies(MoviesType.TOP_RATED, page)
                 .subscribe(
                         { response -> topRatedMoviesMutableLiveData.value = response },
                         { error -> loadingErrorMutableLiveData.value = error.message }
@@ -46,7 +43,7 @@ class MovieTabViewModel(private val moviesUseCase: MoviesUseCase) : ViewModel() 
     }
 
     private fun getUpcomingMovies(page: Int) {
-        moviesUseCase.execute(MoviesType.UPCOMING, page)
+        moviesUseCase.getMovies(MoviesType.UPCOMING, page)
                 .subscribe(
                         { response -> upcomingMoviesMutableLiveData.value = response },
                         { error -> loadingErrorMutableLiveData.value = error.message }

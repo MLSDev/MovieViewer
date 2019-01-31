@@ -33,7 +33,7 @@ class ApiClient @Inject constructor() {
 
     //movie
 
-    fun getMovies(moviesType: MoviesType, page: Int = 1) = apiService.getMovies(moviesType.path, page)
+    fun getMovies(moviesType: MoviesType, page: Int) = apiService.getMovies(moviesType.path, page)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
@@ -53,9 +53,13 @@ class ApiClient @Inject constructor() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
+    fun searchMovies(query: String, page: Int) = apiService.searchMovies(query, page)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
     //tv
 
-    fun getTV(tvType: TvType, page: Int = 1) = apiService.getTV(tvType.path, page)
+    fun getTV(tvType: TvType, page: Int) = apiService.getTV(tvType.path, page)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
@@ -77,7 +81,7 @@ class ApiClient @Inject constructor() {
 
     //people
 
-    fun getPopularPeople(page: Int = 1) = apiService.getPopularPeople(page)
+    fun getPopularPeople(page: Int) = apiService.getPopularPeople(page)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 

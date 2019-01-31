@@ -28,7 +28,7 @@ class TvTabViewModel(
     }
 
     fun getPopularTV(page: Int) {
-        TVUseCase.execute(TvType.POPULAR, page)
+        TVUseCase.getTv(TvType.POPULAR, page)
                 .subscribe(
                         { response -> popularTvMutableLiveData.value = response },
                         { error -> loadingErrorMutableLiveData.value = error.message }
@@ -36,7 +36,7 @@ class TvTabViewModel(
     }
 
     fun getTopRatedTV(page: Int) {
-        TVUseCase.execute(TvType.TOP_RATED, page)
+        TVUseCase.getTv(TvType.TOP_RATED, page)
                 .subscribe(
                         { response -> topRatedTvMutableLiveData.value = response },
                         { error -> loadingErrorMutableLiveData.value = error.message }
@@ -44,7 +44,7 @@ class TvTabViewModel(
     }
 
     fun getTVOnTheAir(page: Int) {
-        TVUseCase.execute(TvType.ON_THE_AIR, page)
+        TVUseCase.getTv(TvType.ON_THE_AIR, page)
                 .subscribe(
                         { response -> tvOnTheAirMutableLiveData.value = response },
                         { error -> loadingErrorMutableLiveData.value = error.message }

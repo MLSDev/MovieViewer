@@ -1,8 +1,8 @@
 package com.shykun.volodymyr.movieviewer.presentation.common
 
+import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
-import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
 import com.shykun.volodymyr.movieviewer.data.entity.TvType
 import com.shykun.volodymyr.movieviewer.presentation.discover.filter.FILTER_LIST_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.discover.filter.FilterListFragment
@@ -15,6 +15,8 @@ import com.shykun.volodymyr.movieviewer.presentation.movies.details.MOVIE_DETAIL
 import com.shykun.volodymyr.movieviewer.presentation.movies.details.MovieDetailsFragment
 import com.shykun.volodymyr.movieviewer.presentation.movies.list.MOVIE_LIST_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.movies.list.MovieListFragment
+import com.shykun.volodymyr.movieviewer.presentation.movies.search.MOVIES_SEARCH_FRAGMENT_KEY
+import com.shykun.volodymyr.movieviewer.presentation.movies.search.MovieSearchFragment
 import com.shykun.volodymyr.movieviewer.presentation.movies.tab.MOVIE_TAB_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.movies.tab.MovieTabFragment
 import com.shykun.volodymyr.movieviewer.presentation.people.details.PERSON_DETAILS_FRAGMENT_KEY
@@ -48,7 +50,7 @@ class FlowNavigator(private val fragmentManager: FragmentManager, private val co
             is Forward -> {
                 when (command.screenKey) {
                     MOVIE_TAB_FRAGMENT_KEY -> openNextFragment(MovieTabFragment())
-                    MOVIE_LIST_FRAGMENT_KEY -> openNextFragment(MovieListFragment.newInstance(command.transitionData as MoviesType))
+                    MOVIE_LIST_FRAGMENT_KEY -> openNextFragment(MovieListFragment.newInstance(command.transitionData as Bundle))
                     MOVIE_DETAILS_FRAGMENT_KEY -> openNextFragment(MovieDetailsFragment.newInstance(command.transitionData as Int))
 
                     TV_TAB_FRAGMENT_KEY -> openNextFragment(TvTabFragment())
@@ -61,6 +63,8 @@ class FlowNavigator(private val fragmentManager: FragmentManager, private val co
                     DISCOVER_FRAGMENT_KEY -> openNextFragment(DiscoverFragment())
                     DISCOVER_LIST_FRAGMENT_KEY -> openNextFragment(DiscoverListFragment())
                     FILTER_LIST_FRAGMENT_KEY -> openNextFragment(FilterListFragment.newInstance(command.transitionData as FilterType))
+
+                    MOVIES_SEARCH_FRAGMENT_KEY -> openNextFragment(MovieSearchFragment())
                 }
             }
         }

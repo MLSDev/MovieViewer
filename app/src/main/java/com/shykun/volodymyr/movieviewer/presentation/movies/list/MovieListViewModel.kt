@@ -15,7 +15,13 @@ class MovieListViewModel(private val moviesUseCase: MoviesUseCase) : ViewModel()
     val moviesLiveData: LiveData<List<Movie>> = moviesMutableLiveData
     val loadingErrorLiveData: LiveData<String> = loadingErrorMutableLiveData
 
-    fun getMovies(page: Int, moviesType: MoviesType) = moviesUseCase.execute(moviesType, page)
+    fun getMovies(page: Int, moviesType: MoviesType) = moviesUseCase.getMovies(moviesType, page)
+            .subscribe(
+                    { response -> moviesMutableLiveData.value = response },
+                    { error -> loadingErrorMutableLiveData.value = error.message }
+            )
+
+    fun searchMovie(query: String, page: Int) = moviesUseCase.searchMovies(query, page)
             .subscribe(
                     { response -> moviesMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }

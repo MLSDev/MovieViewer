@@ -23,13 +23,15 @@ import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
 const val MOVIE_LIST_FRAGMENT_KEY = "movie_list_fragment_key"
-private const val MOVIE_TYPE_KEY = "movie_type"
+const val MOVIE_TYPE_KEY = "movie_type"
+const val SEARCH_QUERY_KEY = "query_search_key"
 
 class MovieListFragment : Fragment(), BackButtonListener {
 
     private lateinit var moviesType: MoviesType
     private lateinit var viewModel: MovieListViewModel
     private lateinit var movieListAdapter: MovieListAdapter
+    private var searchQuery: String? = null
 
     @Inject
     lateinit var viewModelFactory: MovieListViewModelFactory
@@ -41,6 +43,7 @@ class MovieListFragment : Fragment(), BackButtonListener {
 
         (parentFragment as TabNavigationFragment).component?.inject(this)
         moviesType = arguments?.getSerializable(MOVIE_TYPE_KEY) as MoviesType
+        searchQuery = arguments?.getString(SEARCH_QUERY_KEY, null)
         viewModel = ViewModelProviders
                 .of(this, viewModelFactory)
                 .get(MovieListViewModel::class.java)
@@ -92,7 +95,10 @@ class MovieListFragment : Fragment(), BackButtonListener {
                 .distinctUntilChanged()
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext {
-                    viewModel.getMovies(movieListAdapter.lastLoadedPage + 1, moviesType)
+                    if (moviesType != MoviesType.SEARCHED)
+                        viewModel.getMovies(movieListAdapter.lastLoadedPage + 1, moviesType)
+                    else
+                        viewModel.searchMovie(searchQuery!!, movieListAdapter.lastLoadedPage + 1)
                     movieListAdapter.lastLoadedPage++
                 }
                 .subscribe()
@@ -115,10 +121,8 @@ class MovieListFragment : Fragment(), BackButtonListener {
     }
 
     companion object {
-        fun newInstance(moviesType: MoviesType): MovieListFragment {
+        fun newInstance(args: Bundle): MovieListFragment {
             val movieListFragment = MovieListFragment()
-            val args = Bundle()
-            args.putSerializable(MOVIE_TYPE_KEY, moviesType)
             movieListFragment.arguments = args
 
             return movieListFragment

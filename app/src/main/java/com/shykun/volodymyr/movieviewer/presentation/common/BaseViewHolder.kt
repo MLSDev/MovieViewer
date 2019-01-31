@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView
 
 open class BaseViewHolder<T: Any>(viewDataBinding: ViewDataBinding) : RecyclerView.ViewHolder(viewDataBinding.root) {
 
-    private lateinit var item: T
+    lateinit var item: T
 
     open fun bind(item: T, position: Int) {
         this.item = item

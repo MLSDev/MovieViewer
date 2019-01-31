@@ -38,6 +38,12 @@ interface ApiService {
             @Path("movie_id") movieId: Int,
             @Query("api_key") api_key: String = API_KEY): Single<MoviesResponse>
 
+    @GET("search/movie")
+    fun searchMovies(
+            @Query("query") query: String,
+            @Query("page") page: Int,
+            @Query("api_key") api_key: String = API_KEY): Single<MoviesResponse>
+
     //tv
 
     @GET("tv/{tv_type}")
