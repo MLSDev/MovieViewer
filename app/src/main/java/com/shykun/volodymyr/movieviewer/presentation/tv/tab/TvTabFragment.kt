@@ -16,6 +16,7 @@ import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
 import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
 import com.shykun.volodymyr.movieviewer.presentation.tv.details.TV_DETAILS_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.tv.list.TV_LIST_FRAGMENT_KEY
+import com.shykun.volodymyr.movieviewer.presentation.tv.list.TV_TYPE_KEY
 import com.shykun.volodymyr.movieviewer.presentation.tv.search.TV_SEARCH_FRAGMENT_KEY
 import kotlinx.android.synthetic.main.fragment_movies_tab.*
 import ru.terrakok.cicerone.Router
@@ -97,7 +98,9 @@ class TvTabFragment : Fragment(), BackButtonListener {
                 TV_ON_THE_AIR -> TvType.ON_THE_AIR
                 else -> throw Exception("Undefined tv type")
             }
-            router.navigateTo(TV_LIST_FRAGMENT_KEY, tvType)
+            val args = Bundle()
+            args.putSerializable(TV_TYPE_KEY, tvType)
+            router.navigateTo(TV_LIST_FRAGMENT_KEY, args)
         }
     }
 

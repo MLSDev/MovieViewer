@@ -17,6 +17,7 @@ import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
 import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
 import com.shykun.volodymyr.movieviewer.presentation.movies.details.MOVIE_DETAILS_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.movies.list.MOVIE_LIST_FRAGMENT_KEY
+import com.shykun.volodymyr.movieviewer.presentation.movies.list.MOVIE_TYPE_KEY
 import com.shykun.volodymyr.movieviewer.presentation.movies.search.MOVIES_SEARCH_FRAGMENT_KEY
 import kotlinx.android.synthetic.main.fragment_movies_tab.*
 import ru.terrakok.cicerone.Router
@@ -86,7 +87,9 @@ class MovieTabFragment : Fragment(), BackButtonListener {
                 UPCOMING_MOVIES -> MoviesType.UPCOMING
                 else -> throw Exception("Undefined moviesLiveData type")
             }
-            router.navigateTo(MOVIE_LIST_FRAGMENT_KEY, moviesType)
+            val args = Bundle()
+            args.putSerializable(MOVIE_TYPE_KEY, moviesType)
+            router.navigateTo(MOVIE_LIST_FRAGMENT_KEY, args)
         }
     }
 
