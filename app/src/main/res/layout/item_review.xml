@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tool="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="review"
+            type="com.shykun.volodymyr.movieviewer.data.entity.Review" />
+
+        <variable
+            name="viewHolder"
+            type="com.shykun.volodymyr.movieviewer.presentation.movies.details.ReviewViewHolder" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/reviewAuthor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tool:text="@{review.author}"
+            android:textSize="16sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/reviewContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="@{viewHolder.maxLines}"
+            android:textSize="16sp"
+            tool:text="@{review.content}" />
+
+    </LinearLayout>
+
+</layout>

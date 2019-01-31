@@ -38,13 +38,19 @@ interface ApiService {
             @Path("movie_id") movieId: Int,
             @Query("api_key") api_key: String = API_KEY): Single<MoviesResponse>
 
+    @GET("search/movie")
+    fun searchMovies(
+            @Query("query") query: String,
+            @Query("page") page: Int,
+            @Query("api_key") api_key: String = API_KEY): Single<MoviesResponse>
+
     //tv
 
     @GET("tv/{tv_type}")
     fun getTV(
             @Path("tv_type") tvType: String,
             @Query("page") page: Int,
-            @Query("api_key") api_key: String = API_KEY): Single<TVResponse>
+            @Query("api_key") api_key: String = API_KEY): Single<TvResponse>
 
     @GET("tv/{tv_id}")
     fun getTvDetails(
@@ -59,12 +65,18 @@ interface ApiService {
     @GET("tv/{tv_id}/recommendations")
     fun getRecommendedTv(
             @Path("tv_id") tvId: Int,
-            @Query("api_key") api_key: String = API_KEY): Single<TVResponse>
+            @Query("api_key") api_key: String = API_KEY): Single<TvResponse>
 
     @GET("tv/{tv_id}/reviews")
     fun getTvReviews(
             @Path("tv_id") tvId: Int,
             @Query("api_key") api_key: String = API_KEY): Single<ReviewsResponse>
+
+    @GET("search/tv")
+    fun searchTv(
+            @Query("query") query: String,
+            @Query("page") page: Int,
+            @Query("api_key") api_key: String = API_KEY): Single<TvResponse>
 
     //people
 
@@ -82,4 +94,29 @@ interface ApiService {
     fun getPersonCombinedCredits(
             @Path("person_id") personId: Int,
             @Query("api_key") api_key: String = API_KEY): Single<PersonCreditsResponse>
+
+    @GET("search/person")
+    fun searchPeople(
+            @Query("query") query: String,
+            @Query("page") page: Int,
+            @Query("api_key") api_key: String = API_KEY): Single<PeopleResponse>
+
+
+    //discover
+
+    @GET("discover/movie")
+    fun discoverMovies(
+            @Query("page") page: Int,
+            @Query("release_date.gte") year: Int?,
+            @Query("vote_average.gte") voteAverage: Int?,
+            @Query("with_genres") genres: String?,
+            @Query("api_key") api_key: String = API_KEY): Single<MoviesResponse>
+
+    @GET("discover/tv")
+    fun discoverTV(
+            @Query("page") page: Int,
+            @Query("first_air_date.gte") airDate: String?,
+            @Query("vote_average.gte") voteAverage: Int?,
+            @Query("with_genres") genres: String?,
+            @Query("api_key") api_key: String = API_KEY): Single<TvResponse>
 }

@@ -5,9 +5,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Person
-import com.shykun.volodymyr.movieviewer.databinding.ViewHolderLoadingBinding
-import com.shykun.volodymyr.movieviewer.databinding.ViewHolderPersonBinding
-import com.shykun.volodymyr.movieviewer.presentation.base.BaseRecyclerViewAdapter
+import com.shykun.volodymyr.movieviewer.databinding.ItemLoadingBinding
+import com.shykun.volodymyr.movieviewer.databinding.ItemPersonBinding
+import com.shykun.volodymyr.movieviewer.presentation.common.BaseRecyclerViewAdapter
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 
@@ -18,25 +18,25 @@ private const val LOADING = 1
 class PeopleTabAdapter(items: ArrayList<Person>)
     : BaseRecyclerViewAdapter<Person, BasePeopleViewHolder>(items) {
 
-    private val personClickSubject = PublishSubject.create<Int>()
+    private val clickSubject = PublishSubject.create<Int>()
 
-    val personClickEvent: Observable<Int> = personClickSubject
+    val personClickEvent: Observable<Int> = clickSubject
     var lastLoadedPage = 1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BasePeopleViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return if (viewType == PERSON) {
-            val binding = DataBindingUtil.inflate<ViewHolderPersonBinding>(
+            val binding = DataBindingUtil.inflate<ItemPersonBinding>(
                     inflater,
-                    R.layout.view_holder_person,
+                    R.layout.item_person,
                     parent,
                     false)
 
-            PeopleTabViewHolder(binding, personClickSubject)
+            PeopleTabViewHolder(binding, clickSubject)
         } else {
-            val binding = DataBindingUtil.inflate<ViewHolderLoadingBinding>(
+            val binding = DataBindingUtil.inflate<ItemLoadingBinding>(
                     inflater,
-                    R.layout.view_holder_loading,
+                    R.layout.item_loading,
                     parent,
                     false)
 

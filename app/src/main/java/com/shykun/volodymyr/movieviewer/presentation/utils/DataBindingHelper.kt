@@ -10,16 +10,16 @@ import com.shykun.volodymyr.movieviewer.presentation.glide.GlideApp
 fun loadImage(imageView: ImageView, url: String?) {
     if (url != null) {
         GlideApp.with(imageView)
-                .load("http://image.tmdb.org/t/p/w185$url")
+                .load("http://image.tmdb.org/t/p/w500$url")
                 .into(imageView)
     }
 }
 
 @BindingConversion
-fun genresToString(genres: List<Genre>?) = genres?.joinToString { it.name }
+fun genresToString(genres: ArrayList<Genre>?): String? = genres?.joinToString { it.name }
 
 @BindingConversion
-fun countriesToString(countries: List<Country>?) = countries?.joinToString { it.name }
+fun countriesToString(countries: List<Country>?): String? = countries?.joinToString { it.name }
 
 @BindingConversion
 fun getGenres(genreIds: List<Int>?): String {

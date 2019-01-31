@@ -9,25 +9,42 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Person
-import com.shykun.volodymyr.movieviewer.presentation.AppActivity
-import com.shykun.volodymyr.movieviewer.presentation.base.ScrollObservable
+import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
+import com.shykun.volodymyr.movieviewer.presentation.common.ScrollObservable
+import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
+import com.shykun.volodymyr.movieviewer.presentation.people.details.PERSON_DETAILS_FRAGMENT_KEY
+import com.shykun.volodymyr.movieviewer.presentation.people.search.PEOPLE_SEARCH_FRAGMENT_KEY
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_people_tab.*
+import ru.terrakok.cicerone.Router
+import javax.inject.Inject
 
 const val PEOPLE_TAB_FRAGMENT_KEY = "people_tab_fragment_key"
+const val PEOPLE_SEARCH_QUERY_KEY = "people_search_query"
 
-class PeopleTabFragment : Fragment() {
+class PeopleTabFragment : Fragment(), BackButtonListener {
 
     private lateinit var peopleTabAdapter: PeopleTabAdapter
     private lateinit var viewModel: PeopleTabViewModel
+    private var searchQuery: String? = null
+
+    @Inject
+    lateinit var viewModelFactory: PeopleTabViewModelFactory
+    @Inject
+    lateinit var router: Router
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this, (activity as AppActivity).appComponent.getPeopleTabViewModelFactory())
+
+        (parentFragment as TabNavigationFragment).component?.inject(this)
+
+        searchQuery = arguments?.getString(PEOPLE_SEARCH_QUERY_KEY, null)
+        peopleTabAdapter = PeopleTabAdapter(ArrayList())
+        viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(PeopleTabViewModel::class.java)
+        subscribeViewModel()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -38,11 +55,20 @@ class PeopleTabFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupToolbar()
         setupAdapter()
         setupPersonClick()
         subscribeScrollObervable()
-        subscribeViewModel()
-        viewModel.onViewLoaded()
+    }
+
+    private fun setupToolbar() {
+        peopleToolbar.inflateMenu(R.menu.manu_app)
+        peopleToolbar.setOnMenuItemClickListener { menuItem ->
+            when(menuItem.itemId) {
+                R.id.action_search -> router.navigateTo(PEOPLE_SEARCH_FRAGMENT_KEY)
+            }
+            true
+        }
     }
 
     private fun subscribeViewModel() {
@@ -51,7 +77,6 @@ class PeopleTabFragment : Fragment() {
     }
 
     private fun setupAdapter() {
-        peopleTabAdapter = PeopleTabAdapter(ArrayList())
         peopleList.apply {
             layoutManager = GridLayoutManager(this@PeopleTabFragment.context, 3)
             adapter = peopleTabAdapter
@@ -60,7 +85,7 @@ class PeopleTabFragment : Fragment() {
 
     private fun setupPersonClick() {
         peopleTabAdapter.personClickEvent.subscribe {
-            viewModel.onPersonClicked(it)
+            router.navigateTo(PERSON_DETAILS_FRAGMENT_KEY, it)
         }
     }
 
@@ -69,7 +94,10 @@ class PeopleTabFragment : Fragment() {
                 .distinctUntilChanged()
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext {
-                    viewModel.getPeople(peopleTabAdapter.lastLoadedPage + 1)
+                    if (searchQuery == null)
+                        viewModel.getPeople(peopleTabAdapter.lastLoadedPage + 1)
+                    else
+                        viewModel.searchPeople(searchQuery!!, peopleTabAdapter.lastLoadedPage + 1)
                     peopleTabAdapter.lastLoadedPage++
                 }
                 .subscribe()
@@ -83,5 +111,20 @@ class PeopleTabFragment : Fragment() {
 
     fun showError(message: String?) {
         Toast.makeText(this.context, message, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onBackClicked(): Boolean {
+        router.exit()
+
+        return true
+    }
+
+    companion object {
+        fun newInstance(args: Bundle?): PeopleTabFragment {
+            val peopleTabFragment = PeopleTabFragment()
+            peopleTabFragment.arguments = args
+
+            return peopleTabFragment
+        }
     }
 }

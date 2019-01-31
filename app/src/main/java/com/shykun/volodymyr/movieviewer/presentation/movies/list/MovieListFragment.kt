@@ -13,27 +13,39 @@ import android.widget.Toast
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Movie
 import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
-import com.shykun.volodymyr.movieviewer.presentation.AppActivity
-import com.shykun.volodymyr.movieviewer.presentation.base.ScrollObservable
+import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
+import com.shykun.volodymyr.movieviewer.presentation.common.ScrollObservable
+import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
+import com.shykun.volodymyr.movieviewer.presentation.movies.details.MOVIE_DETAILS_FRAGMENT_KEY
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_movie_list.*
+import ru.terrakok.cicerone.Router
+import javax.inject.Inject
 
 const val MOVIE_LIST_FRAGMENT_KEY = "movie_list_fragment_key"
-private const val MOVIE_TYPE_KEY = "movie_type"
+const val MOVIE_TYPE_KEY = "movie_type"
+const val SEARCH_QUERY_KEY = "query_search_key"
 
-private lateinit var movieListAdapter: MovieListAdapter
-
-class MovieListFragment : Fragment() {
+class MovieListFragment : Fragment(), BackButtonListener {
 
     private lateinit var moviesType: MoviesType
     private lateinit var viewModel: MovieListViewModel
+    private lateinit var movieListAdapter: MovieListAdapter
+    private var searchQuery: String? = null
+
+    @Inject
+    lateinit var viewModelFactory: MovieListViewModelFactory
+    @Inject
+    lateinit var router: Router
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        (parentFragment as TabNavigationFragment).component?.inject(this)
         moviesType = arguments?.getSerializable(MOVIE_TYPE_KEY) as MoviesType
+        searchQuery = arguments?.getString(SEARCH_QUERY_KEY, null)
         viewModel = ViewModelProviders
-                .of(this, (activity as AppActivity).appComponent.getMovieListViewModelFactory())
+                .of(this, viewModelFactory)
                 .get(MovieListViewModel::class.java)
     }
 
@@ -44,15 +56,27 @@ class MovieListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupBackButton()
         setupAdapter()
+        setupMovieClick()
         subscribeViewModel()
         subscribeScrollObervable()
-        viewModel.onViewLoaded(moviesType)
+    }
+
+    private fun setupBackButton() {
+        movieListToolbar.setNavigationIcon(R.drawable.ic_arrow_back)
+        movieListToolbar.setNavigationOnClickListener { onBackClicked() }
+    }
+
+    private fun setupMovieClick() {
+        movieListAdapter.clickEvent.subscribe {
+            router.navigateTo(MOVIE_DETAILS_FRAGMENT_KEY, it)
+        }
     }
 
     private fun subscribeViewModel() {
-        viewModel.movies.observe(this, Observer<List<Movie>> { showMovies(it) })
-        viewModel.loadingError.observe(this, Observer { showError(it) })
+        viewModel.moviesLiveData.observe(this, Observer<List<Movie>> { showMovies(it) })
+        viewModel.loadingErrorLiveData.observe(this, Observer { showError(it) })
 
     }
 
@@ -71,7 +95,10 @@ class MovieListFragment : Fragment() {
                 .distinctUntilChanged()
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext {
-                    viewModel.getMovies(movieListAdapter.lastLoadedPage + 1)
+                    if (moviesType != MoviesType.SEARCHED)
+                        viewModel.getMovies(movieListAdapter.lastLoadedPage + 1, moviesType)
+                    else
+                        viewModel.searchMovie(searchQuery!!, movieListAdapter.lastLoadedPage + 1)
                     movieListAdapter.lastLoadedPage++
                 }
                 .subscribe()
@@ -87,11 +114,15 @@ class MovieListFragment : Fragment() {
         Toast.makeText(this.context, message, Toast.LENGTH_SHORT).show()
     }
 
+    override fun onBackClicked(): Boolean {
+        router.exit()
+
+        return true
+    }
+
     companion object {
-        fun newInstance(moviesType: MoviesType): MovieListFragment {
+        fun newInstance(args: Bundle): MovieListFragment {
             val movieListFragment = MovieListFragment()
-            val args = Bundle()
-            args.putSerializable(MOVIE_TYPE_KEY, moviesType)
             movieListFragment.arguments = args
 
             return movieListFragment

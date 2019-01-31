@@ -8,6 +8,9 @@
         <item name="android:colorBackground">@color/colorPrimaryDark</item>
         <item name="android:textColorPrimary">@color/snow</item>
         <item name="android:textColor">@color/snow</item>
+        <item name="android:colorButtonNormal">@color/colorPrimary</item>
+        <item name="android:editTextColor">@color/snow</item>
+        <item name="android:textColorHint">@color/darkGrey</item>
     </style>
 
 </resources>

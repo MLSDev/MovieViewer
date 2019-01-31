@@ -8,7 +8,7 @@ data class TvDetailsResponse(
         @SerializedName("created_by") var createdBy: List<Author>,
         @SerializedName("episode_run_time") var episodeRunTime: List<Int>,
         @SerializedName("first_air_date") var firstAirDate: String,
-        @SerializedName("genres") var genres: List<Genre>,
+        @SerializedName("genres") var genres: ArrayList<Genre>,
         @SerializedName("homepage") var homepage: String,
         @SerializedName("id") var id: Int,
         @SerializedName("in_production") var inProduction: Boolean,

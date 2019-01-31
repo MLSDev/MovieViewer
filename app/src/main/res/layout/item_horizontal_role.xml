@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout>
+
+    <data>
+        <variable
+            name="role"
+            type="com.shykun.volodymyr.movieviewer.data.entity.Role"/>
+    </data>
+
+    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="130dp"
+        android:layout_height="230dp"
+        android:layout_margin="8dp"
+        android:background="@color/colorPrimary"
+        app:cardCornerRadius="6dp"
+        app:cardPreventCornerOverlap="false">
+
+        <ImageView
+            android:id="@+id/moviePoster"
+            android:layout_width="130dp"
+            android:layout_height="200dp"
+            android:background="@color/colorPrimary"
+            android:scaleType="centerCrop"
+            android:src="@drawable/stub_image_poster"
+            app:url="@{role.posterPath}"/>
+
+        <LinearLayout
+            android:layout_width="130dp"
+            android:layout_height="30dp"
+            android:layout_gravity="bottom"
+            android:background="@color/colorPrimary"
+            android:orientation="horizontal"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp">
+
+            <ImageView
+                android:id="@+id/movieFooterItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="4dp"
+                android:src="@drawable/ic_star"/>
+
+            <TextView
+                android:id="@+id/movieFooterText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@{role.voteAverage}"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+</layout>

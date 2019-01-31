@@ -12,9 +12,15 @@ import android.widget.Toast
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Tv
 import com.shykun.volodymyr.movieviewer.data.entity.TvType
-import com.shykun.volodymyr.movieviewer.presentation.AppActivity
-import kotlinx.android.synthetic.main.fragment_movies.*
+import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
+import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
+import com.shykun.volodymyr.movieviewer.presentation.tv.details.TV_DETAILS_FRAGMENT_KEY
+import com.shykun.volodymyr.movieviewer.presentation.tv.list.TV_LIST_FRAGMENT_KEY
+import com.shykun.volodymyr.movieviewer.presentation.tv.search.TV_SEARCH_FRAGMENT_KEY
+import kotlinx.android.synthetic.main.fragment_movies_tab.*
+import ru.terrakok.cicerone.Router
 import java.lang.Exception
+import javax.inject.Inject
 
 const val TV_TAB_FRAGMENT_KEY = "tv_tab_fragment_key"
 
@@ -22,31 +28,51 @@ const val POPULAR_TV = 0
 const val TOP_RATED_TV = 1
 const val TV_ON_THE_AIR = 2
 
-class TvTabFragment : Fragment() {
+class TvTabFragment : Fragment(), BackButtonListener {
 
     private lateinit var generalTvTabAdapter: GeneralTvTabAdapter
     private lateinit var viewModel: TvTabViewModel
 
+    @Inject
+    lateinit var viewModelFactory: TvTabViewModelFactory
+    @Inject
+    lateinit var router: Router
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel = ViewModelProviders.of(this, (activity as AppActivity).appComponent.getTvTabViewModelFactory())
+        (parentFragment as TabNavigationFragment).component?.inject(this)
+
+        generalTvTabAdapter = GeneralTvTabAdapter(ArrayList())
+        viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(TvTabViewModel::class.java)
+        subscribeViewModel()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_movies, container, false)
+        return inflater.inflate(R.layout.fragment_movies_tab, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupAdapter()
+        setupToolbar()
         setupSeeAllClick()
         setupTvClick()
-        subscribeViewModel()
-        viewModel.onViewLoaded()
+        if (viewModel.topRatedTvLiveData.value == null)
+            viewModel.onViewLoaded()
 
+    }
+
+    private fun setupToolbar() {
+        moviesToolbar.inflateMenu(R.menu.manu_app)
+        moviesToolbar.setOnMenuItemClickListener { menuItem ->
+            when(menuItem.itemId) {
+                R.id.action_search -> router.navigateTo(TV_SEARCH_FRAGMENT_KEY)
+            }
+            true
+        }
     }
 
     private fun subscribeViewModel() {
@@ -57,7 +83,6 @@ class TvTabFragment : Fragment() {
     }
 
     private fun setupAdapter() {
-        generalTvTabAdapter = GeneralTvTabAdapter(ArrayList())
         movieCategoryList.apply {
             layoutManager = LinearLayoutManager(this@TvTabFragment.context, LinearLayoutManager.VERTICAL, false)
             adapter = generalTvTabAdapter
@@ -72,14 +97,12 @@ class TvTabFragment : Fragment() {
                 TV_ON_THE_AIR -> TvType.ON_THE_AIR
                 else -> throw Exception("Undefined tv type")
             }
-            viewModel.onViewAllButtonClicked(tvType)
+            router.navigateTo(TV_LIST_FRAGMENT_KEY, tvType)
         }
     }
 
     private fun setupTvClick() {
-        generalTvTabAdapter.tvClickEvent.subscribe {
-            viewModel.onTvClicked(it)
-        }
+        generalTvTabAdapter.tvClickEvent.subscribe { router.navigateTo(TV_DETAILS_FRAGMENT_KEY, it) }
     }
 
     fun showPopularTV(tvList: List<Tv>?) {
@@ -102,5 +125,11 @@ class TvTabFragment : Fragment() {
 
     fun showError(message: String?) {
         Toast.makeText(this.context, message, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onBackClicked(): Boolean {
+        router.exit()
+
+        return true
     }
 }

@@ -5,12 +5,9 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.shykun.volodymyr.movieviewer.data.entity.Person
 import com.shykun.volodymyr.movieviewer.domain.PeopleUseCase
-import com.shykun.volodymyr.movieviewer.presentation.people.details.PERSON_DETAILS_FRAGMENT_KEY
-import ru.terrakok.cicerone.Router
 
 class PeopleTabViewModel(
-        private val peopleUseCase: PeopleUseCase,
-        private val router: Router) : ViewModel() {
+        private val peopleUseCase: PeopleUseCase) : ViewModel() {
 
     private val peopleMutableLiveData = MutableLiveData<List<Person>>()
     private val loadingErrorMutableLiveData = MutableLiveData<String>()
@@ -22,16 +19,15 @@ class PeopleTabViewModel(
         getPeople(1)
     }
 
-    fun getPeople(page: Int) = peopleUseCase.execute(page)
-            .doOnSuccess {
-                peopleMutableLiveData.value = it
-            }
-            .doOnError {
-                loadingErrorMutableLiveData.value = it.message
-            }
-            .subscribe()
+    fun getPeople(page: Int) = peopleUseCase.getPopularPeople(page)
+            .subscribe(
+                    { response -> peopleMutableLiveData.value = response },
+                    { error -> loadingErrorMutableLiveData.value = error.message }
+            )
 
-    fun onPersonClicked(personId: Int) {
-        router.navigateTo(PERSON_DETAILS_FRAGMENT_KEY, personId)
-    }
+    fun searchPeople(query: String, page: Int) = peopleUseCase.searchPeople(query, page)
+            .subscribe(
+                    { response -> peopleMutableLiveData.value = response },
+                    { error -> loadingErrorMutableLiveData.value = error.message }
+            )
 }

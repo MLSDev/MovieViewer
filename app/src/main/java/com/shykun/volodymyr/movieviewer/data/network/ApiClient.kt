@@ -33,7 +33,7 @@ class ApiClient @Inject constructor() {
 
     //movie
 
-    fun getMovies(moviesType: MoviesType, page: Int = 1) = apiService.getMovies(moviesType.path, page)
+    fun getMovies(moviesType: MoviesType, page: Int) = apiService.getMovies(moviesType.path, page)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
@@ -53,9 +53,13 @@ class ApiClient @Inject constructor() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
+    fun searchMovies(query: String, page: Int) = apiService.searchMovies(query, page)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
     //tv
 
-    fun getTV(tvType: TvType, page: Int = 1) = apiService.getTV(tvType.path, page)
+    fun getTV(tvType: TvType, page: Int) = apiService.getTV(tvType.path, page)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
@@ -75,9 +79,13 @@ class ApiClient @Inject constructor() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
+    fun searchTv(query: String, page: Int) = apiService.searchTv(query, page)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
     //people
 
-    fun getPopularPeople(page: Int = 1) = apiService.getPopularPeople(page)
+    fun getPopularPeople(page: Int) = apiService.getPopularPeople(page)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
@@ -85,7 +93,23 @@ class ApiClient @Inject constructor() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
-    fun getPersonCimbinedCredits(personId: Int) = apiService.getPersonCombinedCredits(personId)
+    fun getPersonCombinedCredits(personId: Int) = apiService.getPersonCombinedCredits(personId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+    fun searchPeople(query: String, page: Int) = apiService.searchPeople(query, page)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+    //discover
+
+    fun discoverMovies(year: Int?, voteAverage: Int?, genres: String?, page: Int) = apiService
+            .discoverMovies(page, year, voteAverage, genres)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+    fun discoverTv(airDate: String?, voteAverage: Int?, genres: String?, page: Int) = apiService
+            .discoverTV(page, airDate, voteAverage, genres)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 }

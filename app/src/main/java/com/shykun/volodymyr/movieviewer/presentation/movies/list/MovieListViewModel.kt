@@ -9,25 +9,22 @@ import com.shykun.volodymyr.movieviewer.domain.MoviesUseCase
 
 class MovieListViewModel(private val moviesUseCase: MoviesUseCase) : ViewModel() {
 
-    lateinit var moviesType: MoviesType
-    private val moviesLiveData = MutableLiveData<List<Movie>>()
-    private val loadingErrorLiveData = MutableLiveData<String>()
+    private val moviesMutableLiveData = MutableLiveData<List<Movie>>()
+    private val loadingErrorMutableLiveData = MutableLiveData<String>()
 
-    val movies: LiveData<List<Movie>> = moviesLiveData
-    val loadingError: LiveData<String> = loadingErrorLiveData
+    val moviesLiveData: LiveData<List<Movie>> = moviesMutableLiveData
+    val loadingErrorLiveData: LiveData<String> = loadingErrorMutableLiveData
 
-    fun onViewLoaded(moviesType: MoviesType) {
-        this.moviesType = moviesType
-        getMovies(1)
-    }
+    fun getMovies(page: Int, moviesType: MoviesType) = moviesUseCase.getMovies(moviesType, page)
+            .subscribe(
+                    { response -> moviesMutableLiveData.value = response },
+                    { error -> loadingErrorMutableLiveData.value = error.message }
+            )
 
-    fun getMovies(page: Int) = moviesUseCase.execute(moviesType, page)
-            .doOnSuccess {
-                moviesLiveData.value = it
-            }
-            .doOnError {
-                loadingErrorLiveData.value = it.message
-            }
-            .subscribe()
+    fun searchMovie(query: String, page: Int) = moviesUseCase.searchMovies(query, page)
+            .subscribe(
+                    { response -> moviesMutableLiveData.value = response },
+                    { error -> loadingErrorMutableLiveData.value = error.message }
+            )
 
 }

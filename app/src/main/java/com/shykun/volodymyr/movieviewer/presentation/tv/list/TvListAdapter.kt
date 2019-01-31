@@ -6,9 +6,11 @@ import android.view.ViewGroup
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Tv
 import com.shykun.volodymyr.movieviewer.data.entity.TvType
-import com.shykun.volodymyr.movieviewer.databinding.ViewHolderLoadingBinding
-import com.shykun.volodymyr.movieviewer.databinding.ViewHolderTvBinding
-import com.shykun.volodymyr.movieviewer.presentation.base.BaseRecyclerViewAdapter
+import com.shykun.volodymyr.movieviewer.databinding.ItemLoadingBinding
+import com.shykun.volodymyr.movieviewer.databinding.ItemTvBinding
+import com.shykun.volodymyr.movieviewer.presentation.common.BaseRecyclerViewAdapter
+import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 
 private const val TV = 0
 private const val LOADING = 1
@@ -17,23 +19,25 @@ class TvListAdapter(itemList: ArrayList<Tv>, val tvType: TvType)
     : BaseRecyclerViewAdapter<Tv, BaseTvListViewHolder>(itemList) {
 
     var lastLoadedPage = 1
+    private val clickSubject = PublishSubject.create<Int>()
+    val clickObservable: Observable<Int> = clickSubject
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseTvListViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        if (viewType == TV) {
-            val binding = DataBindingUtil.inflate<ViewHolderTvBinding>(
+        return if (viewType == TV) {
+            val binding = DataBindingUtil.inflate<ItemTvBinding>(
                     inflater,
-                    R.layout.view_holder_tv,
+                    R.layout.item_tv,
                     parent,
                     false)
-            return TvListViewHolder(binding, tvType)
+            TvListViewHolder(binding, tvType, clickSubject)
         } else {
-            val binding = DataBindingUtil.inflate<ViewHolderLoadingBinding>(
+            val binding = DataBindingUtil.inflate<ItemLoadingBinding>(
                     inflater,
-                    R.layout.view_holder_loading,
+                    R.layout.item_loading,
                     parent,
                     false)
-            return TvListLoadingViewHolder(binding)
+            TvListLoadingViewHolder(binding)
         }
     }
 
@@ -55,6 +59,10 @@ class TvListAdapter(itemList: ArrayList<Tv>, val tvType: TvType)
     fun addTvList(tvList: List<Tv>) {
         items.addAll(tvList)
         notifyDataSetChanged()
+    }
 
+    fun setTvList(tvList: List<Tv>) {
+        items.clear()
+        addTvList(tvList)
     }
 }

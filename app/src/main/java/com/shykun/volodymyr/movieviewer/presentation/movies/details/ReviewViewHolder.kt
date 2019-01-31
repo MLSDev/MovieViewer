@@ -1,14 +1,11 @@
 package com.shykun.volodymyr.movieviewer.presentation.movies.details
 
 import android.databinding.ObservableField
-import android.view.View
-import android.widget.TextView
 import com.shykun.volodymyr.movieviewer.data.entity.Review
-import com.shykun.volodymyr.movieviewer.databinding.ViewHolderReviewItemBinding
-import com.shykun.volodymyr.movieviewer.presentation.base.BaseViewHolder
-import kotlinx.android.synthetic.main.view_holder_review_item.view.*
+import com.shykun.volodymyr.movieviewer.databinding.ItemReviewBinding
+import com.shykun.volodymyr.movieviewer.presentation.common.BaseViewHolder
 
-class ReviewViewHolder(private val binding: ViewHolderReviewItemBinding) : BaseViewHolder<Review>(binding) {
+class ReviewViewHolder(private val binding: ItemReviewBinding) : BaseViewHolder<Review>(binding) {
 
     private var isExpanded = false
     val maxLines = ObservableField(5)

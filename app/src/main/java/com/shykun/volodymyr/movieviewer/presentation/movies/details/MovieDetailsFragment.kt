@@ -16,13 +16,17 @@ import com.shykun.volodymyr.movieviewer.data.entity.Movie
 import com.shykun.volodymyr.movieviewer.data.entity.Review
 import com.shykun.volodymyr.movieviewer.data.network.response.MovieDetailsResponse
 import com.shykun.volodymyr.movieviewer.databinding.FragmentMovieDetailsBinding
-import com.shykun.volodymyr.movieviewer.presentation.AppActivity
+import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
+import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
+import com.shykun.volodymyr.movieviewer.presentation.people.details.PERSON_DETAILS_FRAGMENT_KEY
 import kotlinx.android.synthetic.main.fragment_movie_details.*
+import ru.terrakok.cicerone.Router
+import javax.inject.Inject
 
 const val MOVIE_DETAILS_FRAGMENT_KEY = "movie_details_fragment_key"
 private const val MOVIE_ID_KEY = "movie_id_key"
 
-class MovieDetailsFragment : Fragment() {
+class MovieDetailsFragment : Fragment(), BackButtonListener {
 
     private var movieId = -1
     private lateinit var viewModel: MovieDetailsViewModel
@@ -31,12 +35,18 @@ class MovieDetailsFragment : Fragment() {
     private lateinit var reviewsAdapter: ReviewAdapter
     private lateinit var recommendedMoviesAdapter: RecommendedMoviesAdapter
 
+    @Inject
+    lateinit var viewModelFactory: MovieDetailsViewModelFactory
+    @Inject
+    lateinit var router: Router
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        (parentFragment as TabNavigationFragment).component?.inject(this)
         movieId = arguments?.getInt(MOVIE_ID_KEY)!!
         viewModel = ViewModelProviders
-                .of(this, (activity as AppActivity).appComponent.getMovieDetailsViewModelFactory())
+                .of(this, viewModelFactory)
                 .get(MovieDetailsViewModel::class.java)
     }
 
@@ -48,11 +58,21 @@ class MovieDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupBackButton()
         subscribeViewModel()
         setupCastAdapter()
         setupReviewsAdapter()
         setupRecommendedMoviesAdapter()
+        setupRecommendedMovieClick()
+        setupActorClick()
         viewModel.onViewLoaded(movieId)
+    }
+
+    private fun setupBackButton() {
+        movieDetailsToolbar.setNavigationIcon(R.drawable.ic_arrow_back)
+        movieDetailsToolbar.setNavigationOnClickListener {
+            onBackClicked()
+        }
     }
 
     private fun subscribeViewModel() {
@@ -112,6 +132,20 @@ class MovieDetailsFragment : Fragment() {
             layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
             adapter = recommendedMoviesAdapter
         }
+    }
+
+    private fun setupRecommendedMovieClick() {
+        recommendedMoviesAdapter.clickObservable.subscribe { router.navigateTo(MOVIE_DETAILS_FRAGMENT_KEY, it) }
+    }
+
+    private fun setupActorClick() {
+        castAdapter.clickObservable.subscribe { router.navigateTo(PERSON_DETAILS_FRAGMENT_KEY, it) }
+    }
+
+    override fun onBackClicked(): Boolean {
+        router.exit()
+
+        return true
     }
 
     companion object {

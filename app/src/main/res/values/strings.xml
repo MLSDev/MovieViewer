@@ -13,4 +13,20 @@
     <string name="popular_tv">Popular TV</string>
     <string name="top_rated_tv">Top rated TV</string>
     <string name="tv_on_the_air">TV on the air</string>
+    <string name="filters">Filters</string>
+    <string name="genres">Genres</string>
+    <string name="min_rating">Min rating</string>
+    <string name="min_release_year">Min release year</string>
+    <string name="show_results">Show results</string>
+    <string name="reset">Reset</string>
+    <string name="clear">Clear</string>
+    <string name="recommended_movies">Recommended Movies</string>
+    <string name="actors">Actors</string>
+    <string name="recommended_tv">Recommended TV</string>
+    <string name="reviews">Reviews</string>
+    <string name="biography">Biography</string>
+    <string name="overview">Overview</string>
+    <string name="search_movies">Search for movies</string>
+    <string name="search_tv">Search fo TV</string>
+    <string name="search_people">Search for people</string>
 </resources>

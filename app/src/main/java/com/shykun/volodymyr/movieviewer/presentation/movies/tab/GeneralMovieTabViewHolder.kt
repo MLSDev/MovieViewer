@@ -7,13 +7,13 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Movie
-import com.shykun.volodymyr.movieviewer.databinding.ViewHolderHorizontalMovieListBinding
-import com.shykun.volodymyr.movieviewer.presentation.base.BaseViewHolder
+import com.shykun.volodymyr.movieviewer.databinding.ItemHorizontalMovieListBinding
+import com.shykun.volodymyr.movieviewer.presentation.common.BaseViewHolder
 import io.reactivex.subjects.PublishSubject
-import kotlinx.android.synthetic.main.view_holder_horizontal_movie_list.view.*
+import kotlinx.android.synthetic.main.item_horizontal_movie_list.view.*
 
 class GeneralMovieTabViewHolder(
-        private val binding: ViewHolderHorizontalMovieListBinding,
+        private val binding: ItemHorizontalMovieListBinding,
         private val seeAllClickSubject: PublishSubject<Int>,
         private val movieClickSubject: PublishSubject<Int>) : BaseViewHolder<ArrayList<Movie>>(binding) {
 

@@ -2,24 +2,23 @@ package com.shykun.volodymyr.movieviewer.presentation.movies.list
 
 import android.databinding.ViewDataBinding
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
-import com.shykun.volodymyr.movieviewer.data.entity.GenreHelper
 import com.shykun.volodymyr.movieviewer.data.entity.Movie
 import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
-import com.shykun.volodymyr.movieviewer.databinding.ViewHolderLoadingBinding
-import com.shykun.volodymyr.movieviewer.databinding.ViewHolderMovieBinding
-import com.shykun.volodymyr.movieviewer.presentation.base.BaseViewHolder
-import com.shykun.volodymyr.movieviewer.presentation.glide.GlideApp
-import kotlinx.android.synthetic.main.view_holder_movie.view.*
+import com.shykun.volodymyr.movieviewer.databinding.ItemLoadingBinding
+import com.shykun.volodymyr.movieviewer.databinding.ItemMovieBinding
+import com.shykun.volodymyr.movieviewer.presentation.common.BaseViewHolder
+import io.reactivex.subjects.PublishSubject
 
 open class BaseMovieListViewHolder(viewDataBinding: ViewDataBinding)
     : BaseViewHolder<Movie>(viewDataBinding)
 
-class MovieListLoadingViewHolder(binding: ViewHolderLoadingBinding)
+class MovieListLoadingViewHolder(binding: ItemLoadingBinding)
     : BaseMovieListViewHolder(binding)
 
-class MovieListViewHolder(private val binding: ViewHolderMovieBinding, val moviesType: MoviesType)
+class MovieListViewHolder(
+        private val binding: ItemMovieBinding,
+        private val moviesType: MoviesType,
+        internal val clickSubject: PublishSubject<Int>)
     : BaseMovieListViewHolder(binding) {
 
     var popularityVisibility = View.VISIBLE
@@ -43,6 +42,8 @@ class MovieListViewHolder(private val binding: ViewHolderMovieBinding, val movie
                 popularityVisibility = View.GONE
             }
         }
+
+        itemView.setOnClickListener { clickSubject.onNext(item.id) }
 
         executeBinding(item)
     }

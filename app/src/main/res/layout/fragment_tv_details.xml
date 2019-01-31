@@ -34,10 +34,10 @@
                     android:id="@+id/tvHeader"
                     android:layout_width="match_parent"
                     android:layout_height="220dp"
+                    android:background="@color/colorPrimary"
                     android:scaleType="centerCrop"
                     app:layout_collapseMode="parallax"
-                    app:url="@{tvDetails.backdropPath}"
-                    android:background="@color/colorPrimary"/>
+                    app:url="@{tvDetails.backdropPath}" />
 
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/tvDetailsToolbar"
@@ -45,7 +45,7 @@
                     android:layout_height="?attr/actionBarSize"
                     app:layout_collapseMode="pin"
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
-                    app:title="@{tvDetails.name}"/>
+                    app:title="@{tvDetails.name}" />
 
             </android.support.design.widget.CollapsingToolbarLayout>
 
@@ -65,9 +65,8 @@
                     android:id="@+id/tvPoster"
                     android:layout_width="170dp"
                     android:layout_height="260dp"
-                    android:src="@drawable/poster_example"
-                    app:url="@{tvDetails.posterPath}"
-                    android:layout_marginLeft="10dp"/>
+                    android:layout_marginLeft="10dp"
+                    app:url="@{tvDetails.posterPath}" />
 
                 <TextView
                     android:id="@+id/tvRating"
@@ -75,8 +74,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_toEndOf="@+id/tvPoster"
-                    android:textSize="18sp"
-                    android:text="@{String.valueOf(tvDetails.voteAverage)}" />
+                    android:text="@{String.valueOf(tvDetails.voteAverage)}"
+                    android:textSize="16sp" />
 
                 <android.support.v7.widget.AppCompatRatingBar
                     android:id="@+id/tvRatingBar"
@@ -87,7 +86,8 @@
                     android:layout_marginStart="10dp"
                     android:layout_toEndOf="@+id/tvPoster"
                     android:numStars="10"
-                    android:rating="@{tvDetails.voteAverage}"/>
+                    android:progressBackgroundTint="@color/darkGrey"
+                    android:rating="@{tvDetails.voteAverage}" />
 
                 <TextView
                     android:id="@+id/tvCountry"
@@ -96,8 +96,8 @@
                     android:layout_below="@+id/tvRatingBar"
                     android:layout_marginStart="10dp"
                     android:layout_toEndOf="@+id/tvPoster"
-                    android:textSize="18sp"
-                    android:text="@{tvDetails.originCountry}"/>
+                    android:text="@{tvDetails.originCountry}"
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/tvYear"
@@ -106,8 +106,8 @@
                     android:layout_below="@+id/tvCountry"
                     android:layout_marginStart="10dp"
                     android:layout_toEndOf="@+id/tvPoster"
-                    android:textSize="18sp"
-                    android:text="@{tvDetails.firstAirDate}" />
+                    android:text="@{tvDetails.firstAirDate}"
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/tvGenres"
@@ -116,36 +116,76 @@
                     android:layout_below="@+id/tvYear"
                     android:layout_marginStart="10dp"
                     android:layout_toEndOf="@+id/tvPoster"
-                    android:textSize="18sp"
-                    android:text="@{tvDetails.genres}"/>
+                    android:text="@{tvDetails.genres}"
+                    android:textSize="16sp" />
 
                 <TextView
-                    android:layout_margin="10dp"
+                    android:id="@+id/tvOverviewTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvPoster"
+                    android:text="@string/overview"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <TextView
                     android:id="@+id/tvOverview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
-                    android:layout_below="@+id/tvPoster"
-                    android:textSize="18sp"
-                    android:text="@{tvDetails.overview}" />
+                    android:layout_below="@+id/tvOverviewTitle"
+                    android:layout_margin="10dp"
+                    android:text="@{tvDetails.overview}"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tvCastTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvOverview"
+                    android:text="@string/actors"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/tvCast"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/tvOverview"/>
+                    android:layout_below="@+id/tvCastTitle"
+                    android:nestedScrollingEnabled="false" />
+
+
+                <TextView
+                    android:id="@+id/recommendedTvTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvCast"
+                    android:text="@string/recommended_tv"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recommendedTv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/tvCast"/>
+                    android:layout_below="@id/recommendedTvTitle"
+                    android:nestedScrollingEnabled="false" />
+
+                <TextView
+                    android:id="@+id/tvReviewsTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/recommendedTv"
+                    android:text="@string/reviews"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/tvReviews"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/recommendedTv"/>
+                    android:layout_below="@id/tvReviewsTitle"
+                    android:nestedScrollingEnabled="false" />
 
             </RelativeLayout>
 

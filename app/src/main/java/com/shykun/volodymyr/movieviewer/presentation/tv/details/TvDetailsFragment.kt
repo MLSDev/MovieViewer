@@ -11,23 +11,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Actor
 import com.shykun.volodymyr.movieviewer.data.entity.Review
 import com.shykun.volodymyr.movieviewer.data.entity.Tv
 import com.shykun.volodymyr.movieviewer.data.network.response.TvDetailsResponse
 import com.shykun.volodymyr.movieviewer.databinding.FragmentTvDetailsBinding
-import com.shykun.volodymyr.movieviewer.presentation.AppActivity
+import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
+import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
 import com.shykun.volodymyr.movieviewer.presentation.movies.details.CastAdapter
 import com.shykun.volodymyr.movieviewer.presentation.movies.details.ReviewAdapter
-import kotlinx.android.synthetic.main.fragment_movie_details.*
+import com.shykun.volodymyr.movieviewer.presentation.people.details.PERSON_DETAILS_FRAGMENT_KEY
 import kotlinx.android.synthetic.main.fragment_tv_details.*
+import ru.terrakok.cicerone.Router
+import javax.inject.Inject
 
-const val TV_DETAILS_FRAGMENT = "tv_details_fragment"
+const val TV_DETAILS_FRAGMENT_KEY = "tv_details_fragment"
 private const val TV_ID_KEY = "tv_id_key"
 
-class TvDetailsFragment : Fragment() {
+class TvDetailsFragment : Fragment(), BackButtonListener {
 
     private var tvId = -1
     private lateinit var binding: FragmentTvDetailsBinding
@@ -36,12 +38,19 @@ class TvDetailsFragment : Fragment() {
     private lateinit var reviewsAdapter: ReviewAdapter
     private lateinit var recommendedTvAdapter: RecommendedTvAdapter
 
+    @Inject
+    lateinit var viewModelFactory: TvDetailsViewModelFactory
+    @Inject
+    lateinit var router: Router
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        (parentFragment as TabNavigationFragment).component?.inject(this)
+
         tvId = arguments?.getInt(TV_ID_KEY)!!
         viewModel = ViewModelProviders
-                .of(this, (activity as AppActivity).appComponent.getTvDetailsViewModelFactory())
+                .of(this, viewModelFactory)
                 .get(TvDetailsViewModel::class.java)
     }
 
@@ -54,11 +63,19 @@ class TvDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupBackButton()
         subscribeViewModel()
         setupCastAdapter()
-        setupReviewsAdapter()
         setupRecommendedTvAdapter()
+        setupReviewsAdapter()
+        setupRecommendedTvClick()
+        setupActorClick()
         viewModel.onViewLoaded(tvId)
+    }
+
+    private fun setupBackButton() {
+        tvDetailsToolbar.setNavigationIcon(R.drawable.ic_arrow_back)
+        tvDetailsToolbar.setNavigationOnClickListener { onBackClicked() }
     }
 
     private fun subscribeViewModel() {
@@ -103,6 +120,14 @@ class TvDetailsFragment : Fragment() {
         }
     }
 
+    private fun setupRecommendedTvAdapter() {
+        recommendedTvAdapter = RecommendedTvAdapter(ArrayList())
+        recommendedTv.apply {
+            layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
+            adapter = recommendedTvAdapter
+        }
+    }
+
     private fun setupReviewsAdapter() {
         reviewsAdapter = ReviewAdapter(ArrayList())
         tvReviews.apply {
@@ -112,12 +137,18 @@ class TvDetailsFragment : Fragment() {
         }
     }
 
-    private fun setupRecommendedTvAdapter() {
-        recommendedTvAdapter = RecommendedTvAdapter(ArrayList())
-        recommendedTv.apply {
-            layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = recommendedTvAdapter
-        }
+    private fun setupRecommendedTvClick() {
+        recommendedTvAdapter.clickObservable.subscribe { router.navigateTo(TV_DETAILS_FRAGMENT_KEY, it) }
+    }
+
+    private fun setupActorClick() {
+        castAdapter.clickObservable.subscribe { router.navigateTo(PERSON_DETAILS_FRAGMENT_KEY, it) }
+    }
+
+    override fun onBackClicked(): Boolean {
+        router.exit()
+
+        return true
     }
 
     companion object {

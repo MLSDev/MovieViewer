@@ -6,13 +6,8 @@ import android.arch.lifecycle.ViewModel
 import com.shykun.volodymyr.movieviewer.data.entity.Movie
 import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
 import com.shykun.volodymyr.movieviewer.domain.MoviesUseCase
-import com.shykun.volodymyr.movieviewer.presentation.movies.details.MOVIE_DETAILS_FRAGMENT_KEY
-import com.shykun.volodymyr.movieviewer.presentation.movies.list.MOVIE_LIST_FRAGMENT_KEY
-import ru.terrakok.cicerone.Router
 
-class MovieTabViewModel(
-        private val moviesUseCase: MoviesUseCase,
-        private val router: Router) : ViewModel() {
+class MovieTabViewModel(private val moviesUseCase: MoviesUseCase) : ViewModel() {
 
     private val popularMoviesMutableLiveData = MutableLiveData<List<Movie>>()
     private val topRatedMoviesMutableLiveData = MutableLiveData<List<Movie>>()
@@ -32,43 +27,26 @@ class MovieTabViewModel(
     }
 
     private fun getPopularMovies(page: Int) {
-        moviesUseCase.execute(MoviesType.POPULAR, page)
-                .doOnSuccess {
-                    popularMoviesMutableLiveData.value = it
-                }
-                .doOnError {
-                    loadingErrorMutableLiveData.value = it.message
-                }
-                .subscribe()
+        moviesUseCase.getMovies(MoviesType.POPULAR, page)
+                .subscribe(
+                        { response -> popularMoviesMutableLiveData.value = response },
+                        { error -> loadingErrorMutableLiveData.value = error.message }
+                )
     }
 
     private fun getTopRatedMovies(page: Int) {
-        moviesUseCase.execute(MoviesType.TOP_RATED, page)
-                .doOnSuccess {
-                    topRatedMoviesMutableLiveData.value = it
-                }
-                .doOnError {
-                    loadingErrorMutableLiveData.value = it.message
-                }
-                .subscribe()
+        moviesUseCase.getMovies(MoviesType.TOP_RATED, page)
+                .subscribe(
+                        { response -> topRatedMoviesMutableLiveData.value = response },
+                        { error -> loadingErrorMutableLiveData.value = error.message }
+                )
     }
 
     private fun getUpcomingMovies(page: Int) {
-        moviesUseCase.execute(MoviesType.UPCOMING, page)
-                .doOnSuccess {
-                    upcomingMoviesMutableLiveData.value = it
-                }
-                .doOnError {
-                    loadingErrorMutableLiveData.value = it.message
-                }
-                .subscribe()
-    }
-
-    fun onViewAllButtonClicked(moviesType: MoviesType) {
-        router.navigateTo(MOVIE_LIST_FRAGMENT_KEY, moviesType)
-    }
-
-    fun onMovieClicked(movieId: Int) {
-        router.navigateTo(MOVIE_DETAILS_FRAGMENT_KEY, movieId)
+        moviesUseCase.getMovies(MoviesType.UPCOMING, page)
+                .subscribe(
+                        { response -> upcomingMoviesMutableLiveData.value = response },
+                        { error -> loadingErrorMutableLiveData.value = error.message }
+                )
     }
 }

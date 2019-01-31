@@ -1,95 +1,135 @@
 package com.shykun.volodymyr.movieviewer.presentation
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
 import com.shykun.volodymyr.movieviewer.R
-import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
-import com.shykun.volodymyr.movieviewer.data.entity.TvType
-import com.shykun.volodymyr.movieviewer.presentation.di.AppComponent
-import com.shykun.volodymyr.movieviewer.presentation.di.DaggerAppComponent
-import com.shykun.volodymyr.movieviewer.presentation.movies.details.MOVIE_DETAILS_FRAGMENT_KEY
-import com.shykun.volodymyr.movieviewer.presentation.movies.details.MovieDetailsFragment
-import com.shykun.volodymyr.movieviewer.presentation.movies.list.MOVIE_LIST_FRAGMENT_KEY
-import com.shykun.volodymyr.movieviewer.presentation.movies.list.MovieListFragment
-import com.shykun.volodymyr.movieviewer.presentation.movies.tab.MOVIE_TAB_FRAGMENT_KEY
-import com.shykun.volodymyr.movieviewer.presentation.movies.tab.MovieTabFragment
-import com.shykun.volodymyr.movieviewer.presentation.people.details.PERSON_DETAILS_FRAGMENT_KEY
-import com.shykun.volodymyr.movieviewer.presentation.people.details.PersonDetailsFragment
-import com.shykun.volodymyr.movieviewer.presentation.people.tab.PEOPLE_TAB_FRAGMENT_KEY
-import com.shykun.volodymyr.movieviewer.presentation.people.tab.PeopleTabFragment
-import com.shykun.volodymyr.movieviewer.presentation.tv.details.TV_DETAILS_FRAGMENT
-import com.shykun.volodymyr.movieviewer.presentation.tv.details.TvDetailsFragment
-import com.shykun.volodymyr.movieviewer.presentation.tv.list.TV_LIST_FRAGMENT_KEY
-import com.shykun.volodymyr.movieviewer.presentation.tv.list.TvListFragment
-import com.shykun.volodymyr.movieviewer.presentation.tv.tab.TV_TAB_FRAGMENT_KEY
-import com.shykun.volodymyr.movieviewer.presentation.tv.tab.TvTabFragment
+import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
+import com.shykun.volodymyr.movieviewer.presentation.discover.DiscoverNavigationFragment
+import com.shykun.volodymyr.movieviewer.presentation.movies.MoviesNavigationFragment
+import com.shykun.volodymyr.movieviewer.presentation.people.PeopleNavigationFragment
+import com.shykun.volodymyr.movieviewer.presentation.tv.TvNavigationFragment
+import com.shykun.volodymyr.movieviewer.presentation.utils.NavigationKeys
 import kotlinx.android.synthetic.main.activity_main.*
-import ru.terrakok.cicerone.NavigatorHolder
-import ru.terrakok.cicerone.Router
-import ru.terrakok.cicerone.android.SupportFragmentNavigator
-import javax.inject.Inject
+import ru.terrakok.cicerone.Cicerone
+import ru.terrakok.cicerone.Navigator
+import ru.terrakok.cicerone.commands.Back
+import ru.terrakok.cicerone.commands.Command
+import ru.terrakok.cicerone.commands.Replace
+import ru.terrakok.cicerone.commands.SystemMessage
+import kotlin.math.round
+
+private const val CURRENT_TAB_KEY = "current_tab_key"
 
 class AppActivity : AppCompatActivity() {
-    val appComponent: AppComponent by lazy {
-        DaggerAppComponent.create()
+
+    private val moviesNavigationFragment: MoviesNavigationFragment by lazy {
+        supportFragmentManager.findFragmentByTag(NavigationKeys.MOVIES_NAVIGATION_KEY) as? MoviesNavigationFragment
+                ?: MoviesNavigationFragment()
     }
 
-    @Inject
-    lateinit var navigatorHolder: NavigatorHolder
-    @Inject
-    lateinit var router: Router
-
-    private val navigator = object : SupportFragmentNavigator(supportFragmentManager, R.id.fragmentContainer) {
-        override fun exit() {
-            finish()
-        }
-
-        override fun createFragment(screenKey: String?, data: Any?): Fragment {
-            return when (screenKey) {
-                MOVIE_LIST_FRAGMENT_KEY -> MovieListFragment.newInstance(data as MoviesType)
-                TV_LIST_FRAGMENT_KEY -> TvListFragment.newInstance(data as TvType)
-                MOVIE_TAB_FRAGMENT_KEY -> MovieTabFragment()
-                TV_TAB_FRAGMENT_KEY -> TvTabFragment()
-                PEOPLE_TAB_FRAGMENT_KEY -> PeopleTabFragment()
-                MOVIE_DETAILS_FRAGMENT_KEY -> MovieDetailsFragment.newInstance(data as Int)
-                TV_DETAILS_FRAGMENT -> TvDetailsFragment.newInstance(data as Int)
-                PERSON_DETAILS_FRAGMENT_KEY -> PersonDetailsFragment.newInstance(data as Int)
-                else -> throw RuntimeException("Unknown key")
-            }
-        }
-
-        override fun showSystemMessage(message: String?) {
-            Toast.makeText(this@AppActivity, message, Toast.LENGTH_SHORT).show()
-        }
+    private val tvNavigationFragment: TvNavigationFragment by lazy {
+        supportFragmentManager.findFragmentByTag(NavigationKeys.TV_NAVIGATION_KEY) as? TvNavigationFragment
+                ?: TvNavigationFragment()
     }
+
+    private val peopleNavigationFragment: PeopleNavigationFragment by lazy {
+        supportFragmentManager.findFragmentByTag(NavigationKeys.PEOPLE_NAVIGATION_KEY) as? PeopleNavigationFragment
+                ?: PeopleNavigationFragment()
+    }
+
+    private val discoverNavigationFragment: DiscoverNavigationFragment by lazy {
+        supportFragmentManager.findFragmentByTag(NavigationKeys.DISCOVER_NAVIGATION_KEY) as? DiscoverNavigationFragment
+                ?: DiscoverNavigationFragment()
+    }
+
+    private var currentTab = NavigationKeys.MOVIES_NAVIGATION_KEY
+    private val cicerone = Cicerone.create()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         supportActionBar?.setDisplayShowTitleEnabled(false)
-
-        appComponent.inject(this)
-        navigatorHolder.setNavigator(navigator)
-
-        supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.fragmentContainer, MovieTabFragment())
-                .commit()
         setupBottomNavigationClickListener()
+
+        if (savedInstanceState == null) {
+            bottomNavigation.selectedItemId = R.id.action_movies
+        } else {
+            savedInstanceState.getString(CURRENT_TAB_KEY)?.let { currentTab = it }
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+        outState?.putString(CURRENT_TAB_KEY, currentTab)
+    }
+
+    override fun onResumeFragments() {
+        super.onResumeFragments()
+        cicerone.navigatorHolder.setNavigator(navigator)
+    }
+
+    override fun onPause() {
+        cicerone.navigatorHolder.removeNavigator()
+        super.onPause()
     }
 
     private fun setupBottomNavigationClickListener() {
         bottomNavigation.setOnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.action_movies -> router.navigateTo(MOVIE_TAB_FRAGMENT_KEY)
-                R.id.action_tv -> router.navigateTo(TV_TAB_FRAGMENT_KEY)
-                R.id.action_people -> router.navigateTo(PEOPLE_TAB_FRAGMENT_KEY)
-                else -> false
+                R.id.action_movies -> cicerone.router.replaceScreen(NavigationKeys.MOVIES_NAVIGATION_KEY)
+                R.id.action_tv -> cicerone.router.replaceScreen(NavigationKeys.TV_NAVIGATION_KEY)
+                R.id.action_people -> cicerone.router.replaceScreen(NavigationKeys.PEOPLE_NAVIGATION_KEY)
+                R.id.action_discover -> cicerone.router.replaceScreen(NavigationKeys.DISCOVER_NAVIGATION_KEY)
             }
             true
         }
+    }
+
+    private val navigator = object : Navigator {
+
+        override fun applyCommands(commands: Array<out Command>) {
+            for (command in commands) applyCommand(command)
+        }
+
+        private fun applyCommand(command: Command) {
+            when (command) {
+                is Back -> finish()
+                is SystemMessage -> Toast.makeText(this@AppActivity, command.message, Toast.LENGTH_SHORT).show()
+                is Replace -> {
+                    when (command.screenKey) {
+                        NavigationKeys.MOVIES_NAVIGATION_KEY -> changeTab(moviesNavigationFragment)
+                        NavigationKeys.TV_NAVIGATION_KEY -> changeTab(tvNavigationFragment)
+                        NavigationKeys.PEOPLE_NAVIGATION_KEY -> changeTab(peopleNavigationFragment)
+                        NavigationKeys.DISCOVER_NAVIGATION_KEY -> changeTab(discoverNavigationFragment)
+                    }
+                }
+            }
+        }
+
+        private fun changeTab(tabFragment: TabNavigationFragment) {
+            with(supportFragmentManager.beginTransaction()) {
+                supportFragmentManager.fragments.filter { it != tabFragment }.forEach {
+                    hide(it)
+                    it.userVisibleHint = false
+                }
+                tabFragment.let {
+                    currentTab = it.navigationKey
+                    if (it.isAdded) {
+                        show(it)
+                    } else add(R.id.activityFragmentContainer, it, it.navigationKey)
+                    it.userVisibleHint = true
+                }
+                commit()
+            }
+        }
+    }
+
+    override fun onBackPressed() {
+        val currentFragment = (supportFragmentManager.findFragmentByTag(currentTab) as TabNavigationFragment)
+        if (!currentFragment.onBackClicked())
+            finish()
     }
 }
