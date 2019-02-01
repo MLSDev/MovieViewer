@@ -10,10 +10,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.google.android.youtube.player.YouTubeInitializationResult
+import com.google.android.youtube.player.YouTubePlayer
+import com.google.android.youtube.player.YouTubePlayerSupportFragment
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Actor
 import com.shykun.volodymyr.movieviewer.data.entity.Movie
 import com.shykun.volodymyr.movieviewer.data.entity.Review
+import com.shykun.volodymyr.movieviewer.data.network.YOUTUBE_API_KEY
 import com.shykun.volodymyr.movieviewer.data.network.response.MovieDetailsResponse
 import com.shykun.volodymyr.movieviewer.databinding.FragmentMovieDetailsBinding
 import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
@@ -22,6 +26,7 @@ import com.shykun.volodymyr.movieviewer.presentation.people.details.PERSON_DETAI
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject
+
 
 const val MOVIE_DETAILS_FRAGMENT_KEY = "movie_details_fragment_key"
 private const val MOVIE_ID_KEY = "movie_id_key"
@@ -52,6 +57,8 @@ class MovieDetailsFragment : Fragment(), BackButtonListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_movie_details, container, false)
+        initTrailer()
+
         return binding.root
     }
 
@@ -66,6 +73,23 @@ class MovieDetailsFragment : Fragment(), BackButtonListener {
         setupRecommendedMovieClick()
         setupActorClick()
         viewModel.onViewLoaded(movieId)
+    }
+
+    private fun initTrailer() {
+        val youtubePlayerFragment = YouTubePlayerSupportFragment()
+        youtubePlayerFragment.initialize(YOUTUBE_API_KEY, object : YouTubePlayer.OnInitializedListener {
+            override fun onInitializationSuccess(provider: YouTubePlayer.Provider, player: YouTubePlayer, p2: Boolean) {
+                player.cueVideo("WUE3Ji9OLt4")
+            }
+
+            override fun onInitializationFailure(p0: YouTubePlayer.Provider?, p1: YouTubeInitializationResult?) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+        })
+        val fragmentManager = fragmentManager
+        val fragmentTransaction = fragmentManager!!.beginTransaction()
+        fragmentTransaction.replace(R.id.trailerContainer, youtubePlayerFragment)
+        fragmentTransaction.commit()
     }
 
     private fun setupBackButton() {

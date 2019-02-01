@@ -7,8 +7,10 @@
     <data>
 
         <import type="com.shykun.volodymyr.movieviewer.data.network.response.MovieDetailsResponse" />
+
         <import type="com.shykun.volodymyr.movieviewer.presentation.utils.GenreHelper" />
-        <import type="android.view.View"/>
+
+        <import type="android.view.View" />
 
         <variable
             name="movieDetails"
@@ -59,8 +61,8 @@
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            android:visibility="@{movieDetails != null? View.VISIBLE: View.GONE}">
+            android:visibility="@{movieDetails != null? View.VISIBLE: View.GONE}"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
@@ -145,10 +147,25 @@
                     android:textSize="16sp" />
 
                 <TextView
-                    android:id="@+id/movieCastTitle"
+                    android:id="@+id/trailerTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/movieOverview"
+                    android:text="@string/trailer"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <FrameLayout
+                    android:id="@+id/trailerContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/trailerTitle"/>
+
+                <TextView
+                    android:id="@+id/movieCastTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/trailerContainer"
                     android:text="@string/actors"
                     android:textSize="25sp"
                     android:textStyle="bold" />
@@ -200,7 +217,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:visibility="@{movieDetails == null? View.VISIBLE: View.GONE}"/>
+            android:visibility="@{movieDetails == null? View.VISIBLE: View.GONE}" />
 
     </android.support.design.widget.CoordinatorLayout>
 
