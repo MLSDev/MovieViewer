@@ -17,6 +17,7 @@ import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Actor
 import com.shykun.volodymyr.movieviewer.data.entity.Movie
 import com.shykun.volodymyr.movieviewer.data.entity.Review
+import com.shykun.volodymyr.movieviewer.data.entity.Video
 import com.shykun.volodymyr.movieviewer.data.network.YOUTUBE_API_KEY
 import com.shykun.volodymyr.movieviewer.data.network.response.MovieDetailsResponse
 import com.shykun.volodymyr.movieviewer.databinding.FragmentMovieDetailsBinding
@@ -57,7 +58,7 @@ class MovieDetailsFragment : Fragment(), BackButtonListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_movie_details, container, false)
-        initTrailer()
+
 
         return binding.root
     }
@@ -75,11 +76,13 @@ class MovieDetailsFragment : Fragment(), BackButtonListener {
         viewModel.onViewLoaded(movieId)
     }
 
-    private fun initTrailer() {
+    private fun initTrailer(trailer: Video) {
         val youtubePlayerFragment = YouTubePlayerSupportFragment()
         youtubePlayerFragment.initialize(YOUTUBE_API_KEY, object : YouTubePlayer.OnInitializedListener {
             override fun onInitializationSuccess(provider: YouTubePlayer.Provider, player: YouTubePlayer, p2: Boolean) {
-                player.cueVideo("WUE3Ji9OLt4")
+                if (!p2)
+                    player.cueVideo(trailer.key)
+                player.fullscreenControlFlags = YouTubePlayer.FULLSCREEN_FLAG_CONTROL_SYSTEM_UI
             }
 
             override fun onInitializationFailure(p0: YouTubePlayer.Provider?, p1: YouTubeInitializationResult?) {
@@ -88,7 +91,7 @@ class MovieDetailsFragment : Fragment(), BackButtonListener {
         })
         val fragmentManager = fragmentManager
         val fragmentTransaction = fragmentManager!!.beginTransaction()
-        fragmentTransaction.replace(R.id.trailerContainer, youtubePlayerFragment)
+        fragmentTransaction.replace(R.id.movieTrailerContainer, youtubePlayerFragment)
         fragmentTransaction.commit()
     }
 
@@ -109,6 +112,11 @@ class MovieDetailsFragment : Fragment(), BackButtonListener {
 
     private fun showMovieDetails(movieDetails: MovieDetailsResponse?) {
         binding.movieDetails = movieDetails
+        if (movieDetails != null) {
+            val trailers = movieDetails.videos.results.filter { it.type == "Trailer" }
+            if (trailers.isNotEmpty())
+                initTrailer(trailers.first())
+        }
     }
 
     private fun showMovieCast(movieCast: List<Actor>?) {

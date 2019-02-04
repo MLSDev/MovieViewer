@@ -22,7 +22,8 @@ interface ApiService {
     @GET("movie/{movie_id}")
     fun getMovieDetails(
             @Path("movie_id") movieId: Int,
-            @Query("api_key") api_key: String = API_KEY): Single<MovieDetailsResponse>
+            @Query("api_key") api_key: String = API_KEY,
+            @Query("append_to_response") appendToResponse: String = "videos"): Single<MovieDetailsResponse>
 
     @GET("movie/{movie_id}/credits")
     fun getMovieCredits(
@@ -56,7 +57,8 @@ interface ApiService {
     @GET("tv/{tv_id}")
     fun getTvDetails(
             @Path("tv_id") tvId: Int,
-            @Query("api_key") api_key: String = API_KEY): Single<TvDetailsResponse>
+            @Query("api_key") api_key: String = API_KEY,
+            @Query("append_to_response") appendToResponse: String = "videos"): Single<TvDetailsResponse>
 
     @GET("tv/{tv_id}/credits")
     fun getTvCredits(

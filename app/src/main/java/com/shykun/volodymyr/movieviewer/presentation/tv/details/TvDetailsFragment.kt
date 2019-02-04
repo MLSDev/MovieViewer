@@ -11,10 +11,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.google.android.youtube.player.YouTubeInitializationResult
+import com.google.android.youtube.player.YouTubePlayer
+import com.google.android.youtube.player.YouTubePlayerSupportFragment
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Actor
 import com.shykun.volodymyr.movieviewer.data.entity.Review
 import com.shykun.volodymyr.movieviewer.data.entity.Tv
+import com.shykun.volodymyr.movieviewer.data.entity.Video
+import com.shykun.volodymyr.movieviewer.data.network.YOUTUBE_API_KEY
 import com.shykun.volodymyr.movieviewer.data.network.response.TvDetailsResponse
 import com.shykun.volodymyr.movieviewer.databinding.FragmentTvDetailsBinding
 import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
@@ -73,6 +78,24 @@ class TvDetailsFragment : Fragment(), BackButtonListener {
         viewModel.onViewLoaded(tvId)
     }
 
+    private fun initTrailer(trailer: Video) {
+        val youtubePlayerFragment = YouTubePlayerSupportFragment()
+        youtubePlayerFragment.initialize(YOUTUBE_API_KEY, object : YouTubePlayer.OnInitializedListener {
+            override fun onInitializationSuccess(provider: YouTubePlayer.Provider, player: YouTubePlayer, p2: Boolean) {
+                if (!p2)
+                    player.cueVideo(trailer.key)
+            }
+
+            override fun onInitializationFailure(p0: YouTubePlayer.Provider?, p1: YouTubeInitializationResult?) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+        })
+        val fragmentManager = fragmentManager
+        val fragmentTransaction = fragmentManager!!.beginTransaction()
+        fragmentTransaction.replace(R.id.tvTrailerContainer, youtubePlayerFragment)
+        fragmentTransaction.commit()
+    }
+
     private fun setupBackButton() {
         tvDetailsToolbar.setNavigationIcon(R.drawable.ic_arrow_back)
         tvDetailsToolbar.setNavigationOnClickListener { onBackClicked() }
@@ -88,6 +111,11 @@ class TvDetailsFragment : Fragment(), BackButtonListener {
 
     private fun showTvDetails(tvDetailsResponse: TvDetailsResponse?) {
         binding.tvDetails = tvDetailsResponse
+        if (tvDetailsResponse != null) {
+            val trailers = tvDetailsResponse.videos.results.filter { it.type == "Trailer" }
+            if (trailers.isNotEmpty())
+                initTrailer(trailers.first())
+        }
     }
 
     private fun showTvCast(tvCast: List<Actor>?) {

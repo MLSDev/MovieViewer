@@ -139,10 +139,25 @@
                     android:textSize="16sp" />
 
                 <TextView
+                    android:id="@+id/tvTrailerTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/trailer"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:layout_below="@id/tvOverview" />
+
+                <FrameLayout
+                    android:id="@+id/tvTrailerContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvTrailerTitle"/>
+
+                <TextView
                     android:id="@+id/tvCastTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/tvOverview"
+                    android:layout_below="@id/tvTrailerContainer"
                     android:text="@string/actors"
                     android:textSize="25sp"
                     android:textStyle="bold" />

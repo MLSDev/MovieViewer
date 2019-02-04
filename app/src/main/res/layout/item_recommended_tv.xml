@@ -23,7 +23,6 @@
             android:layout_height="200dp"
             android:background="@color/colorPrimary"
             android:scaleType="centerCrop"
-            android:src="@drawable/stub_image_poster"
             app:url="@{tv.posterPath}"/>
 
         <LinearLayout

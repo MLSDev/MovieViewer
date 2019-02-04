@@ -156,7 +156,7 @@
                     android:textStyle="bold" />
 
                 <FrameLayout
-                    android:id="@+id/trailerContainer"
+                    android:id="@+id/movieTrailerContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/trailerTitle"/>
@@ -165,7 +165,7 @@
                     android:id="@+id/movieCastTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/trailerContainer"
+                    android:layout_below="@id/movieTrailerContainer"
                     android:text="@string/actors"
                     android:textSize="25sp"
                     android:textStyle="bold" />

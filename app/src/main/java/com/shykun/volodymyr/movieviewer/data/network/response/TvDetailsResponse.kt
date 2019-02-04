@@ -31,5 +31,6 @@ data class TvDetailsResponse(
         @SerializedName("status") var status: String,
         @SerializedName("type") var type: String,
         @SerializedName("vote_average") var voteAverage: Float,
-        @SerializedName("vote_count") var voteCount: Int
+        @SerializedName("vote_count") var voteCount: Int,
+        @SerializedName("videos") val videos: VideosResponse
 )
