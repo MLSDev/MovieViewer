@@ -17,7 +17,6 @@ import ru.terrakok.cicerone.commands.Back
 import ru.terrakok.cicerone.commands.Command
 import ru.terrakok.cicerone.commands.Replace
 import ru.terrakok.cicerone.commands.SystemMessage
-import kotlin.math.round
 
 private const val CURRENT_TAB_KEY = "current_tab_key"
 

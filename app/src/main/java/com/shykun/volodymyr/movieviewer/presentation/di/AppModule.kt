@@ -30,5 +30,5 @@ class AppModule(val activity: FragmentActivity, val fragmentManager: FragmentMan
 
     @Provides
     @Singleton
-    fun provideFlowNavigator(): FlowNavigator = FlowNavigator(fragmentManager, containerId)
+    fun provideFlowNavigator(): FlowNavigator = FlowNavigator(activity, fragmentManager, containerId)
 }

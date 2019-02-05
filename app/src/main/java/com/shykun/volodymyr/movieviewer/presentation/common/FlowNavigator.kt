@@ -1,7 +1,10 @@
 package com.shykun.volodymyr.movieviewer.presentation.common
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentActivity
 import android.support.v4.app.FragmentManager
 import com.shykun.volodymyr.movieviewer.presentation.discover.filter.FILTER_LIST_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.discover.filter.FilterListFragment
@@ -32,74 +35,36 @@ import com.shykun.volodymyr.movieviewer.presentation.tv.search.TV_SEARCH_FRAGMEN
 import com.shykun.volodymyr.movieviewer.presentation.tv.search.TvSearchFragment
 import com.shykun.volodymyr.movieviewer.presentation.tv.tab.TV_TAB_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.tv.tab.TvTabFragment
-import ru.terrakok.cicerone.Navigator
-import ru.terrakok.cicerone.commands.Back
-import ru.terrakok.cicerone.commands.Command
-import ru.terrakok.cicerone.commands.Forward
-import java.util.*
+import ru.terrakok.cicerone.android.SupportAppNavigator
 
-class FlowNavigator(private val fragmentManager: FragmentManager, private val containerId: Int) : Navigator {
+class FlowNavigator(activity: FragmentActivity, fm: FragmentManager, containerId: Int)
+    : SupportAppNavigator(activity, fm, containerId) {
 
-    private val backStack = Stack<Fragment>()
-
-    override fun applyCommands(commands: Array<out Command>) {
-        for (command in commands) applyCommand(command)
-
+    override fun createActivityIntent(context: Context?, screenKey: String?, data: Any?): Intent? {
+        return null
     }
 
-    private fun applyCommand(command: Command) {
-        when (command) {
-            is Back -> closeCurrentFragment()
-            is Forward -> {
-                when (command.screenKey) {
-                    MOVIE_TAB_FRAGMENT_KEY -> openNextFragment(MovieTabFragment())
-                    MOVIE_LIST_FRAGMENT_KEY -> openNextFragment(MovieListFragment.newInstance(command.transitionData as Bundle))
-                    MOVIE_DETAILS_FRAGMENT_KEY -> openNextFragment(MovieDetailsFragment.newInstance(command.transitionData as Int))
-                    MOVIES_SEARCH_FRAGMENT_KEY -> openNextFragment(MovieSearchFragment())
+    override fun createFragment(screenKey: String?, data: Any?): Fragment? {
+        return when (screenKey) {
+            MOVIE_TAB_FRAGMENT_KEY -> MovieTabFragment()
+            MOVIE_LIST_FRAGMENT_KEY -> MovieListFragment.newInstance(data as Bundle)
+            MOVIE_DETAILS_FRAGMENT_KEY -> MovieDetailsFragment.newInstance(data as Int)
+            MOVIES_SEARCH_FRAGMENT_KEY -> MovieSearchFragment()
 
-                    TV_TAB_FRAGMENT_KEY -> openNextFragment(TvTabFragment())
-                    TV_LIST_FRAGMENT_KEY -> openNextFragment(TvListFragment.newInstance(command.transitionData as Bundle))
-                    TV_DETAILS_FRAGMENT_KEY -> openNextFragment(TvDetailsFragment.newInstance(command.transitionData as Int))
-                    TV_SEARCH_FRAGMENT_KEY -> openNextFragment(TvSearchFragment())
+            TV_TAB_FRAGMENT_KEY -> TvTabFragment()
+            TV_LIST_FRAGMENT_KEY -> TvListFragment.newInstance(data as Bundle)
+            TV_DETAILS_FRAGMENT_KEY -> TvDetailsFragment.newInstance(data as Int)
+            TV_SEARCH_FRAGMENT_KEY -> TvSearchFragment()
 
-                    PEOPLE_TAB_FRAGMENT_KEY -> openNextFragment(PeopleTabFragment.newInstance(command.transitionData as Bundle?))
-                    PERSON_DETAILS_FRAGMENT_KEY -> openNextFragment(PersonDetailsFragment.newInstance(command.transitionData as Int))
-                    PEOPLE_SEARCH_FRAGMENT_KEY -> openNextFragment(PeopleSearchFragment())
+            PEOPLE_TAB_FRAGMENT_KEY -> PeopleTabFragment.newInstance(data as Bundle?)
+            PERSON_DETAILS_FRAGMENT_KEY -> PersonDetailsFragment.newInstance(data as Int)
+            PEOPLE_SEARCH_FRAGMENT_KEY -> (PeopleSearchFragment())
 
-                    DISCOVER_FRAGMENT_KEY -> openNextFragment(DiscoverFragment())
-                    DISCOVER_LIST_FRAGMENT_KEY -> openNextFragment(DiscoverListFragment())
-                    FILTER_LIST_FRAGMENT_KEY -> openNextFragment(FilterListFragment.newInstance(command.transitionData as FilterType))
-                }
-            }
-        }
-    }
+            DISCOVER_FRAGMENT_KEY -> (DiscoverFragment())
+            DISCOVER_LIST_FRAGMENT_KEY -> (DiscoverListFragment())
+            FILTER_LIST_FRAGMENT_KEY -> FilterListFragment.newInstance(data as FilterType)
 
-    private fun closeCurrentFragment() {
-        with(fragmentManager.beginTransaction()) {
-            val currentFragment = backStack.pop()
-            fragmentManager.fragments.filter { it == currentFragment }.forEach { remove(it) }
-            backStack.peek().let {
-                show(it)
-                it.userVisibleHint = true
-            }
-            commit()
-        }
-    }
-
-    private fun openNextFragment(fragment: Fragment) {
-        with(fragmentManager.beginTransaction()) {
-            fragment.let {
-                add(containerId, it)
-                show(it)
-            }
-            if (!backStack.empty()) {
-                backStack.peek().let {
-                    hide(it)
-                    it.userVisibleHint = false
-                }
-            }
-            backStack.push(fragment)
-            commit()
+            else -> null
         }
     }
 }

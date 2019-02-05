@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -19,6 +18,7 @@ import com.shykun.volodymyr.movieviewer.presentation.movies.details.MOVIE_DETAIL
 import com.shykun.volodymyr.movieviewer.presentation.movies.list.MOVIE_LIST_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.movies.list.MOVIE_TYPE_KEY
 import com.shykun.volodymyr.movieviewer.presentation.movies.search.MOVIES_SEARCH_FRAGMENT_KEY
+import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_movies_tab.*
 import ru.terrakok.cicerone.Router
 import java.lang.Exception
@@ -71,7 +71,7 @@ class MovieTabFragment : Fragment(), BackButtonListener {
     private fun setupToolbar() {
         moviesToolbar.inflateMenu(R.menu.manu_app)
         moviesToolbar.setOnMenuItemClickListener { menuItem ->
-            when(menuItem.itemId) {
+            when (menuItem.itemId) {
                 R.id.action_search -> router.navigateTo(MOVIES_SEARCH_FRAGMENT_KEY)
             }
             true
@@ -94,9 +94,12 @@ class MovieTabFragment : Fragment(), BackButtonListener {
     }
 
     private fun setupMovieClick() {
-        generalMovieTabAdapter.movieClickEvent.subscribe {
+        generalMovieTabAdapter.movieClickEvent
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe ({
             router.navigateTo(MOVIE_DETAILS_FRAGMENT_KEY, it)
-        }
+        },
+        { error -> Toast.makeText(this.context, error.message, Toast.LENGTH_LONG).show() })
     }
 
     private fun setupAdapter() {
