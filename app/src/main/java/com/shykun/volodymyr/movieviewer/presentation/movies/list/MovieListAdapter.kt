@@ -41,12 +41,6 @@ class MovieListAdapter(itemList: ArrayList<Movie>, val moviesType: MoviesType)
         }
     }
 
-    override fun onBindViewHolder(viewHolder: BaseMovieListViewHolder, position: Int) {
-        if (position < items.size) {
-            super.onBindViewHolder(viewHolder, position)
-        }
-    }
-
     override fun getItemCount() = items.size + 1
 
     override fun getItemViewType(position: Int): Int {
@@ -59,10 +53,5 @@ class MovieListAdapter(itemList: ArrayList<Movie>, val moviesType: MoviesType)
     fun addMovies(movies: List<Movie>) {
         items.addAll(movies)
         notifyDataSetChanged()
-    }
-
-    fun setMovies(movies: List<Movie>) {
-        items.clear()
-        addMovies(movies)
     }
 }

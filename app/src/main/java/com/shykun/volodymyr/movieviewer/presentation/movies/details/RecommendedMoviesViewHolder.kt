@@ -9,14 +9,18 @@ class RecommendedMoviesViewHolder(
         private val binding: ItemRecommendedMoviesBinding,
         private val clickSubject: PublishSubject<Int>) : BaseViewHolder<Movie>(binding) {
 
-    override fun bind(item: Movie, position: Int) {
+    override fun bind(item: Movie?, position: Int) {
         super.bind(item, position)
 
-        itemView.setOnClickListener { clickSubject.onNext(item.id) }
+        itemView.setOnClickListener {
+            if (item != null) {
+                clickSubject.onNext(item.id)
+            }
+        }
         executeBinding(item)
     }
 
-    private fun executeBinding(movie: Movie) {
+    private fun executeBinding(movie: Movie?) {
         binding.movie = movie
         binding.executePendingBindings()
     }

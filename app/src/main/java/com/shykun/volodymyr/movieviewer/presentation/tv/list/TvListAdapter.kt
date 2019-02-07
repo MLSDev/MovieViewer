@@ -18,7 +18,7 @@ private const val LOADING = 1
 class TvListAdapter(itemList: ArrayList<Tv>, val tvType: TvType)
     : BaseRecyclerViewAdapter<Tv, BaseTvListViewHolder>(itemList) {
 
-    var lastLoadedPage = 1
+    var lastLoadedPage = 0
     private val clickSubject = PublishSubject.create<Int>()
     val clickObservable: Observable<Int> = clickSubject
 
@@ -41,12 +41,6 @@ class TvListAdapter(itemList: ArrayList<Tv>, val tvType: TvType)
         }
     }
 
-    override fun onBindViewHolder(viewHolder: BaseTvListViewHolder, position: Int) {
-        if (position < items.size) {
-            super.onBindViewHolder(viewHolder, position)
-        }
-    }
-
     override fun getItemCount() = items.size + 1
 
     override fun getItemViewType(position: Int): Int {
@@ -59,10 +53,5 @@ class TvListAdapter(itemList: ArrayList<Tv>, val tvType: TvType)
     fun addTvList(tvList: List<Tv>) {
         items.addAll(tvList)
         notifyDataSetChanged()
-    }
-
-    fun setTvList(tvList: List<Tv>) {
-        items.clear()
-        addTvList(tvList)
     }
 }

@@ -5,9 +5,9 @@ import android.support.v7.widget.RecyclerView
 
 open class BaseViewHolder<T: Any>(viewDataBinding: ViewDataBinding) : RecyclerView.ViewHolder(viewDataBinding.root) {
 
-    lateinit var item: T
+    var item: T? = null
 
-    open fun bind(item: T, position: Int) {
+    open fun bind(item: T?, totalItemsCount: Int) {
         this.item = item
     }
 }

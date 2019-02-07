@@ -12,6 +12,7 @@ import android.widget.Toast
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Tv
 import com.shykun.volodymyr.movieviewer.data.entity.TvType
+import com.shykun.volodymyr.movieviewer.data.network.response.TvResponse
 import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
 import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
 import com.shykun.volodymyr.movieviewer.presentation.tv.details.TV_DETAILS_FRAGMENT_KEY
@@ -108,21 +109,21 @@ class TvTabFragment : Fragment(), BackButtonListener {
         generalTvTabAdapter.tvClickEvent.subscribe { router.navigateTo(TV_DETAILS_FRAGMENT_KEY, it) }
     }
 
-    fun showPopularTV(tvList: List<Tv>?) {
-        if (tvList != null) {
-            generalTvTabAdapter.addTV(tvList, POPULAR_TV)
+    fun showPopularTV(tvResponse: TvResponse?) {
+        if (tvResponse != null) {
+            generalTvTabAdapter.addTV(tvResponse.results, POPULAR_TV)
         }
     }
 
-    fun showTopRatedTV(tvList: List<Tv>?) {
-        if (tvList != null) {
-            generalTvTabAdapter.addTV(tvList, TOP_RATED_TV)
+    fun showTopRatedTV(tvResponse: TvResponse?) {
+        if (tvResponse != null) {
+            generalTvTabAdapter.addTV(tvResponse.results, TOP_RATED_TV)
         }
     }
 
-    fun showTVOnTheAir(tvList: List<Tv>?) {
-        if (tvList != null) {
-            generalTvTabAdapter.addTV(tvList, TV_ON_THE_AIR)
+    fun showTVOnTheAir(tvResponse: TvResponse?) {
+        if (tvResponse != null) {
+            generalTvTabAdapter.addTV(tvResponse.results, TV_ON_THE_AIR)
         }
     }
 

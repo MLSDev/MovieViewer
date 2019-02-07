@@ -14,6 +14,8 @@ import com.shykun.volodymyr.movieviewer.data.entity.Movie
 import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
 import com.shykun.volodymyr.movieviewer.data.entity.Tv
 import com.shykun.volodymyr.movieviewer.data.entity.TvType
+import com.shykun.volodymyr.movieviewer.data.network.response.MoviesResponse
+import com.shykun.volodymyr.movieviewer.data.network.response.TvResponse
 import com.shykun.volodymyr.movieviewer.presentation.AppActivity
 import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
 import com.shykun.volodymyr.movieviewer.presentation.common.ScrollObservable
@@ -58,15 +60,14 @@ class DiscoverListFragment : Fragment(), BackButtonListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupBackButton()
-        subscribeViewModel()
-        subscribeScrollObervable()
         if (viewModel.type.get() == MOVIE_TYPE)
             setupMovieListAdapter()
         else
             setupTvListAdapter()
 
-        viewModel.load()
+        setupBackButton()
+        subscribeViewModel()
+        subscribeScrollObervable()
     }
 
     private fun setupBackButton() {
@@ -88,15 +89,16 @@ class DiscoverListFragment : Fragment(), BackButtonListener {
                 .subscribe()
     }
 
-    private fun showMovieList(movieList: List<Movie>?) {
-        if (movieList != null) {
-            movieListAdapter.addMovies(movieList)
+    private fun showMovieList(moviesResponse: MoviesResponse?) {
+        if (moviesResponse != null) {
+            movieListAdapter.addMovies(moviesResponse.results)
+            movieListAdapter.totalItemsCount = moviesResponse.totalResults
         }
     }
 
-    private fun showTvList(tvList: List<Tv>?) {
-        if (tvList != null) {
-            tvListAdapter.addTvList(tvList)
+    private fun showTvList(tvResponse: TvResponse?) {
+        if (tvResponse != null) {
+            tvListAdapter.addTvList(tvResponse.results)
         }
     }
 
@@ -122,6 +124,7 @@ class DiscoverListFragment : Fragment(), BackButtonListener {
 
     override fun onBackClicked(): Boolean {
         router.exit()
+        viewModel.clearResults()
 
         return true
     }

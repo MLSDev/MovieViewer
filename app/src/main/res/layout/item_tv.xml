@@ -35,7 +35,6 @@
                 android:layout_height="160dp"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:src="@drawable/stub_image_poster"
                 app:url="@{tv.posterPath}" />
 
             <TextView

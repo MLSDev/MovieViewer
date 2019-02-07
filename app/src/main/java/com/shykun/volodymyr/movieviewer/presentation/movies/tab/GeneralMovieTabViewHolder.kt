@@ -7,6 +7,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Movie
+import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
 import com.shykun.volodymyr.movieviewer.databinding.ItemHorizontalMovieListBinding
 import com.shykun.volodymyr.movieviewer.presentation.common.BaseViewHolder
 import io.reactivex.subjects.PublishSubject
@@ -21,31 +22,39 @@ class GeneralMovieTabViewHolder(
     private val seeAllMovie: TextView = itemView.seeAllMovie
 
     lateinit var title: String
+    lateinit var moviesType: MoviesType
     var progressBarVisibility = View.VISIBLE
 
-    override fun bind(item: ArrayList<Movie>, position: Int) {
-        super.bind(item, position)
+    override fun bind(item: ArrayList<Movie>?, totalItemsCount: Int) {
+        super.bind(item, totalItemsCount)
 
-        title = when (position) {
-            POPULAR_MOVIES -> itemView.context.getString(R.string.popular_movies)
-            TOP_RATED_MOVIES -> itemView.context.getString(R.string.top_rated_movies)
-            UPCOMING_MOVIES -> itemView.context.getString(R.string.upcoming_movies)
-            else -> ""
+        when (adapterPosition) {
+            POPULAR_MOVIES -> {
+                title = itemView.context.getString(R.string.popular_movies)
+                moviesType = MoviesType.POPULAR
+            }
+            TOP_RATED_MOVIES -> {
+                title = itemView.context.getString(R.string.top_rated_movies)
+                moviesType = MoviesType.TOP_RATED
+            }
+            UPCOMING_MOVIES -> {
+                title = itemView.context.getString(R.string.upcoming_movies)
+                moviesType = MoviesType.UPCOMING
+            }
         }
 
-        if (item.isNotEmpty()) {
+        if (item != null && item.isNotEmpty()) {
             progressBarVisibility = View.GONE
 
             movieList.apply {
                 layoutManager = LinearLayoutManager(this.context, LinearLayout.HORIZONTAL, false)
-                val moviesAdapter = MovieTabAdapter(item)
+                val moviesAdapter = MovieTabAdapter(item, moviesType)
                 moviesAdapter.movieClickEvent.subscribe { movieClickSubject.onNext(it) }
-                moviesAdapter.type = position
                 adapter = moviesAdapter
             }
         }
 
-        seeAllMovie.setOnClickListener { seeAllClickSubject.onNext(position) }
+        seeAllMovie.setOnClickListener { seeAllClickSubject.onNext(adapterPosition) }
 
         executeBinding()
     }

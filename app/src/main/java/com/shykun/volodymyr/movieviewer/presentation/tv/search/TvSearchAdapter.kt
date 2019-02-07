@@ -30,4 +30,9 @@ class TvSearchAdapter(tvList: ArrayList<Tv>) : BaseRecyclerViewAdapter<Tv, TvSea
         this.items.addAll(tvList)
         notifyDataSetChanged()
     }
+
+    fun clearTvList() {
+        this.items.clear()
+        notifyDataSetChanged()
+    }
 }

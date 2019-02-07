@@ -5,18 +5,17 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Movie
+import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
 import com.shykun.volodymyr.movieviewer.databinding.ItemHorizontalMovieBinding
 import com.shykun.volodymyr.movieviewer.presentation.common.BaseRecyclerViewAdapter
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import java.util.*
 
-class MovieTabAdapter(items: ArrayList<Movie>): BaseRecyclerViewAdapter<Movie, MovieTabViewHolder>(items) {
+class MovieTabAdapter(items: ArrayList<Movie>, private val moviesType: MoviesType): BaseRecyclerViewAdapter<Movie, MovieTabViewHolder>(items) {
 
     private val movieClickSubject = PublishSubject.create<Int>()
-
     val movieClickEvent: Observable<Int> = movieClickSubject
-    var type: Int = -1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieTabViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -26,12 +25,7 @@ class MovieTabAdapter(items: ArrayList<Movie>): BaseRecyclerViewAdapter<Movie, M
                 parent,
                 false)
 
-        return MovieTabViewHolder(binding, movieClickSubject)
-    }
-
-    override fun onBindViewHolder(viewHolder: MovieTabViewHolder, position: Int) {
-        viewHolder.type = this.type
-        super.onBindViewHolder(viewHolder, position)
+        return MovieTabViewHolder(binding, movieClickSubject, moviesType)
     }
 }
 

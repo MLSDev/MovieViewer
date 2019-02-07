@@ -12,8 +12,16 @@ import io.reactivex.subjects.PublishSubject
 open class BaseTvListViewHolder(viewDataBinding: ViewDataBinding)
     : BaseViewHolder<Tv>(viewDataBinding)
 
-class TvListLoadingViewHolder(binding: ItemLoadingBinding)
-    : BaseTvListViewHolder(binding)
+class TvListLoadingViewHolder(private val binding: ItemLoadingBinding)
+    : BaseTvListViewHolder(binding) {
+
+    override fun bind(item: Tv?, totalItemsCount: Int) {
+        super.bind(item, totalItemsCount)
+
+        if (adapterPosition == totalItemsCount && adapterPosition != 0)
+            binding.loadingProgressBar.visibility = View.GONE
+    }
+}
 
 class TvListViewHolder(
         private val binding: ItemTvBinding,
@@ -25,7 +33,7 @@ class TvListViewHolder(
     var popularityVisibility = View.VISIBLE
     var firstAirDateVisibility = View.VISIBLE
 
-    override fun bind(item: Tv, position: Int) {
+    override fun bind(item: Tv?, position: Int) {
         super.bind(item, position)
 
         when (tvType) {
@@ -42,12 +50,16 @@ class TvListViewHolder(
             }
         }
 
-        itemView.setOnClickListener { clickSubject.onNext(item.id) }
+        itemView.setOnClickListener {
+            if (item != null) {
+                clickSubject.onNext(item.id)
+            }
+        }
 
         executeBinding(item)
     }
 
-    private fun executeBinding(tv: Tv) {
+    private fun executeBinding(tv: Tv?) {
         binding.tv = tv
         binding.executePendingBindings()
     }

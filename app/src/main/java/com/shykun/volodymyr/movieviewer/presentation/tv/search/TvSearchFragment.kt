@@ -16,6 +16,7 @@ import android.widget.Toast
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Tv
 import com.shykun.volodymyr.movieviewer.data.entity.TvType
+import com.shykun.volodymyr.movieviewer.data.network.response.TvResponse
 import com.shykun.volodymyr.movieviewer.databinding.FragmentSearchBinding
 import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
 import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
@@ -90,7 +91,7 @@ class TvSearchFragment : Fragment(), BackButtonListener {
                 if (newText.isNotEmpty())
                     viewModel.searchTv(newText)
                 else
-                    showTvList(ArrayList())
+                    tvSearchAdapter.clearTvList()
 
                 return true
             }
@@ -128,9 +129,9 @@ class TvSearchFragment : Fragment(), BackButtonListener {
         imm?.hideSoftInputFromWindow(searchView.windowToken, 0)
     }
 
-    private fun showTvList(tvList: List<Tv>?) {
-        if (tvList != null) {
-            tvSearchAdapter.setTvList(tvList)
+    private fun showTvList(tvResponse: TvResponse?) {
+        if (tvResponse != null) {
+            tvSearchAdapter.setTvList(tvResponse.results)
         }
     }
 

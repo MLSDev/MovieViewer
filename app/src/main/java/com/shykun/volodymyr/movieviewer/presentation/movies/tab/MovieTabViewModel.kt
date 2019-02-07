@@ -5,18 +5,19 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.shykun.volodymyr.movieviewer.data.entity.Movie
 import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
+import com.shykun.volodymyr.movieviewer.data.network.response.MoviesResponse
 import com.shykun.volodymyr.movieviewer.domain.MoviesUseCase
 
 class MovieTabViewModel(private val moviesUseCase: MoviesUseCase) : ViewModel() {
 
-    private val popularMoviesMutableLiveData = MutableLiveData<List<Movie>>()
-    private val topRatedMoviesMutableLiveData = MutableLiveData<List<Movie>>()
-    private val upcomingMoviesMutableLiveData = MutableLiveData<List<Movie>>()
+    private val popularMoviesMutableLiveData = MutableLiveData<MoviesResponse>()
+    private val topRatedMoviesMutableLiveData = MutableLiveData<MoviesResponse>()
+    private val upcomingMoviesMutableLiveData = MutableLiveData<MoviesResponse>()
     private val loadingErrorMutableLiveData = MutableLiveData<String>()
 
-    val popularMoviesLiveData: LiveData<List<Movie>> = popularMoviesMutableLiveData
-    val topRatedMoviesLiveData: LiveData<List<Movie>> = topRatedMoviesMutableLiveData
-    val upcomingMoviesLiveData: LiveData<List<Movie>> = upcomingMoviesMutableLiveData
+    val popularMoviesLiveData: LiveData<MoviesResponse> = popularMoviesMutableLiveData
+    val topRatedMoviesLiveData: LiveData<MoviesResponse> = topRatedMoviesMutableLiveData
+    val upcomingMoviesLiveData: LiveData<MoviesResponse> = upcomingMoviesMutableLiveData
     val loadingErrorLiveData: LiveData<String> = loadingErrorMutableLiveData
 
 

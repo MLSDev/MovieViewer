@@ -14,8 +14,8 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
 import android.widget.Toast
 import com.shykun.volodymyr.movieviewer.R
-import com.shykun.volodymyr.movieviewer.data.entity.Movie
 import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
+import com.shykun.volodymyr.movieviewer.data.network.response.MoviesResponse
 import com.shykun.volodymyr.movieviewer.databinding.FragmentSearchBinding
 import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
 import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
@@ -91,7 +91,7 @@ class MovieSearchFragment : Fragment(), BackButtonListener {
                 if (newText.isNotEmpty())
                     viewModel.searchMovies(newText)
                 else
-                    showSearchedMovies(ArrayList())
+                    movieSearchAdapter.clearItems()
 
                 return true
             }
@@ -122,9 +122,9 @@ class MovieSearchFragment : Fragment(), BackButtonListener {
         viewModel.loadingErrorLiveData.observe(this, Observer { showLoadingError(it) })
     }
 
-    private fun showSearchedMovies(movies: List<Movie>?) {
-        if (movies != null) {
-            movieSearchAdapter.setItems(movies)
+    private fun showSearchedMovies(moviesResponse: MoviesResponse?) {
+        if (moviesResponse != null) {
+            movieSearchAdapter.setItems(moviesResponse.results)
         }
     }
 

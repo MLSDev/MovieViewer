@@ -13,6 +13,7 @@ import android.widget.Toast
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Movie
 import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
+import com.shykun.volodymyr.movieviewer.data.network.response.MoviesResponse
 import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
 import com.shykun.volodymyr.movieviewer.presentation.common.ScrollObservable
 import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
@@ -75,7 +76,7 @@ class MovieListFragment : Fragment(), BackButtonListener {
     }
 
     private fun subscribeViewModel() {
-        viewModel.moviesLiveData.observe(this, Observer<List<Movie>> { showMovies(it) })
+        viewModel.moviesLiveData.observe(this, Observer<MoviesResponse> { showMovies(it) })
         viewModel.loadingErrorLiveData.observe(this, Observer { showError(it) })
 
     }
@@ -104,9 +105,10 @@ class MovieListFragment : Fragment(), BackButtonListener {
                 .subscribe()
     }
 
-    fun showMovies(movieList: List<Movie>?) {
-        if (movieList != null) {
-            movieListAdapter.addMovies(movieList)
+    fun showMovies(moviesResponse: MoviesResponse?) {
+        if (moviesResponse != null) {
+            movieListAdapter.addMovies(moviesResponse.results)
+            movieListAdapter.totalItemsCount = moviesResponse.totalResults
         }
     }
 

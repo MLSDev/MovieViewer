@@ -31,4 +31,9 @@ class MovieSearchAdapter(movies: ArrayList<Movie>) : BaseRecyclerViewAdapter<Mov
         this.items.addAll(movies)
         notifyDataSetChanged()
     }
+
+    fun clearItems() {
+        this.items.clear()
+        notifyDataSetChanged()
+    }
 }

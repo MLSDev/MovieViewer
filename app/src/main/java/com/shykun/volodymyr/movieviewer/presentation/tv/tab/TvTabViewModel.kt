@@ -5,19 +5,20 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.shykun.volodymyr.movieviewer.data.entity.Tv
 import com.shykun.volodymyr.movieviewer.data.entity.TvType
+import com.shykun.volodymyr.movieviewer.data.network.response.TvResponse
 import com.shykun.volodymyr.movieviewer.domain.TvUseCase
 
 class TvTabViewModel(
         private val TVUseCase: TvUseCase) : ViewModel() {
 
-    private val popularTvMutableLiveData = MutableLiveData<List<Tv>>()
-    private val topRatedTvMutableLiveData = MutableLiveData<List<Tv>>()
-    private val tvOnTheAirMutableLiveData = MutableLiveData<List<Tv>>()
+    private val popularTvMutableLiveData = MutableLiveData<TvResponse>()
+    private val topRatedTvMutableLiveData = MutableLiveData<TvResponse>()
+    private val tvOnTheAirMutableLiveData = MutableLiveData<TvResponse>()
     private val loadingErrorMutableLiveData = MutableLiveData<String>()
 
-    val popularTvLiveData: LiveData<List<Tv>> = popularTvMutableLiveData
-    val topRatedTvLiveData: LiveData<List<Tv>> = topRatedTvMutableLiveData
-    val tvOnTheAirLiveData: LiveData<List<Tv>> = tvOnTheAirMutableLiveData
+    val popularTvLiveData: LiveData<TvResponse> = popularTvMutableLiveData
+    val topRatedTvLiveData: LiveData<TvResponse> = topRatedTvMutableLiveData
+    val tvOnTheAirLiveData: LiveData<TvResponse> = tvOnTheAirMutableLiveData
     val loadingErrorLiveData: LiveData<String> = loadingErrorMutableLiveData
 
 

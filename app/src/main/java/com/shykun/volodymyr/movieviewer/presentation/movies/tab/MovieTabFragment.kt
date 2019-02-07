@@ -10,8 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.shykun.volodymyr.movieviewer.R
-import com.shykun.volodymyr.movieviewer.data.entity.Movie
 import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
+import com.shykun.volodymyr.movieviewer.data.network.response.MoviesResponse
 import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
 import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
 import com.shykun.volodymyr.movieviewer.presentation.movies.details.MOVIE_DETAILS_FRAGMENT_KEY
@@ -112,25 +112,25 @@ class MovieTabFragment : Fragment(), BackButtonListener {
     private fun subscribeViewModel() {
         viewModel.popularMoviesLiveData.observe(this, Observer { showPopularMovies(it) })
         viewModel.topRatedMoviesLiveData.observe(this, Observer { showTopRatedMovies(it) })
-        viewModel.upcomingMoviesLiveData.observe(this, Observer { showUpcompingMovies(it) })
+        viewModel.upcomingMoviesLiveData.observe(this, Observer { showUpcomingMovies(it) })
         viewModel.loadingErrorLiveData.observe(this, Observer { showError(it) })
     }
 
-    private fun showPopularMovies(movies: List<Movie>?) {
-        if (movies != null) {
-            generalMovieTabAdapter.addMovies(movies, POPULAR_MOVIES)
+    private fun showPopularMovies(moviesResponse: MoviesResponse?) {
+        if (moviesResponse != null) {
+            generalMovieTabAdapter.addMovies(moviesResponse.results, POPULAR_MOVIES)
         }
     }
 
-    private fun showTopRatedMovies(movies: List<Movie>?) {
-        if (movies != null) {
-            generalMovieTabAdapter.addMovies(movies, TOP_RATED_MOVIES)
+    private fun showTopRatedMovies(moviesResponse: MoviesResponse?) {
+        if (moviesResponse != null) {
+            generalMovieTabAdapter.addMovies(moviesResponse.results, TOP_RATED_MOVIES)
         }
     }
 
-    private fun showUpcompingMovies(movies: List<Movie>?) {
-        if (movies != null) {
-            generalMovieTabAdapter.addMovies(movies, UPCOMING_MOVIES)
+    private fun showUpcomingMovies(moviesResponse: MoviesResponse?) {
+        if (moviesResponse != null) {
+            generalMovieTabAdapter.addMovies(moviesResponse.results, UPCOMING_MOVIES)
         }
     }
 

@@ -9,14 +9,18 @@ class CastViewHolder(
         private val binding: ItemHorizontalActorBinding,
         private val clickSubject: PublishSubject<Int>) : BaseViewHolder<Actor>(binding) {
 
-    override fun bind(item: Actor, position: Int) {
+    override fun bind(item: Actor?, position: Int) {
         super.bind(item, position)
 
-        itemView.setOnClickListener { clickSubject.onNext(item.id) }
+        itemView.setOnClickListener {
+            if (item != null) {
+                clickSubject.onNext(item.id)
+            }
+        }
         executeBinding(item)
     }
 
-    private fun executeBinding(actor: Actor) {
+    private fun executeBinding(actor: Actor?) {
         binding.actor = actor
         binding.executePendingBindings()
     }

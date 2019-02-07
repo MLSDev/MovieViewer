@@ -7,6 +7,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Tv
+import com.shykun.volodymyr.movieviewer.data.entity.TvType
 import com.shykun.volodymyr.movieviewer.databinding.ItemHorizontalTvListBinding
 import com.shykun.volodymyr.movieviewer.presentation.common.BaseViewHolder
 import io.reactivex.subjects.PublishSubject
@@ -23,31 +24,39 @@ class GeneralTvTabViewHolder(
     private val seeAllTv: TextView = itemView.seeAllTv
 
     lateinit var title: String
+    lateinit var tvType: TvType
     var progressBarVisibility = View.VISIBLE
 
-    override fun bind(item: ArrayList<Tv>, position: Int) {
-        super.bind(item, position)
+    override fun bind(item: ArrayList<Tv>?, totalItemsCount: Int) {
+        super.bind(item, totalItemsCount)
 
-        title = when (position) {
-            POPULAR_TV -> itemView.context.getString(R.string.popular_tv)
-            TOP_RATED_TV -> itemView.context.getString(R.string.top_rated_tv)
-            TV_ON_THE_AIR -> itemView.context.getString(R.string.tv_on_the_air)
-            else -> ""
+        when (adapterPosition) {
+            POPULAR_TV -> {
+                title = itemView.context.getString(R.string.popular_tv)
+                tvType = TvType.POPULAR
+            }
+            TOP_RATED_TV -> {
+                title = itemView.context.getString(R.string.top_rated_tv)
+                tvType = TvType.TOP_RATED
+            }
+            TV_ON_THE_AIR ->  {
+                title = itemView.context.getString(R.string.tv_on_the_air)
+                tvType = TvType.ON_THE_AIR
+            }
         }
 
-        if (item.isNotEmpty()) {
+        if (item != null && item.isNotEmpty()) {
             progressBarVisibility = View.GONE
 
             tvList.apply {
                 layoutManager = LinearLayoutManager(this.context, LinearLayout.HORIZONTAL, false)
-                val tvAdapter = TvTabAdapter(item)
+                val tvAdapter = TvTabAdapter(item, tvType)
                 tvAdapter.clickObservable.subscribe { tvClickSubject.onNext(it) }
-                tvAdapter.type = position
                 adapter = tvAdapter
             }
         }
 
-        seeAllTv.setOnClickListener { seeAllClickSubject.onNext(position) }
+        seeAllTv.setOnClickListener { seeAllClickSubject.onNext(adapterPosition) }
 
         executeBinding()
     }

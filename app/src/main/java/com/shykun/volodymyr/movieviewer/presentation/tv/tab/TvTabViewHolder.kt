@@ -2,39 +2,43 @@ package com.shykun.volodymyr.movieviewer.presentation.tv.tab
 
 import android.view.View
 import com.shykun.volodymyr.movieviewer.data.entity.Tv
+import com.shykun.volodymyr.movieviewer.data.entity.TvType
 import com.shykun.volodymyr.movieviewer.databinding.ItemHorizontalTvBinding
 import com.shykun.volodymyr.movieviewer.presentation.common.BaseViewHolder
 import io.reactivex.subjects.PublishSubject
 
 class TvTabViewHolder(
         private val binding: ItemHorizontalTvBinding,
-        private val clickSubject: PublishSubject<Int>) : BaseViewHolder<Tv>(binding) {
+        private val clickSubject: PublishSubject<Int>,
+        private val tvType: TvType) : BaseViewHolder<Tv>(binding) {
 
-    var type = -1
     lateinit var footerText: String
     var footerIconVisibility = View.VISIBLE
 
 
-    override fun bind(item: Tv, position: Int) {
-        super.bind(item, position)
+    override fun bind(item: Tv?, totalItemsCount: Int) {
+        super.bind(item, totalItemsCount)
 
-        if (type == POPULAR_TV)
+        if (tvType == TvType.POPULAR)
             footerIconVisibility = View.GONE
 
-        footerText = when(type) {
-            POPULAR_TV -> "#${position+1}"
-            TOP_RATED_TV -> item.voteAverage.toString()
-            TV_ON_THE_AIR -> item.voteAverage.toString()
+        footerText = when (tvType) {
+            TvType.POPULAR -> "#${adapterPosition + 1}"
+            TvType.TOP_RATED -> item?.voteAverage.toString()
+            TvType.ON_THE_AIR -> item?.voteAverage.toString()
             else -> ""
-
         }
 
-        itemView.setOnClickListener { clickSubject.onNext(item.id) }
+        itemView.setOnClickListener {
+            if (item != null) {
+                clickSubject.onNext(item.id)
+            }
+        }
 
         executeBinding(item)
     }
 
-    private fun executeBinding(tv: Tv) {
+    private fun executeBinding(tv: Tv?) {
         binding.tv = tv
         binding.tvViewHolder = this
         binding.executePendingBindings()

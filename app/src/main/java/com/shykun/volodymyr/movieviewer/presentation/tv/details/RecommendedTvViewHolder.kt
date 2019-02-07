@@ -9,14 +9,18 @@ class RecommendedTvViewHolder(
         private val binding: ItemRecommendedTvBinding,
         private val clickSubject: PublishSubject<Int>) : BaseViewHolder<Tv>(binding) {
 
-    override fun bind(item: Tv, position: Int) {
+    override fun bind(item: Tv?, position: Int) {
         super.bind(item, position)
 
-        itemView.setOnClickListener { clickSubject.onNext(item.id) }
+        itemView.setOnClickListener {
+            if (item != null) {
+                clickSubject.onNext(item.id)
+            }
+        }
         executeBinding(item)
     }
 
-    private fun executeBinding(tv: Tv) {
+    private fun executeBinding(tv: Tv?) {
         binding.tv = tv
         binding.executePendingBindings()
     }

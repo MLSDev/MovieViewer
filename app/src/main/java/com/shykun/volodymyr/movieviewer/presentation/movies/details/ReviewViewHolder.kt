@@ -10,7 +10,7 @@ class ReviewViewHolder(private val binding: ItemReviewBinding) : BaseViewHolder<
     private var isExpanded = false
     val maxLines = ObservableField(5)
 
-    override fun bind(item: Review, position: Int) {
+    override fun bind(item: Review?, position: Int) {
         super.bind(item, position)
 
         itemView.setOnClickListener {
@@ -29,7 +29,7 @@ class ReviewViewHolder(private val binding: ItemReviewBinding) : BaseViewHolder<
         executeBinding(item)
     }
 
-    private fun executeBinding(review: Review) {
+    private fun executeBinding(review: Review?) {
         binding.review = review
         binding.viewHolder = this
         binding.executePendingBindings()

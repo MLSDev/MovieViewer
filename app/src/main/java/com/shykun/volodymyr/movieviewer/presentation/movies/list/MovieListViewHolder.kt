@@ -12,8 +12,16 @@ import io.reactivex.subjects.PublishSubject
 open class BaseMovieListViewHolder(viewDataBinding: ViewDataBinding)
     : BaseViewHolder<Movie>(viewDataBinding)
 
-class MovieListLoadingViewHolder(binding: ItemLoadingBinding)
-    : BaseMovieListViewHolder(binding)
+class MovieListLoadingViewHolder(private val binding: ItemLoadingBinding)
+    : BaseMovieListViewHolder(binding) {
+
+    override fun bind(item: Movie?, totalItemsCount: Int) {
+        super.bind(item, totalItemsCount)
+
+        if (adapterPosition == totalItemsCount && adapterPosition != 0)
+            binding.loadingProgressBar.visibility = View.GONE
+    }
+}
 
 class MovieListViewHolder(
         private val binding: ItemMovieBinding,
@@ -26,7 +34,7 @@ class MovieListViewHolder(
 
     var popularity: String = ""
 
-    override fun bind(item: Movie, position: Int) {
+    override fun bind(item: Movie?, position: Int) {
         super.bind(item, position)
 
         when (moviesType) {
@@ -43,12 +51,16 @@ class MovieListViewHolder(
             }
         }
 
-        itemView.setOnClickListener { clickSubject.onNext(item.id) }
+        itemView.setOnClickListener {
+            if (item != null) {
+                clickSubject.onNext(item.id)
+            }
+        }
 
         executeBinding(item)
     }
 
-    private fun executeBinding(movie: Movie) {
+    private fun executeBinding(movie: Movie?) {
         binding.movie = movie
         binding.viewHolder = this
         binding.executePendingBindings()

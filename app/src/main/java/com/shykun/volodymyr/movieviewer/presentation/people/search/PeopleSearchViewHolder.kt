@@ -10,14 +10,18 @@ class PeopleSearchViewHolder(
         private val binding: ItemSearchPeopleBinding,
         private val clickSubject: PublishSubject<Int>): BaseViewHolder<Person>(binding) {
 
-    override fun bind(item: Person, position: Int) {
+    override fun bind(item: Person?, position: Int) {
         super.bind(item, position)
 
-        itemView.setOnClickListener { clickSubject.onNext(item.id) }
+        itemView.setOnClickListener {
+            if (item != null) {
+                clickSubject.onNext(item.id)
+            }
+        }
         executeBinding(item)
     }
 
-    private fun executeBinding(person: Person) {
+    private fun executeBinding(person: Person?) {
         binding.person = person
         binding.executePendingBindings()
     }
