@@ -42,9 +42,12 @@ class PersonDetailsFragment : Fragment(), BackButtonListener {
 
         (parentFragment as TabNavigationFragment).component?.inject(this)
 
+        personCastAdapter = PersonCastAdapter(ArrayList())
         personId = arguments?.getInt(PERSON_ID_KEY)!!
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(PersonDetailsViewModel::class.java)
+
+        subscribeViewModel()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -63,7 +66,6 @@ class PersonDetailsFragment : Fragment(), BackButtonListener {
         setupBackButton()
         setupPersonCastAdapter()
         setupPersonCastCLick()
-        subscribeViewModel()
         viewModel.onViewLoaded(personId)
     }
 
@@ -73,7 +75,6 @@ class PersonDetailsFragment : Fragment(), BackButtonListener {
     }
 
     private fun setupPersonCastAdapter() {
-        personCastAdapter = PersonCastAdapter(ArrayList())
         personCast.apply {
             layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
             adapter = personCastAdapter

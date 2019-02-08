@@ -50,10 +50,17 @@ class MovieDetailsFragment : Fragment(), BackButtonListener {
         super.onCreate(savedInstanceState)
 
         (parentFragment as TabNavigationFragment).component?.inject(this)
+
+        castAdapter = CastAdapter(ArrayList())
+        reviewsAdapter = ReviewAdapter(ArrayList())
+        recommendedMoviesAdapter = RecommendedMoviesAdapter(ArrayList())
+
         movieId = arguments?.getInt(MOVIE_ID_KEY)!!
         viewModel = ViewModelProviders
                 .of(this, viewModelFactory)
                 .get(MovieDetailsViewModel::class.java)
+
+        subscribeViewModel()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -67,7 +74,6 @@ class MovieDetailsFragment : Fragment(), BackButtonListener {
         super.onViewCreated(view, savedInstanceState)
 
         setupBackButton()
-        subscribeViewModel()
         setupCastAdapter()
         setupReviewsAdapter()
         setupRecommendedMoviesAdapter()
@@ -142,7 +148,6 @@ class MovieDetailsFragment : Fragment(), BackButtonListener {
     }
 
     private fun setupCastAdapter() {
-        castAdapter = CastAdapter(ArrayList())
         movieCast.apply {
             layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
             adapter = castAdapter
@@ -150,7 +155,6 @@ class MovieDetailsFragment : Fragment(), BackButtonListener {
     }
 
     private fun setupReviewsAdapter() {
-        reviewsAdapter = ReviewAdapter(ArrayList())
         movieReviews.apply {
             layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
             isNestedScrollingEnabled = false
@@ -159,7 +163,6 @@ class MovieDetailsFragment : Fragment(), BackButtonListener {
     }
 
     private fun setupRecommendedMoviesAdapter() {
-        recommendedMoviesAdapter = RecommendedMoviesAdapter(ArrayList())
         recommendedMovies.apply {
             layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
             adapter = recommendedMoviesAdapter

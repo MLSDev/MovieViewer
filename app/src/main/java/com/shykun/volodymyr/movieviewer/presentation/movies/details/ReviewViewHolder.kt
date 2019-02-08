@@ -13,18 +13,18 @@ class ReviewViewHolder(private val binding: ItemReviewBinding) : BaseViewHolder<
     override fun bind(item: Review?, position: Int) {
         super.bind(item, position)
 
-        itemView.setOnClickListener {
-            isExpanded = when (isExpanded) {
-                true -> {
-                    maxLines.set(5)
-                    false
-                }
-                false -> {
-                    maxLines.set(100)
-                    true
-                }
-            }
-        }
+//        itemView.setOnClickListener {
+//            isExpanded = when (isExpanded) {
+//                true -> {
+//                    maxLines.set(5)
+//                    false
+//                }
+//                false -> {
+//                    maxLines.set(100)
+//                    true
+//                }
+//            }
+//        }
 
         executeBinding(item)
     }

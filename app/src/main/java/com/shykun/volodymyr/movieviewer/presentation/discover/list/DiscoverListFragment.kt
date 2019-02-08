@@ -65,9 +65,14 @@ class DiscoverListFragment : Fragment(), BackButtonListener {
         else
             setupTvListAdapter()
 
+        setToolbarTitle()
         setupBackButton()
         subscribeViewModel()
         subscribeScrollObervable()
+    }
+
+    private fun setToolbarTitle() {
+        movieListToolbar.title = getString(R.string.results)
     }
 
     private fun setupBackButton() {

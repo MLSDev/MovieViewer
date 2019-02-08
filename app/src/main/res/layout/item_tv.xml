@@ -9,7 +9,7 @@
             type="com.shykun.volodymyr.movieviewer.data.entity.Tv" />
 
         <variable
-            name="viewHolderMovie"
+            name="viewHolderTv"
             type="com.shykun.volodymyr.movieviewer.presentation.tv.list.TvListViewHolder" />
     </data>
 
@@ -85,10 +85,10 @@
                 android:layout_below="@id/genres"
                 android:layout_marginStart="10dp"
                 android:layout_toEndOf="@id/poster"
-                android:text="@{viewHolderMovie.popularity}"
+                android:text="@{viewHolderTv.popularity}"
                 android:textColor="@color/snow"
                 android:textSize="18sp"
-                android:visibility="@{viewHolderMovie.popularityVisibility}" />
+                android:visibility="@{viewHolderTv.popularityVisibility}" />
 
             <TextView
                 android:id="@+id/firstAirDate"
@@ -99,7 +99,7 @@
                 android:layout_toEndOf="@id/poster"
                 android:text="@{tv.firstAirDate}"
                 android:textColor="@color/snow"
-                android:visibility="@{viewHolderMovie.firstAirDateVisibility}" />
+                android:visibility="@{viewHolderTv.firstAirDateVisibility}" />
 
 
         </RelativeLayout>

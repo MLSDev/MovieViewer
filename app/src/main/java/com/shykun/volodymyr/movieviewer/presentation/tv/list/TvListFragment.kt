@@ -43,9 +43,13 @@ class TvListFragment : Fragment(), BackButtonListener {
         (parentFragment as TabNavigationFragment).component?.inject(this)
 
         tvType = arguments?.getSerializable(TV_TYPE_KEY) as TvType
+        tvListAdapter = TvListAdapter(ArrayList(), tvType)
         searchQuery = arguments?.getString(SEARCH_QUERY_KEY, null)
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(TvListViewModel::class.java)
+
+        subscribeViewModel()
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -55,11 +59,20 @@ class TvListFragment : Fragment(), BackButtonListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setToolbarTitle()
         setupBackButton()
         setupAdapter()
         setupTvClick()
         subscribeScrollObervable()
-        subscribeViewModel()
+    }
+
+    private fun setToolbarTitle() {
+        movieListToolbar.title = when (tvType) {
+            TvType.TOP_RATED -> getString(R.string.top_rated_tv)
+            TvType.POPULAR -> getString(R.string.popular_tv)
+            TvType.ON_THE_AIR -> getString(R.string.tv_on_the_air)
+            TvType.SEARCHED -> getString(R.string.results)
+        }
     }
 
     private fun setupBackButton() {
@@ -79,7 +92,6 @@ class TvListFragment : Fragment(), BackButtonListener {
     }
 
     private fun setupAdapter() {
-        tvListAdapter = TvListAdapter(ArrayList(), tvType)
         movieList.apply {
             layoutManager = LinearLayoutManager(this@TvListFragment.context,
                     LinearLayoutManager.VERTICAL,

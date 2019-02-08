@@ -29,13 +29,12 @@ class MovieListViewHolder(
         internal val clickSubject: PublishSubject<Int>)
     : BaseMovieListViewHolder(binding) {
 
+    var popularity = ""
     var popularityVisibility = View.VISIBLE
     var releaseDateVisibility = View.VISIBLE
 
-    var popularity: String = ""
-
-    override fun bind(item: Movie?, position: Int) {
-        super.bind(item, position)
+    override fun bind(item: Movie?, totalItemsCount: Int) {
+        super.bind(item, totalItemsCount)
 
         when (moviesType) {
             MoviesType.TOP_RATED -> {
@@ -43,7 +42,7 @@ class MovieListViewHolder(
                 releaseDateVisibility = View.GONE
             }
             MoviesType.POPULAR -> {
-                popularity = "#${position + 1}"
+                popularity = "#${adapterPosition + 1}"
                 releaseDateVisibility = View.GONE
             }
             MoviesType.UPCOMING -> {

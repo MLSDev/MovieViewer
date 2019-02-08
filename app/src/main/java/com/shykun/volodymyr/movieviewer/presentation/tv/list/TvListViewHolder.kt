@@ -29,12 +29,13 @@ class TvListViewHolder(
         private val clickSubject: PublishSubject<Int>)
     : BaseTvListViewHolder(binding) {
 
-    lateinit var popularity: String
+    var popularity = ""
     var popularityVisibility = View.VISIBLE
     var firstAirDateVisibility = View.VISIBLE
 
-    override fun bind(item: Tv?, position: Int) {
-        super.bind(item, position)
+
+    override fun bind(item: Tv?, totalItemsCount: Int) {
+        super.bind(item, totalItemsCount)
 
         when (tvType) {
             TvType.TOP_RATED -> {
@@ -42,7 +43,7 @@ class TvListViewHolder(
                 firstAirDateVisibility = View.GONE
             }
             TvType.POPULAR -> {
-                popularity = "#${position + 1}"
+                popularity = "#${adapterPosition + 1}"
                 firstAirDateVisibility = View.GONE
             }
             TvType.ON_THE_AIR -> {
@@ -61,6 +62,7 @@ class TvListViewHolder(
 
     private fun executeBinding(tv: Tv?) {
         binding.tv = tv
+        binding.viewHolderTv = this
         binding.executePendingBindings()
     }
 }

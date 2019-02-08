@@ -42,7 +42,8 @@
             android:id="@+id/horizontalMovieList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/horizontalMovieListTitle" />
+            android:layout_below="@id/horizontalMovieListTitle"
+            android:nestedScrollingEnabled="false"/>
 
         <ProgressBar
             android:visibility="@{generalMovieTabViewHolder.progressBarVisibility}"

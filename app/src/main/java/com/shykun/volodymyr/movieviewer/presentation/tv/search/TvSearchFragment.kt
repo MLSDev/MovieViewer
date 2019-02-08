@@ -49,6 +49,8 @@ class TvSearchFragment : Fragment(), BackButtonListener {
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(TvSearchViewModel::class.java)
         tvSearchAdapter = TvSearchAdapter(ArrayList())
+        subscribeViewModel()
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -65,7 +67,6 @@ class TvSearchFragment : Fragment(), BackButtonListener {
         setupSearchView()
         setupBackButton()
         setupTvClick()
-        subscribeViewModel()
     }
 
     private fun setSearchHint() {
@@ -97,6 +98,8 @@ class TvSearchFragment : Fragment(), BackButtonListener {
             }
 
             override fun onQueryTextSubmit(query: String): Boolean {
+                hideKeyboard()
+
                 val args = Bundle()
                 args.putSerializable(TV_TYPE_KEY, TvType.SEARCHED)
                 args.putString(SEARCH_QUERY_KEY, query)

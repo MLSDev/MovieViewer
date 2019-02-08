@@ -49,6 +49,8 @@ class MovieSearchFragment : Fragment(), BackButtonListener {
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(MovieSearchViewModel::class.java)
         movieSearchAdapter = MovieSearchAdapter(ArrayList())
+        subscribeViewModel()
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -65,7 +67,6 @@ class MovieSearchFragment : Fragment(), BackButtonListener {
         setupSearchView()
         setupBackButton()
         setupMovieClick()
-        subscribeViewModel()
     }
 
     private fun setSearchHint() {
@@ -97,6 +98,8 @@ class MovieSearchFragment : Fragment(), BackButtonListener {
             }
 
             override fun onQueryTextSubmit(query: String): Boolean {
+                hideKeyboard()
+
                 val args = Bundle()
                 args.putSerializable(MOVIE_TYPE_KEY, MoviesType.SEARCHED)
                 args.putString(SEARCH_QUERY_KEY, query)

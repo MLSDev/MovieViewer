@@ -78,9 +78,22 @@ class PeopleTabFragment : Fragment(), BackButtonListener {
 
     private fun setupAdapter() {
         peopleList.apply {
-            layoutManager = GridLayoutManager(this@PeopleTabFragment.context, 3)
+            layoutManager = getGridLayoutManager()
+            layoutManager
             adapter = peopleTabAdapter
         }
+    }
+
+    fun getGridLayoutManager(): GridLayoutManager {
+        val gridLayoutManager = GridLayoutManager(this@PeopleTabFragment.context, 3)
+        gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int) = when(peopleTabAdapter.getItemViewType(position)) {
+                PERSON -> 1
+                LOADING -> 3
+                else -> -1
+            }
+        }
+        return gridLayoutManager
     }
 
     private fun setupPersonClick() {
@@ -89,7 +102,7 @@ class PeopleTabFragment : Fragment(), BackButtonListener {
         }
     }
 
-    fun subscribeScrollObervable() {
+    private fun subscribeScrollObervable() {
         ScrollObservable.from(peopleList, 20)
                 .distinctUntilChanged()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -103,13 +116,13 @@ class PeopleTabFragment : Fragment(), BackButtonListener {
                 .subscribe()
     }
 
-    fun showPeople(people: List<Person>?) {
+    private fun showPeople(people: List<Person>?) {
         if (people != null) {
             peopleTabAdapter.addPeople(people)
         }
     }
 
-    fun showError(message: String?) {
+    private fun showError(message: String?) {
         Toast.makeText(this.context, message, Toast.LENGTH_SHORT).show()
     }
 

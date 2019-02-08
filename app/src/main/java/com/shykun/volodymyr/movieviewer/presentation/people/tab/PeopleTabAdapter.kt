@@ -11,8 +11,8 @@ import com.shykun.volodymyr.movieviewer.presentation.common.BaseRecyclerViewAdap
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 
-private const val PERSON = 0
-private const val LOADING = 1
+const val PERSON = 0
+const val LOADING = 1
 
 
 class PeopleTabAdapter(items: ArrayList<Person>)
