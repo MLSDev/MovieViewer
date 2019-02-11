@@ -49,8 +49,9 @@ class TvSearchFragment : Fragment(), BackButtonListener {
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(TvSearchViewModel::class.java)
         tvSearchAdapter = TvSearchAdapter(ArrayList())
-        subscribeViewModel()
 
+        subscribeViewModel()
+        setupTvClick()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -66,7 +67,6 @@ class TvSearchFragment : Fragment(), BackButtonListener {
         setupAdapter()
         setupSearchView()
         setupBackButton()
-        setupTvClick()
     }
 
     private fun setSearchHint() {

@@ -47,7 +47,10 @@ class MovieTabFragment : Fragment(), BackButtonListener {
         generalMovieTabAdapter = GeneralMovieTabAdapter(ArrayList(3))
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(MovieTabViewModel::class.java)
+
         subscribeViewModel()
+        setupSeeAllClick()
+        setupMovieClick()
 
     }
 
@@ -61,8 +64,6 @@ class MovieTabFragment : Fragment(), BackButtonListener {
 
         setupToolbar()
         setupAdapter()
-        setupSeeAllClick()
-        setupMovieClick()
         if (viewModel.popularMoviesLiveData.value == null)
             viewModel.onViewLoaded()
     }
@@ -139,8 +140,7 @@ class MovieTabFragment : Fragment(), BackButtonListener {
     }
 
     override fun onBackClicked(): Boolean {
-        router.exit()
 
-        return true
+        return false
     }
 }

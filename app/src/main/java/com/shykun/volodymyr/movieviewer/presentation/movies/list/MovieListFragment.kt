@@ -52,6 +52,7 @@ class MovieListFragment : Fragment(), BackButtonListener {
                 .get(MovieListViewModel::class.java)
 
         subscribeViewModel()
+        setupMovieClick()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -65,7 +66,6 @@ class MovieListFragment : Fragment(), BackButtonListener {
         subscribeScrollObervable()
         setupBackButton()
         setupAdapter()
-        setupMovieClick()
     }
 
     private fun setToolbarTitle() {

@@ -47,6 +47,9 @@ class PeopleSearchFragment : Fragment(), BackButtonListener {
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(PeopleSearchViewModel::class.java)
         peopleSearchAdapter = PeopleSearchAdapter(ArrayList())
+
+        subscribeViewModel()
+        setupPersonClick()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -61,8 +64,6 @@ class PeopleSearchFragment : Fragment(), BackButtonListener {
         setupAdapter()
         setupSearchView()
         setupBackButton()
-        setupPersonClick()
-        subscribeViewModel()
     }
 
     private fun setSearchHint() {

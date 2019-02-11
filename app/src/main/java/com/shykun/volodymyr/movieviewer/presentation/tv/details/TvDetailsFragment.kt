@@ -57,6 +57,14 @@ class TvDetailsFragment : Fragment(), BackButtonListener {
         viewModel = ViewModelProviders
                 .of(this, viewModelFactory)
                 .get(TvDetailsViewModel::class.java)
+
+        castAdapter = CastAdapter(ArrayList())
+        recommendedTvAdapter = RecommendedTvAdapter(ArrayList())
+        reviewsAdapter = ReviewAdapter(ArrayList())
+
+        subscribeViewModel()
+        setupRecommendedTvClick()
+        setupActorClick()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -69,12 +77,9 @@ class TvDetailsFragment : Fragment(), BackButtonListener {
         super.onViewCreated(view, savedInstanceState)
 
         setupBackButton()
-        subscribeViewModel()
         setupCastAdapter()
         setupRecommendedTvAdapter()
         setupReviewsAdapter()
-        setupRecommendedTvClick()
-        setupActorClick()
         viewModel.onViewLoaded(tvId)
     }
 
@@ -141,7 +146,6 @@ class TvDetailsFragment : Fragment(), BackButtonListener {
     }
 
     private fun setupCastAdapter() {
-        castAdapter = CastAdapter(ArrayList())
         tvCast.apply {
             layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
             adapter = castAdapter
@@ -149,7 +153,6 @@ class TvDetailsFragment : Fragment(), BackButtonListener {
     }
 
     private fun setupRecommendedTvAdapter() {
-        recommendedTvAdapter = RecommendedTvAdapter(ArrayList())
         recommendedTv.apply {
             layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
             adapter = recommendedTvAdapter
@@ -157,7 +160,6 @@ class TvDetailsFragment : Fragment(), BackButtonListener {
     }
 
     private fun setupReviewsAdapter() {
-        reviewsAdapter = ReviewAdapter(ArrayList())
         tvReviews.apply {
             layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
             isNestedScrollingEnabled = false

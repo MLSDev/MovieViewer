@@ -44,7 +44,9 @@ class PeopleTabFragment : Fragment(), BackButtonListener {
         peopleTabAdapter = PeopleTabAdapter(ArrayList())
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(PeopleTabViewModel::class.java)
+
         subscribeViewModel()
+        setupPersonClick()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -57,7 +59,6 @@ class PeopleTabFragment : Fragment(), BackButtonListener {
 
         setupToolbar()
         setupAdapter()
-        setupPersonClick()
         subscribeScrollObervable()
     }
 
@@ -127,9 +128,7 @@ class PeopleTabFragment : Fragment(), BackButtonListener {
     }
 
     override fun onBackClicked(): Boolean {
-        router.exit()
-
-        return true
+        return false
     }
 
     companion object {

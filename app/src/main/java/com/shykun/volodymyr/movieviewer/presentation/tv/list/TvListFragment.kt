@@ -49,7 +49,7 @@ class TvListFragment : Fragment(), BackButtonListener {
                 .get(TvListViewModel::class.java)
 
         subscribeViewModel()
-
+        setupTvClick()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -62,7 +62,6 @@ class TvListFragment : Fragment(), BackButtonListener {
         setToolbarTitle()
         setupBackButton()
         setupAdapter()
-        setupTvClick()
         subscribeScrollObervable()
     }
 

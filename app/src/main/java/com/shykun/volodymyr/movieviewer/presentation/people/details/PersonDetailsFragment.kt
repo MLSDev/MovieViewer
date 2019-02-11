@@ -48,6 +48,7 @@ class PersonDetailsFragment : Fragment(), BackButtonListener {
                 .get(PersonDetailsViewModel::class.java)
 
         subscribeViewModel()
+        setupPersonCastCLick()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -65,7 +66,6 @@ class PersonDetailsFragment : Fragment(), BackButtonListener {
 
         setupBackButton()
         setupPersonCastAdapter()
-        setupPersonCastCLick()
         viewModel.onViewLoaded(personId)
     }
 

@@ -62,8 +62,6 @@ class DiscoverFragment : Fragment(), BackButtonListener {
     }
 
     override fun onBackClicked(): Boolean {
-        router.exit()
-
-        return true
+       return false
     }
 }

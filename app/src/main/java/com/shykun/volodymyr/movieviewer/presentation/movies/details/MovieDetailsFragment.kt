@@ -61,6 +61,8 @@ class MovieDetailsFragment : Fragment(), BackButtonListener {
                 .get(MovieDetailsViewModel::class.java)
 
         subscribeViewModel()
+        setupRecommendedMovieClick()
+        setupActorClick()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -77,8 +79,6 @@ class MovieDetailsFragment : Fragment(), BackButtonListener {
         setupCastAdapter()
         setupReviewsAdapter()
         setupRecommendedMoviesAdapter()
-        setupRecommendedMovieClick()
-        setupActorClick()
         viewModel.onViewLoaded(movieId)
     }
 

@@ -48,7 +48,10 @@ class TvTabFragment : Fragment(), BackButtonListener {
         generalTvTabAdapter = GeneralTvTabAdapter(ArrayList())
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(TvTabViewModel::class.java)
+
         subscribeViewModel()
+        setupSeeAllClick()
+        setupTvClick()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -60,8 +63,6 @@ class TvTabFragment : Fragment(), BackButtonListener {
         super.onViewCreated(view, savedInstanceState)
         setupAdapter()
         setupToolbar()
-        setupSeeAllClick()
-        setupTvClick()
         if (viewModel.topRatedTvLiveData.value == null)
             viewModel.onViewLoaded()
 
@@ -132,8 +133,6 @@ class TvTabFragment : Fragment(), BackButtonListener {
     }
 
     override fun onBackClicked(): Boolean {
-        router.exit()
-
-        return true
+        return false
     }
 }
