@@ -10,6 +10,10 @@
         <variable
             name="personDetails"
             type="com.shykun.volodymyr.movieviewer.data.network.response.PersonDetailsResponse" />
+
+        <variable
+            name="viewModel"
+            type="com.shykun.volodymyr.movieviewer.presentation.people.details.PersonDetailsViewModel"/>
     </data>
 
     <RelativeLayout
@@ -51,6 +55,7 @@
                         android:id="@+id/personBirthDay"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
                         android:layout_marginTop="10dp"
                         android:layout_toEndOf="@+id/personProfilePhoto"
                         android:text="@{personDetails.birthday}"
@@ -61,11 +66,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/personBirthDay"
+                        android:layout_marginEnd="10dp"
                         android:layout_toEndOf="@+id/personProfilePhoto"
                         android:text="@{personDetails.placeOfBirth}"
                         android:textSize="16sp" />
 
                     <TextView
+                        android:visibility='@{personDetails.biography.equals("") ? View.GONE : View.VISIBLE}'
                         android:id="@+id/personBiographyTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -81,6 +88,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/personBiographyTitle"
+                        android:layout_marginEnd="10dp"
                         android:layout_marginStart="10dp"
                         android:text="@{personDetails.biography}"
                         expandableTextView:animDuration="200"
@@ -104,12 +112,26 @@
                     </com.ms.square.android.expandabletextview.ExpandableTextView>
 
                     <TextView
-                        android:id="@+id/actorMovies"
+                        android:id="@+id/castTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/personBiography"
+                        android:layout_marginEnd="10dp"
                         android:layout_marginStart="10dp"
                         android:text="@string/movies"
+                        android:textSize="25sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/castCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_below="@id/personBiography"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginTop="10dp"
+                        android:text="@{viewModel.castCount}"
+                        android:textColor="@color/darkGrey"
                         android:textSize="25sp"
                         android:textStyle="bold" />
 
@@ -117,7 +139,7 @@
                         android:id="@+id/personCast"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/actorMovies"
+                        android:layout_below="@+id/castTitle"
                         android:layout_marginTop="10dp" />
 
                 </RelativeLayout>

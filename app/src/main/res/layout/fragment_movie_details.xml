@@ -13,6 +13,10 @@
         <variable
             name="movieDetails"
             type="MovieDetailsResponse" />
+
+        <variable
+            name="viewModel"
+            type="com.shykun.volodymyr.movieviewer.presentation.movies.details.MovieDetailsViewModel" />
     </data>
 
     <RelativeLayout
@@ -79,20 +83,21 @@
 
 
                     <ImageView
-                        android:layout_marginTop="10dp"
                         android:id="@+id/moviePoster"
                         android:layout_width="160dp"
                         android:layout_height="240dp"
                         android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
                         app:url="@{movieDetails.posterPath}" />
 
                     <TextView
                         android:id="@+id/movieRating"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
                         android:layout_marginStart="10dp"
-                        android:layout_toEndOf="@+id/moviePoster"
                         android:layout_marginTop="10dp"
+                        android:layout_toEndOf="@+id/moviePoster"
                         android:text="@{String.valueOf(movieDetails.voteAverage)}"
                         android:textSize="16sp" />
 
@@ -102,6 +107,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/movieRating"
+                        android:layout_marginEnd="10dp"
                         android:layout_marginStart="10dp"
                         android:layout_toEndOf="@+id/moviePoster"
                         android:numStars="10"
@@ -113,6 +119,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/movieRatingBar"
+                        android:layout_marginEnd="10dp"
                         android:layout_marginStart="10dp"
                         android:layout_toEndOf="@+id/moviePoster"
                         android:text="@{movieDetails.productionCountries}"
@@ -123,6 +130,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/movieCountry"
+                        android:layout_marginEnd="10dp"
                         android:layout_marginStart="10dp"
                         android:layout_toEndOf="@+id/moviePoster"
                         android:text="@{movieDetails.releaseDate}"
@@ -133,21 +141,24 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/movieYear"
+                        android:layout_marginEnd="10dp"
                         android:layout_marginStart="10dp"
                         android:layout_toEndOf="@+id/moviePoster"
                         android:text="@{movieDetails.genres}"
                         android:textSize="16sp" />
 
                     <TextView
-                        android:layout_marginTop="10dp"
                         android:id="@+id/movieOverviewTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/moviePoster"
+                        android:layout_marginEnd="10dp"
                         android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
                         android:text="@string/overview"
                         android:textSize="25sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:visibility='@{movieDetails.overview.equals("") ? View.GONE : View.VISIBLE}' />
 
                     <com.ms.square.android.expandabletextview.ExpandableTextView xmlns:android="http://schemas.android.com/apk/res/android"
                         xmlns:expandableTextView="http://schemas.android.com/apk/res-auto"
@@ -155,6 +166,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/movieOverviewTitle"
+                        android:layout_marginEnd="10dp"
                         android:layout_marginStart="10dp"
                         android:text="@{movieDetails.overview}"
                         expandableTextView:animDuration="200"
@@ -174,9 +186,9 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="right|bottom"
                             android:background="@android:color/transparent"
-                            android:paddingTop="16dp"
+                            android:paddingEnd="16dp"
                             android:paddingStart="16dp"
-                            android:paddingEnd="16dp" />
+                            android:paddingTop="16dp" />
                     </com.ms.square.android.expandabletextview.ExpandableTextView>
 
                     <TextView
@@ -184,10 +196,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/movieOverview"
+                        android:layout_marginEnd="10dp"
                         android:layout_marginStart="10dp"
                         android:text="@string/trailer"
                         android:textSize="25sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:visibility="@{viewModel.trailerTitleVisibility}" />
 
                     <FrameLayout
                         android:id="@+id/movieTrailerContainer"
@@ -196,13 +210,28 @@
                         android:layout_below="@id/trailerTitle" />
 
                     <TextView
-                        android:layout_marginTop="10dp"
                         android:id="@+id/movieCastTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/movieTrailerContainer"
+                        android:layout_marginEnd="10dp"
                         android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
                         android:text="@string/actors"
+                        android:textSize="25sp"
+                        android:textStyle="bold"
+                        android:visibility="@{viewModel.castTitleVisibility}" />
+
+                    <TextView
+                        android:id="@+id/movieCastCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_below="@id/movieTrailerContainer"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginTop="10dp"
+                        android:text="@{viewModel.castCount}"
+                        android:textColor="@color/darkGrey"
                         android:textSize="25sp"
                         android:textStyle="bold" />
 
@@ -214,13 +243,28 @@
                         android:nestedScrollingEnabled="false" />
 
                     <TextView
-                        android:layout_marginTop="10dp"
                         android:id="@+id/recommendedMoviesTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/movieCast"
+                        android:layout_marginEnd="10dp"
                         android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
                         android:text="@string/recommended_movies"
+                        android:textSize="25sp"
+                        android:textStyle="bold"
+                        android:visibility="@{viewModel.recommendedMoviesTitleVisibility}" />
+
+                    <TextView
+                        android:id="@+id/recommendedMoviesCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_below="@id/movieCast"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginTop="10dp"
+                        android:text="@{viewModel.recommendedMoviesCount}"
+                        android:textColor="@color/darkGrey"
                         android:textSize="25sp"
                         android:textStyle="bold" />
 
@@ -232,13 +276,28 @@
                         android:nestedScrollingEnabled="false" />
 
                     <TextView
-                        android:layout_marginTop="10dp"
                         android:id="@+id/movieReviewsTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/recommendedMovies"
+                        android:layout_marginEnd="10dp"
                         android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
                         android:text="@string/reviews"
+                        android:textSize="25sp"
+                        android:textStyle="bold"
+                        android:visibility="@{viewModel.reviewsTitleVisibility}" />
+
+                    <TextView
+                        android:id="@+id/reviewsCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_below="@id/recommendedMovies"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginTop="10dp"
+                        android:text="@{viewModel.reviewsCount}"
+                        android:textColor="@color/darkGrey"
                         android:textSize="25sp"
                         android:textStyle="bold" />
 

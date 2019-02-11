@@ -37,7 +37,8 @@ private const val TV_ID_KEY = "tv_id_key"
 class TvDetailsFragment : Fragment(), BackButtonListener {
 
     private var tvId = -1
-    private lateinit var binding: FragmentTvDetailsBinding
+    private var viewWasLoaded = false
+    private var binding: FragmentTvDetailsBinding? = null
     private lateinit var viewModel: TvDetailsViewModel
     private lateinit var castAdapter: CastAdapter
     private lateinit var reviewsAdapter: ReviewAdapter
@@ -69,8 +70,11 @@ class TvDetailsFragment : Fragment(), BackButtonListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_tv_details, container, false)
-        return binding.root
+        if (binding == null) {
+            binding = DataBindingUtil.inflate(inflater, R.layout.fragment_tv_details, container, false)
+            binding!!.viewModel = viewModel
+        }
+        return binding!!.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -80,7 +84,11 @@ class TvDetailsFragment : Fragment(), BackButtonListener {
         setupCastAdapter()
         setupRecommendedTvAdapter()
         setupReviewsAdapter()
-        viewModel.onViewLoaded(tvId)
+
+        if (!viewWasLoaded) {
+            viewModel.onViewLoaded(tvId)
+            viewWasLoaded = true
+        }
     }
 
     private fun initTrailer(trailer: Video) {
@@ -115,11 +123,13 @@ class TvDetailsFragment : Fragment(), BackButtonListener {
     }
 
     private fun showTvDetails(tvDetailsResponse: TvDetailsResponse?) {
-        binding.tvDetails = tvDetailsResponse
+        binding?.tvDetails = tvDetailsResponse
         if (tvDetailsResponse != null) {
             val trailers = tvDetailsResponse.videos.results.filter { it.type == "Trailer" }
             if (trailers.isNotEmpty())
                 initTrailer(trailers.first())
+            else
+                viewModel.trailerTitleVisibility.set(View.GONE)
         }
     }
 

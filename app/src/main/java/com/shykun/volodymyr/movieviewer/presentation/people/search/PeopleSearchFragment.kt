@@ -95,6 +95,8 @@ class PeopleSearchFragment : Fragment(), BackButtonListener {
             }
 
             override fun onQueryTextSubmit(query: String): Boolean {
+                hideKeyboard()
+
                 val args = Bundle()
                 args.putString(PEOPLE_SEARCH_QUERY_KEY, query)
                 router.navigateTo(PEOPLE_TAB_FRAGMENT_KEY, args)
@@ -127,6 +129,7 @@ class PeopleSearchFragment : Fragment(), BackButtonListener {
 
     private fun setupPersonClick() {
         peopleSearchAdapter.clickObservable.subscribe {
+            hideKeyboard()
             router.navigateTo(PERSON_DETAILS_FRAGMENT_KEY, it)
         }
     }

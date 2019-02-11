@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
+import android.view.View
 import com.shykun.volodymyr.movieviewer.data.entity.Actor
 import com.shykun.volodymyr.movieviewer.data.entity.Movie
 import com.shykun.volodymyr.movieviewer.data.entity.Review
@@ -25,6 +26,14 @@ class MovieDetailsViewModel(
     val recommendedMoviesLiveData: LiveData<List<Movie>> = recommendedMoviesMutableLiveData
     val loadingErrorLiveData: LiveData<String> = loadingErrorMutableLiveData
 
+    val castTitleVisibility = ObservableField<Int>(View.GONE)
+    val recommendedMoviesTitleVisibility = ObservableField<Int>(View.GONE)
+    val reviewsTitleVisibility = ObservableField<Int>(View.GONE)
+    val trailerTitleVisibility = ObservableField<Int>(View.VISIBLE)
+
+    val castCount = ObservableField<String>("")
+    val recommendedMoviesCount = ObservableField<String>("")
+    val reviewsCount = ObservableField<String>("")
 
     fun onViewLoaded(movieId: Int) {
         getMovieDetails(movieId)
@@ -44,7 +53,13 @@ class MovieDetailsViewModel(
     fun getMovieCast(movieId: Int) {
         movieDetailsUseCase.getMovieCredits(movieId)
                 .subscribe(
-                        { response -> movieCastMutableLiveData.value = response },
+                        { response ->
+                            movieCastMutableLiveData.value = response
+                            if (response.isNotEmpty()) {
+                                castTitleVisibility.set(View.VISIBLE)
+                                castCount.set(response.size.toString())
+                            }
+                        },
                         { error -> loadingErrorMutableLiveData.value = error.message }
                 )
     }
@@ -52,7 +67,13 @@ class MovieDetailsViewModel(
     fun getMovieReviews(movieId: Int) {
         movieDetailsUseCase.getMovieReviews(movieId)
                 .subscribe(
-                        { response -> movieReviewsMutableLiveData.value = response },
+                        { response ->
+                            movieReviewsMutableLiveData.value = response
+                            if (response.isNotEmpty()) {
+                                reviewsTitleVisibility.set(View.VISIBLE)
+                                reviewsCount.set(response.size.toString())
+                            }
+                        },
                         { error -> loadingErrorMutableLiveData.value = error.message }
                 )
     }
@@ -60,7 +81,13 @@ class MovieDetailsViewModel(
     fun getRecommendedMovies(movieId: Int) {
         movieDetailsUseCase.getRecommendedMovies(movieId)
                 .subscribe(
-                        { response -> recommendedMoviesMutableLiveData.value = response },
+                        { response ->
+                            recommendedMoviesMutableLiveData.value = response
+                            if (response.isNotEmpty()) {
+                                recommendedMoviesTitleVisibility.set(View.VISIBLE)
+                                recommendedMoviesCount.set(response.size.toString())
+                            }
+                        },
                         { error -> loadingErrorMutableLiveData.value = error.message }
                 )
     }

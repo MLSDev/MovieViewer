@@ -3,6 +3,7 @@ package com.shykun.volodymyr.movieviewer.presentation.utils
 import android.databinding.BindingAdapter
 import android.databinding.BindingConversion
 import android.widget.ImageView
+import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.*
 import com.shykun.volodymyr.movieviewer.presentation.glide.GlideApp
 
@@ -12,6 +13,8 @@ fun loadImage(imageView: ImageView, url: String?) {
         GlideApp.with(imageView)
                 .load("http://image.tmdb.org/t/p/w500$url")
                 .into(imageView)
+    } else {
+        imageView.setImageResource(R.drawable.ic_person)
     }
 }
 

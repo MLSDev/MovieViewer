@@ -20,7 +20,7 @@ class MovieListAdapter(itemList: ArrayList<Movie>, val moviesType: MoviesType)
 
     private val clickSubject = PublishSubject.create<Int>()
     val clickEvent: Observable<Int> = clickSubject
-    var lastLoadedPage = 0
+    var nextPage = 1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseMovieListViewHolder {
         val inflater = LayoutInflater.from(parent.context)

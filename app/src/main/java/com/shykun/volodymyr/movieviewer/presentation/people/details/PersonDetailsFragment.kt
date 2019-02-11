@@ -28,8 +28,9 @@ private const val PERSON_ID_KEY = "person_id_key"
 class PersonDetailsFragment : Fragment(), BackButtonListener {
 
     private var personId = -1
+    private var viewWasLoaded = false
     private lateinit var viewModel: PersonDetailsViewModel
-    private lateinit var binding: FragmentPersonDetailsBinding
+    private var binding: FragmentPersonDetailsBinding? = null
     private lateinit var personCastAdapter: PersonCastAdapter
 
     @Inject
@@ -53,12 +54,11 @@ class PersonDetailsFragment : Fragment(), BackButtonListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(
-                inflater,
-                R.layout.fragment_person_details,
-                container,
-                false)
-        return binding.root
+        if (binding == null) {
+            binding = DataBindingUtil.inflate(inflater, R.layout.fragment_person_details, container, false)
+            binding!!.viewModel = viewModel
+        }
+        return binding!!.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -66,7 +66,11 @@ class PersonDetailsFragment : Fragment(), BackButtonListener {
 
         setupBackButton()
         setupPersonCastAdapter()
-        viewModel.onViewLoaded(personId)
+
+        if (!viewWasLoaded) {
+            viewModel.onViewLoaded(personId)
+            viewWasLoaded = true
+        }
     }
 
     private fun setupBackButton() {
@@ -88,7 +92,7 @@ class PersonDetailsFragment : Fragment(), BackButtonListener {
     }
 
     private fun showPersonDetails(personDetails: PersonDetailsResponse?) {
-        binding.personDetails = personDetails
+        binding?.personDetails = personDetails
     }
 
     private fun showPersonCast(roles: List<Role>?) {

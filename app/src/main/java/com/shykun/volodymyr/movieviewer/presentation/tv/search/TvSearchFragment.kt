@@ -117,6 +117,7 @@ class TvSearchFragment : Fragment(), BackButtonListener {
 
     private fun setupTvClick() {
         tvSearchAdapter.clickObservable.subscribe {
+            hideKeyboard()
             router.navigateTo(TV_DETAILS_FRAGMENT_KEY, it)
         }
     }

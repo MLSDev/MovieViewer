@@ -11,7 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.shykun.volodymyr.movieviewer.R
-import com.shykun.volodymyr.movieviewer.data.entity.Movie
 import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
 import com.shykun.volodymyr.movieviewer.data.network.response.MoviesResponse
 import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
@@ -109,10 +108,10 @@ class MovieListFragment : Fragment(), BackButtonListener {
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext {
                     if (moviesType != MoviesType.SEARCHED)
-                        viewModel.getMovies(movieListAdapter.lastLoadedPage + 1, moviesType)
+                        viewModel.getMovies(movieListAdapter.nextPage, moviesType)
                     else
-                        viewModel.searchMovie(searchQuery!!, movieListAdapter.lastLoadedPage + 1)
-                    movieListAdapter.lastLoadedPage++
+                        viewModel.searchMovie(searchQuery!!, movieListAdapter.nextPage + 1)
+                    movieListAdapter.nextPage++
                 }
                 .subscribe()
     }

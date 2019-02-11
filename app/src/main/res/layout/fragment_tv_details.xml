@@ -11,6 +11,10 @@
         <variable
             name="tvDetails"
             type="com.shykun.volodymyr.movieviewer.data.network.response.TvDetailsResponse" />
+
+        <variable
+            name="viewModel"
+            type="com.shykun.volodymyr.movieviewer.presentation.tv.details.TvDetailsViewModel" />
     </data>
 
     <RelativeLayout
@@ -98,6 +102,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tvRating"
+                        android:layout_marginEnd="10dp"
                         android:layout_marginStart="10dp"
                         android:layout_toEndOf="@+id/tvPoster"
                         android:numStars="10"
@@ -109,6 +114,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tvRatingBar"
+                        android:layout_marginEnd="10dp"
                         android:layout_marginStart="10dp"
                         android:layout_toEndOf="@+id/tvPoster"
                         android:text="@{tvDetails.originCountry}"
@@ -119,6 +125,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tvCountry"
+                        android:layout_marginEnd="10dp"
                         android:layout_marginStart="10dp"
                         android:layout_toEndOf="@+id/tvPoster"
                         android:text="@{tvDetails.firstAirDate}"
@@ -129,6 +136,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tvYear"
+                        android:layout_marginEnd="10dp"
                         android:layout_marginStart="10dp"
                         android:layout_toEndOf="@+id/tvPoster"
                         android:text="@{tvDetails.genres}"
@@ -139,11 +147,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/tvPoster"
+                        android:layout_marginEnd="10dp"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
                         android:text="@string/overview"
                         android:textSize="25sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:visibility='@{tvDetails.overview.equals("") ? View.GONE : View.VISIBLE}' />
 
                     <com.ms.square.android.expandabletextview.ExpandableTextView xmlns:android="http://schemas.android.com/apk/res/android"
                         xmlns:expandableTextView="http://schemas.android.com/apk/res-auto"
@@ -151,6 +161,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/tvOverviewTitle"
+                        android:layout_marginEnd="10dp"
                         android:layout_marginStart="10dp"
                         android:text="@{tvDetails.overview}"
                         expandableTextView:animDuration="200"
@@ -180,10 +191,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/tvOverview"
+                        android:layout_marginEnd="10dp"
                         android:layout_marginStart="10dp"
                         android:text="@string/trailer"
                         android:textSize="25sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:visibility="@{viewModel.trailerTitleVisibility}" />
 
                     <FrameLayout
                         android:id="@+id/tvTrailerContainer"
@@ -196,9 +209,24 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/tvTrailerContainer"
+                        android:layout_marginEnd="10dp"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
                         android:text="@string/actors"
+                        android:textSize="25sp"
+                        android:textStyle="bold"
+                        android:visibility="@{viewModel.castTitleVisibility}" />
+
+                    <TextView
+                        android:id="@+id/tvCastCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_below="@id/tvTrailerContainer"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginTop="10dp"
+                        android:text="@{viewModel.castCount}"
+                        android:textColor="@color/darkGrey"
                         android:textSize="25sp"
                         android:textStyle="bold" />
 
@@ -215,9 +243,24 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/tvCast"
+                        android:layout_marginEnd="10dp"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
                         android:text="@string/recommended_tv"
+                        android:textSize="25sp"
+                        android:textStyle="bold"
+                        android:visibility="@{viewModel.recommendedTvTitleVisibility}" />
+
+                    <TextView
+                        android:id="@+id/recommendedTvCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_below="@id/tvCast"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginTop="10dp"
+                        android:text="@{viewModel.recommendedTvCount}"
+                        android:textColor="@color/darkGrey"
                         android:textSize="25sp"
                         android:textStyle="bold" />
 
@@ -233,9 +276,24 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/recommendedTv"
+                        android:layout_marginEnd="10dp"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
                         android:text="@string/reviews"
+                        android:textSize="25sp"
+                        android:textStyle="bold"
+                        android:visibility="@{viewModel.reviewsTitleVisibility}" />
+
+                    <TextView
+                        android:id="@+id/tvReviewsCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_below="@id/recommendedTv"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginTop="10dp"
+                        android:text="@{viewModel.reviewsCount}"
+                        android:textColor="@color/darkGrey"
                         android:textSize="25sp"
                         android:textStyle="bold" />
 

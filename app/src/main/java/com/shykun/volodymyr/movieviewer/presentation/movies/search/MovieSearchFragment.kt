@@ -134,6 +134,7 @@ class MovieSearchFragment : Fragment(), BackButtonListener {
 
     private fun setupMovieClick() {
         movieSearchAdapter.clickObservable.subscribe {
+            hideKeyboard()
             router.navigateTo(MOVIE_DETAILS_FRAGMENT_KEY, it)
         }
     }

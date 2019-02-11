@@ -35,8 +35,9 @@ private const val MOVIE_ID_KEY = "movie_id_key"
 class MovieDetailsFragment : Fragment(), BackButtonListener {
 
     private var movieId = -1
+    private var viewWasLoaded = false
     private lateinit var viewModel: MovieDetailsViewModel
-    private lateinit var binding: FragmentMovieDetailsBinding
+    private var binding: FragmentMovieDetailsBinding? = null
     private lateinit var castAdapter: CastAdapter
     private lateinit var reviewsAdapter: ReviewAdapter
     private lateinit var recommendedMoviesAdapter: RecommendedMoviesAdapter
@@ -66,11 +67,15 @@ class MovieDetailsFragment : Fragment(), BackButtonListener {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_movie_details, container, false)
+        if (binding == null) {
+            binding = DataBindingUtil.inflate(inflater, R.layout.fragment_movie_details, container, false)
+            binding!!.viewModel = viewModel
+        }
 
-
-        return binding.root
+        return binding!!.root
     }
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -79,7 +84,17 @@ class MovieDetailsFragment : Fragment(), BackButtonListener {
         setupCastAdapter()
         setupReviewsAdapter()
         setupRecommendedMoviesAdapter()
-        viewModel.onViewLoaded(movieId)
+
+        if (!viewWasLoaded) {
+            viewModel.onViewLoaded(movieId)
+            viewWasLoaded = true
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        outState.putBoolean("was_loaded", true)
     }
 
     private fun initTrailer(trailer: Video) {
@@ -117,11 +132,13 @@ class MovieDetailsFragment : Fragment(), BackButtonListener {
     }
 
     private fun showMovieDetails(movieDetails: MovieDetailsResponse?) {
-        binding.movieDetails = movieDetails
+        binding?.movieDetails = movieDetails
         if (movieDetails != null) {
             val trailers = movieDetails.videos.results.filter { it.type == "Trailer" }
             if (trailers.isNotEmpty())
                 initTrailer(trailers.first())
+            else
+                viewModel.trailerTitleVisibility.set(View.GONE)
         }
     }
 
