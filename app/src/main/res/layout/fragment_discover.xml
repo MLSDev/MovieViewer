@@ -179,6 +179,7 @@
             android:orientation="vertical">
 
             <android.support.v7.widget.AppCompatRadioButton
+                android:id="@+id/movieRadioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:buttonTint="@color/colorAccent"
@@ -188,6 +189,7 @@
                 android:textSize="20sp" />
 
             <android.support.v7.widget.AppCompatRadioButton
+                android:id="@+id/tvRadioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:buttonTint="@color/colorAccent"
