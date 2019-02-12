@@ -115,10 +115,16 @@ class AppActivity : AppCompatActivity() {
                     it.userVisibleHint = false
                 }
                 tabFragment.let {
-                    currentTab = it.navigationKey
                     if (it.isAdded) {
-                        show(it)
-                    } else add(R.id.activityFragmentContainer, it, it.navigationKey)
+                        if (currentTab == it.navigationKey)
+                            it.backToRoot()
+                        else
+                            show(it)
+                    }
+                    else
+                        add(R.id.activityFragmentContainer, it, it.navigationKey)
+
+                    currentTab = it.navigationKey
                     it.userVisibleHint = true
                 }
                 commit()

@@ -85,16 +85,13 @@ class MovieDetailsFragment : Fragment(), BackButtonListener {
         setupReviewsAdapter()
         setupRecommendedMoviesAdapter()
 
+        if (savedInstanceState != null)
+            viewWasLoaded = true
+
         if (!viewWasLoaded) {
             viewModel.onViewLoaded(movieId)
             viewWasLoaded = true
         }
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-
-        outState.putBoolean("was_loaded", true)
     }
 
     private fun initTrailer(trailer: Video) {

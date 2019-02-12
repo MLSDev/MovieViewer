@@ -16,4 +16,9 @@ class MoviesNavigationFragment : TabNavigationFragment() {
         if (childFragmentManager.findFragmentById(R.id.navigationFragmentContainer) == null)
             cicerone.router.navigateTo(MOVIE_TAB_FRAGMENT_KEY)
     }
+
+    override fun backToRoot() {
+        if (childFragmentManager.findFragmentById(R.id.navigationFragmentContainer) != null)
+            cicerone.router.backTo(MOVIE_TAB_FRAGMENT_KEY)
+    }
 }

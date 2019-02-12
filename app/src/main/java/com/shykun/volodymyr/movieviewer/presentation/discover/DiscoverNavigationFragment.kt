@@ -16,4 +16,9 @@ class DiscoverNavigationFragment : TabNavigationFragment() {
         if (childFragmentManager.findFragmentById(R.id.navigationFragmentContainer) == null)
             cicerone.router.navigateTo(DISCOVER_FRAGMENT_KEY)
     }
+
+    override fun backToRoot() {
+        if (childFragmentManager.findFragmentById(R.id.navigationFragmentContainer) != null)
+            cicerone.router.backTo(DISCOVER_FRAGMENT_KEY)
+    }
 }

@@ -16,4 +16,9 @@ class TvNavigationFragment : TabNavigationFragment() {
         if (childFragmentManager.findFragmentById(R.id.navigationFragmentContainer) == null)
             cicerone.router.navigateTo(TV_TAB_FRAGMENT_KEY)
     }
+
+    override fun backToRoot() {
+        if (childFragmentManager.findFragmentById(R.id.navigationFragmentContainer) != null)
+            cicerone.router.backTo(TV_TAB_FRAGMENT_KEY)
+    }
 }

@@ -50,6 +50,8 @@ abstract class TabNavigationFragment : Fragment(), BackButtonListener {
         super.onPause()
     }
 
+    abstract fun backToRoot()
+
     override fun onBackClicked(): Boolean {
         return if(isAdded) {
             val childFragment = childFragmentManager.findFragmentById(R.id.navigationFragmentContainer)

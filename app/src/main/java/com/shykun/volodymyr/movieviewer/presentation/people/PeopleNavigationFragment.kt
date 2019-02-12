@@ -16,4 +16,9 @@ class PeopleNavigationFragment : TabNavigationFragment() {
         if (childFragmentManager.findFragmentById(R.id.navigationFragmentContainer) == null)
             cicerone.router.navigateTo(PEOPLE_TAB_FRAGMENT_KEY)
     }
+
+    override fun backToRoot() {
+        if (childFragmentManager.findFragmentById(R.id.navigationFragmentContainer) != null)
+            cicerone.router.backTo(PEOPLE_TAB_FRAGMENT_KEY)
+    }
 }
