@@ -77,12 +77,12 @@ class DiscoverViewModel(private val discoverUseCase: DiscoverUseCase) : ViewMode
     }
 
     private fun discoverTv(page: Int) {
-        val tmpYear = if (year.get() == -1) null else year.get()
+        val tmpYear = if (year.get() == -1) null else "${year.get()}-01-01"
         val tmpRating = if (rating.get() == -1) null else rating.get()
         val tmpGenres = if (genres.get()!!.isEmpty()) null else genres.get()!!.joinToString { it.id.toString() }
 
         discoverUseCase
-                .discoverTv("$tmpYear-01-01", tmpRating, tmpGenres, page)
+                .discoverTv(tmpYear, tmpRating, tmpGenres, page)
                 .subscribe(
                         { response ->
                             discoveredTvMutableLiveData.value = response

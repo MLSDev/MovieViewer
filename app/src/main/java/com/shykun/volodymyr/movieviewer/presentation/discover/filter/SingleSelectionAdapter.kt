@@ -34,5 +34,9 @@ class SingleSelectionAdapter(items: ArrayList<Int>)
         notifyItemChanged(lastClickedPosition)
     }
 
-    fun getChosenItem() = items[lastClickedPosition]
+    fun getChosenItem() =
+            if (lastClickedPosition >= 0)
+                items[lastClickedPosition]
+            else lastClickedPosition
+
 }

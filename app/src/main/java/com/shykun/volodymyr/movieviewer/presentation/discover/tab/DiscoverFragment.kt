@@ -14,6 +14,8 @@ import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
 import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
 import com.shykun.volodymyr.movieviewer.presentation.discover.DiscoverViewModel
 import com.shykun.volodymyr.movieviewer.presentation.discover.DiscoverViewModelFactory
+import com.shykun.volodymyr.movieviewer.presentation.discover.MOVIE_TYPE
+import com.shykun.volodymyr.movieviewer.presentation.discover.TV_TYPE
 import com.shykun.volodymyr.movieviewer.presentation.discover.filter.FILTER_LIST_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.discover.filter.FilterType
 import com.shykun.volodymyr.movieviewer.presentation.discover.list.DISCOVER_LIST_FRAGMENT_KEY
@@ -59,9 +61,11 @@ class DiscoverFragment : Fragment(), BackButtonListener {
         releaseYearField.setOnClickListener { router.navigateTo(FILTER_LIST_FRAGMENT_KEY, FilterType.YEAR) }
         clearFiltersButton.setOnClickListener { viewModel.clearFilters() }
         showResultsButton.setOnClickListener { router.navigateTo(DISCOVER_LIST_FRAGMENT_KEY) }
+        movieRadioButton.setOnClickListener { viewModel.type.set(MOVIE_TYPE) }
+        tvRadioButton.setOnClickListener { viewModel.type.set(TV_TYPE) }
     }
 
     override fun onBackClicked(): Boolean {
-       return false
+        return false
     }
 }
