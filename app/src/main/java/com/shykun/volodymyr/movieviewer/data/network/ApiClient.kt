@@ -112,4 +112,10 @@ class ApiClient @Inject constructor() {
             .discoverTV(page, airDate, voteAverage, genres)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+
+    //profile
+
+    fun getRequstToken() = apiService.getRequestToken()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
 }

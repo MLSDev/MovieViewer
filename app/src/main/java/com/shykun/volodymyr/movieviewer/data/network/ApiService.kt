@@ -122,4 +122,10 @@ interface ApiService {
             @Query("vote_average.gte") voteAverage: Int?,
             @Query("with_genres") genres: String?,
             @Query("api_key") api_key: String = API_KEY): Single<TvResponse>
+
+    //profile
+
+    @GET("authentication/token/new")
+    fun getRequestToken(
+            @Query("api_key") api_key: String = API_KEY): Single<RequestTokenResponse>
 }
