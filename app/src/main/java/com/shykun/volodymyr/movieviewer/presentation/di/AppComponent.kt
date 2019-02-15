@@ -12,6 +12,7 @@ import com.shykun.volodymyr.movieviewer.presentation.movies.tab.MovieTabFragment
 import com.shykun.volodymyr.movieviewer.presentation.people.details.PersonDetailsFragment
 import com.shykun.volodymyr.movieviewer.presentation.people.search.PeopleSearchFragment
 import com.shykun.volodymyr.movieviewer.presentation.people.tab.PeopleTabFragment
+import com.shykun.volodymyr.movieviewer.presentation.profile.LoginFragment
 import com.shykun.volodymyr.movieviewer.presentation.profile.ProfileFragment
 import com.shykun.volodymyr.movieviewer.presentation.tv.details.TvDetailsFragment
 import com.shykun.volodymyr.movieviewer.presentation.tv.list.TvListFragment
@@ -41,4 +42,7 @@ interface AppComponent {
     fun inject(target: TvSearchFragment)
     fun inject(target: PeopleSearchFragment)
     fun inject(target: ProfileFragment)
+    fun inject(target: LoginFragment) {
+
+    }
 }

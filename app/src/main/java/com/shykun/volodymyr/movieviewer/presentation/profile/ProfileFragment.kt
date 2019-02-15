@@ -2,71 +2,67 @@ package com.shykun.volodymyr.movieviewer.presentation.profile
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.net.Uri
+import android.content.SharedPreferences
+import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.provider.ContactsContract
+import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.WebResourceRequest
-import android.webkit.WebView
-import android.webkit.WebViewClient
 import com.shykun.volodymyr.movieviewer.R
+import com.shykun.volodymyr.movieviewer.data.network.response.AccountDetailsResponse
+import com.shykun.volodymyr.movieviewer.databinding.FragmentProfileBinding
+import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
 import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
 import com.shykun.volodymyr.movieviewer.presentation.utils.NavigationKeys
 import kotlinx.android.synthetic.main.fragment_profile.*
+import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
-class ProfileFragment : TabNavigationFragment() {
+const val SESSION_ID_KEY = "session_id_key"
+const val PROFILE_FRAGMENT_KEY = "profile_fragment_key"
 
-    override val navigationKey = NavigationKeys.PROFILE_NAVIGATION_KEY
+class ProfileFragment : Fragment(), BackButtonListener {
 
+    private lateinit var binding: FragmentProfileBinding
     private lateinit var viewModel: ProfileViewModel
     @Inject
     lateinit var viewModelFactory: ProfileViewModelFactory
+    @Inject
+    lateinit var router: Router
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        component?.inject(this)
-        viewModel = ViewModelProviders.of(this, viewModelFactory)
+        (parentFragment as TabNavigationFragment).component?.inject(this)
+        viewModel = ViewModelProviders.of(parentFragment!!, viewModelFactory)
                 .get(ProfileViewModel::class.java)
+        subscribeViewModel()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_profile, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        subscribeViewModel()
-        loginButton.setOnClickListener { viewModel.getRequestToken() }
+        setClickListeners()
+    }
+
+    private fun setClickListeners() {
+        loginButton.setOnClickListener { router.navigateTo(LOGIN_FRAGMENT_KEY) }
     }
 
     private fun subscribeViewModel() {
-        viewModel.requestTokenLiveData.observe(this, Observer { startLogin(it?.requestToken) })
+        viewModel.accountDetailsLiveData.observe(this, Observer { showAccountDetails(it) })
     }
 
-    private fun startLogin(requestToken: String?) {
-        loginButton.visibility = View.GONE
-        loginWebView.visibility = View.VISIBLE
-
-        loginWebView.settings.javaScriptEnabled = true;
-        loginWebView.loadUrl("https://www.themoviedb.org/authenticate/$requestToken?redirect_to=moviebase://auth/v3")
-
-        loginWebView.webViewClient = object : WebViewClient() {
-            override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
-                val uri = request.url
-                return handleUriLoading(view, uri)
-            }
-        }
+    private fun showAccountDetails(accountDetailsResponse: AccountDetailsResponse?) {
+        binding.accountDetails = accountDetailsResponse
     }
 
-    fun handleUriLoading(view: WebView, uri: Uri): Boolean {
-        return false
-    }
-
-    override fun backToRoot() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun onBackClicked() = false
 }

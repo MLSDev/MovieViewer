@@ -27,6 +27,10 @@ import com.shykun.volodymyr.movieviewer.presentation.people.search.PEOPLE_SEARCH
 import com.shykun.volodymyr.movieviewer.presentation.people.search.PeopleSearchFragment
 import com.shykun.volodymyr.movieviewer.presentation.people.tab.PEOPLE_TAB_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.people.tab.PeopleTabFragment
+import com.shykun.volodymyr.movieviewer.presentation.profile.LOGIN_FRAGMENT_KEY
+import com.shykun.volodymyr.movieviewer.presentation.profile.LoginFragment
+import com.shykun.volodymyr.movieviewer.presentation.profile.PROFILE_FRAGMENT_KEY
+import com.shykun.volodymyr.movieviewer.presentation.profile.ProfileFragment
 import com.shykun.volodymyr.movieviewer.presentation.tv.details.TV_DETAILS_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.tv.details.TvDetailsFragment
 import com.shykun.volodymyr.movieviewer.presentation.tv.list.TV_LIST_FRAGMENT_KEY
@@ -63,6 +67,9 @@ class FlowNavigator(activity: FragmentActivity, fm: FragmentManager, containerId
             DISCOVER_FRAGMENT_KEY -> (DiscoverFragment())
             DISCOVER_LIST_FRAGMENT_KEY -> (DiscoverListFragment())
             FILTER_LIST_FRAGMENT_KEY -> FilterListFragment.newInstance(data as FilterType)
+
+            PROFILE_FRAGMENT_KEY -> ProfileFragment()
+            LOGIN_FRAGMENT_KEY -> LoginFragment()
 
             else -> null
         }

@@ -1,10 +1,9 @@
 package com.shykun.volodymyr.movieviewer.data.network
 
+import com.shykun.volodymyr.movieviewer.data.network.body.RequestTokenBody
 import com.shykun.volodymyr.movieviewer.data.network.response.*
 import io.reactivex.Single
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 
 private const val API_KEY = "a44576f6889f55561580856f29b6fe14"
 const val YOUTUBE_API_KEY = "AIzaSyDJwSz4nPegaQDLv4jAMtaPLxrWotRpuHo"
@@ -128,4 +127,14 @@ interface ApiService {
     @GET("authentication/token/new")
     fun getRequestToken(
             @Query("api_key") api_key: String = API_KEY): Single<RequestTokenResponse>
+
+    @POST("authentication/session/new")
+    fun createSessionId(
+            @Body requestTokenBody: RequestTokenBody,
+            @Query("api_key") api_key: String = API_KEY): Single<SessionIdResponse>
+
+    @GET("account")
+    fun getAccountDetails(
+            @Query("session_id") sessionId: String,
+            @Query("api_key") api_key: String = API_KEY): Single<AccountDetailsResponse>
 }

@@ -2,6 +2,7 @@ package com.shykun.volodymyr.movieviewer.data.network
 
 import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
 import com.shykun.volodymyr.movieviewer.data.entity.TvType
+import com.shykun.volodymyr.movieviewer.data.network.body.RequestTokenBody
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
@@ -116,6 +117,14 @@ class ApiClient @Inject constructor() {
     //profile
 
     fun getRequstToken() = apiService.getRequestToken()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+    fun createSessionId(requestTokenBody: RequestTokenBody) = apiService.createSessionId(requestTokenBody)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+    fun getAccountDetails(sessionId: String) = apiService.getAccountDetails(sessionId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 }

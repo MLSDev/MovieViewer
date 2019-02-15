@@ -9,6 +9,7 @@ import com.shykun.volodymyr.movieviewer.presentation.discover.DiscoverNavigation
 import com.shykun.volodymyr.movieviewer.presentation.movies.MoviesNavigationFragment
 import com.shykun.volodymyr.movieviewer.presentation.people.PeopleNavigationFragment
 import com.shykun.volodymyr.movieviewer.presentation.profile.ProfileFragment
+import com.shykun.volodymyr.movieviewer.presentation.profile.ProfileNavigationFragment
 import com.shykun.volodymyr.movieviewer.presentation.tv.TvNavigationFragment
 import com.shykun.volodymyr.movieviewer.presentation.utils.NavigationKeys
 import kotlinx.android.synthetic.main.activity_main.*
@@ -43,9 +44,9 @@ class AppActivity : AppCompatActivity() {
                 ?: DiscoverNavigationFragment()
     }
 
-    private val profileNavigationFragment: ProfileFragment by lazy {
-        supportFragmentManager.findFragmentByTag(NavigationKeys.PROFILE_NAVIGATION_KEY) as? ProfileFragment
-                ?: ProfileFragment()
+    private val profileNavigationFragment: ProfileNavigationFragment by lazy {
+        supportFragmentManager.findFragmentByTag(NavigationKeys.PROFILE_NAVIGATION_KEY) as? ProfileNavigationFragment
+                ?: ProfileNavigationFragment()
     }
 
     private var currentTab = NavigationKeys.MOVIES_NAVIGATION_KEY
