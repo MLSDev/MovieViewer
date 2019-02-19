@@ -54,7 +54,6 @@ class LoginFragment : Fragment(), BackButtonListener {
 
     private fun subscribeViewModel() {
         viewModel.requestTokenLiveData.observe(this, Observer { startLogin(it?.requestToken) })
-        viewModel.sessionIdLiveData.observe(this, Observer { saveSessionId(it) })
     }
 
     private fun startLogin(requestToken: String?) {
@@ -74,14 +73,6 @@ class LoginFragment : Fragment(), BackButtonListener {
         if (lastPath == "allow")
             viewModel.createSessionId(token)
         return false
-    }
-
-    private fun saveSessionId(sessionIdResponse: SessionIdResponse?) {
-        if (sessionIdResponse != null) {
-            val sessionId = sessionIdResponse.sessionId
-            prefs.edit().putString(SESSION_ID_KEY, sessionId).apply()
-            viewModel.getAccountDetails(sessionId)
-        }
     }
 
     override fun onBackClicked(): Boolean {

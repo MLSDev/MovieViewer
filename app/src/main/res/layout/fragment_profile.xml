@@ -8,6 +8,10 @@
         <import type="android.view.View" />
 
         <variable
+            name="viewModel"
+            type="com.shykun.volodymyr.movieviewer.presentation.profile.ProfileViewModel"/>
+
+        <variable
             name="accountDetails"
             type="com.shykun.volodymyr.movieviewer.data.network.response.AccountDetailsResponse" />
     </data>
@@ -25,7 +29,14 @@
             android:layout_gravity="center"
             android:background="@drawable/button_rounded"
             android:text="Login"
-            android:visibility="@{accountDetails == null ? View.VISIBLE : View.GONE}" />
+            android:visibility="@{viewModel.sessionIdLiveData == null ? View.VISIBLE : View.GONE}" />
+
+        <ProgressBar
+            android:id="@+id/profileProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="@{viewModel.sessionIdLiveData != null &amp;&amp; accountDetails == null ? View.VISIBLE : View.GONE}"/>
 
         <android.support.design.widget.AppBarLayout
             android:id="@+id/profileAppBarLayout"

@@ -2,6 +2,7 @@ package com.shykun.volodymyr.movieviewer.data.network
 
 import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
 import com.shykun.volodymyr.movieviewer.data.entity.TvType
+import com.shykun.volodymyr.movieviewer.data.network.body.RateBody
 import com.shykun.volodymyr.movieviewer.data.network.body.RequestTokenBody
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -58,6 +59,10 @@ class ApiClient @Inject constructor() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
+    fun rateMovie(movieId: Int, rateBody: RateBody, sessionId: String) = apiService.rateMovie(movieId, rateBody, sessionId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
     //tv
 
     fun getTV(tvType: TvType, page: Int) = apiService.getTV(tvType.path, page)
@@ -84,6 +89,9 @@ class ApiClient @Inject constructor() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
+    fun rateTv(tvId: Int, rateBody: RateBody, sessionId: String) = apiService.rateTv(tvId, rateBody, sessionId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
     //people
 
     fun getPopularPeople(page: Int) = apiService.getPopularPeople(page)

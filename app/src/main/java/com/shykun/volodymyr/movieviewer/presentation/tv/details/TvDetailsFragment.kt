@@ -3,6 +3,7 @@ package com.shykun.volodymyr.movieviewer.presentation.tv.details
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.SharedPreferences
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -27,12 +28,14 @@ import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragmen
 import com.shykun.volodymyr.movieviewer.presentation.movies.details.CastAdapter
 import com.shykun.volodymyr.movieviewer.presentation.movies.details.ReviewAdapter
 import com.shykun.volodymyr.movieviewer.presentation.people.details.PERSON_DETAILS_FRAGMENT_KEY
+import com.shykun.volodymyr.movieviewer.presentation.profile.SESSION_ID_KEY
 import kotlinx.android.synthetic.main.fragment_tv_details.*
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
 const val TV_DETAILS_FRAGMENT_KEY = "tv_details_fragment"
 private const val TV_ID_KEY = "tv_id_key"
+private const val RATE_DIALOG_TAG = "rate_dialog_tag"
 
 class TvDetailsFragment : Fragment(), BackButtonListener {
 
@@ -48,6 +51,8 @@ class TvDetailsFragment : Fragment(), BackButtonListener {
     lateinit var viewModelFactory: TvDetailsViewModelFactory
     @Inject
     lateinit var router: Router
+    @Inject
+    lateinit var prefs: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,7 +85,7 @@ class TvDetailsFragment : Fragment(), BackButtonListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupBackButton()
+        setupToolbar()
         setupCastAdapter()
         setupRecommendedTvAdapter()
         setupReviewsAdapter()
@@ -109,9 +114,28 @@ class TvDetailsFragment : Fragment(), BackButtonListener {
         fragmentTransaction.commit()
     }
 
-    private fun setupBackButton() {
+    private fun setupToolbar() {
+        tvDetailsToolbar.inflateMenu(R.menu.menu_movie_details)
+        tvDetailsToolbar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.action_rate -> rateTv()
+                else -> false
+            }
+        }
+
         tvDetailsToolbar.setNavigationIcon(R.drawable.ic_arrow_back)
         tvDetailsToolbar.setNavigationOnClickListener { onBackClicked() }
+    }
+
+    private fun rateTv(): Boolean {
+        val sessionId = prefs.getString(SESSION_ID_KEY, null)
+        return if (sessionId == null) {
+            Toast.makeText(this.context, "You are not authorized", Toast.LENGTH_SHORT).show()
+            true
+        } else {
+            TvRateDialogFragment.newInstance(tvId, sessionId).show(childFragmentManager, RATE_DIALOG_TAG)
+            true
+        }
     }
 
     private fun subscribeViewModel() {

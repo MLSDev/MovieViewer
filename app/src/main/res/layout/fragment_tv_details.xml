@@ -221,14 +221,14 @@
                         android:id="@+id/tvCastCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
+                        android:layout_alignBaseline="@id/tvCastTitle"
                         android:layout_below="@id/tvTrailerContainer"
                         android:layout_marginEnd="10dp"
                         android:layout_marginTop="10dp"
+                        android:layout_toEndOf="@id/tvCastTitle"
                         android:text="@{viewModel.castCount}"
                         android:textColor="@color/darkGrey"
-                        android:textSize="25sp"
-                        android:textStyle="bold" />
+                        android:textSize="20sp" />
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/tvCast"
@@ -255,14 +255,14 @@
                         android:id="@+id/recommendedTvCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
+                        android:layout_alignBaseline="@id/recommendedTvTitle"
                         android:layout_below="@id/tvCast"
                         android:layout_marginEnd="10dp"
                         android:layout_marginTop="10dp"
+                        android:layout_toEndOf="@id/recommendedTvTitle"
                         android:text="@{viewModel.recommendedTvCount}"
                         android:textColor="@color/darkGrey"
-                        android:textSize="25sp"
-                        android:textStyle="bold" />
+                        android:textSize="20sp" />
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/recommendedTv"
@@ -288,14 +288,14 @@
                         android:id="@+id/tvReviewsCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
+                        android:layout_alignBaseline="@id/tvReviewsTitle"
                         android:layout_below="@id/recommendedTv"
                         android:layout_marginEnd="10dp"
                         android:layout_marginTop="10dp"
+                        android:layout_toEndOf="@id/tvReviewsTitle"
                         android:text="@{viewModel.reviewsCount}"
                         android:textColor="@color/darkGrey"
-                        android:textSize="25sp"
-                        android:textStyle="bold" />
+                        android:textSize="20sp" />
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/tvReviews"

@@ -9,6 +9,7 @@ import com.shykun.volodymyr.movieviewer.data.entity.Actor
 import com.shykun.volodymyr.movieviewer.data.entity.Movie
 import com.shykun.volodymyr.movieviewer.data.entity.Review
 import com.shykun.volodymyr.movieviewer.data.network.response.MovieDetailsResponse
+import com.shykun.volodymyr.movieviewer.data.network.response.RateResponse
 import com.shykun.volodymyr.movieviewer.domain.MovieDetailsUseCase
 
 class MovieDetailsViewModel(
@@ -18,12 +19,14 @@ class MovieDetailsViewModel(
     private val movieCastMutableLiveData = MutableLiveData<List<Actor>>()
     private val movieReviewsMutableLiveData = MutableLiveData<List<Review>>()
     private val recommendedMoviesMutableLiveData = MutableLiveData<List<Movie>>()
+    private val rateMovieMutableLiveData = MutableLiveData<RateResponse>()
     private val loadingErrorMutableLiveData = MutableLiveData<String>()
 
     val movieDetailsLiveData: LiveData<MovieDetailsResponse> = movieDetailsMutableLiveData
     val movieCastLiveData: LiveData<List<Actor>> = movieCastMutableLiveData
     val movieReviewLiveData: LiveData<List<Review>> = movieReviewsMutableLiveData
     val recommendedMoviesLiveData: LiveData<List<Movie>> = recommendedMoviesMutableLiveData
+    val rateMovieLiveData: LiveData<RateResponse> = rateMovieMutableLiveData
     val loadingErrorLiveData: LiveData<String> = loadingErrorMutableLiveData
 
     val castTitleVisibility = ObservableField<Int>(View.GONE)
@@ -88,6 +91,14 @@ class MovieDetailsViewModel(
                                 recommendedMoviesCount.set(response.size.toString())
                             }
                         },
+                        { error -> loadingErrorMutableLiveData.value = error.message }
+                )
+    }
+
+    fun rateMovie(movieId: Int, rating: Float, sessionId: String) {
+        movieDetailsUseCase.rateMovie(movieId, rating, sessionId)
+                .subscribe(
+                        { response -> rateMovieMutableLiveData.value = response },
                         { error -> loadingErrorMutableLiveData.value = error.message }
                 )
     }

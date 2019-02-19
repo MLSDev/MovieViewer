@@ -3,12 +3,14 @@ package com.shykun.volodymyr.movieviewer.presentation.profile
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import android.content.SharedPreferences
 import com.shykun.volodymyr.movieviewer.data.network.response.AccountDetailsResponse
 import com.shykun.volodymyr.movieviewer.data.network.response.RequestTokenResponse
 import com.shykun.volodymyr.movieviewer.data.network.response.SessionIdResponse
 import com.shykun.volodymyr.movieviewer.domain.ProfileUseCase
 
-class ProfileViewModel(private val profileUseCase: ProfileUseCase) : ViewModel() {
+class ProfileViewModel(private val profileUseCase: ProfileUseCase,
+                       private val prefs: SharedPreferences) : ViewModel() {
 
     private val requestTokenMutableLiveData = MutableLiveData<RequestTokenResponse>()
     private val sessionIdMutableLiveData = MutableLiveData<SessionIdResponse>()
@@ -20,6 +22,7 @@ class ProfileViewModel(private val profileUseCase: ProfileUseCase) : ViewModel()
     val accountDetailsLiveData: LiveData<AccountDetailsResponse> = accountDetailsMutableLiveData
     val loadingErrorLiveData: LiveData<String> = loadingErrorMutableLiveData
 
+
     fun getRequestToken() = profileUseCase.getRequestToken()
             .subscribe(
                     { response -> requestTokenMutableLiveData.value = response },
@@ -28,12 +31,19 @@ class ProfileViewModel(private val profileUseCase: ProfileUseCase) : ViewModel()
 
     fun createSessionId(requestToken: String) = profileUseCase.createSessionId(requestToken)
             .subscribe(
-                    { response -> sessionIdMutableLiveData.value = response },
+                    { response ->
+                        sessionIdMutableLiveData.value = response
+                        prefs.edit().putString(SESSION_ID_KEY, response.sessionId).apply()
+                        getAccountDetails(response.sessionId)
+                    },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
+
     fun getAccountDetails(sessionId: String) = profileUseCase.getAccountDetails(sessionId)
             .subscribe(
-                    {response -> accountDetailsMutableLiveData.value = response },
-                    {error -> loadingErrorMutableLiveData.value = error.message}
+                    { response ->
+                        accountDetailsMutableLiveData.value = response
+                    },
+                    { error -> loadingErrorMutableLiveData.value = error.message }
             )
 }

@@ -2,9 +2,12 @@ package com.shykun.volodymyr.movieviewer.presentation.movies.details
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.SharedPreferences
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -21,9 +24,13 @@ import com.shykun.volodymyr.movieviewer.data.entity.Video
 import com.shykun.volodymyr.movieviewer.data.network.YOUTUBE_API_KEY
 import com.shykun.volodymyr.movieviewer.data.network.response.MovieDetailsResponse
 import com.shykun.volodymyr.movieviewer.databinding.FragmentMovieDetailsBinding
+import com.shykun.volodymyr.movieviewer.presentation.AppActivity
 import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
 import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
 import com.shykun.volodymyr.movieviewer.presentation.people.details.PERSON_DETAILS_FRAGMENT_KEY
+import com.shykun.volodymyr.movieviewer.presentation.profile.SESSION_ID_KEY
+import com.shykun.volodymyr.movieviewer.presentation.utils.NavigationKeys
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject
@@ -31,6 +38,7 @@ import javax.inject.Inject
 
 const val MOVIE_DETAILS_FRAGMENT_KEY = "movie_details_fragment_key"
 private const val MOVIE_ID_KEY = "movie_id_key"
+private const val RATE_DIALOG_TAG = "rate_dialog_tag"
 
 class MovieDetailsFragment : Fragment(), BackButtonListener {
 
@@ -46,6 +54,8 @@ class MovieDetailsFragment : Fragment(), BackButtonListener {
     lateinit var viewModelFactory: MovieDetailsViewModelFactory
     @Inject
     lateinit var router: Router
+    @Inject
+    lateinit var prefs: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,11 +86,10 @@ class MovieDetailsFragment : Fragment(), BackButtonListener {
     }
 
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupBackButton()
+        setupToolbar()
         setupCastAdapter()
         setupReviewsAdapter()
         setupRecommendedMoviesAdapter()
@@ -113,11 +122,45 @@ class MovieDetailsFragment : Fragment(), BackButtonListener {
         fragmentTransaction.commit()
     }
 
-    private fun setupBackButton() {
+    private fun setupToolbar() {
+        movieDetailsToolbar.inflateMenu(R.menu.menu_movie_details)
+        movieDetailsToolbar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.action_rate -> rateMovie()
+                else -> false
+            }
+        }
+
         movieDetailsToolbar.setNavigationIcon(R.drawable.ic_arrow_back)
         movieDetailsToolbar.setNavigationOnClickListener {
             onBackClicked()
         }
+    }
+
+    private fun rateMovie(): Boolean {
+        val sessionId = prefs.getString(SESSION_ID_KEY, null)
+        return if (sessionId == null)
+            openLoginSnackBar()
+         else
+            openRateDialog(sessionId)
+
+    }
+
+    private fun openLoginSnackBar(): Boolean {
+        Snackbar.make(movieDetailsCoordinatorLayout, "You are not authorized", Snackbar.LENGTH_LONG)
+                .setAction("Login") {
+                    (activity as AppActivity).cicerone.router.replaceScreen(NavigationKeys.PROFILE_NAVIGATION_KEY)
+                }
+                .setActionTextColor(ContextCompat.getColor(this.context!!, R.color.colorAccent))
+                .show()
+
+        return true
+    }
+
+    private fun openRateDialog(sessionId: String): Boolean {
+        MovieRateDialogFragment.newInstance(movieId, sessionId).show(childFragmentManager, RATE_DIALOG_TAG)
+
+        return true
     }
 
     private fun subscribeViewModel() {

@@ -1,5 +1,6 @@
 package com.shykun.volodymyr.movieviewer.data.network
 
+import com.shykun.volodymyr.movieviewer.data.network.body.RateBody
 import com.shykun.volodymyr.movieviewer.data.network.body.RequestTokenBody
 import com.shykun.volodymyr.movieviewer.data.network.response.*
 import io.reactivex.Single
@@ -45,6 +46,13 @@ interface ApiService {
             @Query("page") page: Int,
             @Query("api_key") api_key: String = API_KEY): Single<MoviesResponse>
 
+    @POST("movie/{movie_id}/rating")
+    fun rateMovie(
+            @Path("movie_id") movieId: Int,
+            @Body rateBody: RateBody,
+            @Query("session_id") sessionId: String,
+            @Query("api_key") api_key: String = API_KEY): Single<RateResponse>
+
     //tv
 
     @GET("tv/{tv_type}")
@@ -79,6 +87,13 @@ interface ApiService {
             @Query("query") query: String,
             @Query("page") page: Int,
             @Query("api_key") api_key: String = API_KEY): Single<TvResponse>
+
+    @POST("tv/{tv_id}/rating")
+    fun rateTv(
+            @Path("tv_id") tvId: Int,
+            @Body rateBody: RateBody,
+            @Query("session_id") sessionId: String,
+            @Query("api_key") api_key: String = API_KEY): Single<RateResponse>
 
     //people
 

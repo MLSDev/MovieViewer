@@ -38,17 +38,18 @@ class ProfileFragment : Fragment(), BackButtonListener {
         (parentFragment as TabNavigationFragment).component?.inject(this)
         viewModel = ViewModelProviders.of(parentFragment!!, viewModelFactory)
                 .get(ProfileViewModel::class.java)
-        subscribeViewModel()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
+        binding.viewModel = viewModel
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        subscribeViewModel()
         setClickListeners()
     }
 

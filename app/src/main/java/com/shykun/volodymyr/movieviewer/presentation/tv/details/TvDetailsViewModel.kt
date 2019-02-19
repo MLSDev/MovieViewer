@@ -8,6 +8,7 @@ import android.view.View
 import com.shykun.volodymyr.movieviewer.data.entity.Actor
 import com.shykun.volodymyr.movieviewer.data.entity.Review
 import com.shykun.volodymyr.movieviewer.data.entity.Tv
+import com.shykun.volodymyr.movieviewer.data.network.response.RateResponse
 import com.shykun.volodymyr.movieviewer.data.network.response.TvDetailsResponse
 import com.shykun.volodymyr.movieviewer.domain.TvDetailsUseCase
 
@@ -17,12 +18,14 @@ class TvDetailsViewModel(private val gtTvDetailsUseCase: TvDetailsUseCase) : Vie
     private val recommendedTvMutableLiveData = MutableLiveData<List<Tv>>()
     private val tvReviewsMutableLiveData = MutableLiveData<List<Review>>()
     private val tvCastMutableLiveData = MutableLiveData<List<Actor>>()
+    private val rateTvMutableLiveData = MutableLiveData<RateResponse>()
     private val loadingErrorMutableLiveData = MutableLiveData<String>()
 
     val tvDetailsLiveData: LiveData<TvDetailsResponse> = tvDetailsMutableLiveData
     val recommendedTvLiveData: LiveData<List<Tv>> = recommendedTvMutableLiveData
     val tvReviewsLiveData: LiveData<List<Review>> = tvReviewsMutableLiveData
     val tvCastLiveData: LiveData<List<Actor>> = tvCastMutableLiveData
+    val rateTvLiveData: LiveData<RateResponse> = rateTvMutableLiveData
     val loadingErrorLiveData: LiveData<String> = loadingErrorMutableLiveData
 
     val castTitleVisibility = ObservableField<Int>(View.GONE)
@@ -82,4 +85,13 @@ class TvDetailsViewModel(private val gtTvDetailsUseCase: TvDetailsUseCase) : Vie
                     },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
+
+    fun rateTv(tvId: Int, rating: Float, sessionId: String) {
+        gtTvDetailsUseCase.rateTv(tvId, rating, sessionId)
+                .subscribe(
+                        { response -> rateTvMutableLiveData.value = response },
+                        { error -> loadingErrorMutableLiveData.value = error.message }
+                )
+
+    }
 }

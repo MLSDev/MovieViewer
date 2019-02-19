@@ -50,7 +50,7 @@ class AppActivity : AppCompatActivity() {
     }
 
     private var currentTab = NavigationKeys.MOVIES_NAVIGATION_KEY
-    private val cicerone = Cicerone.create()
+    val cicerone = Cicerone.create()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -2,6 +2,7 @@ package com.shykun.volodymyr.movieviewer.presentation.movies.details
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
+import android.content.SharedPreferences
 import com.shykun.volodymyr.movieviewer.domain.MovieDetailsUseCase
 import javax.inject.Inject
 
