@@ -2,6 +2,8 @@ package com.shykun.volodymyr.movieviewer.data.network
 
 import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
 import com.shykun.volodymyr.movieviewer.data.entity.TvType
+import com.shykun.volodymyr.movieviewer.data.network.body.AddToWatchlistBody
+import com.shykun.volodymyr.movieviewer.data.network.body.MarkAsFavoriteBody
 import com.shykun.volodymyr.movieviewer.data.network.body.RateBody
 import com.shykun.volodymyr.movieviewer.data.network.body.RequestTokenBody
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -133,6 +135,38 @@ class ApiClient @Inject constructor() {
             .observeOn(AndroidSchedulers.mainThread())
 
     fun getAccountDetails(sessionId: String) = apiService.getAccountDetails(sessionId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+    fun markAsFavorite(markAsFavoriteBody: MarkAsFavoriteBody, sessionId: String) = apiService.markAsFavorite(markAsFavoriteBody, sessionId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+    fun addToWatchlist(addToWatchlistBody: AddToWatchlistBody, sessionId: String) = apiService.addToWatchlist(addToWatchlistBody, sessionId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+    fun getFavoriteMovies(sessionId: String, page: Int) = apiService.getFavoriteMovies(sessionId, page)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+    fun getFavoriteTv(sessionId: String, page:Int) = apiService.getFavoriteTv(sessionId, page)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+    fun getMovieWatchList(sessionId: String, page: Int) = apiService.getMovieWatchList(sessionId, page)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+    fun getTvWatchList(sessionId: String, page: Int) = apiService.getTvWatchList(sessionId, page)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+    fun getRatedMovies(sessionId: String, page: Int) = apiService.getRatedMovies(sessionId, page)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+    fun getRatedTv(sessionId: String, page: Int) = apiService.getRatedTv(sessionId, page)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 }

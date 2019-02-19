@@ -30,11 +30,9 @@ import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragmen
 import com.shykun.volodymyr.movieviewer.presentation.people.details.PERSON_DETAILS_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.profile.SESSION_ID_KEY
 import com.shykun.volodymyr.movieviewer.presentation.utils.NavigationKeys
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject
-
 
 const val MOVIE_DETAILS_FRAGMENT_KEY = "movie_details_fragment_key"
 private const val MOVIE_ID_KEY = "movie_id_key"
@@ -141,7 +139,7 @@ class MovieDetailsFragment : Fragment(), BackButtonListener {
         val sessionId = prefs.getString(SESSION_ID_KEY, null)
         return if (sessionId == null)
             openLoginSnackBar()
-         else
+        else
             openRateDialog(sessionId)
 
     }

@@ -1,5 +1,7 @@
 package com.shykun.volodymyr.movieviewer.data.network
 
+import com.shykun.volodymyr.movieviewer.data.network.body.AddToWatchlistBody
+import com.shykun.volodymyr.movieviewer.data.network.body.MarkAsFavoriteBody
 import com.shykun.volodymyr.movieviewer.data.network.body.RateBody
 import com.shykun.volodymyr.movieviewer.data.network.body.RequestTokenBody
 import com.shykun.volodymyr.movieviewer.data.network.response.*
@@ -51,7 +53,7 @@ interface ApiService {
             @Path("movie_id") movieId: Int,
             @Body rateBody: RateBody,
             @Query("session_id") sessionId: String,
-            @Query("api_key") api_key: String = API_KEY): Single<RateResponse>
+            @Query("api_key") api_key: String = API_KEY): Single<PostResponse>
 
     //tv
 
@@ -93,7 +95,7 @@ interface ApiService {
             @Path("tv_id") tvId: Int,
             @Body rateBody: RateBody,
             @Query("session_id") sessionId: String,
-            @Query("api_key") api_key: String = API_KEY): Single<RateResponse>
+            @Query("api_key") api_key: String = API_KEY): Single<PostResponse>
 
     //people
 
@@ -152,4 +154,53 @@ interface ApiService {
     fun getAccountDetails(
             @Query("session_id") sessionId: String,
             @Query("api_key") api_key: String = API_KEY): Single<AccountDetailsResponse>
+
+    @POST("account/{account_id}/favorite")
+    fun markAsFavorite(
+            @Body markAsFavoriteBody: MarkAsFavoriteBody,
+            @Query("session_id") sessionId: String,
+            @Query("api_key") api_key: String = API_KEY): Single<PostResponse>
+
+    @POST("account/{account_id}/watchlist")
+    fun addToWatchlist(
+            @Body addToWatchlistBody: AddToWatchlistBody,
+            @Query("session_id") sessionId: String,
+            @Query("api_key") api_key: String = API_KEY): Single<PostResponse>
+
+    @GET("account/{account_id}/favorite/movies")
+    fun getFavoriteMovies(
+            @Query("session_id") sessionId: String,
+            @Query("page") page: Int,
+            @Query("api_key") api_key: String = API_KEY): Single<MoviesResponse>
+
+    @GET("account/{account_id}/favorite/tv")
+    fun getFavoriteTv(
+            @Query("session_id") sessionId: String,
+            @Query("page") page: Int,
+            @Query("api_key") api_key: String = API_KEY): Single<TvResponse>
+
+    @GET("account/{account_id}/watchlist/movies")
+    fun getMovieWatchList(
+            @Query("session_id") sessionId: String,
+            @Query("page") page: Int,
+            @Query("api_key") api_key: String = API_KEY): Single<MoviesResponse>
+
+    @GET("account/{account_id}/watchlist/tv")
+    fun getTvWatchList(
+            @Query("session_id") sessionId: String,
+            @Query("page") page: Int,
+            @Query("api_key") api_key: String = API_KEY): Single<TvResponse>
+
+    @GET("account/{account_id}/rated/movies")
+    fun getRatedMovies(
+            @Query("session_id") sessionId: String,
+            @Query("page") page: Int,
+            @Query("api_key") api_key: String = API_KEY): Single<MoviesResponse>
+
+    @GET("account/{account_id}/rated/tv")
+    fun getRatedTv(
+            @Query("session_id") sessionId: String,
+            @Query("page") page: Int,
+            @Query("api_key") api_key: String = API_KEY): Single<TvResponse>
+
 }

@@ -9,24 +9,33 @@ import com.shykun.volodymyr.movieviewer.data.entity.Actor
 import com.shykun.volodymyr.movieviewer.data.entity.Movie
 import com.shykun.volodymyr.movieviewer.data.entity.Review
 import com.shykun.volodymyr.movieviewer.data.network.response.MovieDetailsResponse
-import com.shykun.volodymyr.movieviewer.data.network.response.RateResponse
+import com.shykun.volodymyr.movieviewer.data.network.response.MoviesResponse
+import com.shykun.volodymyr.movieviewer.data.network.response.PostResponse
 import com.shykun.volodymyr.movieviewer.domain.MovieDetailsUseCase
+import com.shykun.volodymyr.movieviewer.domain.ProfileUseCase
 
 class MovieDetailsViewModel(
-        private val movieDetailsUseCase: MovieDetailsUseCase) : ViewModel() {
+        private val movieDetailsUseCase: MovieDetailsUseCase,
+        private val profileUseCase: ProfileUseCase) : ViewModel() {
 
     private val movieDetailsMutableLiveData = MutableLiveData<MovieDetailsResponse>()
     private val movieCastMutableLiveData = MutableLiveData<List<Actor>>()
     private val movieReviewsMutableLiveData = MutableLiveData<List<Review>>()
     private val recommendedMoviesMutableLiveData = MutableLiveData<List<Movie>>()
-    private val rateMovieMutableLiveData = MutableLiveData<RateResponse>()
+    private val rateMovieMutableLiveData = MutableLiveData<PostResponse>()
+    private val movieWatchListMutableLiveData = MutableLiveData<MoviesResponse>()
+    private val favoriteMoviesMutableLiveData = MutableLiveData<MoviesResponse>()
+    private val ratedMoviesMutableLiveData = MutableLiveData<MoviesResponse>()
     private val loadingErrorMutableLiveData = MutableLiveData<String>()
 
     val movieDetailsLiveData: LiveData<MovieDetailsResponse> = movieDetailsMutableLiveData
     val movieCastLiveData: LiveData<List<Actor>> = movieCastMutableLiveData
     val movieReviewLiveData: LiveData<List<Review>> = movieReviewsMutableLiveData
     val recommendedMoviesLiveData: LiveData<List<Movie>> = recommendedMoviesMutableLiveData
-    val rateMovieLiveData: LiveData<RateResponse> = rateMovieMutableLiveData
+    val rateMovieLiveData: LiveData<PostResponse> = rateMovieMutableLiveData
+    val moviesWatchListLiveData: LiveData<MoviesResponse> = movieWatchListMutableLiveData
+    val favoriteMoviesLiveData: LiveData<MoviesResponse> = favoriteMoviesMutableLiveData
+    val ratedMoviesLiveData: LiveData<MoviesResponse> = ratedMoviesMutableLiveData
     val loadingErrorLiveData: LiveData<String> = loadingErrorMutableLiveData
 
     val castTitleVisibility = ObservableField<Int>(View.GONE)
@@ -102,4 +111,35 @@ class MovieDetailsViewModel(
                         { error -> loadingErrorMutableLiveData.value = error.message }
                 )
     }
+
+    fun addToWatchList(movieId: Int, sessionId: String) = movieDetailsUseCase.addToWatchlist(movieId, sessionId)
+            .subscribe(
+                    { response -> },
+                    { error -> loadingErrorMutableLiveData.value = error.message }
+            )
+
+    fun markAsFavorite(movieId: Int, sessionId: String) = movieDetailsUseCase.markAsFavorite(movieId, sessionId)
+            .subscribe(
+                    { response -> },
+                    { error -> loadingErrorMutableLiveData.value = error.message }
+            )
+
+    fun getRatedMovies(sessionId: String, page: Int = 1) = profileUseCase.getRatedMovies(sessionId, page)
+            .subscribe(
+                    { response -> ratedMoviesMutableLiveData.value = response },
+                    { error -> loadingErrorMutableLiveData.value = error.message }
+            )
+
+    fun getMovieWatchList(sessionId: String, page: Int = 1) = profileUseCase.getMovieWatchList(sessionId, page)
+            .subscribe(
+                    { response -> movieWatchListMutableLiveData.value = response },
+                    { error -> loadingErrorMutableLiveData.value = error.message }
+            )
+
+    fun getFavoriteMovies(sessionId: String, page: Int = 1) = profileUseCase.getFavoriteMovies(sessionId, page)
+            .subscribe(
+                    { response -> favoriteMoviesMutableLiveData.value = response },
+                    { error -> loadingErrorMutableLiveData.value = error.message }
+            )
+
 }
