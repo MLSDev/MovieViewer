@@ -23,6 +23,7 @@ import com.shykun.volodymyr.movieviewer.data.entity.Review
 import com.shykun.volodymyr.movieviewer.data.entity.Video
 import com.shykun.volodymyr.movieviewer.data.network.YOUTUBE_API_KEY
 import com.shykun.volodymyr.movieviewer.data.network.response.MovieDetailsResponse
+import com.shykun.volodymyr.movieviewer.data.network.response.PostResponse
 import com.shykun.volodymyr.movieviewer.databinding.FragmentMovieDetailsBinding
 import com.shykun.volodymyr.movieviewer.presentation.AppActivity
 import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
@@ -42,6 +43,8 @@ class MovieDetailsFragment : Fragment(), BackButtonListener {
 
     private var movieId = -1
     private var viewWasLoaded = false
+    private var sessionId: String? = null
+
     private lateinit var viewModel: MovieDetailsViewModel
     private var binding: FragmentMovieDetailsBinding? = null
     private lateinit var castAdapter: CastAdapter
@@ -96,7 +99,7 @@ class MovieDetailsFragment : Fragment(), BackButtonListener {
             viewWasLoaded = true
 
         if (!viewWasLoaded) {
-            viewModel.onViewLoaded(movieId)
+            viewModel.onViewLoaded(movieId, sessionId)
             viewWasLoaded = true
         }
     }
@@ -121,10 +124,13 @@ class MovieDetailsFragment : Fragment(), BackButtonListener {
     }
 
     private fun setupToolbar() {
-        movieDetailsToolbar.inflateMenu(R.menu.menu_movie_details)
+        if (movieDetailsToolbar.menu.size() == 0)
+            movieDetailsToolbar.inflateMenu(R.menu.menu_movie_details)
         movieDetailsToolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.action_rate -> rateMovie()
+                R.id.action_addToWatchlist -> addToWatchList()
+                R.id.action_markAsFavorite -> markAsFavorite()
                 else -> false
             }
         }
@@ -135,28 +141,63 @@ class MovieDetailsFragment : Fragment(), BackButtonListener {
         }
     }
 
-    private fun rateMovie(): Boolean {
-        val sessionId = prefs.getString(SESSION_ID_KEY, null)
-        return if (sessionId == null)
-            openLoginSnackBar()
-        else
-            openRateDialog(sessionId)
-
+    private fun setupCastAdapter() {
+        movieCast.apply {
+            layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
+            adapter = castAdapter
+        }
     }
 
-    private fun openLoginSnackBar(): Boolean {
-        Snackbar.make(movieDetailsCoordinatorLayout, "You are not authorized", Snackbar.LENGTH_LONG)
-                .setAction("Login") {
-                    (activity as AppActivity).cicerone.router.replaceScreen(NavigationKeys.PROFILE_NAVIGATION_KEY)
-                }
-                .setActionTextColor(ContextCompat.getColor(this.context!!, R.color.colorAccent))
-                .show()
+    private fun setupReviewsAdapter() {
+        movieReviews.apply {
+            layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
+            isNestedScrollingEnabled = false
+            adapter = reviewsAdapter
+        }
+    }
 
+    private fun setupRecommendedMoviesAdapter() {
+        recommendedMovies.apply {
+            layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
+            adapter = recommendedMoviesAdapter
+        }
+    }
+
+    private fun setupRecommendedMovieClick() {
+        recommendedMoviesAdapter.clickObservable.subscribe { router.navigateTo(MOVIE_DETAILS_FRAGMENT_KEY, it) }
+    }
+
+    private fun setupActorClick() {
+        castAdapter.clickObservable.subscribe { router.navigateTo(PERSON_DETAILS_FRAGMENT_KEY, it) }
+    }
+
+    private fun rateMovie(): Boolean {
+        val sessionId = prefs.getString(SESSION_ID_KEY, null)
+        if (sessionId == null) {
+            openLoginSnackBar()
+        } else {
+            MovieRateDialogFragment.newInstance(movieId, sessionId).show(childFragmentManager, RATE_DIALOG_TAG)
+        }
         return true
     }
 
-    private fun openRateDialog(sessionId: String): Boolean {
-        MovieRateDialogFragment.newInstance(movieId, sessionId).show(childFragmentManager, RATE_DIALOG_TAG)
+    private fun addToWatchList(): Boolean {
+        val sessionId = prefs.getString(SESSION_ID_KEY, null)
+        if (sessionId == null) {
+            openLoginSnackBar()
+        } else {
+            viewModel.addToWatchList(movieId, sessionId)
+        }
+        return true
+    }
+
+    private fun markAsFavorite(): Boolean {
+        val sessionId = prefs.getString(SESSION_ID_KEY, null)
+        if (sessionId == null) {
+            openLoginSnackBar()
+        } else {
+            viewModel.markAsFavorite(movieId, sessionId)
+        }
 
         return true
     }
@@ -166,6 +207,11 @@ class MovieDetailsFragment : Fragment(), BackButtonListener {
         viewModel.movieCastLiveData.observe(this, Observer { showMovieCast(it) })
         viewModel.movieReviewLiveData.observe(this, Observer { showReviews(it) })
         viewModel.recommendedMoviesLiveData.observe(this, Observer { showRecommendedMovies(it) })
+
+        viewModel.rateMovieLiveData.observe(this, Observer { handleRateResponse(it) })
+        viewModel.addToWatchListLiveData.observe(this, Observer { handleAddToWatchlistReponse(it) })
+        viewModel.markAsFavoriteLiveData.observe(this, Observer { handleMarkAsFavoriteResponse(it) })
+
         viewModel.loadingErrorLiveData.observe(this, Observer { showLoadingError(it) })
     }
 
@@ -198,38 +244,47 @@ class MovieDetailsFragment : Fragment(), BackButtonListener {
         }
     }
 
+    private fun showSnackbar(message: String, buttonText: String, action: (view: View) -> Unit) {
+        Snackbar.make(movieDetailsCoordinatorLayout, message, Snackbar.LENGTH_LONG)
+                .setAction(buttonText, action)
+                .setActionTextColor(ContextCompat.getColor(this.context!!, R.color.colorAccent))
+                .show()
+    }
+
+
+    private fun openLoginSnackBar() = showSnackbar("You are not authorized", "Login") {
+        (activity as AppActivity).cicerone.router.replaceScreen(NavigationKeys.PROFILE_NAVIGATION_KEY)
+    }
+
+    private fun handleRateResponse(response: PostResponse?) {
+        if (response?.statusCode == 1 || response?.statusCode == 12) {
+            showSnackbar("Rated", "Undo") {
+                val sessionId = prefs.getString(SESSION_ID_KEY, null)
+                viewModel.deleteMovieRating(movieId, sessionId)
+            }
+        }
+    }
+
+    private fun handleAddToWatchlistReponse(response: PostResponse?) {
+        if (response?.statusCode == 1 || response?.statusCode == 12) {
+            showSnackbar("Added to watchlist", "Undo") {
+                val sessionId = prefs.getString(SESSION_ID_KEY, null)
+                viewModel.removeFromWatchList(movieId, sessionId)
+            }
+        }
+    }
+
+    private fun handleMarkAsFavoriteResponse(response: PostResponse?) {
+        if (response?.statusCode == 1 || response?.statusCode == 12) {
+            showSnackbar("Marked as favorite", "Undo") {
+                val sessionId = prefs.getString(SESSION_ID_KEY, null)
+                viewModel.removeFromFavorites(movieId, sessionId)
+            }
+        }
+    }
+
     private fun showLoadingError(message: String?) {
         Toast.makeText(this.context, message, Toast.LENGTH_SHORT).show()
-    }
-
-    private fun setupCastAdapter() {
-        movieCast.apply {
-            layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = castAdapter
-        }
-    }
-
-    private fun setupReviewsAdapter() {
-        movieReviews.apply {
-            layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
-            isNestedScrollingEnabled = false
-            adapter = reviewsAdapter
-        }
-    }
-
-    private fun setupRecommendedMoviesAdapter() {
-        recommendedMovies.apply {
-            layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = recommendedMoviesAdapter
-        }
-    }
-
-    private fun setupRecommendedMovieClick() {
-        recommendedMoviesAdapter.clickObservable.subscribe { router.navigateTo(MOVIE_DETAILS_FRAGMENT_KEY, it) }
-    }
-
-    private fun setupActorClick() {
-        castAdapter.clickObservable.subscribe { router.navigateTo(PERSON_DETAILS_FRAGMENT_KEY, it) }
     }
 
     override fun onBackClicked(): Boolean {

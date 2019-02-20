@@ -33,4 +33,7 @@
     <string name="results">Results</string>
     <string name="profile">Profile</string>
     <string name="rate">Rate</string>
+    <string name="discover">Discover</string>
+    <string name="add_to_watchlist">Add to watchlist</string>
+    <string name="mark_as_favorite">Mark as favorite</string>
 </resources>

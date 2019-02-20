@@ -55,6 +55,12 @@ interface ApiService {
             @Query("session_id") sessionId: String,
             @Query("api_key") api_key: String = API_KEY): Single<PostResponse>
 
+    @DELETE("movie/{movie_id}/rating")
+    fun deleteMovieRating(
+            @Path("movie_id") movieId: Int,
+            @Query("session_id") sessionId: String,
+            @Query("api_key") api_key: String = API_KEY): Single<PostResponse>
+
     //tv
 
     @GET("tv/{tv_type}")
@@ -94,6 +100,12 @@ interface ApiService {
     fun rateTv(
             @Path("tv_id") tvId: Int,
             @Body rateBody: RateBody,
+            @Query("session_id") sessionId: String,
+            @Query("api_key") api_key: String = API_KEY): Single<PostResponse>
+
+    @DELETE("tv/{tv_id}/rating")
+    fun deleteTvRating(
+            @Path("tv_id") tvId: Int,
             @Query("session_id") sessionId: String,
             @Query("api_key") api_key: String = API_KEY): Single<PostResponse>
 

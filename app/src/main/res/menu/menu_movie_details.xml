@@ -9,4 +9,14 @@
         android:title="@string/rate"
         app:showAsAction="never"/>
 
+    <item
+        android:id="@+id/action_addToWatchlist"
+        android:title="@string/add_to_watchlist"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_markAsFavorite"
+        android:title="@string/mark_as_favorite"
+        app:showAsAction="never"/>
+
 </menu>

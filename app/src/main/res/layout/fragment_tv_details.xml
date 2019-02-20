@@ -28,6 +28,7 @@
             android:visibility="@{tvDetails == null? View.VISIBLE : View.GONE}" />
 
         <android.support.design.widget.CoordinatorLayout
+            android:id="@+id/tvDetailsCoordinatorLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="@{tvDetails == null? View.GONE : View.VISIBLE}"

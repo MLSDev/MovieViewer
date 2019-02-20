@@ -114,7 +114,19 @@ class TvDetailsViewModel(
             )
 
 
+    fun deleteTvRating(tvId: Int, sessionId: String) = tvDetailsUseCase.deleteTvRating(tvId, sessionId)
+            .subscribe(
+                    { response -> rateTvMutableLiveData.value = response },
+                    { error -> loadingErrorMutableLiveData.value = error.message }
+            )
+
     fun addToWatchlist(tvId: Int, sessionId: String) = tvDetailsUseCase.addToWatchlist(tvId, sessionId)
+            .subscribe(
+                    { response -> addToWatchListMutableLiveData.value = response },
+                    { error -> loadingErrorMutableLiveData.value = error.message }
+            )
+
+    fun removeFromWatchlist(tvId: Int, sessionId: String) = tvDetailsUseCase.removeFromWatchlist(tvId, sessionId)
             .subscribe(
                     { response -> addToWatchListMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
@@ -126,21 +138,9 @@ class TvDetailsViewModel(
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
 
-    fun getRatedTv(sessionId: String, page: Int = 1) = profileUseCase.getRatedTv(sessionId, page)
+    fun removeFromFavorites(tvId: Int, sessionId: String) = tvDetailsUseCase.removeFromFavorites(tvId, sessionId)
             .subscribe(
-                    { response -> ratedTvMutableLiveData.value = response },
-                    { error -> loadingErrorMutableLiveData.value = error.message }
-            )
-
-    fun getTvWatchlist(sessionId: String, page: Int = 1) = profileUseCase.getTvWatchList(sessionId, page)
-            .subscribe(
-                    { response -> tvWatchlistMutableLiveData.value = response },
-                    { error -> loadingErrorMutableLiveData.value = error.message }
-            )
-
-    fun getFavoriteTv(sessionId: String, page: Int = 1) = profileUseCase.getFavoriteTv(sessionId, page)
-            .subscribe(
-                    { response -> favoriteTvMutableLiveData.value = response },
+                    { response -> markAsFavoriteMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
 }

@@ -6,7 +6,9 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.SharedPreferences
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -21,14 +23,17 @@ import com.shykun.volodymyr.movieviewer.data.entity.Review
 import com.shykun.volodymyr.movieviewer.data.entity.Tv
 import com.shykun.volodymyr.movieviewer.data.entity.Video
 import com.shykun.volodymyr.movieviewer.data.network.YOUTUBE_API_KEY
+import com.shykun.volodymyr.movieviewer.data.network.response.PostResponse
 import com.shykun.volodymyr.movieviewer.data.network.response.TvDetailsResponse
 import com.shykun.volodymyr.movieviewer.databinding.FragmentTvDetailsBinding
+import com.shykun.volodymyr.movieviewer.presentation.AppActivity
 import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
 import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
 import com.shykun.volodymyr.movieviewer.presentation.movies.details.CastAdapter
 import com.shykun.volodymyr.movieviewer.presentation.movies.details.ReviewAdapter
 import com.shykun.volodymyr.movieviewer.presentation.people.details.PERSON_DETAILS_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.profile.SESSION_ID_KEY
+import com.shykun.volodymyr.movieviewer.presentation.utils.NavigationKeys
 import kotlinx.android.synthetic.main.fragment_tv_details.*
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject
@@ -115,16 +120,50 @@ class TvDetailsFragment : Fragment(), BackButtonListener {
     }
 
     private fun setupToolbar() {
-        tvDetailsToolbar.inflateMenu(R.menu.menu_movie_details)
+        if (tvDetailsToolbar.menu.size() == 0)
+            tvDetailsToolbar.inflateMenu(R.menu.menu_movie_details)
+
         tvDetailsToolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.action_rate -> rateTv()
+                R.id.action_addToWatchlist -> addToWatchList()
+                R.id.action_markAsFavorite -> markAsFavorite()
                 else -> false
             }
         }
 
         tvDetailsToolbar.setNavigationIcon(R.drawable.ic_arrow_back)
         tvDetailsToolbar.setNavigationOnClickListener { onBackClicked() }
+    }
+
+    private fun setupCastAdapter() {
+        tvCast.apply {
+            layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
+            adapter = castAdapter
+        }
+    }
+
+    private fun setupRecommendedTvAdapter() {
+        recommendedTv.apply {
+            layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
+            adapter = recommendedTvAdapter
+        }
+    }
+
+    private fun setupReviewsAdapter() {
+        tvReviews.apply {
+            layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
+            isNestedScrollingEnabled = false
+            adapter = reviewsAdapter
+        }
+    }
+
+    private fun setupRecommendedTvClick() {
+        recommendedTvAdapter.clickObservable.subscribe { router.navigateTo(TV_DETAILS_FRAGMENT_KEY, it) }
+    }
+
+    private fun setupActorClick() {
+        castAdapter.clickObservable.subscribe { router.navigateTo(PERSON_DETAILS_FRAGMENT_KEY, it) }
     }
 
     private fun rateTv(): Boolean {
@@ -138,11 +177,37 @@ class TvDetailsFragment : Fragment(), BackButtonListener {
         }
     }
 
+    private fun addToWatchList(): Boolean {
+        val sessionId = prefs.getString(SESSION_ID_KEY, null)
+        if (sessionId == null) {
+            openLoginSnackBar()
+        } else {
+            viewModel.addToWatchlist(tvId, sessionId)
+        }
+        return true
+    }
+
+    private fun markAsFavorite(): Boolean {
+        val sessionId = prefs.getString(SESSION_ID_KEY, null)
+        if (sessionId == null) {
+            openLoginSnackBar()
+        } else {
+            viewModel.markAsFavorite(tvId, sessionId)
+        }
+
+        return true
+    }
+
     private fun subscribeViewModel() {
         viewModel.tvDetailsLiveData.observe(this, Observer { showTvDetails(it) })
         viewModel.tvCastLiveData.observe(this, Observer { showTvCast(it) })
         viewModel.tvReviewsLiveData.observe(this, Observer { showReviews(it) })
         viewModel.recommendedTvLiveData.observe(this, Observer { showRecommendedTv(it) })
+
+        viewModel.rateTvLiveData.observe(this, Observer { handleRateResponse(it) })
+        viewModel.addToWatchListLiveData.observe(this, Observer { handleAddToWatchlistReponse(it) })
+        viewModel.markAsFavoriteLiveData.observe(this, Observer { handleMarkAsFavoriteResponse(it) })
+
         viewModel.loadingErrorLiveData.observe(this, Observer { showLoadingError(it) })
     }
 
@@ -175,38 +240,47 @@ class TvDetailsFragment : Fragment(), BackButtonListener {
         }
     }
 
+    private fun showSnackbar(message: String, buttonText: String, action: (view: View) -> Unit) {
+        Snackbar.make(tvDetailsCoordinatorLayout, message, Snackbar.LENGTH_LONG)
+                .setAction(buttonText, action)
+                .setActionTextColor(ContextCompat.getColor(this.context!!, R.color.colorAccent))
+                .show()
+    }
+
+
+    private fun openLoginSnackBar() = showSnackbar("You are not authorized", "Login") {
+        (activity as AppActivity).cicerone.router.replaceScreen(NavigationKeys.PROFILE_NAVIGATION_KEY)
+    }
+
+    private fun handleRateResponse(response: PostResponse?) {
+        if (response?.statusCode == 1 || response?.statusCode == 12) {
+            showSnackbar("Rated", "Undo") {
+                val sessionId = prefs.getString(SESSION_ID_KEY, null)
+                viewModel.deleteTvRating(tvId, sessionId)
+            }
+        }
+    }
+
+    private fun handleAddToWatchlistReponse(response: PostResponse?) {
+        if (response?.statusCode == 1 || response?.statusCode == 12) {
+            showSnackbar("Added to watchlist", "Undo") {
+                val sessionId = prefs.getString(SESSION_ID_KEY, null)
+                viewModel.removeFromWatchlist(tvId, sessionId)
+            }
+        }
+    }
+
+    private fun handleMarkAsFavoriteResponse(response: PostResponse?) {
+        if (response?.statusCode == 1 || response?.statusCode == 12) {
+            showSnackbar("Marked as favorite", "Undo") {
+                val sessionId = prefs.getString(SESSION_ID_KEY, null)
+                viewModel.removeFromFavorites(tvId, sessionId)
+            }
+        }
+    }
+
     private fun showLoadingError(message: String?) {
         Toast.makeText(this.context, message, Toast.LENGTH_SHORT).show()
-    }
-
-    private fun setupCastAdapter() {
-        tvCast.apply {
-            layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = castAdapter
-        }
-    }
-
-    private fun setupRecommendedTvAdapter() {
-        recommendedTv.apply {
-            layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = recommendedTvAdapter
-        }
-    }
-
-    private fun setupReviewsAdapter() {
-        tvReviews.apply {
-            layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
-            isNestedScrollingEnabled = false
-            adapter = reviewsAdapter
-        }
-    }
-
-    private fun setupRecommendedTvClick() {
-        recommendedTvAdapter.clickObservable.subscribe { router.navigateTo(TV_DETAILS_FRAGMENT_KEY, it) }
-    }
-
-    private fun setupActorClick() {
-        castAdapter.clickObservable.subscribe { router.navigateTo(PERSON_DETAILS_FRAGMENT_KEY, it) }
     }
 
     override fun onBackClicked(): Boolean {

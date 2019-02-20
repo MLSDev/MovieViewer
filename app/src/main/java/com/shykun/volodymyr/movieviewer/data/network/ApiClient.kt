@@ -65,6 +65,10 @@ class ApiClient @Inject constructor() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
+    fun deleteMovieRating(movieId: Int, sessionId: String) = apiService.deleteMovieRating(movieId, sessionId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
     //tv
 
     fun getTV(tvType: TvType, page: Int) = apiService.getTV(tvType.path, page)
@@ -94,6 +98,11 @@ class ApiClient @Inject constructor() {
     fun rateTv(tvId: Int, rateBody: RateBody, sessionId: String) = apiService.rateTv(tvId, rateBody, sessionId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+
+    fun deleteTvRating(tvId: Int, sessionId: String) = apiService.deleteTvRating(tvId, sessionId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
     //people
 
     fun getPopularPeople(page: Int) = apiService.getPopularPeople(page)
