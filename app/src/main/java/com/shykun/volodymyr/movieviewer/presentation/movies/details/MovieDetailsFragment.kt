@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -22,6 +23,7 @@ import com.shykun.volodymyr.movieviewer.data.entity.Movie
 import com.shykun.volodymyr.movieviewer.data.entity.Review
 import com.shykun.volodymyr.movieviewer.data.entity.Video
 import com.shykun.volodymyr.movieviewer.data.network.YOUTUBE_API_KEY
+import com.shykun.volodymyr.movieviewer.data.network.response.ItemAccountStateResponse
 import com.shykun.volodymyr.movieviewer.data.network.response.MovieDetailsResponse
 import com.shykun.volodymyr.movieviewer.data.network.response.PostResponse
 import com.shykun.volodymyr.movieviewer.databinding.FragmentMovieDetailsBinding
@@ -38,12 +40,17 @@ import javax.inject.Inject
 const val MOVIE_DETAILS_FRAGMENT_KEY = "movie_details_fragment_key"
 private const val MOVIE_ID_KEY = "movie_id_key"
 private const val RATE_DIALOG_TAG = "rate_dialog_tag"
+private const val rateActionId = 0
+private const val deleteRatingActionId = 1
+private const val addToWatchlistActionId = 2
+private const val deleteFromWatchlistActionId = 3
+private const val markAsFavoriteActionId = 4
+private const val deleteFromFavoritesActionsId = 5
 
 class MovieDetailsFragment : Fragment(), BackButtonListener {
 
     private var movieId = -1
     private var viewWasLoaded = false
-    private var sessionId: String? = null
 
     private lateinit var viewModel: MovieDetailsViewModel
     private var binding: FragmentMovieDetailsBinding? = null
@@ -75,6 +82,19 @@ class MovieDetailsFragment : Fragment(), BackButtonListener {
         subscribeViewModel()
         setupRecommendedMovieClick()
         setupActorClick()
+
+        val sessionId = prefs.getString(SESSION_ID_KEY, null)
+
+        if (sessionId != null)
+            viewModel.getMovieAccountStates(movieId, sessionId!!)
+
+        if (savedInstanceState != null)
+            viewWasLoaded = true
+
+        if (!viewWasLoaded) {
+            viewModel.onViewLoaded(movieId)
+            viewWasLoaded = true
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -95,13 +115,7 @@ class MovieDetailsFragment : Fragment(), BackButtonListener {
         setupReviewsAdapter()
         setupRecommendedMoviesAdapter()
 
-        if (savedInstanceState != null)
-            viewWasLoaded = true
 
-        if (!viewWasLoaded) {
-            viewModel.onViewLoaded(movieId, sessionId)
-            viewWasLoaded = true
-        }
     }
 
     private fun initTrailer(trailer: Video) {
@@ -124,17 +138,7 @@ class MovieDetailsFragment : Fragment(), BackButtonListener {
     }
 
     private fun setupToolbar() {
-        if (movieDetailsToolbar.menu.size() == 0)
-            movieDetailsToolbar.inflateMenu(R.menu.menu_movie_details)
-        movieDetailsToolbar.setOnMenuItemClickListener {
-            when (it.itemId) {
-                R.id.action_rate -> rateMovie()
-                R.id.action_addToWatchlist -> addToWatchList()
-                R.id.action_markAsFavorite -> markAsFavorite()
-                else -> false
-            }
-        }
-
+        viewModel.movieAccountLiveData.observe(this, Observer { handleMovieAccountStatesResponse(it) })
         movieDetailsToolbar.setNavigationIcon(R.drawable.ic_arrow_back)
         movieDetailsToolbar.setNavigationOnClickListener {
             onBackClicked()
@@ -171,35 +175,38 @@ class MovieDetailsFragment : Fragment(), BackButtonListener {
         castAdapter.clickObservable.subscribe { router.navigateTo(PERSON_DETAILS_FRAGMENT_KEY, it) }
     }
 
-    private fun rateMovie(): Boolean {
+    private fun performMenuAction(action: (sessionId: String) -> Unit): Boolean {
         val sessionId = prefs.getString(SESSION_ID_KEY, null)
         if (sessionId == null) {
             openLoginSnackBar()
         } else {
-            MovieRateDialogFragment.newInstance(movieId, sessionId).show(childFragmentManager, RATE_DIALOG_TAG)
+            action.invoke(sessionId)
         }
         return true
     }
 
-    private fun addToWatchList(): Boolean {
-        val sessionId = prefs.getString(SESSION_ID_KEY, null)
-        if (sessionId == null) {
-            openLoginSnackBar()
-        } else {
-            viewModel.addToWatchList(movieId, sessionId)
-        }
-        return true
+    private fun rateMovie() = performMenuAction { sessionId ->
+        MovieRateDialogFragment.newInstance(movieId, sessionId).show(childFragmentManager, RATE_DIALOG_TAG)
     }
 
-    private fun markAsFavorite(): Boolean {
-        val sessionId = prefs.getString(SESSION_ID_KEY, null)
-        if (sessionId == null) {
-            openLoginSnackBar()
-        } else {
-            viewModel.markAsFavorite(movieId, sessionId)
-        }
+    private fun deleteRatig() = performMenuAction { sessionId ->
+        viewModel.deleteMovieRating(movieId, sessionId)
+    }
 
-        return true
+    private fun addToWatchList() = performMenuAction { sessionId ->
+        viewModel.addToWatchList(movieId, sessionId)
+    }
+
+    private fun deleteFromWatchList() = performMenuAction { sessionId ->
+        viewModel.deleteFromWatchList(movieId, sessionId)
+    }
+
+    private fun markAsFavorite() = performMenuAction { sessionId ->
+        viewModel.markAsFavorite(movieId, sessionId)
+    }
+
+    private fun deleteFromFavorites() = performMenuAction { sessionId ->
+        viewModel.deleteFromFavorites(movieId, sessionId)
     }
 
     private fun subscribeViewModel() {
@@ -209,7 +216,7 @@ class MovieDetailsFragment : Fragment(), BackButtonListener {
         viewModel.recommendedMoviesLiveData.observe(this, Observer { showRecommendedMovies(it) })
 
         viewModel.rateMovieLiveData.observe(this, Observer { handleRateResponse(it) })
-        viewModel.addToWatchListLiveData.observe(this, Observer { handleAddToWatchlistReponse(it) })
+        viewModel.addToWatchListLiveData.observe(this, Observer { handleAddToWatchlistResponse(it) })
         viewModel.markAsFavoriteLiveData.observe(this, Observer { handleMarkAsFavoriteResponse(it) })
 
         viewModel.loadingErrorLiveData.observe(this, Observer { showLoadingError(it) })
@@ -244,7 +251,42 @@ class MovieDetailsFragment : Fragment(), BackButtonListener {
         }
     }
 
-    private fun showSnackbar(message: String, buttonText: String, action: (view: View) -> Unit) {
+    private fun handleMovieAccountStatesResponse(accountStates: ItemAccountStateResponse?) {
+
+        val menu = movieDetailsToolbar.menu
+
+        accountStates?.let {
+            if (it.rated)
+                menu.add(Menu.NONE, deleteRatingActionId, 0, "Delete rating")
+            else
+                menu.add(Menu.NONE, rateActionId, 0, "Rate")
+
+            if (it.watchlist)
+                menu.add(Menu.NONE, deleteFromWatchlistActionId, 1, "Remove from watchlist")
+            else
+                menu.add(Menu.NONE, addToWatchlistActionId, 1, "Add to watchlist")
+
+            if (it.favorite)
+                menu.add(Menu.NONE, deleteFromFavoritesActionsId, 2, "Delete from favorites")
+            else
+                menu.add(Menu.NONE, markAsFavoriteActionId, 2, "Mark as favorite")
+
+        }
+
+        movieDetailsToolbar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                rateActionId -> rateMovie()
+                deleteRatingActionId -> deleteRatig()
+                addToWatchlistActionId -> addToWatchList()
+                deleteFromWatchlistActionId -> deleteFromWatchList()
+                markAsFavoriteActionId -> markAsFavorite()
+                deleteFromFavoritesActionsId -> deleteFromFavorites()
+                else -> false
+            }
+        }
+    }
+
+    private fun showSnackbar(message: String, buttonText: String, action: ((view: View) -> Unit) = {}) {
         Snackbar.make(movieDetailsCoordinatorLayout, message, Snackbar.LENGTH_LONG)
                 .setAction(buttonText, action)
                 .setActionTextColor(ContextCompat.getColor(this.context!!, R.color.colorAccent))
@@ -257,30 +299,56 @@ class MovieDetailsFragment : Fragment(), BackButtonListener {
     }
 
     private fun handleRateResponse(response: PostResponse?) {
-        if (response?.statusCode == 1 || response?.statusCode == 12) {
-            showSnackbar("Rated", "Undo") {
-                val sessionId = prefs.getString(SESSION_ID_KEY, null)
-                viewModel.deleteMovieRating(movieId, sessionId)
+        val message = if (response?.statusCode == 1 || response?.statusCode == 12) {
+            movieDetailsToolbar.apply {
+                menu.removeItem(rateActionId)
+                menu.add(Menu.NONE, deleteRatingActionId, 0, "Delete rating")
             }
+            "Rated"
+        } else {
+            movieDetailsToolbar.apply {
+                menu.removeItem(deleteRatingActionId)
+                menu.add(Menu.NONE, rateActionId, 0, "Rate")
+            }
+            "Rating deleted"
         }
+        showSnackbar(message, "OK")
     }
 
-    private fun handleAddToWatchlistReponse(response: PostResponse?) {
-        if (response?.statusCode == 1 || response?.statusCode == 12) {
-            showSnackbar("Added to watchlist", "Undo") {
-                val sessionId = prefs.getString(SESSION_ID_KEY, null)
-                viewModel.removeFromWatchList(movieId, sessionId)
+    private fun handleAddToWatchlistResponse(response: PostResponse?) {
+        val message = if (response?.statusCode == 1 || response?.statusCode == 12) {
+            movieDetailsToolbar.apply {
+                menu.removeItem(addToWatchlistActionId)
+                menu.add(Menu.NONE, deleteFromWatchlistActionId, 1, "Delete from watchlist")
             }
+            "Added to watchList"
+        } else {
+            movieDetailsToolbar.apply {
+                menu.removeItem(deleteFromWatchlistActionId)
+                menu.add(Menu.NONE, addToWatchlistActionId, 1, "Add to watchlist")
+            }
+            "Deleted from watchlist"
         }
+
+        showSnackbar(message, "OK")
     }
 
     private fun handleMarkAsFavoriteResponse(response: PostResponse?) {
-        if (response?.statusCode == 1 || response?.statusCode == 12) {
-            showSnackbar("Marked as favorite", "Undo") {
-                val sessionId = prefs.getString(SESSION_ID_KEY, null)
-                viewModel.removeFromFavorites(movieId, sessionId)
+        val message = if (response?.statusCode == 1 || response?.statusCode == 12) {
+            movieDetailsToolbar.apply {
+                menu.removeItem(markAsFavoriteActionId)
+                menu.add(Menu.NONE, deleteFromFavoritesActionsId, 2, "Delete from favorites")
             }
+            "Marked as favorite"
+        } else {
+            movieDetailsToolbar.apply {
+                menu.removeItem(deleteFromFavoritesActionsId)
+                menu.add(Menu.NONE, markAsFavoriteActionId, 2, "Mark as favorite")
+            }
+            "Deleted from favorites"
         }
+
+        showSnackbar(message, "OK")
     }
 
     private fun showLoadingError(message: String?) {

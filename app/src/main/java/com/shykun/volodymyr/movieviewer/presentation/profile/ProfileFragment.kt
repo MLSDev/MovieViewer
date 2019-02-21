@@ -5,7 +5,6 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.SharedPreferences
 import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.provider.ContactsContract
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +14,6 @@ import com.shykun.volodymyr.movieviewer.data.network.response.AccountDetailsResp
 import com.shykun.volodymyr.movieviewer.databinding.FragmentProfileBinding
 import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
 import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
-import com.shykun.volodymyr.movieviewer.presentation.utils.NavigationKeys
 import kotlinx.android.synthetic.main.fragment_profile.*
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject
@@ -27,10 +25,13 @@ class ProfileFragment : Fragment(), BackButtonListener {
 
     private lateinit var binding: FragmentProfileBinding
     private lateinit var viewModel: ProfileViewModel
+    private var sessionId: String? = null
     @Inject
     lateinit var viewModelFactory: ProfileViewModelFactory
     @Inject
     lateinit var router: Router
+    @Inject
+    lateinit var prefs: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,11 +39,16 @@ class ProfileFragment : Fragment(), BackButtonListener {
         (parentFragment as TabNavigationFragment).component?.inject(this)
         viewModel = ViewModelProviders.of(parentFragment!!, viewModelFactory)
                 .get(ProfileViewModel::class.java)
+
+        sessionId = prefs.getString(SESSION_ID_KEY, null)
+        if (sessionId != null)
+            viewModel.getAccountDetails(sessionId!!)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
         binding.viewModel = viewModel
+        binding.sessionId = sessionId
         return binding.root
     }
 

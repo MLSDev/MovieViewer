@@ -8,6 +8,7 @@ import android.view.View
 import com.shykun.volodymyr.movieviewer.data.entity.Actor
 import com.shykun.volodymyr.movieviewer.data.entity.Movie
 import com.shykun.volodymyr.movieviewer.data.entity.Review
+import com.shykun.volodymyr.movieviewer.data.network.response.ItemAccountStateResponse
 import com.shykun.volodymyr.movieviewer.data.network.response.MovieDetailsResponse
 import com.shykun.volodymyr.movieviewer.data.network.response.MoviesResponse
 import com.shykun.volodymyr.movieviewer.data.network.response.PostResponse
@@ -27,9 +28,12 @@ class MovieDetailsViewModel(
     private val addToWatchlistMutableLiveData = MutableLiveData<PostResponse>()
     private val markAsFavoriteMutableLiveData = MutableLiveData<PostResponse>()
 
+    private val movieAccountStatesMutableLiveData = MutableLiveData<ItemAccountStateResponse>()
+
     private val movieWatchListMutableLiveData = MutableLiveData<MoviesResponse>()
     private val favoriteMoviesMutableLiveData = MutableLiveData<MoviesResponse>()
     private val ratedMoviesMutableLiveData = MutableLiveData<MoviesResponse>()
+
     private val loadingErrorMutableLiveData = MutableLiveData<String>()
 
     val movieDetailsLiveData: LiveData<MovieDetailsResponse> = movieDetailsMutableLiveData
@@ -41,9 +45,12 @@ class MovieDetailsViewModel(
     val addToWatchListLiveData: LiveData<PostResponse> = addToWatchlistMutableLiveData
     val markAsFavoriteLiveData: LiveData<PostResponse> = markAsFavoriteMutableLiveData
 
+    val movieAccountLiveData: LiveData<ItemAccountStateResponse> = movieAccountStatesMutableLiveData
+
     val moviesWatchListLiveData: LiveData<MoviesResponse> = movieWatchListMutableLiveData
     val favoriteMoviesLiveData: LiveData<MoviesResponse> = favoriteMoviesMutableLiveData
     val ratedMoviesLiveData: LiveData<MoviesResponse> = ratedMoviesMutableLiveData
+
     val loadingErrorLiveData: LiveData<String> = loadingErrorMutableLiveData
 
     val castTitleVisibility = ObservableField<Int>(View.GONE)
@@ -55,7 +62,7 @@ class MovieDetailsViewModel(
     val recommendedMoviesCount = ObservableField<String>("")
     val reviewsCount = ObservableField<String>("")
 
-    fun onViewLoaded(movieId: Int, sessionId: String? = null) {
+    fun onViewLoaded(movieId: Int) {
         getMovieDetails(movieId)
         getMovieCast(movieId)
         getMovieReviews(movieId)
@@ -123,7 +130,7 @@ class MovieDetailsViewModel(
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
 
-    fun removeFromWatchList(movieId: Int, sessionId: String) = movieDetailsUseCase.removeFromWatchList(movieId, sessionId)
+    fun deleteFromWatchList(movieId: Int, sessionId: String) = movieDetailsUseCase.removeFromWatchList(movieId, sessionId)
             .subscribe(
                     { response -> addToWatchlistMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
@@ -135,9 +142,15 @@ class MovieDetailsViewModel(
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
 
-    fun removeFromFavorites(movieId: Int, sessionId: String) = movieDetailsUseCase.removeFromFavorites(movieId, sessionId)
+    fun deleteFromFavorites(movieId: Int, sessionId: String) = movieDetailsUseCase.removeFromFavorites(movieId, sessionId)
             .subscribe(
                     { response -> markAsFavoriteMutableLiveData.value = response },
+                    { error -> loadingErrorMutableLiveData.value = error.message }
+            )
+
+    fun getMovieAccountStates(movieId: Int, sessionId: String) = movieDetailsUseCase.getMovieAccountStates(movieId, sessionId)
+            .subscribe(
+                    { response -> movieAccountStatesMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
 }

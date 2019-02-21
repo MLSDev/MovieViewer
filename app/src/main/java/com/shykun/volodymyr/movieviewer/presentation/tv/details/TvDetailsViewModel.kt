@@ -8,6 +8,7 @@ import android.view.View
 import com.shykun.volodymyr.movieviewer.data.entity.Actor
 import com.shykun.volodymyr.movieviewer.data.entity.Review
 import com.shykun.volodymyr.movieviewer.data.entity.Tv
+import com.shykun.volodymyr.movieviewer.data.network.response.ItemAccountStateResponse
 import com.shykun.volodymyr.movieviewer.data.network.response.PostResponse
 import com.shykun.volodymyr.movieviewer.data.network.response.TvDetailsResponse
 import com.shykun.volodymyr.movieviewer.data.network.response.TvResponse
@@ -27,9 +28,12 @@ class TvDetailsViewModel(
     private val addToWatchListMutableLiveData = MutableLiveData<PostResponse>()
     private val markAsFavoriteMutableLiveData = MutableLiveData<PostResponse>()
 
+    private val tvAccountStatesMutableLiveData = MutableLiveData<ItemAccountStateResponse>()
+
     private val ratedTvMutableLiveData = MutableLiveData<TvResponse>()
     private val tvWatchlistMutableLiveData = MutableLiveData<TvResponse>()
     private val favoriteTvMutableLiveData = MutableLiveData<TvResponse>()
+
 
     private val loadingErrorMutableLiveData = MutableLiveData<String>()
 
@@ -42,6 +46,8 @@ class TvDetailsViewModel(
     val rateTvLiveData: LiveData<PostResponse> = rateTvMutableLiveData
     val addToWatchListLiveData: LiveData<PostResponse> = addToWatchListMutableLiveData
     val markAsFavoriteLiveData: LiveData<PostResponse> = markAsFavoriteMutableLiveData
+
+    val tvAccountStatesLiveData: LiveData<ItemAccountStateResponse> = tvAccountStatesMutableLiveData
 
     val ratedTvLiveData: LiveData<TvResponse> = ratedTvMutableLiveData
     val tvWatchlistLiveData: LiveData<TvResponse> = tvWatchlistMutableLiveData
@@ -126,7 +132,7 @@ class TvDetailsViewModel(
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
 
-    fun removeFromWatchlist(tvId: Int, sessionId: String) = tvDetailsUseCase.removeFromWatchlist(tvId, sessionId)
+    fun deleteFromWatchlist(tvId: Int, sessionId: String) = tvDetailsUseCase.removeFromWatchlist(tvId, sessionId)
             .subscribe(
                     { response -> addToWatchListMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
@@ -138,9 +144,15 @@ class TvDetailsViewModel(
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
 
-    fun removeFromFavorites(tvId: Int, sessionId: String) = tvDetailsUseCase.removeFromFavorites(tvId, sessionId)
+    fun deleteFromFavorites(tvId: Int, sessionId: String) = tvDetailsUseCase.removeFromFavorites(tvId, sessionId)
             .subscribe(
                     { response -> markAsFavoriteMutableLiveData.value = response },
+                    { error -> loadingErrorMutableLiveData.value = error.message }
+            )
+
+    fun getTvAccountStates(tvId: Int, sessionId: String) = tvDetailsUseCase.getTvAccountStates(tvId, sessionId)
+            .subscribe(
+                    { response -> tvAccountStatesMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
 }

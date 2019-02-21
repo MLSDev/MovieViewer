@@ -9,11 +9,15 @@
 
         <variable
             name="viewModel"
-            type="com.shykun.volodymyr.movieviewer.presentation.profile.ProfileViewModel"/>
+            type="com.shykun.volodymyr.movieviewer.presentation.profile.ProfileViewModel" />
 
         <variable
             name="accountDetails"
             type="com.shykun.volodymyr.movieviewer.data.network.response.AccountDetailsResponse" />
+
+        <variable
+            name="sessionId"
+            type="String" />
     </data>
 
 
@@ -29,14 +33,14 @@
             android:layout_gravity="center"
             android:background="@drawable/button_rounded"
             android:text="Login"
-            android:visibility="@{viewModel.sessionIdLiveData == null ? View.VISIBLE : View.GONE}" />
+            android:visibility="@{sessionId == null ? View.VISIBLE : View.GONE}" />
 
         <ProgressBar
             android:id="@+id/profileProgressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:visibility="@{viewModel.sessionIdLiveData != null &amp;&amp; accountDetails == null ? View.VISIBLE : View.GONE}"/>
+            android:visibility="@{sessionId != null &amp;&amp; accountDetails == null ? View.VISIBLE : View.GONE}" />
 
         <android.support.design.widget.AppBarLayout
             android:id="@+id/profileAppBarLayout"
@@ -47,40 +51,103 @@
 
             <android.support.design.widget.CollapsingToolbarLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/colorPrimary">
 
-
-                <ImageView
+                <android.support.v7.widget.Toolbar
                     android:layout_width="match_parent"
-                    android:layout_height="150dp" />
+                    android:layout_height="?attr/actionBarSize"
+                    app:title="@{accountDetails.username}">
 
-                <ImageView
-                    android:id="@+id/profilePhoto"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_margin="16dp"
-                    android:background="@drawable/round"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_person" />
+                    <ImageView
+                        android:id="@+id/profilePhoto"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginStart="16dp"
+                        android:background="@drawable/round"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_person"
+                        url=""/>
+
+                    <TextView
+                        android:id="@+id/userName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:text="@{accountDetails.username}" />
+
+                </android.support.v7.widget.Toolbar>
 
             </android.support.design.widget.CollapsingToolbarLayout>
 
 
         </android.support.design.widget.AppBarLayout>
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="@{accountDetails == null ? View.GONE : View.VISIBLE}"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/userName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{accountDetails.username}"/>
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="Rated movies"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-        </RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rated TV"
+                android:textSize="20sp"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Favorite movies"
+                android:textSize="20sp"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp"
+                android:textStyle="bold"/>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Favorite TV"
+                android:textSize="20sp"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Movie watchlist"
+                android:textSize="20sp"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TV watchlist"
+                android:textSize="20sp"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
 
     </android.support.design.widget.CoordinatorLayout>
 

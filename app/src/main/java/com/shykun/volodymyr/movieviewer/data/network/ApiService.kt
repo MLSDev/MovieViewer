@@ -1,5 +1,6 @@
 package com.shykun.volodymyr.movieviewer.data.network
 
+import com.google.gson.JsonElement
 import com.shykun.volodymyr.movieviewer.data.network.body.AddToWatchlistBody
 import com.shykun.volodymyr.movieviewer.data.network.body.MarkAsFavoriteBody
 import com.shykun.volodymyr.movieviewer.data.network.body.RateBody
@@ -61,6 +62,12 @@ interface ApiService {
             @Query("session_id") sessionId: String,
             @Query("api_key") api_key: String = API_KEY): Single<PostResponse>
 
+    @GET("movie/{movie_id}/account_states")
+    fun getMovieAccountStates(
+            @Path("movie_id") movieId: Int,
+            @Query("session_id") sessionId: String,
+            @Query("api_key") api_key: String = API_KEY): Single<JsonElement>
+
     //tv
 
     @GET("tv/{tv_type}")
@@ -108,6 +115,12 @@ interface ApiService {
             @Path("tv_id") tvId: Int,
             @Query("session_id") sessionId: String,
             @Query("api_key") api_key: String = API_KEY): Single<PostResponse>
+
+    @GET("tv/{tv_id}/account_states")
+    fun getTvAccountStates(
+            @Path("tv_id") tvId: Int,
+            @Query("session_id") sessionId: String,
+            @Query("api_key") api_key: String = API_KEY): Single<JsonElement>
 
     //people
 

@@ -4,6 +4,7 @@ import com.shykun.volodymyr.movieviewer.data.network.ApiClient
 import com.shykun.volodymyr.movieviewer.data.network.body.AddToWatchlistBody
 import com.shykun.volodymyr.movieviewer.data.network.body.MarkAsFavoriteBody
 import com.shykun.volodymyr.movieviewer.data.network.body.RateBody
+import com.shykun.volodymyr.movieviewer.data.network.response.ItemAccountStateResponse
 import javax.inject.Inject
 
 class MovieDetailsUseCase @Inject constructor(private val apiClient: ApiClient) {
@@ -20,4 +21,16 @@ class MovieDetailsUseCase @Inject constructor(private val apiClient: ApiClient) 
     fun deleteMovieRating(movieId: Int, sessionId: String) = apiClient.deleteMovieRating(movieId, sessionId)
     fun removeFromFavorites(movieId: Int, sessionId: String) = apiClient.markAsFavorite(MarkAsFavoriteBody("movie", movieId, false), sessionId)
     fun removeFromWatchList(movieId: Int, sessionId: String) = apiClient.addToWatchlist(AddToWatchlistBody("movie", movieId, false), sessionId)
+
+    fun getMovieAccountStates(movieId: Int, sessionId: String) = apiClient.getMovieAccountStates(movieId, sessionId)
+            .map {
+                jsonElement ->
+                val json = jsonElement.asJsonObject
+                val id = json.getAsJsonPrimitive("id").asInt
+                val favorite = json.getAsJsonPrimitive("favorite").asBoolean
+                val watchlist = json.getAsJsonPrimitive("watchlist").asBoolean
+                val rated = json.get("rated").isJsonObject
+
+                ItemAccountStateResponse(id, favorite, rated, watchlist)
+            }
 }

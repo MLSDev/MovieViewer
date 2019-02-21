@@ -69,6 +69,10 @@ class ApiClient @Inject constructor() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
+    fun getMovieAccountStates(movieId: Int, sessionId: String) = apiService.getMovieAccountStates(movieId, sessionId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
     //tv
 
     fun getTV(tvType: TvType, page: Int) = apiService.getTV(tvType.path, page)
@@ -100,6 +104,10 @@ class ApiClient @Inject constructor() {
             .observeOn(AndroidSchedulers.mainThread())
 
     fun deleteTvRating(tvId: Int, sessionId: String) = apiService.deleteTvRating(tvId, sessionId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+    fun getTvAccountStates(tvId: Int, sessionId: String) = apiService.getTvAccountStates(tvId, sessionId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
@@ -159,7 +167,7 @@ class ApiClient @Inject constructor() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
-    fun getFavoriteTv(sessionId: String, page:Int) = apiService.getFavoriteTv(sessionId, page)
+    fun getFavoriteTv(sessionId: String, page: Int) = apiService.getFavoriteTv(sessionId, page)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
