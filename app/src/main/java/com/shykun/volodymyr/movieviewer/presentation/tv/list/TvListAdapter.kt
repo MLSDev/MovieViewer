@@ -18,7 +18,7 @@ private const val LOADING = 1
 class TvListAdapter(itemList: ArrayList<Tv>, val tvType: TvType)
     : BaseRecyclerViewAdapter<Tv, BaseTvListViewHolder>(itemList) {
 
-    var lastLoadedPage = 0
+    var nextPage = 1
     private val clickSubject = PublishSubject.create<Int>()
     val clickObservable: Observable<Int> = clickSubject
 

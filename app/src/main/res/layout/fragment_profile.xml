@@ -61,6 +61,7 @@
 
                     <ImageView
                         android:id="@+id/profilePhoto"
+                        url=""
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_gravity="center_vertical"
@@ -68,8 +69,7 @@
                         android:layout_marginStart="16dp"
                         android:background="@drawable/round"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/ic_person"
-                        url=""/>
+                        android:src="@drawable/ic_person" />
 
                     <TextView
                         android:id="@+id/userName"
@@ -88,64 +88,64 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:orientation="vertical"
             android:visibility="@{accountDetails == null ? View.GONE : View.VISIBLE}"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            android:orientation="vertical">
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <TextView
+                android:id="@+id/ratedMovies"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="10dp"
                 android:text="Rated movies"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textSize="16sp" />
 
             <TextView
+                android:id="@+id/ratedTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
                 android:text="Rated TV"
-                android:textSize="20sp"
-                android:layout_marginTop="16dp"
-                android:layout_marginStart="16dp"
-                android:textStyle="bold"/>
+                android:textSize="16sp" />
 
             <TextView
+                android:id="@+id/favoriteMovies"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
                 android:text="Favorite movies"
-                android:textSize="20sp"
-                android:layout_marginTop="16dp"
-                android:layout_marginStart="16dp"
-                android:textStyle="bold"/>
+                android:textSize="16sp" />
 
 
             <TextView
+                android:id="@+id/favoriteTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
                 android:text="Favorite TV"
-                android:textSize="20sp"
-                android:layout_marginTop="16dp"
-                android:layout_marginStart="16dp"
-                android:textStyle="bold"/>
+                android:textSize="16sp" />
 
             <TextView
+                android:id="@+id/movieWatchlist"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
                 android:text="Movie watchlist"
-                android:textSize="20sp"
-                android:layout_marginTop="16dp"
-                android:layout_marginStart="16dp"
-                android:textStyle="bold"/>
+                android:textSize="16sp" />
 
             <TextView
+                android:id="@+id/tvWatchList"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TV watchlist"
-                android:textSize="20sp"
-                android:layout_marginTop="16dp"
                 android:layout_marginStart="16dp"
-                android:textStyle="bold"/>
+                android:layout_marginTop="10dp"
+                android:text="TV watchlist"
+                android:textSize="16sp" />
 
         </LinearLayout>
 

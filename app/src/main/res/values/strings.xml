@@ -36,4 +36,10 @@
     <string name="discover">Discover</string>
     <string name="add_to_watchlist">Add to watchlist</string>
     <string name="mark_as_favorite">Mark as favorite</string>
+    <string name="rated_movies">Rated movies</string>
+    <string name="favorite_movies">Favorite movies</string>
+    <string name="movie_watchlist">Movie watchlist</string>
+    <string name="rated_tv">Rated TV</string>
+    <string name="tv_watchlist">TV watchlist</string>
+    <string name="favorite_tv">Favorite TV</string>
 </resources>

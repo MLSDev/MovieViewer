@@ -10,10 +10,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.shykun.volodymyr.movieviewer.R
+import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
+import com.shykun.volodymyr.movieviewer.data.entity.TvType
 import com.shykun.volodymyr.movieviewer.data.network.response.AccountDetailsResponse
 import com.shykun.volodymyr.movieviewer.databinding.FragmentProfileBinding
 import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
 import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
+import com.shykun.volodymyr.movieviewer.presentation.movies.list.MOVIE_LIST_FRAGMENT_KEY
+import com.shykun.volodymyr.movieviewer.presentation.movies.list.MOVIE_TYPE_KEY
+import com.shykun.volodymyr.movieviewer.presentation.tv.list.TV_LIST_FRAGMENT_KEY
+import com.shykun.volodymyr.movieviewer.presentation.tv.list.TV_TYPE_KEY
 import kotlinx.android.synthetic.main.fragment_profile.*
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject
@@ -61,6 +67,38 @@ class ProfileFragment : Fragment(), BackButtonListener {
 
     private fun setClickListeners() {
         loginButton.setOnClickListener { router.navigateTo(LOGIN_FRAGMENT_KEY) }
+        ratedMovies.setOnClickListener {
+            val args = Bundle()
+            args.putSerializable(MOVIE_TYPE_KEY, MoviesType.RATED)
+            router.navigateTo(MOVIE_LIST_FRAGMENT_KEY, args)
+        }
+        ratedTv.setOnClickListener {
+            val args = Bundle()
+            args.putSerializable(TV_TYPE_KEY, TvType.RATED)
+            router.navigateTo(TV_LIST_FRAGMENT_KEY, args)
+        }
+        favoriteMovies.setOnClickListener {
+            val args = Bundle()
+            args.putSerializable(MOVIE_TYPE_KEY, MoviesType.FAVORITE)
+            router.navigateTo(MOVIE_LIST_FRAGMENT_KEY, args)
+        }
+        favoriteTv.setOnClickListener {
+            val args = Bundle()
+            args.putSerializable(TV_TYPE_KEY, TvType.FAVORITE)
+            router.navigateTo(TV_LIST_FRAGMENT_KEY, args)
+        }
+        movieWatchlist.setOnClickListener {
+            val args = Bundle()
+            args.putSerializable(MOVIE_TYPE_KEY, MoviesType.WATCHLIST)
+            router.navigateTo(MOVIE_LIST_FRAGMENT_KEY, args)
+        }
+        tvWatchList.setOnClickListener {
+            val args = Bundle()
+            args.putSerializable(TV_TYPE_KEY, TvType.WATCHLIST)
+            router.navigateTo(TV_LIST_FRAGMENT_KEY, args)
+        }
+
+
     }
 
     private fun subscribeViewModel() {

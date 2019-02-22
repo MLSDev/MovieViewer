@@ -2,6 +2,7 @@ package com.shykun.volodymyr.movieviewer.presentation.tv.list
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -10,11 +11,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.shykun.volodymyr.movieviewer.R
+import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
 import com.shykun.volodymyr.movieviewer.data.entity.TvType
 import com.shykun.volodymyr.movieviewer.data.network.response.TvResponse
 import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
 import com.shykun.volodymyr.movieviewer.presentation.common.ScrollObservable
 import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
+import com.shykun.volodymyr.movieviewer.presentation.profile.SESSION_ID_KEY
 import com.shykun.volodymyr.movieviewer.presentation.tv.details.TV_DETAILS_FRAGMENT_KEY
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_movie_list.*
@@ -31,20 +34,20 @@ class TvListFragment : Fragment(), BackButtonListener {
     private lateinit var tvType: TvType
     private lateinit var viewModel: TvListViewModel
     private lateinit var tvListAdapter: TvListAdapter
-    private var searchQuery: String? = null
 
     @Inject
     lateinit var viewModelFactory: TvListViewModelFactory
     @Inject
     lateinit var router: Router
+    @Inject
+    lateinit var prefs: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (parentFragment as TabNavigationFragment).component?.inject(this)
 
+        (parentFragment as TabNavigationFragment).component?.inject(this)
         tvType = arguments?.getSerializable(TV_TYPE_KEY) as TvType
         tvListAdapter = TvListAdapter(ArrayList(), tvType)
-        searchQuery = arguments?.getString(SEARCH_QUERY_KEY, null)
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(TvListViewModel::class.java)
 
@@ -71,6 +74,9 @@ class TvListFragment : Fragment(), BackButtonListener {
             TvType.POPULAR -> getString(R.string.popular_tv)
             TvType.ON_THE_AIR -> getString(R.string.tv_on_the_air)
             TvType.SEARCHED -> getString(R.string.results)
+            TvType.RATED -> getString(R.string.rated_tv)
+            TvType.WATCHLIST -> getString(R.string.tv_watchlist)
+            TvType.FAVORITE -> getString(R.string.favorite_tv)
         }
     }
 
@@ -100,15 +106,31 @@ class TvListFragment : Fragment(), BackButtonListener {
     }
 
     private fun subscribeScrollObervable() {
+        val sessionId = prefs.getString(SESSION_ID_KEY, null)
+
         ScrollObservable.from(movieList, 10)
                 .distinctUntilChanged()
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext {
-                    if (tvType != TvType.SEARCHED)
-                        viewModel.getTvList(tvListAdapter.lastLoadedPage + 1, tvType)
-                    else
-                        viewModel.searchTv(searchQuery!!,tvListAdapter.lastLoadedPage + 1)
-                    tvListAdapter.lastLoadedPage++
+                    when (tvType) {
+                        TvType.TOP_RATED, TvType.POPULAR, TvType.ON_THE_AIR -> {
+                            viewModel.getTvList(tvType, tvListAdapter.nextPage)
+                        }
+                        TvType.SEARCHED -> {
+                            val query = arguments?.getString(SEARCH_QUERY_KEY)
+                            viewModel.searchTv(query!!, tvListAdapter.nextPage)
+                        }
+                        TvType.RATED -> {
+                            viewModel.getRatedTv(sessionId, tvListAdapter.nextPage)
+                        }
+                        TvType.FAVORITE -> {
+                            viewModel.getFavoriteTv(sessionId, tvListAdapter.nextPage)
+                        }
+                        TvType.WATCHLIST -> {
+                            viewModel.getTvWatchlist(sessionId, tvListAdapter.nextPage)
+                        }
+                    }
+                    tvListAdapter.nextPage++
                 }
                 .subscribe()
     }
