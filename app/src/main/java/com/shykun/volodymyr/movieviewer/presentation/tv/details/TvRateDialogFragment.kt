@@ -47,11 +47,17 @@ class TvRateDialogFragment : DialogFragment() {
 
         ratingBar.setOnTouchListener { v, event ->
             val rating = ratingBar.rating
-            ratingText.text = rating.toString()
+            if (rating >= 0.5f)
+                ratingText.text = rating.toString()
 
             ratingBar.onTouchEvent(event)
-
         }
+
+        ratingBar.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
+            if (rating < 0.5f)
+                ratingBar.rating = 0.5f
+        }
+
 
         builder.setView(view)
                 .setPositiveButton("OK") { dialog, which ->

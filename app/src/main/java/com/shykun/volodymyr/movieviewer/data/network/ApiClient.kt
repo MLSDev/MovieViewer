@@ -151,6 +151,10 @@ class ApiClient @Inject constructor() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
+    fun logout(sessionId: String) = apiService.logout(sessionId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
     fun getAccountDetails(sessionId: String) = apiService.getAccountDetails(sessionId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

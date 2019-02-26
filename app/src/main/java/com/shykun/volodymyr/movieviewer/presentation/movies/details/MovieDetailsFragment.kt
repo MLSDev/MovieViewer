@@ -139,10 +139,18 @@ class MovieDetailsFragment : Fragment(), BackButtonListener {
 
     private fun setupToolbar() {
         viewModel.movieAccountLiveData.observe(this, Observer { handleMovieAccountStatesResponse(it) })
-        movieDetailsToolbar.setNavigationIcon(R.drawable.ic_arrow_back)
-        movieDetailsToolbar.setNavigationOnClickListener {
-            onBackClicked()
+
+        movieDetailsToolbar.apply {
+            setNavigationIcon(R.drawable.ic_arrow_back)
+            setNavigationOnClickListener { onBackClicked() }
+
+            inflateMenu(R.menu.menu_details)
+            setOnMenuItemClickListener {
+                openLoginSnackBar()
+                true
+            }
         }
+
     }
 
     private fun setupCastAdapter() {
@@ -254,6 +262,7 @@ class MovieDetailsFragment : Fragment(), BackButtonListener {
     private fun handleMovieAccountStatesResponse(accountStates: ItemAccountStateResponse?) {
 
         val menu = movieDetailsToolbar.menu
+        menu.clear()
 
         accountStates?.let {
             if (it.rated)

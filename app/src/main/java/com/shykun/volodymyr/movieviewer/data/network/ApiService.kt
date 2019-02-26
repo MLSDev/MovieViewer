@@ -175,6 +175,12 @@ interface ApiService {
             @Body requestTokenBody: RequestTokenBody,
             @Query("api_key") api_key: String = API_KEY): Single<SessionIdResponse>
 
+    @DELETE("authentication/session")
+    fun logout(
+            @Query("session_id") sessionId: String,
+            @Query("api_key") api_key: String = API_KEY): Single<LogoutResponse>
+
+
     @GET("account")
     fun getAccountDetails(
             @Query("session_id") sessionId: String,

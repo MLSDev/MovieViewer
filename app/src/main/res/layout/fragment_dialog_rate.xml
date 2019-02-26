@@ -21,7 +21,6 @@
         style="@style/Base.Widget.AppCompat.RatingBar.Indicator"
         android:numStars="10"
         android:isIndicator="false"
-        android:stepSize="0.1"
         android:scaleY="0.8"
         android:scaleX="0.8"
         android:progressBackgroundTint="@color/darkGrey"/>

@@ -13,6 +13,8 @@ import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
 import com.shykun.volodymyr.movieviewer.data.entity.TvType
 import com.shykun.volodymyr.movieviewer.data.network.response.AccountDetailsResponse
+import com.shykun.volodymyr.movieviewer.data.network.response.LogoutResponse
+import com.shykun.volodymyr.movieviewer.data.network.response.SessionIdResponse
 import com.shykun.volodymyr.movieviewer.databinding.FragmentProfileBinding
 import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
 import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
@@ -31,7 +33,6 @@ class ProfileFragment : Fragment(), BackButtonListener {
 
     private lateinit var binding: FragmentProfileBinding
     private lateinit var viewModel: ProfileViewModel
-    private var sessionId: String? = null
     @Inject
     lateinit var viewModelFactory: ProfileViewModelFactory
     @Inject
@@ -46,7 +47,7 @@ class ProfileFragment : Fragment(), BackButtonListener {
         viewModel = ViewModelProviders.of(parentFragment!!, viewModelFactory)
                 .get(ProfileViewModel::class.java)
 
-        sessionId = prefs.getString(SESSION_ID_KEY, null)
+        val sessionId = prefs.getString(SESSION_ID_KEY, null)
         if (sessionId != null)
             viewModel.getAccountDetails(sessionId!!)
     }
@@ -54,15 +55,32 @@ class ProfileFragment : Fragment(), BackButtonListener {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
         binding.viewModel = viewModel
-        binding.sessionId = sessionId
+        binding.sessionId = prefs.getString(SESSION_ID_KEY, null)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupToolbar()
         subscribeViewModel()
         setClickListeners()
+    }
+
+    private fun setupToolbar() {
+        val sessionId = prefs.getString(SESSION_ID_KEY, null)
+        if (sessionId != null) {
+            profileToolbar.inflateMenu(R.menu.menu_profile)
+            profileToolbar.setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.action_logout -> {
+                        viewModel.logout(sessionId!!)
+                        true
+                    }
+                    else -> false
+                }
+            }
+        }
     }
 
     private fun setClickListeners() {
@@ -97,16 +115,30 @@ class ProfileFragment : Fragment(), BackButtonListener {
             args.putSerializable(TV_TYPE_KEY, TvType.WATCHLIST)
             router.navigateTo(TV_LIST_FRAGMENT_KEY, args)
         }
-
-
     }
 
     private fun subscribeViewModel() {
         viewModel.accountDetailsLiveData.observe(this, Observer { showAccountDetails(it) })
+        viewModel.sessionIdLiveData.observe(this, Observer { handleLoginResponse(it) })
+        viewModel.logoutLiveData.observe(this, Observer { handleLogoutReesponse(it) })
     }
 
     private fun showAccountDetails(accountDetailsResponse: AccountDetailsResponse?) {
         binding.accountDetails = accountDetailsResponse
+    }
+
+    private fun handleLoginResponse(sessionIdResponse: SessionIdResponse?) {
+        if (sessionIdResponse != null) {
+            binding.sessionId = sessionIdResponse.sessionId
+        }
+    }
+
+    private fun handleLogoutReesponse(logoutResponse: LogoutResponse?) {
+        if (logoutResponse != null) {
+            binding.accountDetails = null
+            binding.sessionId = null
+        }
+        prefs.edit().putString(SESSION_ID_KEY, null).apply()
     }
 
     override fun onBackClicked() = false

@@ -139,8 +139,16 @@ class TvDetailsFragment : Fragment(), BackButtonListener {
     private fun setupToolbar() {
         viewModel.tvAccountStatesLiveData.observe(this, Observer { handleTvAccountStatesResponse(it) })
 
-        tvDetailsToolbar.setNavigationIcon(R.drawable.ic_arrow_back)
-        tvDetailsToolbar.setNavigationOnClickListener { onBackClicked() }
+        tvDetailsToolbar.apply {
+            setNavigationIcon(R.drawable.ic_arrow_back)
+            setNavigationOnClickListener { onBackClicked() }
+
+            inflateMenu(R.menu.menu_details)
+            setOnMenuItemClickListener {
+                openLoginSnackBar()
+                true
+            }
+        }
     }
 
     private fun setupCastAdapter() {
@@ -252,6 +260,7 @@ class TvDetailsFragment : Fragment(), BackButtonListener {
     private fun handleTvAccountStatesResponse(accountStates: ItemAccountStateResponse?) {
 
         val menu = tvDetailsToolbar.menu
+        menu.clear()
 
         accountStates?.let {
             if (it.rated)

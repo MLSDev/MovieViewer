@@ -11,6 +11,8 @@ class ProfileUseCase @Inject constructor(private val apiClient: ApiClient) {
 
     fun createSessionId(requestToken: String) = apiClient.createSessionId(RequestTokenBody(requestToken))
 
+    fun logout(sessionId: String) = apiClient.logout(sessionId)
+
     fun getAccountDetails(sessionId: String) = apiClient.getAccountDetails(sessionId)
 
     fun getRatedMovies(sessionId: String, page: Int) = apiClient.getRatedMovies(sessionId, page)
