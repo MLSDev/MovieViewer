@@ -1,5 +1,7 @@
 package com.shykun.volodymyr.movieviewer.presentation.di
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.support.v4.app.FragmentActivity
 import android.support.v4.app.FragmentManager
 import com.shykun.volodymyr.movieviewer.presentation.common.FlowNavigator
@@ -31,4 +33,8 @@ class AppModule(val activity: FragmentActivity, val fragmentManager: FragmentMan
     @Provides
     @Singleton
     fun provideFlowNavigator(): FlowNavigator = FlowNavigator(activity, fragmentManager, containerId)
+
+    @Provides
+    @Singleton
+    fun provideSharedPreferences(): SharedPreferences = activity?.getPreferences(Context.MODE_PRIVATE)
 }

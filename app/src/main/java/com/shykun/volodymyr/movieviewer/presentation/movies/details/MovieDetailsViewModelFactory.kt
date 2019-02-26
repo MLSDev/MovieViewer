@@ -2,13 +2,16 @@ package com.shykun.volodymyr.movieviewer.presentation.movies.details
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
+import android.content.SharedPreferences
 import com.shykun.volodymyr.movieviewer.domain.MovieDetailsUseCase
+import com.shykun.volodymyr.movieviewer.domain.ProfileUseCase
 import javax.inject.Inject
 
 class MovieDetailsViewModelFactory @Inject constructor(
-        private val movieDetailsUseCase: MovieDetailsUseCase) : ViewModelProvider.NewInstanceFactory() {
+        private val movieDetailsUseCase: MovieDetailsUseCase,
+        private val profileUseCase: ProfileUseCase) : ViewModelProvider.NewInstanceFactory() {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return MovieDetailsViewModel(movieDetailsUseCase) as T
+        return MovieDetailsViewModel(movieDetailsUseCase, profileUseCase) as T
     }
 }

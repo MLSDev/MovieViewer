@@ -3,6 +3,7 @@ package com.shykun.volodymyr.movieviewer.presentation.movies.list
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -17,6 +18,7 @@ import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
 import com.shykun.volodymyr.movieviewer.presentation.common.ScrollObservable
 import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
 import com.shykun.volodymyr.movieviewer.presentation.movies.details.MOVIE_DETAILS_FRAGMENT_KEY
+import com.shykun.volodymyr.movieviewer.presentation.profile.SESSION_ID_KEY
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_movie_list.*
 import ru.terrakok.cicerone.Router
@@ -31,21 +33,20 @@ class MovieListFragment : Fragment(), BackButtonListener {
     private lateinit var moviesType: MoviesType
     private lateinit var viewModel: MovieListViewModel
     private lateinit var movieListAdapter: MovieListAdapter
-    private var searchQuery: String? = null
 
     @Inject
     lateinit var viewModelFactory: MovieListViewModelFactory
     @Inject
     lateinit var router: Router
+    @Inject
+    lateinit var prefs: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         (parentFragment as TabNavigationFragment).component?.inject(this)
-
         moviesType = arguments?.getSerializable(MOVIE_TYPE_KEY) as MoviesType
         movieListAdapter = MovieListAdapter(ArrayList(), moviesType)
-        searchQuery = arguments?.getString(SEARCH_QUERY_KEY, null)
         viewModel = ViewModelProviders
                 .of(this, viewModelFactory)
                 .get(MovieListViewModel::class.java)
@@ -68,11 +69,14 @@ class MovieListFragment : Fragment(), BackButtonListener {
     }
 
     private fun setToolbarTitle() {
-        movieListToolbar.title = when(moviesType) {
+        movieListToolbar.title = when (moviesType) {
             MoviesType.TOP_RATED -> getString(R.string.top_rated_movies)
             MoviesType.POPULAR -> getString(R.string.popular_movies)
             MoviesType.UPCOMING -> getString(R.string.upcoming_movies)
             MoviesType.SEARCHED -> getString(R.string.results)
+            MoviesType.RATED -> getString(R.string.rated_movies)
+            MoviesType.FAVORITE -> getString(R.string.favorite_movies)
+            MoviesType.WATCHLIST -> getString(R.string.movie_watchlist)
         }
     }
 
@@ -103,18 +107,35 @@ class MovieListFragment : Fragment(), BackButtonListener {
     }
 
     private fun subscribeScrollObervable() {
+        val sessionId = prefs.getString(SESSION_ID_KEY, null)
+
         ScrollObservable.from(movieList, 10)
                 .distinctUntilChanged()
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext {
-                    if (moviesType != MoviesType.SEARCHED)
-                        viewModel.getMovies(movieListAdapter.nextPage, moviesType)
-                    else
-                        viewModel.searchMovie(searchQuery!!, movieListAdapter.nextPage + 1)
+                    when (moviesType) {
+                        MoviesType.TOP_RATED, MoviesType.POPULAR, MoviesType.UPCOMING -> {
+                            viewModel.getMovies(movieListAdapter.nextPage, moviesType)
+                        }
+                        MoviesType.SEARCHED -> {
+                            val query = arguments?.getString(SEARCH_QUERY_KEY)
+                            viewModel.searchMovie(query!!, movieListAdapter.nextPage)
+                        }
+                        MoviesType.RATED -> {
+                            viewModel.getRatedMovies(sessionId, movieListAdapter.nextPage)
+                        }
+                        MoviesType.FAVORITE -> {
+                            viewModel.getFavoriteMovies(sessionId, movieListAdapter.nextPage)
+                        }
+                        MoviesType.WATCHLIST -> {
+                            viewModel.getMovieWatchlist(sessionId, movieListAdapter.nextPage)
+                        }
+                    }
                     movieListAdapter.nextPage++
                 }
                 .subscribe()
     }
+
 
     fun showMovies(moviesResponse: MoviesResponse?) {
         if (moviesResponse != null) {

@@ -63,7 +63,7 @@ class DiscoverViewModel(private val discoverUseCase: DiscoverUseCase) : ViewMode
 
         val tmpYear = if (year.get() == -1) null else year.get()
         val tmpRating = if (rating.get() == -1) null else rating.get()
-        val tmpGenres = if (genres.get()!!.isEmpty()) null else genres.get()!!.joinToString { it.id.toString() }
+        val tmpGenres = if (genres.get()!!.isEmpty()) null else genres.get()!!.joinToString(separator = ",") { it.id.toString() }
 
         return discoverUseCase
                 .discoverMovies(tmpYear, tmpRating, tmpGenres, page)
@@ -79,7 +79,7 @@ class DiscoverViewModel(private val discoverUseCase: DiscoverUseCase) : ViewMode
     private fun discoverTv(page: Int) {
         val tmpYear = if (year.get() == -1) null else "${year.get()}-01-01"
         val tmpRating = if (rating.get() == -1) null else rating.get()
-        val tmpGenres = if (genres.get()!!.isEmpty()) null else genres.get()!!.joinToString { it.id.toString() }
+        val tmpGenres = if (genres.get()!!.isEmpty()) null else genres.get()!!.joinToString(separator = ",") { it.id.toString() }
 
         discoverUseCase
                 .discoverTv(tmpYear, tmpRating, tmpGenres, page)

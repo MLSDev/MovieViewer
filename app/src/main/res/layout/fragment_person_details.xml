@@ -13,7 +13,7 @@
 
         <variable
             name="viewModel"
-            type="com.shykun.volodymyr.movieviewer.presentation.people.details.PersonDetailsViewModel"/>
+            type="com.shykun.volodymyr.movieviewer.presentation.people.details.PersonDetailsViewModel" />
     </data>
 
     <RelativeLayout
@@ -35,7 +35,7 @@
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
                 app:title="@{personDetails.name}" />
 
-            <ScrollView
+            <android.support.v4.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -72,7 +72,6 @@
                         android:textSize="16sp" />
 
                     <TextView
-                        android:visibility='@{personDetails.biography.equals("") ? View.GONE : View.VISIBLE}'
                         android:id="@+id/personBiographyTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -80,7 +79,8 @@
                         android:layout_marginStart="10dp"
                         android:text="@string/biography"
                         android:textSize="25sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:visibility='@{personDetails.biography.equals("") ? View.GONE : View.VISIBLE}' />
 
                     <com.ms.square.android.expandabletextview.ExpandableTextView xmlns:android="http://schemas.android.com/apk/res/android"
                         xmlns:expandableTextView="http://schemas.android.com/apk/res-auto"
@@ -126,14 +126,14 @@
                         android:id="@+id/castCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
+                        android:layout_alignBaseline="@id/castTitle"
                         android:layout_below="@id/personBiography"
                         android:layout_marginEnd="10dp"
                         android:layout_marginTop="10dp"
+                        android:layout_toEndOf="@id/castTitle"
                         android:text="@{viewModel.castCount}"
                         android:textColor="@color/darkGrey"
-                        android:textSize="25sp"
-                        android:textStyle="bold" />
+                        android:textSize="20sp" />
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/personCast"
@@ -144,7 +144,7 @@
 
                 </RelativeLayout>
 
-            </ScrollView>
+            </android.support.v4.widget.NestedScrollView>
 
         </LinearLayout>
 

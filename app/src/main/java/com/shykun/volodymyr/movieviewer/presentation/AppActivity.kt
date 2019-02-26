@@ -8,6 +8,8 @@ import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragmen
 import com.shykun.volodymyr.movieviewer.presentation.discover.DiscoverNavigationFragment
 import com.shykun.volodymyr.movieviewer.presentation.movies.MoviesNavigationFragment
 import com.shykun.volodymyr.movieviewer.presentation.people.PeopleNavigationFragment
+import com.shykun.volodymyr.movieviewer.presentation.profile.ProfileFragment
+import com.shykun.volodymyr.movieviewer.presentation.profile.ProfileNavigationFragment
 import com.shykun.volodymyr.movieviewer.presentation.tv.TvNavigationFragment
 import com.shykun.volodymyr.movieviewer.presentation.utils.NavigationKeys
 import kotlinx.android.synthetic.main.activity_main.*
@@ -42,8 +44,13 @@ class AppActivity : AppCompatActivity() {
                 ?: DiscoverNavigationFragment()
     }
 
+    private val profileNavigationFragment: ProfileNavigationFragment by lazy {
+        supportFragmentManager.findFragmentByTag(NavigationKeys.PROFILE_NAVIGATION_KEY) as? ProfileNavigationFragment
+                ?: ProfileNavigationFragment()
+    }
+
     private var currentTab = NavigationKeys.MOVIES_NAVIGATION_KEY
-    private val cicerone = Cicerone.create()
+    val cicerone = Cicerone.create()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -82,6 +89,7 @@ class AppActivity : AppCompatActivity() {
                 R.id.action_tv -> cicerone.router.replaceScreen(NavigationKeys.TV_NAVIGATION_KEY)
                 R.id.action_people -> cicerone.router.replaceScreen(NavigationKeys.PEOPLE_NAVIGATION_KEY)
                 R.id.action_discover -> cicerone.router.replaceScreen(NavigationKeys.DISCOVER_NAVIGATION_KEY)
+                R.id.action_profile -> cicerone.router.replaceScreen(NavigationKeys.PROFILE_NAVIGATION_KEY)
             }
             true
         }
@@ -103,6 +111,7 @@ class AppActivity : AppCompatActivity() {
                         NavigationKeys.TV_NAVIGATION_KEY -> changeTab(tvNavigationFragment)
                         NavigationKeys.PEOPLE_NAVIGATION_KEY -> changeTab(peopleNavigationFragment)
                         NavigationKeys.DISCOVER_NAVIGATION_KEY -> changeTab(discoverNavigationFragment)
+                        NavigationKeys.PROFILE_NAVIGATION_KEY -> changeTab(profileNavigationFragment)
                     }
                 }
             }

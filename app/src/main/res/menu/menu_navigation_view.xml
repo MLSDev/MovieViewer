@@ -7,26 +7,31 @@
         android:enabled="true"
         android:icon="@drawable/ic_movies"
         android:title="@string/movies"
-        app:showAsAction="always"/>
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/action_tv"
         android:enabled="true"
         android:icon="@drawable/ic_tv"
         android:title="@string/tv"
-        app:showAsAction="always"/>
+        app:showAsAction="always" />
     <item
         android:id="@+id/action_people"
         android:enabled="true"
         android:icon="@drawable/ic_people"
         android:title="@string/people"
-        app:showAsAction="always"/>
+        app:showAsAction="always" />
     <item
         android:id="@+id/action_discover"
         android:enabled="true"
         android:icon="@drawable/ic_search"
-        android:title="@string/search"
+        android:title="@string/discover"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_profile"
+        android:enabled="true"
+        android:icon="@drawable/ic_person"
+        android:title="@string/profile"
         app:showAsAction="always"/>
-
 
 </menu>

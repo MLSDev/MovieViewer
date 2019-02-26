@@ -11,6 +11,7 @@
         <item name="android:colorButtonNormal">@color/colorPrimary</item>
         <item name="android:editTextColor">@color/snow</item>
         <item name="android:textColorHint">@color/darkGrey</item>
+        <item name="android:textColorSecondary">@color/white</item>
     </style>
 
 </resources>

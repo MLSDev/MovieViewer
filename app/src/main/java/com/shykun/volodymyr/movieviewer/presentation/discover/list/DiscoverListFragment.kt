@@ -23,7 +23,9 @@ import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragmen
 import com.shykun.volodymyr.movieviewer.presentation.discover.DiscoverViewModel
 import com.shykun.volodymyr.movieviewer.presentation.discover.DiscoverViewModelFactory
 import com.shykun.volodymyr.movieviewer.presentation.discover.MOVIE_TYPE
+import com.shykun.volodymyr.movieviewer.presentation.movies.details.MOVIE_DETAILS_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.movies.list.MovieListAdapter
+import com.shykun.volodymyr.movieviewer.presentation.tv.details.TV_DETAILS_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.tv.list.TvListAdapter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_movie_list.*
@@ -47,7 +49,6 @@ class DiscoverListFragment : Fragment(), BackButtonListener {
         super.onCreate(savedInstanceState)
 
         (parentFragment as TabNavigationFragment).component?.inject(this)
-
         viewModel = ViewModelProviders.of(activity as AppActivity, viewModelFactory)
                 .get(DiscoverViewModel::class.java)
     }
@@ -60,10 +61,13 @@ class DiscoverListFragment : Fragment(), BackButtonListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (viewModel.type.get() == MOVIE_TYPE)
+        if (viewModel.type.get() == MOVIE_TYPE) {
             setupMovieListAdapter()
-        else
+            setupMovieClick()
+        } else {
             setupTvListAdapter()
+            setupTvClick()
+        }
 
         setToolbarTitle()
         setupBackButton()
@@ -124,6 +128,18 @@ class DiscoverListFragment : Fragment(), BackButtonListener {
         movieList.apply {
             layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
             adapter = tvListAdapter
+        }
+    }
+
+    private fun setupMovieClick() {
+        movieListAdapter.clickEvent.subscribe {
+            router.navigateTo(MOVIE_DETAILS_FRAGMENT_KEY, it)
+        }
+    }
+
+    private fun setupTvClick() {
+        tvListAdapter.clickObservable.subscribe {
+            router.navigateTo(TV_DETAILS_FRAGMENT_KEY, it)
         }
     }
 

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".presentation.AppActivity">
+
+    <item
+        android:id="@+id/action_rate"
+        android:title="@string/rate"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_addToWatchlist"
+        android:title="@string/add_to_watchlist"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_markAsFavorite"
+        android:title="@string/mark_as_favorite"
+        app:showAsAction="never"/>
+
+</menu>

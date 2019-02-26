@@ -28,7 +28,7 @@ class MultipleSelectionAdapter(items: ArrayList<String>)
         val item = items[position]
         val isChecked = checkedItems[item]
 
-        if (isChecked == null)
+        if (isChecked == null || isChecked == false)
             checkedItems[item] = true
         else
             checkedItems[item] = !isChecked

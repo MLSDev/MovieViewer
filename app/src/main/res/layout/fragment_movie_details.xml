@@ -30,6 +30,7 @@
             android:visibility="@{movieDetails == null? View.VISIBLE : View.GONE}" />
 
         <android.support.design.widget.CoordinatorLayout
+            android:id="@+id/movieDetailsCoordinatorLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="@{movieDetails == null? View.GONE : View.VISIBLE}"
@@ -226,14 +227,14 @@
                         android:id="@+id/movieCastCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
+                        android:layout_alignBaseline="@id/movieCastTitle"
                         android:layout_below="@id/movieTrailerContainer"
                         android:layout_marginEnd="10dp"
                         android:layout_marginTop="10dp"
+                        android:layout_toEndOf="@id/movieCastTitle"
                         android:text="@{viewModel.castCount}"
                         android:textColor="@color/darkGrey"
-                        android:textSize="25sp"
-                        android:textStyle="bold" />
+                        android:textSize="20sp" />
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/movieCast"
@@ -259,14 +260,14 @@
                         android:id="@+id/recommendedMoviesCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
+                        android:layout_alignBaseline="@id/recommendedMoviesTitle"
                         android:layout_below="@id/movieCast"
                         android:layout_marginEnd="10dp"
                         android:layout_marginTop="10dp"
+                        android:layout_toEndOf="@id/recommendedMoviesTitle"
                         android:text="@{viewModel.recommendedMoviesCount}"
                         android:textColor="@color/darkGrey"
-                        android:textSize="25sp"
-                        android:textStyle="bold" />
+                        android:textSize="20sp" />
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/recommendedMovies"
@@ -292,14 +293,14 @@
                         android:id="@+id/reviewsCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
+                        android:layout_alignBaseline="@id/movieReviewsTitle"
                         android:layout_below="@id/recommendedMovies"
                         android:layout_marginEnd="10dp"
                         android:layout_marginTop="10dp"
+                        android:layout_toEndOf="@id/movieReviewsTitle"
                         android:text="@{viewModel.reviewsCount}"
                         android:textColor="@color/darkGrey"
-                        android:textSize="25sp"
-                        android:textStyle="bold" />
+                        android:textSize="20sp" />
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/movieReviews"
