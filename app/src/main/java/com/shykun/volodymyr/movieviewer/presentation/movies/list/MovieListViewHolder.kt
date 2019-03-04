@@ -10,16 +10,19 @@ import com.shykun.volodymyr.movieviewer.presentation.common.BaseViewHolder
 import io.reactivex.subjects.PublishSubject
 
 open class BaseMovieListViewHolder(viewDataBinding: ViewDataBinding)
-    : BaseViewHolder<Movie>(viewDataBinding)
+    : BaseViewHolder<Movie>(viewDataBinding) {
+}
 
 class MovieListLoadingViewHolder(private val binding: ItemLoadingBinding)
     : BaseMovieListViewHolder(binding) {
 
-    override fun bind(item: Movie?, totalItemsCount: Int) {
-        super.bind(item, totalItemsCount)
+    fun bind(item: Movie?, totalItemsCount: Int) {
+        super.bind(item)
 
-        if (adapterPosition == totalItemsCount && adapterPosition != 0)
+        if (adapterPosition == totalItemsCount) {
             binding.loadingProgressBar.visibility = View.GONE
+            binding.executePendingBindings()
+        }
     }
 }
 
@@ -33,8 +36,8 @@ class MovieListViewHolder(
     var popularityVisibility = View.VISIBLE
     var releaseDateVisibility = View.VISIBLE
 
-    override fun bind(item: Movie?, totalItemsCount: Int) {
-        super.bind(item, totalItemsCount)
+    override fun bind(item: Movie?) {
+        super.bind(item)
 
         when (moviesType) {
             MoviesType.TOP_RATED -> {

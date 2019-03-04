@@ -15,10 +15,10 @@ open class BaseTvListViewHolder(viewDataBinding: ViewDataBinding)
 class TvListLoadingViewHolder(private val binding: ItemLoadingBinding)
     : BaseTvListViewHolder(binding) {
 
-    override fun bind(item: Tv?, totalItemsCount: Int) {
-        super.bind(item, totalItemsCount)
+    fun bind(item: Tv?, totalItemsCount: Int) {
+        super.bind(item)
 
-        if (adapterPosition == totalItemsCount && adapterPosition != 0)
+        if (adapterPosition == totalItemsCount)
             binding.loadingProgressBar.visibility = View.GONE
     }
 }
@@ -34,8 +34,8 @@ class TvListViewHolder(
     var firstAirDateVisibility = View.VISIBLE
 
 
-    override fun bind(item: Tv?, totalItemsCount: Int) {
-        super.bind(item, totalItemsCount)
+    override fun bind(item: Tv?) {
+        super.bind(item)
 
         when (tvType) {
             TvType.TOP_RATED -> {

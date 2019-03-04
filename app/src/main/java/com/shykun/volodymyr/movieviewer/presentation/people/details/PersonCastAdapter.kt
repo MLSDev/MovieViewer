@@ -10,7 +10,7 @@ import com.shykun.volodymyr.movieviewer.presentation.common.BaseRecyclerViewAdap
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 
-class PersonCastAdapter(private val roles: ArrayList<Role>) : BaseRecyclerViewAdapter<Role, PersonCastViewHolder>(roles) {
+class PersonCastAdapter : BaseRecyclerViewAdapter<Role, PersonCastViewHolder>() {
 
     private val clickSubject = PublishSubject.create<Role>()
     val clickObservable: Observable<Role> = clickSubject
@@ -24,10 +24,5 @@ class PersonCastAdapter(private val roles: ArrayList<Role>) : BaseRecyclerViewAd
                 false)
 
         return PersonCastViewHolder(binding, clickSubject)
-    }
-
-    fun addRoles(roles: List<Role>) {
-        this.roles.addAll(roles)
-        notifyDataSetChanged()
     }
 }

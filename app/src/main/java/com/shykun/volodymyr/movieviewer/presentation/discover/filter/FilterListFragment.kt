@@ -104,7 +104,9 @@ class FilterListFragment : Fragment(), BackButtonListener {
         val currentYear = Calendar.getInstance().get(Calendar.YEAR)
         years.addAll((currentYear downTo 1950))
 
-        yearsListAdapter = SingleSelectionAdapter(years)
+        yearsListAdapter = SingleSelectionAdapter()
+        yearsListAdapter.addItems(years)
+
         if (viewModel.year.get() != -1)
             yearsListAdapter.lastClickedPosition = currentYear - viewModel.year.get()!!
 
@@ -118,7 +120,8 @@ class FilterListFragment : Fragment(), BackButtonListener {
         val genres = ArrayList<String>()
         genres.addAll(GenreHelper.genres.values.toList())
 
-        genreListAdapter = MultipleSelectionAdapter(genres)
+        genreListAdapter = MultipleSelectionAdapter()
+        genreListAdapter.addItems(genres)
         if (viewModel.genres.get() != null) {
             for (genre in viewModel.genres.get()!!)
                 genreListAdapter.checkedItems[genre.name] = true
@@ -133,7 +136,8 @@ class FilterListFragment : Fragment(), BackButtonListener {
         val ratingList = ArrayList<Int>()
         ratingList.addAll((10 downTo 1))
 
-        ratingListAdapter = SingleSelectionAdapter(ratingList)
+        ratingListAdapter = SingleSelectionAdapter()
+        ratingListAdapter.addItems(ratingList)
         if (viewModel.rating.get() != -1)
             ratingListAdapter.lastClickedPosition = 10 - viewModel.rating.get()!!
         filterList.apply {
@@ -159,4 +163,3 @@ class FilterListFragment : Fragment(), BackButtonListener {
         }
     }
 }
-

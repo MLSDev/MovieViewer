@@ -15,8 +15,7 @@ const val PERSON = 0
 const val LOADING = 1
 
 
-class PeopleTabAdapter(items: ArrayList<Person>)
-    : BaseRecyclerViewAdapter<Person, BasePeopleViewHolder>(items) {
+class PeopleTabAdapter : BaseRecyclerViewAdapter<Person, BasePeopleViewHolder>() {
 
     private val clickSubject = PublishSubject.create<Int>()
 

@@ -27,8 +27,8 @@ class GeneralTvTabViewHolder(
     lateinit var tvType: TvType
     var progressBarVisibility = View.VISIBLE
 
-    override fun bind(item: ArrayList<Tv>?, totalItemsCount: Int) {
-        super.bind(item, totalItemsCount)
+    override fun bind(item: ArrayList<Tv>?) {
+        super.bind(item)
 
         when (adapterPosition) {
             POPULAR_TV -> {
@@ -50,7 +50,8 @@ class GeneralTvTabViewHolder(
 
             tvList.apply {
                 layoutManager = LinearLayoutManager(this.context, LinearLayout.HORIZONTAL, false)
-                val tvAdapter = TvTabAdapter(item, tvType)
+                val tvAdapter = TvTabAdapter(tvType)
+                tvAdapter.addItems(item)
                 tvAdapter.clickObservable.subscribe { tvClickSubject.onNext(it) }
                 adapter = tvAdapter
             }

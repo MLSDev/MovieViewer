@@ -11,7 +11,7 @@ import com.shykun.volodymyr.movieviewer.presentation.common.BaseRecyclerViewAdap
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 
-class PeopleSearchAdapter(people: ArrayList<Person>) : BaseRecyclerViewAdapter<Person, PeopleSearchViewHolder>(people) {
+class PeopleSearchAdapter : BaseRecyclerViewAdapter<Person, PeopleSearchViewHolder>() {
 
     private val clickSubject = PublishSubject.create<Int>()
     val clickObservable: Observable<Int> = clickSubject
@@ -24,13 +24,5 @@ class PeopleSearchAdapter(people: ArrayList<Person>) : BaseRecyclerViewAdapter<P
                 parent,
                 false)
         return PeopleSearchViewHolder(binding, clickSubject)
-    }
-
-    fun setPeople(people: List<Person>) {
-        items.apply {
-            clear()
-            addAll(people)
-        }
-        notifyDataSetChanged()
     }
 }

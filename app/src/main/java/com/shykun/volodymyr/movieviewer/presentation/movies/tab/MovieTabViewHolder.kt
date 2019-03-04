@@ -15,8 +15,8 @@ class MovieTabViewHolder(
     lateinit var footerText: String
     var footerIconVisibility = View.VISIBLE
 
-    override fun bind(item: Movie?, totalItemsCount: Int) {
-        super.bind(item, totalItemsCount)
+    override fun bind(item: Movie?) {
+        super.bind(item)
 
         if (moviesType != MoviesType.TOP_RATED)
             footerIconVisibility = View.GONE
@@ -34,11 +34,11 @@ class MovieTabViewHolder(
             }
         }
 
-        executeBinding(item)
+        executeBinding()
     }
 
-    private fun executeBinding(movie: Movie?) {
-        binding.movie = movie
+    private fun executeBinding() {
+        binding.movie = item
         binding.movieViewHolder = this
         binding.executePendingBindings()
     }

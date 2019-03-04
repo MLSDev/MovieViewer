@@ -46,7 +46,7 @@ class PeopleSearchFragment : Fragment(), BackButtonListener {
 
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(PeopleSearchViewModel::class.java)
-        peopleSearchAdapter = PeopleSearchAdapter(ArrayList())
+        peopleSearchAdapter = PeopleSearchAdapter()
 
         subscribeViewModel()
         setupPersonClick()
@@ -123,7 +123,7 @@ class PeopleSearchFragment : Fragment(), BackButtonListener {
 
     private fun showSearchedPeople(people: List<Person>?) {
         if (people != null) {
-            peopleSearchAdapter.setPeople(people)
+            peopleSearchAdapter.setItems(people)
         }
     }
 

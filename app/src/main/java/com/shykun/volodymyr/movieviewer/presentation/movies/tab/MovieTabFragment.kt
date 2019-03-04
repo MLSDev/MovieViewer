@@ -44,7 +44,7 @@ class MovieTabFragment : Fragment(), BackButtonListener {
         super.onCreate(savedInstanceState)
         (parentFragment as TabNavigationFragment).component?.inject(this)
 
-        generalMovieTabAdapter = GeneralMovieTabAdapter(ArrayList(3))
+        generalMovieTabAdapter = GeneralMovieTabAdapter()
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(MovieTabViewModel::class.java)
 

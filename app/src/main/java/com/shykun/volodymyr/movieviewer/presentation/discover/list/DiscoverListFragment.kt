@@ -100,14 +100,14 @@ class DiscoverListFragment : Fragment(), BackButtonListener {
 
     private fun showMovieList(moviesResponse: MoviesResponse?) {
         if (moviesResponse != null) {
-            movieListAdapter.addMovies(moviesResponse.results)
+            movieListAdapter.addItems(moviesResponse.results)
             movieListAdapter.totalItemsCount = moviesResponse.totalResults
         }
     }
 
     private fun showTvList(tvResponse: TvResponse?) {
         if (tvResponse != null) {
-            tvListAdapter.addTvList(tvResponse.results)
+            tvListAdapter.addItems(tvResponse.results)
         }
     }
 
@@ -116,7 +116,7 @@ class DiscoverListFragment : Fragment(), BackButtonListener {
     }
 
     private fun setupMovieListAdapter() {
-        movieListAdapter = MovieListAdapter(ArrayList(), MoviesType.TOP_RATED)
+        movieListAdapter = MovieListAdapter(MoviesType.TOP_RATED)
         movieList.apply {
             layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
             adapter = movieListAdapter
@@ -124,7 +124,7 @@ class DiscoverListFragment : Fragment(), BackButtonListener {
     }
 
     private fun setupTvListAdapter() {
-        tvListAdapter = TvListAdapter(ArrayList(), TvType.POPULAR)
+        tvListAdapter = TvListAdapter(TvType.POPULAR)
         movieList.apply {
             layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
             adapter = tvListAdapter

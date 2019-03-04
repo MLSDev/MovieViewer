@@ -78,9 +78,9 @@ class TvDetailsFragment : Fragment(), BackButtonListener {
                 .of(this, viewModelFactory)
                 .get(TvDetailsViewModel::class.java)
 
-        castAdapter = CastAdapter(ArrayList())
-        recommendedTvAdapter = RecommendedTvAdapter(ArrayList())
-        reviewsAdapter = ReviewAdapter(ArrayList())
+        castAdapter = CastAdapter()
+        recommendedTvAdapter = RecommendedTvAdapter()
+        reviewsAdapter = ReviewAdapter()
 
         subscribeViewModel()
         setupRecommendedTvClick()
@@ -241,19 +241,19 @@ class TvDetailsFragment : Fragment(), BackButtonListener {
 
     private fun showTvCast(tvCast: List<Actor>?) {
         if (tvCast != null) {
-            castAdapter.addCast(tvCast)
+            castAdapter.addItems(tvCast)
         }
     }
 
     private fun showReviews(reviews: List<Review>?) {
         if (reviews != null) {
-            reviewsAdapter.addReviews(reviews)
+            reviewsAdapter.addItems(reviews)
         }
     }
 
     private fun showRecommendedTv(tvList: List<Tv>?) {
         if (tvList != null) {
-            recommendedTvAdapter.addTvList(tvList)
+            recommendedTvAdapter.addItems(tvList)
         }
     }
 

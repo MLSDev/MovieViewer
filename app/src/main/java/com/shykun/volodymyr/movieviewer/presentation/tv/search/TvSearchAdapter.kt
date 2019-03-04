@@ -10,7 +10,7 @@ import com.shykun.volodymyr.movieviewer.presentation.common.BaseRecyclerViewAdap
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 
-class TvSearchAdapter(tvList: ArrayList<Tv>) : BaseRecyclerViewAdapter<Tv, TvSearchViewHolder>(tvList) {
+class TvSearchAdapter : BaseRecyclerViewAdapter<Tv, TvSearchViewHolder>() {
 
     private val clickSubject = PublishSubject.create<Int>()
     val clickObservable: Observable<Int> = clickSubject
@@ -23,16 +23,5 @@ class TvSearchAdapter(tvList: ArrayList<Tv>) : BaseRecyclerViewAdapter<Tv, TvSea
                 parent,
                 false)
         return TvSearchViewHolder(binding, clickSubject)
-    }
-
-    fun setTvList(tvList: List<Tv>) {
-        this.items.clear()
-        this.items.addAll(tvList)
-        notifyDataSetChanged()
-    }
-
-    fun clearTvList() {
-        this.items.clear()
-        notifyDataSetChanged()
     }
 }

@@ -12,7 +12,7 @@ import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import java.util.*
 
-class MovieTabAdapter(items: ArrayList<Movie>, private val moviesType: MoviesType): BaseRecyclerViewAdapter<Movie, MovieTabViewHolder>(items) {
+class MovieTabAdapter(private val moviesType: MoviesType): BaseRecyclerViewAdapter<Movie, MovieTabViewHolder>() {
 
     private val movieClickSubject = PublishSubject.create<Int>()
     val movieClickEvent: Observable<Int> = movieClickSubject

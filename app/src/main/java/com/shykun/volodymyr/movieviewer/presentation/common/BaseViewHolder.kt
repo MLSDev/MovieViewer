@@ -7,7 +7,7 @@ open class BaseViewHolder<T: Any>(viewDataBinding: ViewDataBinding) : RecyclerVi
 
     var item: T? = null
 
-    open fun bind(item: T?, totalItemsCount: Int) {
+    open fun bind(item: T?) {
         this.item = item
     }
 }

@@ -7,10 +7,10 @@ import io.reactivex.subjects.PublishSubject
 
 class MovieSearchViewHolder(
         private val binding: ItemSearchMovieBinding,
-        private val clickSubject: PublishSubject<Int>): BaseViewHolder<Movie>(binding) {
+        private val clickSubject: PublishSubject<Int>) : BaseViewHolder<Movie>(binding) {
 
-    override fun bind(item: Movie?, position: Int) {
-        super.bind(item, position)
+    override fun bind(item: Movie?) {
+        super.bind(item)
 
         itemView.setOnClickListener {
             if (item != null) {
@@ -18,11 +18,11 @@ class MovieSearchViewHolder(
             }
         }
 
-        executeBinding(item)
+        executeBinding()
     }
 
-    private fun executeBinding(movie: Movie?) {
-        binding.movie = movie
+    private fun executeBinding() {
+        binding.movie = item
         binding.executePendingBindings()
     }
 }

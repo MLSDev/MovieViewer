@@ -9,19 +9,19 @@ class PersonCastViewHolder(
         private val binding: ItemHorizontalRoleBinding,
         private val clickSubject: PublishSubject<Role>) : BaseViewHolder<Role>(binding) {
 
-    override fun bind(item: Role?, position: Int) {
-        super.bind(item, position)
+    override fun bind(item: Role?) {
+        super.bind(item)
 
         itemView.setOnClickListener {
             if (item != null) {
                 clickSubject.onNext(item)
             }
         }
-        executeBinding(item)
+        executeBinding()
     }
 
-    private fun executeBinding(role: Role?) {
-        binding.role = role
+    private fun executeBinding() {
+        binding.role = item
         binding.executePendingBindings()
     }
 }

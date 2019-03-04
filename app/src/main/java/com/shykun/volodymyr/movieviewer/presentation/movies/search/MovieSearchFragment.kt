@@ -48,7 +48,7 @@ class MovieSearchFragment : Fragment(), BackButtonListener {
 
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(MovieSearchViewModel::class.java)
-        movieSearchAdapter = MovieSearchAdapter(ArrayList())
+        movieSearchAdapter = MovieSearchAdapter()
 
         subscribeViewModel()
         setupMovieClick()

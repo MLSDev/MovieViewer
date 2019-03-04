@@ -11,7 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.shykun.volodymyr.movieviewer.R
-import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
 import com.shykun.volodymyr.movieviewer.data.entity.TvType
 import com.shykun.volodymyr.movieviewer.data.network.response.TvResponse
 import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
@@ -47,7 +46,7 @@ class TvListFragment : Fragment(), BackButtonListener {
 
         (parentFragment as TabNavigationFragment).component?.inject(this)
         tvType = arguments?.getSerializable(TV_TYPE_KEY) as TvType
-        tvListAdapter = TvListAdapter(ArrayList(), tvType)
+        tvListAdapter = TvListAdapter(tvType)
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(TvListViewModel::class.java)
 
@@ -108,7 +107,7 @@ class TvListFragment : Fragment(), BackButtonListener {
     private fun subscribeScrollObervable() {
         val sessionId = prefs.getString(SESSION_ID_KEY, null)
 
-        ScrollObservable.from(movieList, 10)
+        ScrollObservable.from(movieList, 20)
                 .distinctUntilChanged()
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext {
@@ -137,13 +136,28 @@ class TvListFragment : Fragment(), BackButtonListener {
 
     fun showTvList(tvResponse: TvResponse?) {
         if (tvResponse != null) {
-            tvListAdapter.addTvList(tvResponse.results)
-            tvListAdapter.totalItemsCount = tvResponse.totalResults
+            if (tvResponse.totalResults > 0) {
+                tvListAdapter.addItems(tvResponse.results)
+                tvListAdapter.totalItemsCount = tvResponse.totalResults
+            } else {
+                movieList.visibility = View.GONE
+                emptyState.visibility = View.VISIBLE
+            }
         }
     }
 
     fun showError(message: String?) {
         Toast.makeText(this.context, message, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        with(tvListAdapter) {
+            clearItems()
+            totalItemsCount = -1
+            nextPage = 1
+        }
     }
 
     override fun onBackClicked(): Boolean {

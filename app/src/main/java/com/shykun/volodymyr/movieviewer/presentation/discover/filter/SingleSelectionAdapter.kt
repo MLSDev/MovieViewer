@@ -7,8 +7,8 @@ import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.databinding.ItemSingleSelectionBinding
 import com.shykun.volodymyr.movieviewer.presentation.common.BaseRecyclerViewAdapter
 
-class SingleSelectionAdapter(items: ArrayList<Int>)
-    : BaseRecyclerViewAdapter<Int, ViewHolderSingleSelection>(items), OnItemClickListener {
+class SingleSelectionAdapter
+    : BaseRecyclerViewAdapter<Int, ViewHolderSingleSelection>(), OnItemClickListener {
 
     var lastClickedPosition: Int = -1
 
@@ -25,7 +25,7 @@ class SingleSelectionAdapter(items: ArrayList<Int>)
 
     override fun onBindViewHolder(viewHolder: ViewHolderSingleSelection, position: Int) {
         val item = items[position]
-        viewHolder.bind(item, position, position == lastClickedPosition)
+        viewHolder.bind(item,position == lastClickedPosition)
     }
 
     override fun onItemClicked(position: Int) {

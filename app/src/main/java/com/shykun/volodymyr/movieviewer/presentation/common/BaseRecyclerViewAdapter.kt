@@ -2,11 +2,10 @@ package com.shykun.volodymyr.movieviewer.presentation.common
 
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
-import java.util.*
 
-abstract class BaseRecyclerViewAdapter<T : Any, VH : BaseViewHolder<T>>(protected var items: ArrayList<T>) : RecyclerView.Adapter<VH>() {
+abstract class BaseRecyclerViewAdapter<T : Any, VH : BaseViewHolder<T>> : RecyclerView.Adapter<VH>() {
 
-    var totalItemsCount = -1
+    protected val items: ArrayList<T> = ArrayList()
 
     abstract override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH
 
@@ -14,6 +13,20 @@ abstract class BaseRecyclerViewAdapter<T : Any, VH : BaseViewHolder<T>>(protecte
 
     override fun onBindViewHolder(viewHolder: VH, position: Int) {
         val item = if (position < items.size) items[position] else null
-        viewHolder.bind(item, totalItemsCount)
+        viewHolder.bind(item)
+    }
+
+    fun addItems(items: List<T>) {
+        this.items.addAll(items)
+        notifyDataSetChanged()
+    }
+
+    fun setItems(items: List<T>) {
+        clearItems()
+        addItems(items)
+    }
+
+    fun clearItems() {
+        this.items.clear()
     }
 }

@@ -9,19 +9,19 @@ class TvSearchViewHolder(
         private val binding: ItemSearchTvBinding,
         private val clickSubject: PublishSubject<Int>) : BaseViewHolder<Tv>(binding) {
 
-    override fun bind(item: Tv?, position: Int) {
-        super.bind(item, position)
+    override fun bind(item: Tv?) {
+        super.bind(item)
 
         itemView.setOnClickListener {
             if (item != null) {
                 clickSubject.onNext(item.id)
             }
         }
-        executeBinding(item)
+        executeBinding()
     }
 
-    private fun executeBinding(tv: Tv?) {
-        binding.tv = tv
+    private fun executeBinding() {
+        binding.tv = item
         binding.executePendingBindings()
     }
 }

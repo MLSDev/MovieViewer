@@ -15,12 +15,12 @@ import io.reactivex.subjects.PublishSubject
 private const val TV = 0
 private const val LOADING = 1
 
-class TvListAdapter(itemList: ArrayList<Tv>, val tvType: TvType)
-    : BaseRecyclerViewAdapter<Tv, BaseTvListViewHolder>(itemList) {
+class TvListAdapter(val tvType: TvType) : BaseRecyclerViewAdapter<Tv, BaseTvListViewHolder>() {
 
     var nextPage = 1
     private val clickSubject = PublishSubject.create<Int>()
     val clickObservable: Observable<Int> = clickSubject
+    var totalItemsCount = -1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseTvListViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -41,6 +41,13 @@ class TvListAdapter(itemList: ArrayList<Tv>, val tvType: TvType)
         }
     }
 
+    override fun onBindViewHolder(viewHolder: BaseTvListViewHolder, position: Int) {
+        if (getItemViewType(position) == TV)
+            super.onBindViewHolder(viewHolder, position)
+        else
+            (viewHolder as TvListLoadingViewHolder).bind(null, totalItemsCount)
+    }
+
     override fun getItemCount() = items.size + 1
 
     override fun getItemViewType(position: Int): Int {
@@ -48,10 +55,5 @@ class TvListAdapter(itemList: ArrayList<Tv>, val tvType: TvType)
             TV
         else
             LOADING
-    }
-
-    fun addTvList(tvList: List<Tv>) {
-        items.addAll(tvList)
-        notifyDataSetChanged()
     }
 }

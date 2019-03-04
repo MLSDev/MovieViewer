@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.shykun.volodymyr.movieviewer.R
-import com.shykun.volodymyr.movieviewer.data.entity.Tv
 import com.shykun.volodymyr.movieviewer.data.entity.TvType
 import com.shykun.volodymyr.movieviewer.data.network.response.TvResponse
 import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
@@ -45,7 +44,7 @@ class TvTabFragment : Fragment(), BackButtonListener {
 
         (parentFragment as TabNavigationFragment).component?.inject(this)
 
-        generalTvTabAdapter = GeneralTvTabAdapter(ArrayList())
+        generalTvTabAdapter = GeneralTvTabAdapter()
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(TvTabViewModel::class.java)
 
@@ -71,7 +70,7 @@ class TvTabFragment : Fragment(), BackButtonListener {
     private fun setupToolbar() {
         moviesToolbar.inflateMenu(R.menu.manu_app)
         moviesToolbar.setOnMenuItemClickListener { menuItem ->
-            when(menuItem.itemId) {
+            when (menuItem.itemId) {
                 R.id.action_search -> router.navigateTo(TV_SEARCH_FRAGMENT_KEY)
             }
             true

@@ -10,8 +10,7 @@ import com.shykun.volodymyr.movieviewer.presentation.common.BaseRecyclerViewAdap
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 
-class GeneralTvTabAdapter(items: ArrayList<ArrayList<Tv>>)
-    : BaseRecyclerViewAdapter<ArrayList<Tv>, GeneralTvTabViewHolder>(items) {
+class GeneralTvTabAdapter : BaseRecyclerViewAdapter<ArrayList<Tv>, GeneralTvTabViewHolder>() {
 
     private val seeAllClickSubject = PublishSubject.create<Int>()
     private val tvClickSubject = PublishSubject.create<Int>()

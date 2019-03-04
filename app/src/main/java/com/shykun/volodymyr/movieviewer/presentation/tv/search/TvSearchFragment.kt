@@ -48,7 +48,7 @@ class TvSearchFragment : Fragment(), BackButtonListener {
 
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(TvSearchViewModel::class.java)
-        tvSearchAdapter = TvSearchAdapter(ArrayList())
+        tvSearchAdapter = TvSearchAdapter()
 
         subscribeViewModel()
         setupTvClick()
@@ -92,7 +92,7 @@ class TvSearchFragment : Fragment(), BackButtonListener {
                 if (newText.isNotEmpty())
                     viewModel.searchTv(newText)
                 else
-                    tvSearchAdapter.clearTvList()
+                    tvSearchAdapter.clearItems()
 
                 return true
             }
@@ -135,7 +135,7 @@ class TvSearchFragment : Fragment(), BackButtonListener {
 
     private fun showTvList(tvResponse: TvResponse?) {
         if (tvResponse != null) {
-            tvSearchAdapter.setTvList(tvResponse.results)
+            tvSearchAdapter.addItems(tvResponse.results)
         }
     }
 

@@ -7,16 +7,16 @@ class ViewHolderSingleSelection(
         private val binding: ItemSingleSelectionBinding,
         private val clickListener: OnItemClickListener) : BaseViewHolder<Int>(binding) {
 
-    fun bind(item: Int, position: Int, isChecked: Boolean) {
-        super.bind(item, position)
+    fun bind(item: Int, isChecked: Boolean) {
+        super.bind(item)
 
-        binding.root.setOnClickListener { clickListener.onItemClicked(position) }
+        binding.root.setOnClickListener { clickListener.onItemClicked(adapterPosition) }
 
-        executeBinding(item, isChecked)
+        executeBinding(isChecked)
     }
 
-    private fun executeBinding(filterName: Int, isChecked: Boolean) {
-        binding.filterName = filterName
+    private fun executeBinding(isChecked: Boolean) {
+        binding.filterName = item
         binding.isChecked = isChecked
         binding.executePendingBindings()
     }

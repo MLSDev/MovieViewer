@@ -16,8 +16,8 @@ class TvTabViewHolder(
     var footerIconVisibility = View.VISIBLE
 
 
-    override fun bind(item: Tv?, totalItemsCount: Int) {
-        super.bind(item, totalItemsCount)
+    override fun bind(item: Tv?) {
+        super.bind(item)
 
         if (tvType == TvType.POPULAR)
             footerIconVisibility = View.GONE
@@ -35,11 +35,11 @@ class TvTabViewHolder(
             }
         }
 
-        executeBinding(item)
+        executeBinding()
     }
 
-    private fun executeBinding(tv: Tv?) {
-        binding.tv = tv
+    private fun executeBinding() {
+        binding.tv = item
         binding.tvViewHolder = this
         binding.executePendingBindings()
     }

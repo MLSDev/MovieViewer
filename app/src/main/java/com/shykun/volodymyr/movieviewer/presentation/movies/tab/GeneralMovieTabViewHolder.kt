@@ -25,8 +25,8 @@ class GeneralMovieTabViewHolder(
     lateinit var moviesType: MoviesType
     var progressBarVisibility = View.VISIBLE
 
-    override fun bind(item: ArrayList<Movie>?, totalItemsCount: Int) {
-        super.bind(item, totalItemsCount)
+    override fun bind(item: ArrayList<Movie>?) {
+        super.bind(item)
 
         when (adapterPosition) {
             POPULAR_MOVIES -> {
@@ -48,7 +48,8 @@ class GeneralMovieTabViewHolder(
 
             movieList.apply {
                 layoutManager = LinearLayoutManager(this.context, LinearLayout.HORIZONTAL, false)
-                val moviesAdapter = MovieTabAdapter(item, moviesType)
+                val moviesAdapter = MovieTabAdapter(moviesType)
+                moviesAdapter.addItems(item)
                 moviesAdapter.movieClickEvent.subscribe { movieClickSubject.onNext(it) }
                 adapter = moviesAdapter
             }

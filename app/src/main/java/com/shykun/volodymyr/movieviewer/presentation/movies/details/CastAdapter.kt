@@ -10,8 +10,7 @@ import com.shykun.volodymyr.movieviewer.presentation.common.BaseRecyclerViewAdap
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 
-class CastAdapter(private val cast: ArrayList<Actor>)
-    : BaseRecyclerViewAdapter<Actor, CastViewHolder>(cast) {
+class CastAdapter : BaseRecyclerViewAdapter<Actor, CastViewHolder>() {
 
     private val clickSubject = PublishSubject.create<Int>()
     val clickObservable: Observable<Int> = clickSubject
@@ -25,10 +24,5 @@ class CastAdapter(private val cast: ArrayList<Actor>)
                 false)
 
         return CastViewHolder(binding, clickSubject)
-    }
-
-    fun addCast(actors: List<Actor>) {
-        this.cast.addAll(actors)
-        notifyDataSetChanged()
     }
 }

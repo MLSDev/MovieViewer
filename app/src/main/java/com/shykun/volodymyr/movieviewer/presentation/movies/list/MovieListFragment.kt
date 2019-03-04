@@ -46,7 +46,7 @@ class MovieListFragment : Fragment(), BackButtonListener {
 
         (parentFragment as TabNavigationFragment).component?.inject(this)
         moviesType = arguments?.getSerializable(MOVIE_TYPE_KEY) as MoviesType
-        movieListAdapter = MovieListAdapter(ArrayList(), moviesType)
+        movieListAdapter = MovieListAdapter(moviesType)
         viewModel = ViewModelProviders
                 .of(this, viewModelFactory)
                 .get(MovieListViewModel::class.java)
@@ -109,7 +109,7 @@ class MovieListFragment : Fragment(), BackButtonListener {
     private fun subscribeScrollObervable() {
         val sessionId = prefs.getString(SESSION_ID_KEY, null)
 
-        ScrollObservable.from(movieList, 10)
+        ScrollObservable.from(movieList, 20)
                 .distinctUntilChanged()
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext {
@@ -139,13 +139,28 @@ class MovieListFragment : Fragment(), BackButtonListener {
 
     fun showMovies(moviesResponse: MoviesResponse?) {
         if (moviesResponse != null) {
-            movieListAdapter.addMovies(moviesResponse.results)
-            movieListAdapter.totalItemsCount = moviesResponse.totalResults
+            if (moviesResponse.totalResults > 0) {
+                movieListAdapter.totalItemsCount = moviesResponse.totalResults
+                movieListAdapter.addItems(moviesResponse.results)
+            } else {
+                movieList.visibility = View.GONE
+                emptyState.visibility = View.VISIBLE
+            }
         }
     }
 
     fun showError(message: String?) {
         Toast.makeText(this.context, message, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        with(movieListAdapter) {
+            clearItems()
+            totalItemsCount = -1
+            nextPage = 1
+        }
     }
 
     override fun onBackClicked(): Boolean {

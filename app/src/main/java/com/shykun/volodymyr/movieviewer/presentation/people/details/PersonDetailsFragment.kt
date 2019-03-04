@@ -43,7 +43,7 @@ class PersonDetailsFragment : Fragment(), BackButtonListener {
 
         (parentFragment as TabNavigationFragment).component?.inject(this)
 
-        personCastAdapter = PersonCastAdapter(ArrayList())
+        personCastAdapter = PersonCastAdapter()
         personId = arguments?.getInt(PERSON_ID_KEY)!!
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(PersonDetailsViewModel::class.java)
@@ -97,7 +97,7 @@ class PersonDetailsFragment : Fragment(), BackButtonListener {
 
     private fun showPersonCast(roles: List<Role>?) {
         if (roles != null) {
-            personCastAdapter.addRoles(roles)
+            personCastAdapter.addItems(roles)
         }
     }
 

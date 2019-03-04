@@ -41,7 +41,7 @@ class PeopleTabFragment : Fragment(), BackButtonListener {
         (parentFragment as TabNavigationFragment).component?.inject(this)
 
         searchQuery = arguments?.getString(PEOPLE_SEARCH_QUERY_KEY, null)
-        peopleTabAdapter = PeopleTabAdapter(ArrayList())
+        peopleTabAdapter = PeopleTabAdapter()
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(PeopleTabViewModel::class.java)
 

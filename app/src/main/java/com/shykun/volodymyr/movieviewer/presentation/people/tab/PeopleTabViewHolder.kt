@@ -16,8 +16,8 @@ class PeopleTabLoadingViewHolder(binding: ItemLoadingBinding)
 class PeopleTabViewHolder(private val binding: ItemPersonBinding, private val clickSubject: PublishSubject<Int>)
     : BasePeopleViewHolder(binding) {
 
-    override fun bind(item: Person?, position: Int) {
-        super.bind(item, position)
+    override fun bind(item: Person?) {
+        super.bind(item)
 
         itemView.setOnClickListener {
             if (item != null) {

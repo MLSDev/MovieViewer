@@ -10,8 +10,7 @@ import com.shykun.volodymyr.movieviewer.presentation.common.BaseRecyclerViewAdap
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 
-class RecommendedMoviesAdapter(val movies: ArrayList<Movie>)
-    : BaseRecyclerViewAdapter<Movie, RecommendedMoviesViewHolder>(movies) {
+class RecommendedMoviesAdapter : BaseRecyclerViewAdapter<Movie, RecommendedMoviesViewHolder>() {
 
     private val clickSubject = PublishSubject.create<Int>()
     val clickObservable: Observable<Int> = clickSubject
@@ -25,10 +24,5 @@ class RecommendedMoviesAdapter(val movies: ArrayList<Movie>)
                 false)
 
         return RecommendedMoviesViewHolder(binding, clickSubject)
-    }
-
-    fun addMovies(movies: List<Movie>) {
-        this.movies.addAll(movies)
-        notifyDataSetChanged()
     }
 }

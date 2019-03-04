@@ -7,8 +7,8 @@ import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.databinding.ItemMultipleSelectionBinding
 import com.shykun.volodymyr.movieviewer.presentation.common.BaseRecyclerViewAdapter
 
-class MultipleSelectionAdapter(items: ArrayList<String>)
-    : BaseRecyclerViewAdapter<String, ViewHolderMultipleSelection>(items), OnItemClickListener {
+class MultipleSelectionAdapter()
+    : BaseRecyclerViewAdapter<String, ViewHolderMultipleSelection>(), OnItemClickListener {
 
     var checkedItems = HashMap<String, Boolean>()
 
@@ -39,7 +39,7 @@ class MultipleSelectionAdapter(items: ArrayList<String>)
     override fun onBindViewHolder(viewHolder: ViewHolderMultipleSelection, position: Int) {
         val item = items[position]
         val isChecked = checkedItems[item] ?: false
-        viewHolder.bind(item, position, isChecked)
+        viewHolder.bind(item, isChecked)
     }
 
     fun getCheckedItems(): ArrayList<String> {

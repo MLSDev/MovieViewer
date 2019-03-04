@@ -8,18 +8,18 @@ class ViewHolderMultipleSelection(
         private val clickListener: OnItemClickListener) : BaseViewHolder<String>(binding) {
 
 
-    fun bind(item: String, position: Int, isChecked: Boolean) {
-        super.bind(item, position)
+    fun bind(item: String, isChecked: Boolean) {
+        super.bind(item)
 
         binding.root.setOnClickListener {
-            clickListener.onItemClicked(position)
+            clickListener.onItemClicked(adapterPosition)
         }
 
-        executeBinding(item, isChecked)
+        executeBinding(isChecked)
     }
 
-    private fun executeBinding(value: String, isChecked: Boolean) {
-        binding.filterName = value
+    private fun executeBinding(isChecked: Boolean) {
+        binding.filterName = item
         binding.isChecked = isChecked
         binding.executePendingBindings()
     }

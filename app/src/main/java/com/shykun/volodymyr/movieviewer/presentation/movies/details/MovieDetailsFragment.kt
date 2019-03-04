@@ -70,9 +70,9 @@ class MovieDetailsFragment : Fragment(), BackButtonListener {
 
         (parentFragment as TabNavigationFragment).component?.inject(this)
 
-        castAdapter = CastAdapter(ArrayList())
-        reviewsAdapter = ReviewAdapter(ArrayList())
-        recommendedMoviesAdapter = RecommendedMoviesAdapter(ArrayList())
+        castAdapter = CastAdapter()
+        reviewsAdapter = ReviewAdapter()
+        recommendedMoviesAdapter = RecommendedMoviesAdapter()
 
         movieId = arguments?.getInt(MOVIE_ID_KEY)!!
         viewModel = ViewModelProviders
@@ -243,19 +243,19 @@ class MovieDetailsFragment : Fragment(), BackButtonListener {
 
     private fun showMovieCast(movieCast: List<Actor>?) {
         if (movieCast != null) {
-            castAdapter.addCast(movieCast)
+            castAdapter.addItems(movieCast)
         }
     }
 
     private fun showReviews(reviews: List<Review>?) {
         if (reviews != null) {
-            reviewsAdapter.addReviews(reviews)
+            reviewsAdapter.addItems(reviews)
         }
     }
 
     private fun showRecommendedMovies(movies: List<Movie>?) {
         if (movies != null) {
-            recommendedMoviesAdapter.addMovies(movies)
+            recommendedMoviesAdapter.addItems(movies)
         }
     }
 
