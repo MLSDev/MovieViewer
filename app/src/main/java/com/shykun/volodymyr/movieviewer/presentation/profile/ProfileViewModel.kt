@@ -36,6 +36,7 @@ class ProfileViewModel(private val profileUseCase: ProfileUseCase,
             .subscribe(
                     { response ->
                         sessionIdMutableLiveData.value = response
+                        logoutMutableLiveData.value = null
                         prefs.edit().putString(SESSION_ID_KEY, response.sessionId).apply()
                         getAccountDetails(response.sessionId)
                     },

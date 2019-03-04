@@ -2,6 +2,7 @@ package com.shykun.volodymyr.movieviewer.presentation.movies.details
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.content.SharedPreferences
 import android.databinding.DataBindingUtil
 import android.os.Bundle
@@ -31,6 +32,7 @@ import com.shykun.volodymyr.movieviewer.presentation.AppActivity
 import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
 import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
 import com.shykun.volodymyr.movieviewer.presentation.people.details.PERSON_DETAILS_FRAGMENT_KEY
+import com.shykun.volodymyr.movieviewer.presentation.profile.LOGIN_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.profile.SESSION_ID_KEY
 import com.shykun.volodymyr.movieviewer.presentation.utils.NavigationKeys
 import kotlinx.android.synthetic.main.fragment_movie_details.*
@@ -83,11 +85,6 @@ class MovieDetailsFragment : Fragment(), BackButtonListener {
         setupRecommendedMovieClick()
         setupActorClick()
 
-        val sessionId = prefs.getString(SESSION_ID_KEY, null)
-
-        if (sessionId != null)
-            viewModel.getMovieAccountStates(movieId, sessionId!!)
-
         if (savedInstanceState != null)
             viewWasLoaded = true
 
@@ -114,8 +111,13 @@ class MovieDetailsFragment : Fragment(), BackButtonListener {
         setupCastAdapter()
         setupReviewsAdapter()
         setupRecommendedMoviesAdapter()
+        getMovieAccountStates()
+    }
 
-
+    private fun getMovieAccountStates() {
+        val sessionId = prefs.getString(SESSION_ID_KEY, null)
+        if (sessionId != null)
+            viewModel.getMovieAccountStates(movieId, sessionId)
     }
 
     private fun initTrailer(trailer: Video) {
@@ -304,7 +306,7 @@ class MovieDetailsFragment : Fragment(), BackButtonListener {
 
 
     private fun openLoginSnackBar() = showSnackbar("You are not authorized", "Login") {
-        (activity as AppActivity).cicerone.router.replaceScreen(NavigationKeys.PROFILE_NAVIGATION_KEY)
+        router.navigateTo(LOGIN_FRAGMENT_KEY)
     }
 
     private fun handleRateResponse(response: PostResponse?) {

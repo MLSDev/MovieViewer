@@ -125,11 +125,13 @@ class ProfileFragment : Fragment(), BackButtonListener {
 
     private fun showAccountDetails(accountDetailsResponse: AccountDetailsResponse?) {
         binding.accountDetails = accountDetailsResponse
+        binding.executePendingBindings()
     }
 
     private fun handleLoginResponse(sessionIdResponse: SessionIdResponse?) {
         if (sessionIdResponse != null) {
             binding.sessionId = sessionIdResponse.sessionId
+            binding.executePendingBindings()
         }
     }
 

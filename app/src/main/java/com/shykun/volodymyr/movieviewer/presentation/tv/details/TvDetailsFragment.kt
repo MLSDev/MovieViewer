@@ -86,11 +86,6 @@ class TvDetailsFragment : Fragment(), BackButtonListener {
         setupRecommendedTvClick()
         setupActorClick()
 
-        val sessionId = prefs.getString(SESSION_ID_KEY, null)
-
-        if (sessionId != null)
-            viewModel.getTvAccountStates(tvId, sessionId!!)
-
         if (savedInstanceState != null)
             viewWasLoaded = true
 
@@ -116,6 +111,13 @@ class TvDetailsFragment : Fragment(), BackButtonListener {
         setupCastAdapter()
         setupRecommendedTvAdapter()
         setupReviewsAdapter()
+        getTvAccountState()
+    }
+
+    private fun getTvAccountState() {
+        val sessionId = prefs.getString(SESSION_ID_KEY, null)
+        if (sessionId != null)
+            viewModel.getTvAccountStates(tvId, sessionId)
     }
 
     private fun initTrailer(trailer: Video) {
