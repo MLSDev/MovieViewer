@@ -5,24 +5,22 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
 import android.view.View
-import com.shykun.volodymyr.movieviewer.data.entity.Actor
-import com.shykun.volodymyr.movieviewer.data.entity.Movie
 import com.shykun.volodymyr.movieviewer.data.entity.Review
 import com.shykun.volodymyr.movieviewer.data.network.response.ItemAccountStateResponse
 import com.shykun.volodymyr.movieviewer.data.network.response.MovieDetailsResponse
-import com.shykun.volodymyr.movieviewer.data.network.response.MoviesResponse
 import com.shykun.volodymyr.movieviewer.data.network.response.PostResponse
 import com.shykun.volodymyr.movieviewer.domain.MovieDetailsUseCase
 import com.shykun.volodymyr.movieviewer.domain.ProfileUseCase
+import com.shykun.volodymyr.movieviewer.presentation.model.HorizontalListItem
 
 class MovieDetailsViewModel(
         private val movieDetailsUseCase: MovieDetailsUseCase,
         private val profileUseCase: ProfileUseCase) : ViewModel() {
 
     private val movieDetailsMutableLiveData = MutableLiveData<MovieDetailsResponse>()
-    private val movieCastMutableLiveData = MutableLiveData<List<Actor>>()
+    private val movieActorsMutableLiveData = MutableLiveData<List<HorizontalListItem>>()
     private val movieReviewsMutableLiveData = MutableLiveData<List<Review>>()
-    private val recommendedMoviesMutableLiveData = MutableLiveData<List<Movie>>()
+    private val recommendedMoviesMutableLiveData = MutableLiveData<List<HorizontalListItem>>()
 
     private val rateMovieMutableLiveData = MutableLiveData<PostResponse>()
     private val addToWatchlistMutableLiveData = MutableLiveData<PostResponse>()
@@ -30,26 +28,18 @@ class MovieDetailsViewModel(
 
     private val movieAccountStatesMutableLiveData = MutableLiveData<ItemAccountStateResponse>()
 
-    private val movieWatchListMutableLiveData = MutableLiveData<MoviesResponse>()
-    private val favoriteMoviesMutableLiveData = MutableLiveData<MoviesResponse>()
-    private val ratedMoviesMutableLiveData = MutableLiveData<MoviesResponse>()
-
     private val loadingErrorMutableLiveData = MutableLiveData<String>()
 
     val movieDetailsLiveData: LiveData<MovieDetailsResponse> = movieDetailsMutableLiveData
-    val movieCastLiveData: LiveData<List<Actor>> = movieCastMutableLiveData
+    val movieActorsLiveData: LiveData<List<HorizontalListItem>> = movieActorsMutableLiveData
     val movieReviewLiveData: LiveData<List<Review>> = movieReviewsMutableLiveData
-    val recommendedMoviesLiveData: LiveData<List<Movie>> = recommendedMoviesMutableLiveData
+    val recommendedMoviesLiveData: LiveData<List<HorizontalListItem>> = recommendedMoviesMutableLiveData
 
     val rateMovieLiveData: LiveData<PostResponse> = rateMovieMutableLiveData
     val addToWatchListLiveData: LiveData<PostResponse> = addToWatchlistMutableLiveData
     val markAsFavoriteLiveData: LiveData<PostResponse> = markAsFavoriteMutableLiveData
 
     val movieAccountLiveData: LiveData<ItemAccountStateResponse> = movieAccountStatesMutableLiveData
-
-    val moviesWatchListLiveData: LiveData<MoviesResponse> = movieWatchListMutableLiveData
-    val favoriteMoviesLiveData: LiveData<MoviesResponse> = favoriteMoviesMutableLiveData
-    val ratedMoviesLiveData: LiveData<MoviesResponse> = ratedMoviesMutableLiveData
 
     val loadingErrorLiveData: LiveData<String> = loadingErrorMutableLiveData
 
@@ -79,7 +69,7 @@ class MovieDetailsViewModel(
     fun getMovieCast(movieId: Int) = movieDetailsUseCase.getMovieCredits(movieId)
             .subscribe(
                     { response ->
-                        movieCastMutableLiveData.value = response
+                        movieActorsMutableLiveData.value = response
                         if (response.isNotEmpty()) {
                             castTitleVisibility.set(View.VISIBLE)
                             castCount.set(response.size.toString())

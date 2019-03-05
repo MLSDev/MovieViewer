@@ -4,18 +4,18 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
-import com.shykun.volodymyr.movieviewer.data.entity.Role
 import com.shykun.volodymyr.movieviewer.data.network.response.PersonDetailsResponse
 import com.shykun.volodymyr.movieviewer.domain.PersonDetailsUseCase
+import com.shykun.volodymyr.movieviewer.presentation.model.HorizontalListItem
 
 class PersonDetailsViewModel(private val personDetailsUseCase: PersonDetailsUseCase) : ViewModel() {
 
     private val personDetailsMutableLiveData = MutableLiveData<PersonDetailsResponse>()
-    private val personCastMutableLiveData = MutableLiveData<List<Role>>()
+    private val personCastMutableLiveData = MutableLiveData<List<HorizontalListItem>>()
     private val loadingErrorMutableLiveData = MutableLiveData<String>()
 
     val personDetailsLiveData: LiveData<PersonDetailsResponse> = personDetailsMutableLiveData
-    val personCastLiveData: LiveData<List<Role>> = personCastMutableLiveData
+    val personCastLiveData: LiveData<List<HorizontalListItem>> = personCastMutableLiveData
     val loadingErrorLiveData: LiveData<String> = loadingErrorMutableLiveData
 
     val castCount = ObservableField<String>("")

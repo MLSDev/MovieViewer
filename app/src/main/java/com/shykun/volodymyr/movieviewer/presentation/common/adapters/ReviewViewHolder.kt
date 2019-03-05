@@ -1,4 +1,4 @@
-package com.shykun.volodymyr.movieviewer.presentation.movies.details
+package com.shykun.volodymyr.movieviewer.presentation.common.adapters
 
 import com.shykun.volodymyr.movieviewer.data.entity.Review
 import com.shykun.volodymyr.movieviewer.databinding.ItemReviewBinding

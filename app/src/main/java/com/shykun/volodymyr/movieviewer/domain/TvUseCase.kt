@@ -7,6 +7,4 @@ import javax.inject.Inject
 class TvUseCase @Inject constructor(private val apiClient: ApiClient) {
 
     fun getTv(tvType: TvType, page: Int) = apiClient.getTV(tvType, page)
-
-    fun searchTv(query: String, page: Int = 1) = apiClient.searchTv(query, page)
 }

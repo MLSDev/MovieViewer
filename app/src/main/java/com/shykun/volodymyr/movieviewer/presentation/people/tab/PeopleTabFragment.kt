@@ -14,8 +14,9 @@ import com.shykun.volodymyr.movieviewer.data.entity.Person
 import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
 import com.shykun.volodymyr.movieviewer.presentation.common.ScrollObservable
 import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
+import com.shykun.volodymyr.movieviewer.presentation.model.ItemType
 import com.shykun.volodymyr.movieviewer.presentation.people.details.PERSON_DETAILS_FRAGMENT_KEY
-import com.shykun.volodymyr.movieviewer.presentation.people.search.PEOPLE_SEARCH_FRAGMENT_KEY
+import com.shykun.volodymyr.movieviewer.presentation.search.SEARCH_FRAGMENT_KEY
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_people_tab.*
 import ru.terrakok.cicerone.Router
@@ -65,8 +66,8 @@ class PeopleTabFragment : Fragment(), BackButtonListener {
     private fun setupToolbar() {
         peopleToolbar.inflateMenu(R.menu.manu_app)
         peopleToolbar.setOnMenuItemClickListener { menuItem ->
-            when(menuItem.itemId) {
-                R.id.action_search -> router.navigateTo(PEOPLE_SEARCH_FRAGMENT_KEY)
+            when (menuItem.itemId) {
+                R.id.action_search -> router.navigateTo(SEARCH_FRAGMENT_KEY, ItemType.PERSON)
             }
             true
         }
@@ -88,7 +89,7 @@ class PeopleTabFragment : Fragment(), BackButtonListener {
     fun getGridLayoutManager(): GridLayoutManager {
         val gridLayoutManager = GridLayoutManager(this@PeopleTabFragment.context, 3)
         gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-            override fun getSpanSize(position: Int) = when(peopleTabAdapter.getItemViewType(position)) {
+            override fun getSpanSize(position: Int) = when (peopleTabAdapter.getItemViewType(position)) {
                 PERSON -> 1
                 LOADING -> 3
                 else -> -1

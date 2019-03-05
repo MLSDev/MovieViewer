@@ -5,24 +5,23 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
 import android.view.View
-import com.shykun.volodymyr.movieviewer.data.entity.Actor
 import com.shykun.volodymyr.movieviewer.data.entity.Review
-import com.shykun.volodymyr.movieviewer.data.entity.Tv
 import com.shykun.volodymyr.movieviewer.data.network.response.ItemAccountStateResponse
 import com.shykun.volodymyr.movieviewer.data.network.response.PostResponse
 import com.shykun.volodymyr.movieviewer.data.network.response.TvDetailsResponse
 import com.shykun.volodymyr.movieviewer.data.network.response.TvResponse
 import com.shykun.volodymyr.movieviewer.domain.ProfileUseCase
 import com.shykun.volodymyr.movieviewer.domain.TvDetailsUseCase
+import com.shykun.volodymyr.movieviewer.presentation.model.HorizontalListItem
 
 class TvDetailsViewModel(
         private val tvDetailsUseCase: TvDetailsUseCase,
         private val profileUseCase: ProfileUseCase) : ViewModel() {
 
     private val tvDetailsMutableLiveData = MutableLiveData<TvDetailsResponse>()
-    private val recommendedTvMutableLiveData = MutableLiveData<List<Tv>>()
+    private val recommendedTvMutableLiveData = MutableLiveData<List<HorizontalListItem>>()
     private val tvReviewsMutableLiveData = MutableLiveData<List<Review>>()
-    private val tvCastMutableLiveData = MutableLiveData<List<Actor>>()
+    private val tvActorsMutableLiveData = MutableLiveData<List<HorizontalListItem>>()
 
     private val rateTvMutableLiveData = MutableLiveData<PostResponse>()
     private val addToWatchListMutableLiveData = MutableLiveData<PostResponse>()
@@ -39,9 +38,9 @@ class TvDetailsViewModel(
 
 
     val tvDetailsLiveData: LiveData<TvDetailsResponse> = tvDetailsMutableLiveData
-    val recommendedTvLiveData: LiveData<List<Tv>> = recommendedTvMutableLiveData
+    val recommendedTvLiveData: LiveData<List<HorizontalListItem>> = recommendedTvMutableLiveData
     val tvReviewsLiveData: LiveData<List<Review>> = tvReviewsMutableLiveData
-    val tvCastLiveData: LiveData<List<Actor>> = tvCastMutableLiveData
+    val tvActorsLiveData: LiveData<List<HorizontalListItem>> = tvActorsMutableLiveData
 
     val rateTvLiveData: LiveData<PostResponse> = rateTvMutableLiveData
     val addToWatchListLiveData: LiveData<PostResponse> = addToWatchListMutableLiveData
@@ -104,7 +103,7 @@ class TvDetailsViewModel(
     private fun getTvCast(tvId: Int) = tvDetailsUseCase.getTvCast(tvId)
             .subscribe(
                     { response ->
-                        tvCastMutableLiveData.value = response
+                        tvActorsMutableLiveData.value = response
                         if (response.isNotEmpty()) {
                             castTitleVisibility.set(View.VISIBLE)
                             castCount.set(response.size.toString())

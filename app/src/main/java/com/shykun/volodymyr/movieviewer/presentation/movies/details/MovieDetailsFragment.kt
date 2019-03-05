@@ -2,7 +2,6 @@ package com.shykun.volodymyr.movieviewer.presentation.movies.details
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.content.Context
 import android.content.SharedPreferences
 import android.databinding.DataBindingUtil
 import android.os.Bundle
@@ -19,8 +18,6 @@ import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayerSupportFragment
 import com.shykun.volodymyr.movieviewer.R
-import com.shykun.volodymyr.movieviewer.data.entity.Actor
-import com.shykun.volodymyr.movieviewer.data.entity.Movie
 import com.shykun.volodymyr.movieviewer.data.entity.Review
 import com.shykun.volodymyr.movieviewer.data.entity.Video
 import com.shykun.volodymyr.movieviewer.data.network.YOUTUBE_API_KEY
@@ -28,13 +25,14 @@ import com.shykun.volodymyr.movieviewer.data.network.response.ItemAccountStateRe
 import com.shykun.volodymyr.movieviewer.data.network.response.MovieDetailsResponse
 import com.shykun.volodymyr.movieviewer.data.network.response.PostResponse
 import com.shykun.volodymyr.movieviewer.databinding.FragmentMovieDetailsBinding
-import com.shykun.volodymyr.movieviewer.presentation.AppActivity
 import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
+import com.shykun.volodymyr.movieviewer.presentation.common.adapters.HorizontalListAdapter
 import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
+import com.shykun.volodymyr.movieviewer.presentation.common.adapters.ReviewAdapter
+import com.shykun.volodymyr.movieviewer.presentation.model.HorizontalListItem
 import com.shykun.volodymyr.movieviewer.presentation.people.details.PERSON_DETAILS_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.profile.LOGIN_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.profile.SESSION_ID_KEY
-import com.shykun.volodymyr.movieviewer.presentation.utils.NavigationKeys
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject
@@ -56,9 +54,9 @@ class MovieDetailsFragment : Fragment(), BackButtonListener {
 
     private lateinit var viewModel: MovieDetailsViewModel
     private var binding: FragmentMovieDetailsBinding? = null
-    private lateinit var castAdapter: CastAdapter
+    private lateinit var actorsAdapter: HorizontalListAdapter
+    private lateinit var recommendedMoviesAdapter: HorizontalListAdapter
     private lateinit var reviewsAdapter: ReviewAdapter
-    private lateinit var recommendedMoviesAdapter: RecommendedMoviesAdapter
 
     @Inject
     lateinit var viewModelFactory: MovieDetailsViewModelFactory
@@ -72,9 +70,9 @@ class MovieDetailsFragment : Fragment(), BackButtonListener {
 
         (parentFragment as TabNavigationFragment).component?.inject(this)
 
-        castAdapter = CastAdapter()
+        actorsAdapter = HorizontalListAdapter()
+        recommendedMoviesAdapter = HorizontalListAdapter()
         reviewsAdapter = ReviewAdapter()
-        recommendedMoviesAdapter = RecommendedMoviesAdapter()
 
         movieId = arguments?.getInt(MOVIE_ID_KEY)!!
         viewModel = ViewModelProviders
@@ -158,7 +156,7 @@ class MovieDetailsFragment : Fragment(), BackButtonListener {
     private fun setupCastAdapter() {
         movieCast.apply {
             layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = castAdapter
+            adapter = actorsAdapter
         }
     }
 
@@ -178,11 +176,11 @@ class MovieDetailsFragment : Fragment(), BackButtonListener {
     }
 
     private fun setupRecommendedMovieClick() {
-        recommendedMoviesAdapter.clickObservable.subscribe { router.navigateTo(MOVIE_DETAILS_FRAGMENT_KEY, it) }
+        recommendedMoviesAdapter.clickObservable.subscribe { router.navigateTo(MOVIE_DETAILS_FRAGMENT_KEY, it.id) }
     }
 
     private fun setupActorClick() {
-        castAdapter.clickObservable.subscribe { router.navigateTo(PERSON_DETAILS_FRAGMENT_KEY, it) }
+        actorsAdapter.clickObservable.subscribe { router.navigateTo(PERSON_DETAILS_FRAGMENT_KEY, it.id) }
     }
 
     private fun performMenuAction(action: (sessionId: String) -> Unit): Boolean {
@@ -221,7 +219,7 @@ class MovieDetailsFragment : Fragment(), BackButtonListener {
 
     private fun subscribeViewModel() {
         viewModel.movieDetailsLiveData.observe(this, Observer { showMovieDetails(it) })
-        viewModel.movieCastLiveData.observe(this, Observer { showMovieCast(it) })
+        viewModel.movieActorsLiveData.observe(this, Observer { showMovieActors(it) })
         viewModel.movieReviewLiveData.observe(this, Observer { showReviews(it) })
         viewModel.recommendedMoviesLiveData.observe(this, Observer { showRecommendedMovies(it) })
 
@@ -243,9 +241,9 @@ class MovieDetailsFragment : Fragment(), BackButtonListener {
         }
     }
 
-    private fun showMovieCast(movieCast: List<Actor>?) {
-        if (movieCast != null) {
-            castAdapter.addItems(movieCast)
+    private fun showMovieActors(actors: List<HorizontalListItem>?) {
+        if (actors != null) {
+            actorsAdapter.addItems(actors)
         }
     }
 
@@ -255,7 +253,7 @@ class MovieDetailsFragment : Fragment(), BackButtonListener {
         }
     }
 
-    private fun showRecommendedMovies(movies: List<Movie>?) {
+    private fun showRecommendedMovies(movies: List<HorizontalListItem>?) {
         if (movies != null) {
             recommendedMoviesAdapter.addItems(movies)
         }

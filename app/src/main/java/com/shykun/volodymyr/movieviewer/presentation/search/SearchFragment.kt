@@ -1,4 +1,4 @@
-package com.shykun.volodymyr.movieviewer.presentation.tv.search
+package com.shykun.volodymyr.movieviewer.presentation.search
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -14,30 +14,34 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
 import android.widget.Toast
 import com.shykun.volodymyr.movieviewer.R
-import com.shykun.volodymyr.movieviewer.data.entity.Tv
-import com.shykun.volodymyr.movieviewer.data.entity.TvType
-import com.shykun.volodymyr.movieviewer.data.network.response.TvResponse
+import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
 import com.shykun.volodymyr.movieviewer.databinding.FragmentSearchBinding
 import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
 import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
+import com.shykun.volodymyr.movieviewer.presentation.model.ItemType
+import com.shykun.volodymyr.movieviewer.presentation.model.SearchListItem
+import com.shykun.volodymyr.movieviewer.presentation.movies.details.MOVIE_DETAILS_FRAGMENT_KEY
+import com.shykun.volodymyr.movieviewer.presentation.movies.list.MOVIE_LIST_FRAGMENT_KEY
+import com.shykun.volodymyr.movieviewer.presentation.movies.list.MOVIE_TYPE_KEY
 import com.shykun.volodymyr.movieviewer.presentation.movies.list.SEARCH_QUERY_KEY
+import com.shykun.volodymyr.movieviewer.presentation.people.details.PERSON_DETAILS_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.tv.details.TV_DETAILS_FRAGMENT_KEY
-import com.shykun.volodymyr.movieviewer.presentation.tv.list.TV_LIST_FRAGMENT_KEY
-import com.shykun.volodymyr.movieviewer.presentation.tv.list.TV_TYPE_KEY
 import kotlinx.android.synthetic.main.fragment_search.*
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
-const val TV_SEARCH_FRAGMENT_KEY = "tv_search_fragment_key"
+const val SEARCH_FRAGMENT_KEY = "search_fragment_key"
+private const val ITEM_TYPE_KEY = "item_type_key"
 
-class TvSearchFragment : Fragment(), BackButtonListener {
+class SearchFragment : Fragment(), BackButtonListener {
 
+    private lateinit var itemType: ItemType
     private lateinit var binding: FragmentSearchBinding
-    private lateinit var viewModel: TvSearchViewModel
-    private lateinit var tvSearchAdapter: TvSearchAdapter
+    private lateinit var viewModel: SearchViewModel
+    private lateinit var searchAdapter: SearchAdapter
 
     @Inject
-    lateinit var viewModelFactory: TvSearchViewModelFactory
+    lateinit var viewModelFactory: SearchViewModelFactory
     @Inject
     lateinit var router: Router
 
@@ -46,12 +50,14 @@ class TvSearchFragment : Fragment(), BackButtonListener {
 
         (parentFragment as TabNavigationFragment).component?.inject(this)
 
+        itemType = arguments?.getSerializable(ITEM_TYPE_KEY) as ItemType
         viewModel = ViewModelProviders.of(this, viewModelFactory)
-                .get(TvSearchViewModel::class.java)
-        tvSearchAdapter = TvSearchAdapter()
+                .get(SearchViewModel::class.java)
+        searchAdapter = SearchAdapter()
 
         subscribeViewModel()
-        setupTvClick()
+        setupItemClick()
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -70,13 +76,17 @@ class TvSearchFragment : Fragment(), BackButtonListener {
     }
 
     private fun setSearchHint() {
-        binding.searchHint = getString(R.string.search_tv)
+        binding.searchHint = when (itemType) {
+            ItemType.MOVIE -> getString(R.string.search_movies)
+            ItemType.TV -> getString(R.string.search_tv)
+            ItemType.PERSON -> getString(R.string.search_people)
+        }
     }
 
     private fun setupAdapter() {
         searchList.apply {
             layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
-            adapter = tvSearchAdapter
+            adapter = searchAdapter
         }
     }
 
@@ -90,9 +100,9 @@ class TvSearchFragment : Fragment(), BackButtonListener {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String): Boolean {
                 if (newText.isNotEmpty())
-                    viewModel.searchTv(newText)
+                    viewModel.search(newText, itemType)
                 else
-                    tvSearchAdapter.clearItems()
+                    searchAdapter.clearItems()
 
                 return true
             }
@@ -101,25 +111,12 @@ class TvSearchFragment : Fragment(), BackButtonListener {
                 hideKeyboard()
 
                 val args = Bundle()
-                args.putSerializable(TV_TYPE_KEY, TvType.SEARCHED)
+                args.putSerializable(MOVIE_TYPE_KEY, MoviesType.SEARCHED)
                 args.putString(SEARCH_QUERY_KEY, query)
-                router.navigateTo(TV_LIST_FRAGMENT_KEY, args)
-
+                router.navigateTo(MOVIE_LIST_FRAGMENT_KEY, args)
                 return true
             }
         })
-    }
-
-    private fun subscribeViewModel() {
-        viewModel.searchedLiveData.observe(this, Observer { showTvList(it) })
-        viewModel.loadingErrorLiveData.observe(this, Observer { showLoadingError(it) })
-    }
-
-    private fun setupTvClick() {
-        tvSearchAdapter.clickObservable.subscribe {
-            hideKeyboard()
-            router.navigateTo(TV_DETAILS_FRAGMENT_KEY, it)
-        }
     }
 
     private fun showKeyboard() {
@@ -133,10 +130,32 @@ class TvSearchFragment : Fragment(), BackButtonListener {
         imm?.hideSoftInputFromWindow(searchView.windowToken, 0)
     }
 
-    private fun showTvList(tvResponse: TvResponse?) {
-        if (tvResponse != null) {
-            tvSearchAdapter.addItems(tvResponse.results)
+    private fun subscribeViewModel() {
+        viewModel.searchResultsLiveData.observe(this, Observer { showSearchedMovies(it) })
+        viewModel.loadingErrorLiveData.observe(this, Observer { showLoadingError(it) })
+    }
+
+    private fun showSearchedMovies(searchResults: List<SearchListItem>?) {
+        if (searchResults != null) {
+            searchAdapter.setItems(searchResults)
         }
+    }
+
+    private fun setupItemClick() {
+        searchAdapter.clickObservable.subscribe {
+            hideKeyboard()
+            openDetailsScreen(it)
+        }
+    }
+
+    private fun openDetailsScreen(id: Int) {
+        val screenKey = when (itemType) {
+            ItemType.MOVIE -> MOVIE_DETAILS_FRAGMENT_KEY
+            ItemType.TV -> TV_DETAILS_FRAGMENT_KEY
+            ItemType.PERSON -> PERSON_DETAILS_FRAGMENT_KEY
+        }
+
+        router.navigateTo(screenKey, id)
     }
 
     private fun showLoadingError(message: String?) {
@@ -149,4 +168,16 @@ class TvSearchFragment : Fragment(), BackButtonListener {
 
         return true
     }
+
+    companion object {
+        fun newInstance(itemType: ItemType): SearchFragment {
+            val searchFragment = SearchFragment()
+            val args = Bundle()
+            args.putSerializable(ITEM_TYPE_KEY, itemType)
+            searchFragment.arguments = args
+
+            return searchFragment
+        }
+    }
 }
+

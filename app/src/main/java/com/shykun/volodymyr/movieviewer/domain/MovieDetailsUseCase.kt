@@ -5,14 +5,16 @@ import com.shykun.volodymyr.movieviewer.data.network.body.AddToWatchlistBody
 import com.shykun.volodymyr.movieviewer.data.network.body.MarkAsFavoriteBody
 import com.shykun.volodymyr.movieviewer.data.network.body.RateBody
 import com.shykun.volodymyr.movieviewer.data.network.response.ItemAccountStateResponse
+import com.shykun.volodymyr.movieviewer.presentation.utils.actorToHorizontalListItem
+import com.shykun.volodymyr.movieviewer.presentation.utils.topRatedMovieToHorizontalListItem
 import javax.inject.Inject
 
 class MovieDetailsUseCase @Inject constructor(private val apiClient: ApiClient) {
 
     fun getMovieDetails(movieId: Int) = apiClient.getMovieDetails(movieId)
-    fun getMovieCredits(movieId: Int) = apiClient.getMovieCredits(movieId).map { it.cast }
+    fun getMovieCredits(movieId: Int) = apiClient.getMovieCredits(movieId).map { it.cast.map { actorToHorizontalListItem(it) } }
     fun getMovieReviews(movieId: Int) = apiClient.getMovieReviews(movieId).map { it.results }
-    fun getRecommendedMovies(movieId: Int) = apiClient.getRecommendedMovies(movieId).map { it.results }
+    fun getRecommendedMovies(movieId: Int) = apiClient.getRecommendedMovies(movieId).map { it.results.map { topRatedMovieToHorizontalListItem(it) } }
 
     fun rateMovie(movieId: Int, rating: Float, sessionId: String) = apiClient.rateMovie(movieId, RateBody(rating), sessionId)
     fun markAsFavorite(movieId: Int, sessionId: String) = apiClient.markAsFavorite(MarkAsFavoriteBody("movie", movieId, true), sessionId)

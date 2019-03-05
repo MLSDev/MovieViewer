@@ -7,9 +7,11 @@ import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
 import com.shykun.volodymyr.movieviewer.data.network.response.MoviesResponse
 import com.shykun.volodymyr.movieviewer.domain.MoviesUseCase
 import com.shykun.volodymyr.movieviewer.domain.ProfileUseCase
+import com.shykun.volodymyr.movieviewer.domain.SearchUseCase
 
 class MovieListViewModel(private val moviesUseCase: MoviesUseCase,
-                         private val profileUseCase: ProfileUseCase) : ViewModel() {
+                         private val profileUseCase: ProfileUseCase,
+                         private val searchUseCase: SearchUseCase) : ViewModel() {
 
     private val moviesMutableLiveData = MutableLiveData<MoviesResponse>()
     private val loadingErrorMutableLiveData = MutableLiveData<String>()
@@ -23,7 +25,7 @@ class MovieListViewModel(private val moviesUseCase: MoviesUseCase,
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
 
-    fun searchMovie(query: String, page: Int) = moviesUseCase.searchMovies(query, page)
+    fun searchMovie(query: String, page: Int) = searchUseCase.searchMovies(query, page)
             .subscribe(
                     { response -> moviesMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }

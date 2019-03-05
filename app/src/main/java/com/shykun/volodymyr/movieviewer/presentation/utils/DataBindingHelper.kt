@@ -2,6 +2,7 @@ package com.shykun.volodymyr.movieviewer.presentation.utils
 
 import android.databinding.BindingAdapter
 import android.databinding.BindingConversion
+import android.view.View
 import android.widget.ImageView
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.*
@@ -16,6 +17,14 @@ fun loadImage(imageView: ImageView, url: String?) {
     } else {
         imageView.setImageResource(R.drawable.ic_person)
     }
+}
+
+@BindingAdapter("icon")
+fun setImageViewResource(imageView: ImageView, resourceId: Int?) {
+    if (resourceId != null)
+        imageView.setImageResource(resourceId)
+    else
+        imageView.visibility = View.GONE
 }
 
 @BindingConversion

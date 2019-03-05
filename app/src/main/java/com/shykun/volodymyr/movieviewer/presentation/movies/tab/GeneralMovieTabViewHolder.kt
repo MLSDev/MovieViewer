@@ -10,6 +10,10 @@ import com.shykun.volodymyr.movieviewer.data.entity.Movie
 import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
 import com.shykun.volodymyr.movieviewer.databinding.ItemHorizontalMovieListBinding
 import com.shykun.volodymyr.movieviewer.presentation.common.BaseViewHolder
+import com.shykun.volodymyr.movieviewer.presentation.common.adapters.HorizontalListAdapter
+import com.shykun.volodymyr.movieviewer.presentation.utils.popularMovieToHorizontalListItem
+import com.shykun.volodymyr.movieviewer.presentation.utils.topRatedMovieToHorizontalListItem
+import com.shykun.volodymyr.movieviewer.presentation.utils.upcomingMovieToHorizontalListItem
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.item_horizontal_movie_list.view.*
 
@@ -48,9 +52,15 @@ class GeneralMovieTabViewHolder(
 
             movieList.apply {
                 layoutManager = LinearLayoutManager(this.context, LinearLayout.HORIZONTAL, false)
-                val moviesAdapter = MovieTabAdapter(moviesType)
-                moviesAdapter.addItems(item)
-                moviesAdapter.movieClickEvent.subscribe { movieClickSubject.onNext(it) }
+                val moviesAdapter = HorizontalListAdapter()
+                val movies = when(moviesType) {
+                    MoviesType.TOP_RATED -> item.map { topRatedMovieToHorizontalListItem(it) }
+                    MoviesType.POPULAR -> item.mapIndexed { position, movie -> popularMovieToHorizontalListItem(movie, position) }
+                    MoviesType.UPCOMING -> item.map { upcomingMovieToHorizontalListItem(it) }
+                    else -> null
+                }
+                moviesAdapter.addItems(movies!!)
+                moviesAdapter.clickObservable.subscribe { movieClickSubject.onNext(it.id)}
                 adapter = moviesAdapter
             }
         }

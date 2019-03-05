@@ -1,17 +1,15 @@
-package com.shykun.volodymyr.movieviewer.presentation.people.tab
+package com.shykun.volodymyr.movieviewer.presentation.search
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
-import com.shykun.volodymyr.movieviewer.domain.PeopleUseCase
+import com.shykun.volodymyr.movieviewer.domain.MoviesUseCase
 import com.shykun.volodymyr.movieviewer.domain.SearchUseCase
-import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
-class PeopleTabViewModelFactory @Inject constructor(
-        private val peopleUseCase: PeopleUseCase,
+class SearchViewModelFactory @Inject constructor(
         private val searchUseCase: SearchUseCase) : ViewModelProvider.NewInstanceFactory() {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return PeopleTabViewModel(peopleUseCase, searchUseCase) as T
+        return SearchViewModel(searchUseCase) as T
     }
 }

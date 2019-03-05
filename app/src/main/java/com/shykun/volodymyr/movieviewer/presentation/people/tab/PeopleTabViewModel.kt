@@ -5,9 +5,11 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.shykun.volodymyr.movieviewer.data.entity.Person
 import com.shykun.volodymyr.movieviewer.domain.PeopleUseCase
+import com.shykun.volodymyr.movieviewer.domain.SearchUseCase
 
 class PeopleTabViewModel(
-        private val peopleUseCase: PeopleUseCase) : ViewModel() {
+        private val peopleUseCase: PeopleUseCase,
+        private val searchUseCase: SearchUseCase) : ViewModel() {
 
     private val peopleMutableLiveData = MutableLiveData<List<Person>>()
     private val loadingErrorMutableLiveData = MutableLiveData<String>()
@@ -25,7 +27,7 @@ class PeopleTabViewModel(
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
 
-    fun searchPeople(query: String, page: Int) = peopleUseCase.searchPeople(query, page)
+    fun searchPeople(query: String, page: Int) = searchUseCase.searchPeople(query, page)
             .subscribe(
                     { response -> peopleMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }

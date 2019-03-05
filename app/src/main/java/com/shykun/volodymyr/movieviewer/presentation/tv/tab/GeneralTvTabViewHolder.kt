@@ -10,6 +10,10 @@ import com.shykun.volodymyr.movieviewer.data.entity.Tv
 import com.shykun.volodymyr.movieviewer.data.entity.TvType
 import com.shykun.volodymyr.movieviewer.databinding.ItemHorizontalTvListBinding
 import com.shykun.volodymyr.movieviewer.presentation.common.BaseViewHolder
+import com.shykun.volodymyr.movieviewer.presentation.common.adapters.HorizontalListAdapter
+import com.shykun.volodymyr.movieviewer.presentation.utils.popularTvToHorizontalListItem
+import com.shykun.volodymyr.movieviewer.presentation.utils.topRatedTvToHorizontalListItem
+import com.shykun.volodymyr.movieviewer.presentation.utils.tvOnTheAirToHorizontalListItem
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.item_horizontal_tv_list.view.*
 import java.util.*
@@ -39,7 +43,7 @@ class GeneralTvTabViewHolder(
                 title = itemView.context.getString(R.string.top_rated_tv)
                 tvType = TvType.TOP_RATED
             }
-            TV_ON_THE_AIR ->  {
+            TV_ON_THE_AIR -> {
                 title = itemView.context.getString(R.string.tv_on_the_air)
                 tvType = TvType.ON_THE_AIR
             }
@@ -50,9 +54,15 @@ class GeneralTvTabViewHolder(
 
             tvList.apply {
                 layoutManager = LinearLayoutManager(this.context, LinearLayout.HORIZONTAL, false)
-                val tvAdapter = TvTabAdapter(tvType)
-                tvAdapter.addItems(item)
-                tvAdapter.clickObservable.subscribe { tvClickSubject.onNext(it) }
+                val items = when (tvType) {
+                    TvType.TOP_RATED -> item.map { topRatedTvToHorizontalListItem(it) }
+                    TvType.POPULAR -> item.mapIndexed { position, tv -> popularTvToHorizontalListItem(tv, position) }
+                    TvType.ON_THE_AIR -> item.map { tvOnTheAirToHorizontalListItem(it) }
+                    else -> null
+                }
+                val tvAdapter = HorizontalListAdapter()
+                tvAdapter.addItems(items!!)
+                tvAdapter.clickObservable.subscribe { tvClickSubject.onNext(it.id) }
                 adapter = tvAdapter
             }
         }

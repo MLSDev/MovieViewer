@@ -14,13 +14,13 @@ import com.shykun.volodymyr.movieviewer.data.entity.TvType
 import com.shykun.volodymyr.movieviewer.data.network.response.TvResponse
 import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
 import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
+import com.shykun.volodymyr.movieviewer.presentation.model.ItemType
+import com.shykun.volodymyr.movieviewer.presentation.search.SEARCH_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.tv.details.TV_DETAILS_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.tv.list.TV_LIST_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.tv.list.TV_TYPE_KEY
-import com.shykun.volodymyr.movieviewer.presentation.tv.search.TV_SEARCH_FRAGMENT_KEY
 import kotlinx.android.synthetic.main.fragment_movies_tab.*
 import ru.terrakok.cicerone.Router
-import java.lang.Exception
 import javax.inject.Inject
 
 const val TV_TAB_FRAGMENT_KEY = "tv_tab_fragment_key"
@@ -71,7 +71,7 @@ class TvTabFragment : Fragment(), BackButtonListener {
         moviesToolbar.inflateMenu(R.menu.manu_app)
         moviesToolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.action_search -> router.navigateTo(TV_SEARCH_FRAGMENT_KEY)
+                R.id.action_search -> router.navigateTo(SEARCH_FRAGMENT_KEY, ItemType.TV)
             }
             true
         }

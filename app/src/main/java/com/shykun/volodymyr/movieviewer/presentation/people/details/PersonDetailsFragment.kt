@@ -16,6 +16,9 @@ import com.shykun.volodymyr.movieviewer.data.network.response.PersonDetailsRespo
 import com.shykun.volodymyr.movieviewer.databinding.FragmentPersonDetailsBinding
 import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
 import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
+import com.shykun.volodymyr.movieviewer.presentation.common.adapters.HorizontalListAdapter
+import com.shykun.volodymyr.movieviewer.presentation.model.HorizontalListItem
+import com.shykun.volodymyr.movieviewer.presentation.model.ItemType
 import com.shykun.volodymyr.movieviewer.presentation.movies.details.MOVIE_DETAILS_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.tv.details.TV_DETAILS_FRAGMENT_KEY
 import kotlinx.android.synthetic.main.fragment_person_details.*
@@ -31,7 +34,7 @@ class PersonDetailsFragment : Fragment(), BackButtonListener {
     private var viewWasLoaded = false
     private lateinit var viewModel: PersonDetailsViewModel
     private var binding: FragmentPersonDetailsBinding? = null
-    private lateinit var personCastAdapter: PersonCastAdapter
+    private lateinit var personCastAdapter: HorizontalListAdapter
 
     @Inject
     lateinit var viewModelFactory: PersonDetailsViewModelFactory
@@ -43,7 +46,7 @@ class PersonDetailsFragment : Fragment(), BackButtonListener {
 
         (parentFragment as TabNavigationFragment).component?.inject(this)
 
-        personCastAdapter = PersonCastAdapter()
+        personCastAdapter = HorizontalListAdapter()
         personId = arguments?.getInt(PERSON_ID_KEY)!!
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(PersonDetailsViewModel::class.java)
@@ -95,7 +98,7 @@ class PersonDetailsFragment : Fragment(), BackButtonListener {
         binding?.personDetails = personDetails
     }
 
-    private fun showPersonCast(roles: List<Role>?) {
+    private fun showPersonCast(roles: List<HorizontalListItem>?) {
         if (roles != null) {
             personCastAdapter.addItems(roles)
         }
@@ -107,9 +110,9 @@ class PersonDetailsFragment : Fragment(), BackButtonListener {
 
     private fun setupPersonCastCLick() {
         personCastAdapter.clickObservable.subscribe {
-            when (it.mediaType) {
-                "tv" -> router.navigateTo(TV_DETAILS_FRAGMENT_KEY, it.id)
-                "movie" -> router.navigateTo(MOVIE_DETAILS_FRAGMENT_KEY, it.id)
+            when (it.itemType) {
+                ItemType.TV -> router.navigateTo(TV_DETAILS_FRAGMENT_KEY, it.id)
+                ItemType.MOVIE -> router.navigateTo(MOVIE_DETAILS_FRAGMENT_KEY, it.id)
             }
         }
     }
