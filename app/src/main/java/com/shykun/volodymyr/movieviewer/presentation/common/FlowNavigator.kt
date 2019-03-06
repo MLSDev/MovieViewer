@@ -65,7 +65,7 @@ class FlowNavigator(activity: FragmentActivity, fm: FragmentManager, containerId
             PROFILE_FRAGMENT_KEY -> ProfileFragment()
             LOGIN_FRAGMENT_KEY -> LoginFragment()
 
-            SEARCH_FRAGMENT_KEY -> SearchFragment.newInstance(data as ItemType)
+            SEARCH_FRAGMENT_KEY -> SearchFragment.newInstance(data as Bundle)
 
             else -> null
         }

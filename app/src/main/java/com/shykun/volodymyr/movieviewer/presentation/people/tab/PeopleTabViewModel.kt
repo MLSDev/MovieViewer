@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModel
 import com.shykun.volodymyr.movieviewer.data.entity.Person
 import com.shykun.volodymyr.movieviewer.domain.PeopleUseCase
 import com.shykun.volodymyr.movieviewer.domain.SearchUseCase
+import com.shykun.volodymyr.movieviewer.presentation.utils.ioMainSubscribe
 
 class PeopleTabViewModel(
         private val peopleUseCase: PeopleUseCase,
@@ -17,18 +18,14 @@ class PeopleTabViewModel(
     val peopleLiveData: LiveData<List<Person>> = peopleMutableLiveData
     val loadingErrorLiveData: LiveData<String> = loadingErrorMutableLiveData
 
-    fun onViewLoaded() {
-        getPeople(1)
-    }
-
     fun getPeople(page: Int) = peopleUseCase.getPopularPeople(page)
-            .subscribe(
+            .ioMainSubscribe(
                     { response -> peopleMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
 
     fun searchPeople(query: String, page: Int) = searchUseCase.searchPeople(query, page)
-            .subscribe(
+            .ioMainSubscribe(
                     { response -> peopleMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )

@@ -30,7 +30,7 @@ import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
 import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
 import com.shykun.volodymyr.movieviewer.presentation.common.adapters.HorizontalListAdapter
 import com.shykun.volodymyr.movieviewer.presentation.common.adapters.ReviewAdapter
-import com.shykun.volodymyr.movieviewer.presentation.model.HorizontalListItem
+import com.shykun.volodymyr.movieviewer.presentation.model.HorizontalItem
 import com.shykun.volodymyr.movieviewer.presentation.people.details.PERSON_DETAILS_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.profile.SESSION_ID_KEY
 import com.shykun.volodymyr.movieviewer.presentation.utils.NavigationKeys
@@ -238,7 +238,7 @@ class TvDetailsFragment : Fragment(), BackButtonListener {
         }
     }
 
-    private fun showTvCast(tvActors: List<HorizontalListItem>?) {
+    private fun showTvCast(tvActors: List<HorizontalItem>?) {
         if (tvActors != null) {
             actorsAdapter.addItems(tvActors)
         }
@@ -250,9 +250,9 @@ class TvDetailsFragment : Fragment(), BackButtonListener {
         }
     }
 
-    private fun showRecommendedTv(tvList: List<HorizontalListItem>?) {
-        if (tvList != null) {
-            recommendedTvAdapter.addItems(tvList)
+    private fun showRecommendedTv(tv: List<HorizontalItem>?) {
+        if (tv != null) {
+            recommendedTvAdapter.addItems(tv)
         }
     }
 

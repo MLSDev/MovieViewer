@@ -12,10 +12,11 @@ import android.widget.Toast
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Person
 import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
-import com.shykun.volodymyr.movieviewer.presentation.common.ScrollObservable
+import com.shykun.volodymyr.movieviewer.presentation.utils.ScrollObservable
 import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
 import com.shykun.volodymyr.movieviewer.presentation.model.ItemType
 import com.shykun.volodymyr.movieviewer.presentation.people.details.PERSON_DETAILS_FRAGMENT_KEY
+import com.shykun.volodymyr.movieviewer.presentation.search.ITEM_TYPE_KEY
 import com.shykun.volodymyr.movieviewer.presentation.search.SEARCH_FRAGMENT_KEY
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_people_tab.*
@@ -67,7 +68,9 @@ class PeopleTabFragment : Fragment(), BackButtonListener {
         peopleToolbar.inflateMenu(R.menu.manu_app)
         peopleToolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.action_search -> router.navigateTo(SEARCH_FRAGMENT_KEY, ItemType.PERSON)
+                R.id.action_search -> router.navigateTo(SEARCH_FRAGMENT_KEY, Bundle().apply {
+                    putSerializable(ITEM_TYPE_KEY, ItemType.PERSON)
+                })
             }
             true
         }
@@ -110,10 +113,10 @@ class PeopleTabFragment : Fragment(), BackButtonListener {
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext {
                     if (searchQuery == null)
-                        viewModel.getPeople(peopleTabAdapter.lastLoadedPage + 1)
+                        viewModel.getPeople(peopleTabAdapter.nextPage)
                     else
-                        viewModel.searchPeople(searchQuery!!, peopleTabAdapter.lastLoadedPage + 1)
-                    peopleTabAdapter.lastLoadedPage++
+                        viewModel.searchPeople(searchQuery!!, peopleTabAdapter.nextPage)
+                    peopleTabAdapter.nextPage++
                 }
                 .subscribe()
     }

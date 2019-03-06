@@ -4,13 +4,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <import type="android.view.View"/>
         <variable
-            name="tv"
-            type="com.shykun.volodymyr.movieviewer.data.entity.Tv" />
-
-        <variable
-            name="viewHolderTv"
-            type="com.shykun.volodymyr.movieviewer.presentation.tv.list.TvListViewHolder" />
+            name="item"
+            type="com.shykun.volodymyr.movieviewer.presentation.model.VerticalItem" />
     </data>
 
     <android.support.v7.widget.CardView
@@ -35,7 +32,7 @@
                 android:layout_height="160dp"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                app:url="@{tv.posterPath}" />
+                app:url="@{item.imageUrl}" />
 
             <TextView
                 android:id="@+id/title"
@@ -43,8 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_toEndOf="@id/poster"
-                android:text="@{tv.name}"
-                android:textColor="@color/snow"
+                android:text="@{item.title}"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -55,7 +51,7 @@
                 android:layout_below="@id/title"
                 android:layout_marginStart="10dp"
                 android:layout_toEndOf="@id/poster"
-                android:src="@drawable/ic_star"/>
+                android:src="@drawable/ic_star" />
 
             <TextView
                 android:id="@+id/rating"
@@ -64,8 +60,7 @@
                 android:layout_below="@id/title"
                 android:layout_marginStart="5dp"
                 android:layout_toEndOf="@id/starIcon"
-                android:text="@{tv.voteAverage}"
-                android:textColor="@color/snow"
+                android:text="@{item.rating}"
                 android:textSize="15sp" />
 
             <TextView
@@ -75,31 +70,16 @@
                 android:layout_below="@id/rating"
                 android:layout_marginStart="10dp"
                 android:layout_toEndOf="@id/poster"
-                android:text="@{tv.genreIds}"
-                android:textColor="@color/snow" />
+                android:text="@{item.genreIds}" />
 
             <TextView
-                android:id="@+id/popularity"
+                android:id="@+id/releaseDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/genres"
                 android:layout_marginStart="10dp"
                 android:layout_toEndOf="@id/poster"
-                android:text="@{viewHolderTv.popularity}"
-                android:textColor="@color/snow"
-                android:textSize="18sp"
-                android:visibility="@{viewHolderTv.popularityVisibility}" />
-
-            <TextView
-                android:id="@+id/firstAirDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/genres"
-                android:layout_marginStart="10dp"
-                android:layout_toEndOf="@id/poster"
-                android:text="@{tv.firstAirDate}"
-                android:textColor="@color/snow"
-                android:visibility="@{viewHolderTv.firstAirDateVisibility}" />
+                android:text="@{item.releaseDate}" />
 
 
         </RelativeLayout>

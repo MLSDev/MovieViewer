@@ -1,9 +1,11 @@
-package com.shykun.volodymyr.movieviewer.presentation.common
+package com.shykun.volodymyr.movieviewer.presentation.utils
 
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import io.reactivex.Observable
-
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 object ScrollObservable {
     fun from(rv: RecyclerView, limit: Int): Observable<Int> {
@@ -22,4 +24,10 @@ object ScrollObservable {
             rv.addOnScrollListener(sl)
         }
     }
+}
+
+fun <T> Single<T>.ioMainSubscribe(onSuccess: (T) -> Unit, onError: (error: Throwable) -> Unit) {
+    this.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(onSuccess, onError)
 }

@@ -11,16 +11,18 @@ import com.shykun.volodymyr.movieviewer.data.network.response.MovieDetailsRespon
 import com.shykun.volodymyr.movieviewer.data.network.response.PostResponse
 import com.shykun.volodymyr.movieviewer.domain.MovieDetailsUseCase
 import com.shykun.volodymyr.movieviewer.domain.ProfileUseCase
-import com.shykun.volodymyr.movieviewer.presentation.model.HorizontalListItem
+import com.shykun.volodymyr.movieviewer.presentation.model.HorizontalItem
+import com.shykun.volodymyr.movieviewer.presentation.utils.ioMainSubscribe
+import io.reactivex.android.schedulers.AndroidSchedulers
 
 class MovieDetailsViewModel(
         private val movieDetailsUseCase: MovieDetailsUseCase,
         private val profileUseCase: ProfileUseCase) : ViewModel() {
 
     private val movieDetailsMutableLiveData = MutableLiveData<MovieDetailsResponse>()
-    private val movieActorsMutableLiveData = MutableLiveData<List<HorizontalListItem>>()
+    private val movieActorsMutableLiveData = MutableLiveData<List<HorizontalItem>>()
     private val movieReviewsMutableLiveData = MutableLiveData<List<Review>>()
-    private val recommendedMoviesMutableLiveData = MutableLiveData<List<HorizontalListItem>>()
+    private val recommendedMoviesMutableLiveData = MutableLiveData<List<HorizontalItem>>()
 
     private val rateMovieMutableLiveData = MutableLiveData<PostResponse>()
     private val addToWatchlistMutableLiveData = MutableLiveData<PostResponse>()
@@ -31,9 +33,9 @@ class MovieDetailsViewModel(
     private val loadingErrorMutableLiveData = MutableLiveData<String>()
 
     val movieDetailsLiveData: LiveData<MovieDetailsResponse> = movieDetailsMutableLiveData
-    val movieActorsLiveData: LiveData<List<HorizontalListItem>> = movieActorsMutableLiveData
+    val movieActorsLiveData: LiveData<List<HorizontalItem>> = movieActorsMutableLiveData
     val movieReviewLiveData: LiveData<List<Review>> = movieReviewsMutableLiveData
-    val recommendedMoviesLiveData: LiveData<List<HorizontalListItem>> = recommendedMoviesMutableLiveData
+    val recommendedMoviesLiveData: LiveData<List<HorizontalItem>> = recommendedMoviesMutableLiveData
 
     val rateMovieLiveData: LiveData<PostResponse> = rateMovieMutableLiveData
     val addToWatchListLiveData: LiveData<PostResponse> = addToWatchlistMutableLiveData
@@ -60,14 +62,14 @@ class MovieDetailsViewModel(
     }
 
     fun getMovieDetails(movieId: Int) = movieDetailsUseCase.getMovieDetails(movieId)
-            .subscribe(
+            .ioMainSubscribe(
                     { response -> movieDetailsMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
 
 
     fun getMovieCast(movieId: Int) = movieDetailsUseCase.getMovieCredits(movieId)
-            .subscribe(
+            .ioMainSubscribe(
                     { response ->
                         movieActorsMutableLiveData.value = response
                         if (response.isNotEmpty()) {
@@ -79,7 +81,7 @@ class MovieDetailsViewModel(
             )
 
     fun getMovieReviews(movieId: Int) = movieDetailsUseCase.getMovieReviews(movieId)
-            .subscribe(
+            .ioMainSubscribe(
                     { response ->
                         movieReviewsMutableLiveData.value = response
                         if (response.isNotEmpty()) {
@@ -91,7 +93,7 @@ class MovieDetailsViewModel(
             )
 
     fun getRecommendedMovies(movieId: Int) = movieDetailsUseCase.getRecommendedMovies(movieId)
-            .subscribe(
+            .ioMainSubscribe(
                     { response ->
                         recommendedMoviesMutableLiveData.value = response
                         if (response.isNotEmpty()) {
@@ -103,43 +105,43 @@ class MovieDetailsViewModel(
             )
 
     fun rateMovie(movieId: Int, rating: Float, sessionId: String) = movieDetailsUseCase.rateMovie(movieId, rating, sessionId)
-            .subscribe(
+            .ioMainSubscribe(
                     { response -> rateMovieMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
 
     fun deleteMovieRating(movieId: Int, sessionId: String) = movieDetailsUseCase.deleteMovieRating(movieId, sessionId)
-            .subscribe(
+            .ioMainSubscribe(
                     { response -> rateMovieMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
 
     fun addToWatchList(movieId: Int, sessionId: String) = movieDetailsUseCase.addToWatchlist(movieId, sessionId)
-            .subscribe(
+            .ioMainSubscribe(
                     { response -> addToWatchlistMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
 
     fun deleteFromWatchList(movieId: Int, sessionId: String) = movieDetailsUseCase.removeFromWatchList(movieId, sessionId)
-            .subscribe(
+            .ioMainSubscribe(
                     { response -> addToWatchlistMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
 
     fun markAsFavorite(movieId: Int, sessionId: String) = movieDetailsUseCase.markAsFavorite(movieId, sessionId)
-            .subscribe(
+            .ioMainSubscribe(
                     { response -> markAsFavoriteMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
 
     fun deleteFromFavorites(movieId: Int, sessionId: String) = movieDetailsUseCase.removeFromFavorites(movieId, sessionId)
-            .subscribe(
+            .ioMainSubscribe(
                     { response -> markAsFavoriteMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
 
     fun getMovieAccountStates(movieId: Int, sessionId: String) = movieDetailsUseCase.getMovieAccountStates(movieId, sessionId)
-            .subscribe(
+            .ioMainSubscribe(
                     { response -> movieAccountStatesMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )

@@ -7,11 +7,12 @@ import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Movie
 import com.shykun.volodymyr.movieviewer.databinding.ItemHorizontalMovieListBinding
 import com.shykun.volodymyr.movieviewer.presentation.common.BaseRecyclerViewAdapter
+import com.shykun.volodymyr.movieviewer.presentation.model.HorizontalItem
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 
 class GeneralMovieTabAdapter
-    : BaseRecyclerViewAdapter<ArrayList<Movie>, GeneralMovieTabViewHolder>() {
+    : BaseRecyclerViewAdapter<ArrayList<HorizontalItem>, GeneralMovieTabViewHolder>() {
 
     private val seeAllClickSubject = PublishSubject.create<Int>()
     private val movieClickSubject = PublishSubject.create<Int>()
@@ -36,7 +37,7 @@ class GeneralMovieTabAdapter
         return GeneralMovieTabViewHolder(binding, seeAllClickSubject, movieClickSubject)
     }
 
-    fun addMovies(movies: List<Movie>, position: Int) {
+    fun addMovies(movies: List<HorizontalItem>, position: Int) {
         items[position].addAll(movies)
         notifyDataSetChanged()
     }

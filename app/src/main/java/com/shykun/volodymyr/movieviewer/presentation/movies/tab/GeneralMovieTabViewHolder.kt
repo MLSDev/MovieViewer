@@ -6,21 +6,18 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.shykun.volodymyr.movieviewer.R
-import com.shykun.volodymyr.movieviewer.data.entity.Movie
 import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
 import com.shykun.volodymyr.movieviewer.databinding.ItemHorizontalMovieListBinding
 import com.shykun.volodymyr.movieviewer.presentation.common.BaseViewHolder
 import com.shykun.volodymyr.movieviewer.presentation.common.adapters.HorizontalListAdapter
-import com.shykun.volodymyr.movieviewer.presentation.utils.popularMovieToHorizontalListItem
-import com.shykun.volodymyr.movieviewer.presentation.utils.topRatedMovieToHorizontalListItem
-import com.shykun.volodymyr.movieviewer.presentation.utils.upcomingMovieToHorizontalListItem
+import com.shykun.volodymyr.movieviewer.presentation.model.HorizontalItem
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.item_horizontal_movie_list.view.*
 
 class GeneralMovieTabViewHolder(
         private val binding: ItemHorizontalMovieListBinding,
         private val seeAllClickSubject: PublishSubject<Int>,
-        private val movieClickSubject: PublishSubject<Int>) : BaseViewHolder<ArrayList<Movie>>(binding) {
+        private val movieClickSubject: PublishSubject<Int>) : BaseViewHolder<ArrayList<HorizontalItem>>(binding) {
 
     private val movieList: RecyclerView = itemView.horizontalMovieList
     private val seeAllMovie: TextView = itemView.seeAllMovie
@@ -29,7 +26,7 @@ class GeneralMovieTabViewHolder(
     lateinit var moviesType: MoviesType
     var progressBarVisibility = View.VISIBLE
 
-    override fun bind(item: ArrayList<Movie>?) {
+    override fun bind(item: ArrayList<HorizontalItem>?) {
         super.bind(item)
 
         when (adapterPosition) {
@@ -53,14 +50,8 @@ class GeneralMovieTabViewHolder(
             movieList.apply {
                 layoutManager = LinearLayoutManager(this.context, LinearLayout.HORIZONTAL, false)
                 val moviesAdapter = HorizontalListAdapter()
-                val movies = when(moviesType) {
-                    MoviesType.TOP_RATED -> item.map { topRatedMovieToHorizontalListItem(it) }
-                    MoviesType.POPULAR -> item.mapIndexed { position, movie -> popularMovieToHorizontalListItem(movie, position) }
-                    MoviesType.UPCOMING -> item.map { upcomingMovieToHorizontalListItem(it) }
-                    else -> null
-                }
-                moviesAdapter.addItems(movies!!)
-                moviesAdapter.clickObservable.subscribe { movieClickSubject.onNext(it.id)}
+                moviesAdapter.addItems(item)
+                moviesAdapter.clickObservable.subscribe { movieClickSubject.onNext(it.id) }
                 adapter = moviesAdapter
             }
         }

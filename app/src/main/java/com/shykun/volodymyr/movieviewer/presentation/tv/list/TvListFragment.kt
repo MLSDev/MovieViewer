@@ -12,10 +12,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.TvType
-import com.shykun.volodymyr.movieviewer.data.network.response.TvResponse
 import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
-import com.shykun.volodymyr.movieviewer.presentation.common.ScrollObservable
+import com.shykun.volodymyr.movieviewer.presentation.utils.ScrollObservable
 import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
+import com.shykun.volodymyr.movieviewer.presentation.common.adapters.VerticalListAdapter
+import com.shykun.volodymyr.movieviewer.presentation.model.VerticalItemList
 import com.shykun.volodymyr.movieviewer.presentation.profile.SESSION_ID_KEY
 import com.shykun.volodymyr.movieviewer.presentation.tv.details.TV_DETAILS_FRAGMENT_KEY
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -32,7 +33,7 @@ class TvListFragment : Fragment(), BackButtonListener {
 
     private lateinit var tvType: TvType
     private lateinit var viewModel: TvListViewModel
-    private lateinit var tvListAdapter: TvListAdapter
+    private lateinit var tvListAdapter: VerticalListAdapter
 
     @Inject
     lateinit var viewModelFactory: TvListViewModelFactory
@@ -46,7 +47,7 @@ class TvListFragment : Fragment(), BackButtonListener {
 
         (parentFragment as TabNavigationFragment).component?.inject(this)
         tvType = arguments?.getSerializable(TV_TYPE_KEY) as TvType
-        tvListAdapter = TvListAdapter(tvType)
+        tvListAdapter = VerticalListAdapter()
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(TvListViewModel::class.java)
 
@@ -85,7 +86,7 @@ class TvListFragment : Fragment(), BackButtonListener {
     }
 
     private fun setupTvClick() {
-        tvListAdapter.clickObservable.subscribe {
+        tvListAdapter.clickEvent.subscribe {
             router.navigateTo(TV_DETAILS_FRAGMENT_KEY, it)
         }
     }
@@ -134,11 +135,11 @@ class TvListFragment : Fragment(), BackButtonListener {
                 .subscribe()
     }
 
-    fun showTvList(tvResponse: TvResponse?) {
-        if (tvResponse != null) {
-            if (tvResponse.totalResults > 0) {
-                tvListAdapter.addItems(tvResponse.results)
-                tvListAdapter.totalItemsCount = tvResponse.totalResults
+    fun showTvList(tvList: VerticalItemList?) {
+        if (tvList != null) {
+            if (tvList.totalItemsCount > 0) {
+                tvListAdapter.addItems(tvList.items)
+                tvListAdapter.totalItemsCount = tvList.totalItemsCount
             } else {
                 movieList.visibility = View.GONE
                 emptyState.visibility = View.VISIBLE

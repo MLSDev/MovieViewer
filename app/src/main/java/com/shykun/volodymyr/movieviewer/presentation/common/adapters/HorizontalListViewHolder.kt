@@ -1,15 +1,15 @@
 package com.shykun.volodymyr.movieviewer.presentation.common.adapters
 
-import com.shykun.volodymyr.movieviewer.databinding.ItemHorizontalListBinding
+import com.shykun.volodymyr.movieviewer.databinding.ItemHorizontalBinding
 import com.shykun.volodymyr.movieviewer.presentation.common.BaseViewHolder
-import com.shykun.volodymyr.movieviewer.presentation.model.HorizontalListItem
+import com.shykun.volodymyr.movieviewer.presentation.model.HorizontalItem
 import io.reactivex.subjects.PublishSubject
 
 class HorizontalListViewHolder(
-        private val binding: ItemHorizontalListBinding,
-        private val clickSubject: PublishSubject<HorizontalListItem>) : BaseViewHolder<HorizontalListItem>(binding) {
+        private val binding: ItemHorizontalBinding,
+        private val clickSubject: PublishSubject<HorizontalItem>) : BaseViewHolder<HorizontalItem>(binding) {
 
-    override fun bind(item: HorizontalListItem?) {
+    override fun bind(item: HorizontalItem?) {
         super.bind(item)
 
         if (item != null)

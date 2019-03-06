@@ -12,16 +12,18 @@ import com.shykun.volodymyr.movieviewer.data.network.response.TvDetailsResponse
 import com.shykun.volodymyr.movieviewer.data.network.response.TvResponse
 import com.shykun.volodymyr.movieviewer.domain.ProfileUseCase
 import com.shykun.volodymyr.movieviewer.domain.TvDetailsUseCase
-import com.shykun.volodymyr.movieviewer.presentation.model.HorizontalListItem
+import com.shykun.volodymyr.movieviewer.presentation.model.HorizontalItem
+import com.shykun.volodymyr.movieviewer.presentation.utils.ioMainSubscribe
+import io.reactivex.android.schedulers.AndroidSchedulers
 
 class TvDetailsViewModel(
         private val tvDetailsUseCase: TvDetailsUseCase,
         private val profileUseCase: ProfileUseCase) : ViewModel() {
 
     private val tvDetailsMutableLiveData = MutableLiveData<TvDetailsResponse>()
-    private val recommendedTvMutableLiveData = MutableLiveData<List<HorizontalListItem>>()
+    private val recommendedTvMutableLiveData = MutableLiveData<List<HorizontalItem>>()
     private val tvReviewsMutableLiveData = MutableLiveData<List<Review>>()
-    private val tvActorsMutableLiveData = MutableLiveData<List<HorizontalListItem>>()
+    private val tvActorsMutableLiveData = MutableLiveData<List<HorizontalItem>>()
 
     private val rateTvMutableLiveData = MutableLiveData<PostResponse>()
     private val addToWatchListMutableLiveData = MutableLiveData<PostResponse>()
@@ -38,19 +40,15 @@ class TvDetailsViewModel(
 
 
     val tvDetailsLiveData: LiveData<TvDetailsResponse> = tvDetailsMutableLiveData
-    val recommendedTvLiveData: LiveData<List<HorizontalListItem>> = recommendedTvMutableLiveData
+    val recommendedTvLiveData: LiveData<List<HorizontalItem>> = recommendedTvMutableLiveData
     val tvReviewsLiveData: LiveData<List<Review>> = tvReviewsMutableLiveData
-    val tvActorsLiveData: LiveData<List<HorizontalListItem>> = tvActorsMutableLiveData
+    val tvActorsLiveData: LiveData<List<HorizontalItem>> = tvActorsMutableLiveData
 
     val rateTvLiveData: LiveData<PostResponse> = rateTvMutableLiveData
     val addToWatchListLiveData: LiveData<PostResponse> = addToWatchListMutableLiveData
     val markAsFavoriteLiveData: LiveData<PostResponse> = markAsFavoriteMutableLiveData
 
     val tvAccountStatesLiveData: LiveData<ItemAccountStateResponse> = tvAccountStatesMutableLiveData
-
-    val ratedTvLiveData: LiveData<TvResponse> = ratedTvMutableLiveData
-    val tvWatchlistLiveData: LiveData<TvResponse> = tvWatchlistMutableLiveData
-    val favoriteTvLiveData: LiveData<TvResponse> = favoriteTvMutableLiveData
 
     val loadingErrorLiveData: LiveData<String> = loadingErrorMutableLiveData
 
@@ -71,13 +69,13 @@ class TvDetailsViewModel(
     }
 
     private fun getTvDetails(tvId: Int) = tvDetailsUseCase.getTvDetails(tvId)
-            .subscribe(
+            .ioMainSubscribe(
                     { response -> tvDetailsMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
 
     private fun getRecommendedTv(tvId: Int) = tvDetailsUseCase.getRecommendedTv(tvId)
-            .subscribe(
+            .ioMainSubscribe(
                     { response ->
                         recommendedTvMutableLiveData.value = response
                         if (response.isNotEmpty()) {
@@ -89,7 +87,7 @@ class TvDetailsViewModel(
             )
 
     private fun getTvReviews(tvId: Int) = tvDetailsUseCase.getTvReviews(tvId)
-            .subscribe(
+            .ioMainSubscribe(
                     { response ->
                         tvReviewsMutableLiveData.value = response
                         if (response.isNotEmpty()) {
@@ -101,7 +99,7 @@ class TvDetailsViewModel(
             )
 
     private fun getTvCast(tvId: Int) = tvDetailsUseCase.getTvCast(tvId)
-            .subscribe(
+            .ioMainSubscribe(
                     { response ->
                         tvActorsMutableLiveData.value = response
                         if (response.isNotEmpty()) {
@@ -113,44 +111,44 @@ class TvDetailsViewModel(
             )
 
     fun rateTv(tvId: Int, rating: Float, sessionId: String) = tvDetailsUseCase.rateTv(tvId, rating, sessionId)
-            .subscribe(
+            .ioMainSubscribe(
                     { response -> rateTvMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
 
 
     fun deleteTvRating(tvId: Int, sessionId: String) = tvDetailsUseCase.deleteTvRating(tvId, sessionId)
-            .subscribe(
+            .ioMainSubscribe(
                     { response -> rateTvMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
 
     fun addToWatchlist(tvId: Int, sessionId: String) = tvDetailsUseCase.addToWatchlist(tvId, sessionId)
-            .subscribe(
+            .ioMainSubscribe(
                     { response -> addToWatchListMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
 
     fun deleteFromWatchlist(tvId: Int, sessionId: String) = tvDetailsUseCase.removeFromWatchlist(tvId, sessionId)
-            .subscribe(
+            .ioMainSubscribe(
                     { response -> addToWatchListMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
 
     fun markAsFavorite(tvId: Int, sessionId: String) = tvDetailsUseCase.markAsFavorite(tvId, sessionId)
-            .subscribe(
+            .ioMainSubscribe(
                     { response -> markAsFavoriteMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
 
     fun deleteFromFavorites(tvId: Int, sessionId: String) = tvDetailsUseCase.removeFromFavorites(tvId, sessionId)
-            .subscribe(
+            .ioMainSubscribe(
                     { response -> markAsFavoriteMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
 
     fun getTvAccountStates(tvId: Int, sessionId: String) = tvDetailsUseCase.getTvAccountStates(tvId, sessionId)
-            .subscribe(
+            .ioMainSubscribe(
                     { response -> tvAccountStatesMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )

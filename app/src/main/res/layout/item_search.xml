@@ -4,7 +4,7 @@
     <data>
         <variable
             name="item"
-            type="com.shykun.volodymyr.movieviewer.presentation.model.SearchListItem"/>
+            type="com.shykun.volodymyr.movieviewer.presentation.model.SearchItem"/>
     </data>
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"

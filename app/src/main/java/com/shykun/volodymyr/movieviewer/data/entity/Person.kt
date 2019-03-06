@@ -10,3 +10,7 @@ data class Person(
         @SerializedName("name") val name: String,
         @SerializedName("popularity") val popularity: Double
 )
+
+enum class PeopleType {
+    POPULAR, SEARCHED
+}

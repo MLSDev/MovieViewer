@@ -10,23 +10,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.shykun.volodymyr.movieviewer.R
-import com.shykun.volodymyr.movieviewer.data.entity.Movie
-import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
-import com.shykun.volodymyr.movieviewer.data.entity.Tv
-import com.shykun.volodymyr.movieviewer.data.entity.TvType
-import com.shykun.volodymyr.movieviewer.data.network.response.MoviesResponse
-import com.shykun.volodymyr.movieviewer.data.network.response.TvResponse
 import com.shykun.volodymyr.movieviewer.presentation.AppActivity
 import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
-import com.shykun.volodymyr.movieviewer.presentation.common.ScrollObservable
+import com.shykun.volodymyr.movieviewer.presentation.utils.ScrollObservable
 import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
+import com.shykun.volodymyr.movieviewer.presentation.common.adapters.VerticalListAdapter
 import com.shykun.volodymyr.movieviewer.presentation.discover.DiscoverViewModel
 import com.shykun.volodymyr.movieviewer.presentation.discover.DiscoverViewModelFactory
 import com.shykun.volodymyr.movieviewer.presentation.discover.MOVIE_TYPE
+import com.shykun.volodymyr.movieviewer.presentation.model.VerticalItemList
 import com.shykun.volodymyr.movieviewer.presentation.movies.details.MOVIE_DETAILS_FRAGMENT_KEY
-import com.shykun.volodymyr.movieviewer.presentation.movies.list.MovieListAdapter
 import com.shykun.volodymyr.movieviewer.presentation.tv.details.TV_DETAILS_FRAGMENT_KEY
-import com.shykun.volodymyr.movieviewer.presentation.tv.list.TvListAdapter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_movie_list.*
 import ru.terrakok.cicerone.Router
@@ -37,8 +31,8 @@ const val DISCOVER_LIST_FRAGMENT_KEY = "discover_list_fragment_key"
 class DiscoverListFragment : Fragment(), BackButtonListener {
 
     private lateinit var viewModel: DiscoverViewModel
-    private lateinit var movieListAdapter: MovieListAdapter
-    private lateinit var tvListAdapter: TvListAdapter
+    private lateinit var movieListAdapter: VerticalListAdapter
+    private lateinit var tvListAdapter: VerticalListAdapter
 
     @Inject
     lateinit var viewModelFactory: DiscoverViewModelFactory
@@ -98,16 +92,16 @@ class DiscoverListFragment : Fragment(), BackButtonListener {
                 .subscribe()
     }
 
-    private fun showMovieList(moviesResponse: MoviesResponse?) {
-        if (moviesResponse != null) {
-            movieListAdapter.addItems(moviesResponse.results)
-            movieListAdapter.totalItemsCount = moviesResponse.totalResults
+    private fun showMovieList(movies: VerticalItemList?) {
+        if (movies != null) {
+            movieListAdapter.addItems(movies.items)
+            movieListAdapter.totalItemsCount = movies.totalItemsCount
         }
     }
 
-    private fun showTvList(tvResponse: TvResponse?) {
-        if (tvResponse != null) {
-            tvListAdapter.addItems(tvResponse.results)
+    private fun showTvList(tvList: VerticalItemList?) {
+        if (tvList != null) {
+            tvListAdapter.addItems(tvList.items)
         }
     }
 
@@ -116,7 +110,7 @@ class DiscoverListFragment : Fragment(), BackButtonListener {
     }
 
     private fun setupMovieListAdapter() {
-        movieListAdapter = MovieListAdapter(MoviesType.TOP_RATED)
+        movieListAdapter = VerticalListAdapter()
         movieList.apply {
             layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
             adapter = movieListAdapter
@@ -124,7 +118,7 @@ class DiscoverListFragment : Fragment(), BackButtonListener {
     }
 
     private fun setupTvListAdapter() {
-        tvListAdapter = TvListAdapter(TvType.POPULAR)
+        tvListAdapter = VerticalListAdapter()
         movieList.apply {
             layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
             adapter = tvListAdapter
@@ -138,7 +132,7 @@ class DiscoverListFragment : Fragment(), BackButtonListener {
     }
 
     private fun setupTvClick() {
-        tvListAdapter.clickObservable.subscribe {
+        tvListAdapter.clickEvent.subscribe {
             router.navigateTo(TV_DETAILS_FRAGMENT_KEY, it)
         }
     }

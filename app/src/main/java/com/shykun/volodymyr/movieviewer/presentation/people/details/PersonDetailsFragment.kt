@@ -11,13 +11,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.shykun.volodymyr.movieviewer.R
-import com.shykun.volodymyr.movieviewer.data.entity.Role
 import com.shykun.volodymyr.movieviewer.data.network.response.PersonDetailsResponse
 import com.shykun.volodymyr.movieviewer.databinding.FragmentPersonDetailsBinding
 import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
 import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
 import com.shykun.volodymyr.movieviewer.presentation.common.adapters.HorizontalListAdapter
-import com.shykun.volodymyr.movieviewer.presentation.model.HorizontalListItem
+import com.shykun.volodymyr.movieviewer.presentation.model.HorizontalItem
 import com.shykun.volodymyr.movieviewer.presentation.model.ItemType
 import com.shykun.volodymyr.movieviewer.presentation.movies.details.MOVIE_DETAILS_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.tv.details.TV_DETAILS_FRAGMENT_KEY
@@ -98,7 +97,7 @@ class PersonDetailsFragment : Fragment(), BackButtonListener {
         binding?.personDetails = personDetails
     }
 
-    private fun showPersonCast(roles: List<HorizontalListItem>?) {
+    private fun showPersonCast(roles: List<HorizontalItem>?) {
         if (roles != null) {
             personCastAdapter.addItems(roles)
         }

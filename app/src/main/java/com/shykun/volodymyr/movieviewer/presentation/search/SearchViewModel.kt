@@ -5,17 +5,18 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.shykun.volodymyr.movieviewer.domain.SearchUseCase
 import com.shykun.volodymyr.movieviewer.presentation.model.ItemType
-import com.shykun.volodymyr.movieviewer.presentation.model.SearchListItem
+import com.shykun.volodymyr.movieviewer.presentation.model.SearchItem
+import com.shykun.volodymyr.movieviewer.presentation.utils.ioMainSubscribe
 import com.shykun.volodymyr.movieviewer.presentation.utils.movieToSearchListItem
 import com.shykun.volodymyr.movieviewer.presentation.utils.personToSearchListItem
 import com.shykun.volodymyr.movieviewer.presentation.utils.tvToSearchListItem
 
 class SearchViewModel(private val searchUseCase: SearchUseCase) : ViewModel() {
 
-    private val searchResultsMutableLiveData = MutableLiveData<List<SearchListItem>>()
+    private val searchResultsMutableLiveData = MutableLiveData<List<SearchItem>>()
     private val loadingErrorMutableLiveData = MutableLiveData<String>()
 
-    val searchResultsLiveData: LiveData<List<SearchListItem>> = searchResultsMutableLiveData
+    val searchResultsLiveData: LiveData<List<SearchItem>> = searchResultsMutableLiveData
     val loadingErrorLiveData: LiveData<String> = loadingErrorMutableLiveData
 
     fun search(query: String, itemType: ItemType) = when (itemType) {
@@ -25,19 +26,19 @@ class SearchViewModel(private val searchUseCase: SearchUseCase) : ViewModel() {
     }
 
     fun searchMovies(query: String) = searchUseCase.searchMovies(query)
-            .subscribe(
+            .ioMainSubscribe(
                     { response -> searchResultsMutableLiveData.value = response.results.map { movieToSearchListItem(it) } },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
 
     fun searchTv(query: String) = searchUseCase.searchTv(query)
-            .subscribe(
+            .ioMainSubscribe(
                     { response -> searchResultsMutableLiveData.value = response.results.map { tvToSearchListItem(it) } },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
 
     fun searchPeople(query: String) = searchUseCase.searchPeople(query)
-            .subscribe(
+            .ioMainSubscribe(
                     { response -> searchResultsMutableLiveData.value = response.map { personToSearchListItem(it) } },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )

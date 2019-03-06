@@ -15,23 +15,28 @@ import android.widget.SearchView
 import android.widget.Toast
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
+import com.shykun.volodymyr.movieviewer.data.entity.TvType
 import com.shykun.volodymyr.movieviewer.databinding.FragmentSearchBinding
 import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
 import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
 import com.shykun.volodymyr.movieviewer.presentation.model.ItemType
-import com.shykun.volodymyr.movieviewer.presentation.model.SearchListItem
+import com.shykun.volodymyr.movieviewer.presentation.model.SearchItem
 import com.shykun.volodymyr.movieviewer.presentation.movies.details.MOVIE_DETAILS_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.movies.list.MOVIE_LIST_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.movies.list.MOVIE_TYPE_KEY
 import com.shykun.volodymyr.movieviewer.presentation.movies.list.SEARCH_QUERY_KEY
 import com.shykun.volodymyr.movieviewer.presentation.people.details.PERSON_DETAILS_FRAGMENT_KEY
+import com.shykun.volodymyr.movieviewer.presentation.people.tab.PEOPLE_SEARCH_QUERY_KEY
+import com.shykun.volodymyr.movieviewer.presentation.people.tab.PEOPLE_TAB_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.tv.details.TV_DETAILS_FRAGMENT_KEY
+import com.shykun.volodymyr.movieviewer.presentation.tv.list.TV_LIST_FRAGMENT_KEY
+import com.shykun.volodymyr.movieviewer.presentation.tv.list.TV_TYPE_KEY
 import kotlinx.android.synthetic.main.fragment_search.*
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
 const val SEARCH_FRAGMENT_KEY = "search_fragment_key"
-private const val ITEM_TYPE_KEY = "item_type_key"
+const val ITEM_TYPE_KEY = "item_type_key"
 
 class SearchFragment : Fragment(), BackButtonListener {
 
@@ -109,11 +114,8 @@ class SearchFragment : Fragment(), BackButtonListener {
 
             override fun onQueryTextSubmit(query: String): Boolean {
                 hideKeyboard()
+                openSearchResultsList(query)
 
-                val args = Bundle()
-                args.putSerializable(MOVIE_TYPE_KEY, MoviesType.SEARCHED)
-                args.putString(SEARCH_QUERY_KEY, query)
-                router.navigateTo(MOVIE_LIST_FRAGMENT_KEY, args)
                 return true
             }
         })
@@ -135,7 +137,7 @@ class SearchFragment : Fragment(), BackButtonListener {
         viewModel.loadingErrorLiveData.observe(this, Observer { showLoadingError(it) })
     }
 
-    private fun showSearchedMovies(searchResults: List<SearchListItem>?) {
+    private fun showSearchedMovies(searchResults: List<SearchItem>?) {
         if (searchResults != null) {
             searchAdapter.setItems(searchResults)
         }
@@ -145,6 +147,22 @@ class SearchFragment : Fragment(), BackButtonListener {
         searchAdapter.clickObservable.subscribe {
             hideKeyboard()
             openDetailsScreen(it)
+        }
+    }
+
+    private fun openSearchResultsList(query: String) {
+        when (itemType) {
+            ItemType.MOVIE -> router.navigateTo(MOVIE_LIST_FRAGMENT_KEY, Bundle().apply {
+                putSerializable(MOVIE_TYPE_KEY, MoviesType.SEARCHED)
+                putString(SEARCH_QUERY_KEY, query)
+            })
+            ItemType.TV -> router.navigateTo(TV_LIST_FRAGMENT_KEY, Bundle().apply {
+                putSerializable(TV_TYPE_KEY, TvType.SEARCHED)
+                putString(SEARCH_QUERY_KEY, query)
+            })
+            ItemType.PERSON -> router.navigateTo(PEOPLE_TAB_FRAGMENT_KEY, Bundle().apply {
+                putSerializable(PEOPLE_SEARCH_QUERY_KEY, query)
+            })
         }
     }
 
@@ -170,10 +188,8 @@ class SearchFragment : Fragment(), BackButtonListener {
     }
 
     companion object {
-        fun newInstance(itemType: ItemType): SearchFragment {
+        fun newInstance(args: Bundle): SearchFragment {
             val searchFragment = SearchFragment()
-            val args = Bundle()
-            args.putSerializable(ITEM_TYPE_KEY, itemType)
             searchFragment.arguments = args
 
             return searchFragment

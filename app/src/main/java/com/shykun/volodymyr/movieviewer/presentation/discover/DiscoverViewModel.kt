@@ -5,10 +5,11 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
 import com.shykun.volodymyr.movieviewer.data.entity.Genre
-import com.shykun.volodymyr.movieviewer.data.network.response.MoviesResponse
-import com.shykun.volodymyr.movieviewer.data.network.response.TvResponse
 import com.shykun.volodymyr.movieviewer.domain.DiscoverUseCase
-import io.reactivex.disposables.Disposable
+import com.shykun.volodymyr.movieviewer.presentation.model.VerticalItemList
+import com.shykun.volodymyr.movieviewer.presentation.utils.ioMainSubscribe
+import com.shykun.volodymyr.movieviewer.presentation.utils.movieResponseToVerticalItemList
+import com.shykun.volodymyr.movieviewer.presentation.utils.tvResponseToVerticalItemList
 
 const val MOVIE_TYPE = 0
 const val TV_TYPE = 1
@@ -22,12 +23,12 @@ class DiscoverViewModel(private val discoverUseCase: DiscoverUseCase) : ViewMode
     var rating = ObservableField(-1)
     var type = ObservableField(MOVIE_TYPE)
 
-    private var discoveredMoviesMutableLiveData = MutableLiveData<MoviesResponse>()
-    private var discoveredTvMutableLiveData = MutableLiveData<TvResponse>()
+    private var discoveredMoviesMutableLiveData = MutableLiveData<VerticalItemList>()
+    private var discoveredTvMutableLiveData = MutableLiveData<VerticalItemList>()
     private val loadingErrorMutableLiveData = MutableLiveData<String>()
 
-    val discoveredMovieLiveData: LiveData<MoviesResponse> = discoveredMoviesMutableLiveData
-    val discoveredTvLiveData: LiveData<TvResponse> = discoveredTvMutableLiveData
+    val discoveredMovieLiveData: LiveData<VerticalItemList> = discoveredMoviesMutableLiveData
+    val discoveredTvLiveData: LiveData<VerticalItemList> = discoveredTvMutableLiveData
     val loadingErrorLiveData: LiveData<String> = loadingErrorMutableLiveData
 
     var nextPage = 1
@@ -59,7 +60,7 @@ class DiscoverViewModel(private val discoverUseCase: DiscoverUseCase) : ViewMode
 
     }
 
-    private fun discoverMovies(page: Int): Disposable? {
+    private fun discoverMovies(page: Int) {
 
         val tmpYear = if (year.get() == -1) null else year.get()
         val tmpRating = if (rating.get() == -1) null else rating.get()
@@ -67,10 +68,11 @@ class DiscoverViewModel(private val discoverUseCase: DiscoverUseCase) : ViewMode
 
         return discoverUseCase
                 .discoverMovies(tmpYear, tmpRating, tmpGenres, page)
-                .subscribe(
+                .map { movieResponseToVerticalItemList(it) }
+                .ioMainSubscribe(
                         { response ->
                             discoveredMoviesMutableLiveData.value = response
-                            totalPageCount = response.totalPages
+                            totalPageCount = response.totalItemsCount
                         },
                         { error -> loadingErrorMutableLiveData.value = error.message }
                 )
@@ -83,10 +85,11 @@ class DiscoverViewModel(private val discoverUseCase: DiscoverUseCase) : ViewMode
 
         discoverUseCase
                 .discoverTv(tmpYear, tmpRating, tmpGenres, page)
-                .subscribe(
+                .map { tvResponseToVerticalItemList(it) }
+                .ioMainSubscribe(
                         { response ->
                             discoveredTvMutableLiveData.value = response
-                            totalPageCount = response.totalResults
+                            totalPageCount = response.totalItemsCount
                         },
                         { error -> loadingErrorMutableLiveData.value = error.message }
                 )

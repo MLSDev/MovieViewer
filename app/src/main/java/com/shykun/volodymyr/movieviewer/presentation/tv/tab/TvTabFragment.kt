@@ -14,7 +14,9 @@ import com.shykun.volodymyr.movieviewer.data.entity.TvType
 import com.shykun.volodymyr.movieviewer.data.network.response.TvResponse
 import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
 import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
+import com.shykun.volodymyr.movieviewer.presentation.model.HorizontalItem
 import com.shykun.volodymyr.movieviewer.presentation.model.ItemType
+import com.shykun.volodymyr.movieviewer.presentation.search.ITEM_TYPE_KEY
 import com.shykun.volodymyr.movieviewer.presentation.search.SEARCH_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.tv.details.TV_DETAILS_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.tv.list.TV_LIST_FRAGMENT_KEY
@@ -71,7 +73,9 @@ class TvTabFragment : Fragment(), BackButtonListener {
         moviesToolbar.inflateMenu(R.menu.manu_app)
         moviesToolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.action_search -> router.navigateTo(SEARCH_FRAGMENT_KEY, ItemType.TV)
+                R.id.action_search -> router.navigateTo(SEARCH_FRAGMENT_KEY, Bundle().apply {
+                    putSerializable(ITEM_TYPE_KEY, ItemType.TV)
+                })
             }
             true
         }
@@ -109,21 +113,21 @@ class TvTabFragment : Fragment(), BackButtonListener {
         generalTvTabAdapter.tvClickEvent.subscribe { router.navigateTo(TV_DETAILS_FRAGMENT_KEY, it) }
     }
 
-    fun showPopularTV(tvResponse: TvResponse?) {
-        if (tvResponse != null) {
-            generalTvTabAdapter.addTV(tvResponse.results, POPULAR_TV)
+    fun showPopularTV(tvList: List<HorizontalItem>?) {
+        if (tvList != null) {
+            generalTvTabAdapter.addTV(tvList, POPULAR_TV)
         }
     }
 
-    fun showTopRatedTV(tvResponse: TvResponse?) {
-        if (tvResponse != null) {
-            generalTvTabAdapter.addTV(tvResponse.results, TOP_RATED_TV)
+    fun showTopRatedTV(tvList: List<HorizontalItem>?) {
+        if (tvList != null) {
+            generalTvTabAdapter.addTV(tvList, TOP_RATED_TV)
         }
     }
 
-    fun showTVOnTheAir(tvResponse: TvResponse?) {
-        if (tvResponse != null) {
-            generalTvTabAdapter.addTV(tvResponse.results, TV_ON_THE_AIR)
+    fun showTVOnTheAir(tvList: List<HorizontalItem>?) {
+        if (tvList != null) {
+            generalTvTabAdapter.addTV(tvList, TV_ON_THE_AIR)
         }
     }
 

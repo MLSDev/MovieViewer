@@ -6,11 +6,11 @@ import android.view.ViewGroup
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.databinding.ItemSearchBinding
 import com.shykun.volodymyr.movieviewer.presentation.common.BaseRecyclerViewAdapter
-import com.shykun.volodymyr.movieviewer.presentation.model.SearchListItem
+import com.shykun.volodymyr.movieviewer.presentation.model.SearchItem
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 
-class SearchAdapter : BaseRecyclerViewAdapter<SearchListItem, SearchViewHolder>() {
+class SearchAdapter : BaseRecyclerViewAdapter<SearchItem, SearchViewHolder>() {
 
     private val clickSubject = PublishSubject.create<Int>()
     val clickObservable: Observable<Int> = clickSubject

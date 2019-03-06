@@ -1,6 +1,5 @@
 package com.shykun.volodymyr.movieviewer.presentation.movies.list
 
-
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.SharedPreferences
@@ -13,10 +12,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
-import com.shykun.volodymyr.movieviewer.data.network.response.MoviesResponse
 import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
-import com.shykun.volodymyr.movieviewer.presentation.common.ScrollObservable
+import com.shykun.volodymyr.movieviewer.presentation.utils.ScrollObservable
 import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
+import com.shykun.volodymyr.movieviewer.presentation.common.adapters.VerticalListAdapter
+import com.shykun.volodymyr.movieviewer.presentation.model.VerticalItemList
 import com.shykun.volodymyr.movieviewer.presentation.movies.details.MOVIE_DETAILS_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.profile.SESSION_ID_KEY
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -32,7 +32,7 @@ class MovieListFragment : Fragment(), BackButtonListener {
 
     private lateinit var moviesType: MoviesType
     private lateinit var viewModel: MovieListViewModel
-    private lateinit var movieListAdapter: MovieListAdapter
+    private lateinit var movieListAdapter: VerticalListAdapter
 
     @Inject
     lateinit var viewModelFactory: MovieListViewModelFactory
@@ -46,7 +46,7 @@ class MovieListFragment : Fragment(), BackButtonListener {
 
         (parentFragment as TabNavigationFragment).component?.inject(this)
         moviesType = arguments?.getSerializable(MOVIE_TYPE_KEY) as MoviesType
-        movieListAdapter = MovieListAdapter(moviesType)
+        movieListAdapter = VerticalListAdapter()
         viewModel = ViewModelProviders
                 .of(this, viewModelFactory)
                 .get(MovieListViewModel::class.java)
@@ -92,7 +92,7 @@ class MovieListFragment : Fragment(), BackButtonListener {
     }
 
     private fun subscribeViewModel() {
-        viewModel.moviesLiveData.observe(this, Observer<MoviesResponse> { showMovies(it) })
+        viewModel.moviesLiveData.observe(this, Observer<VerticalItemList> { showMovies(it) })
         viewModel.loadingErrorLiveData.observe(this, Observer { showError(it) })
 
     }
@@ -137,11 +137,11 @@ class MovieListFragment : Fragment(), BackButtonListener {
     }
 
 
-    fun showMovies(moviesResponse: MoviesResponse?) {
-        if (moviesResponse != null) {
-            if (moviesResponse.totalResults > 0) {
-                movieListAdapter.totalItemsCount = moviesResponse.totalResults
-                movieListAdapter.addItems(moviesResponse.results)
+    fun showMovies(movies: VerticalItemList?) {
+        if (movies != null) {
+            if (movies.totalItemsCount > 0) {
+                movieListAdapter.totalItemsCount = movies.totalItemsCount
+                movieListAdapter.addItems(movies.items)
             } else {
                 movieList.visibility = View.GONE
                 emptyState.visibility = View.VISIBLE
