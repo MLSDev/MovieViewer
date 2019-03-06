@@ -1,12 +1,12 @@
 package com.shykun.volodymyr.movieviewer.presentation.di
 
 import com.shykun.volodymyr.movieviewer.presentation.AppActivity
+import com.shykun.volodymyr.movieviewer.presentation.common.RateDialogFragment
 import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
 import com.shykun.volodymyr.movieviewer.presentation.discover.filter.FilterListFragment
 import com.shykun.volodymyr.movieviewer.presentation.discover.list.DiscoverListFragment
 import com.shykun.volodymyr.movieviewer.presentation.discover.tab.DiscoverFragment
 import com.shykun.volodymyr.movieviewer.presentation.movies.details.MovieDetailsFragment
-import com.shykun.volodymyr.movieviewer.presentation.movies.details.MovieRateDialogFragment
 import com.shykun.volodymyr.movieviewer.presentation.movies.list.MovieListFragment
 import com.shykun.volodymyr.movieviewer.presentation.movies.tab.MovieTabFragment
 import com.shykun.volodymyr.movieviewer.presentation.people.details.PersonDetailsFragment
@@ -15,7 +15,6 @@ import com.shykun.volodymyr.movieviewer.presentation.profile.LoginFragment
 import com.shykun.volodymyr.movieviewer.presentation.profile.ProfileFragment
 import com.shykun.volodymyr.movieviewer.presentation.search.SearchFragment
 import com.shykun.volodymyr.movieviewer.presentation.tv.details.TvDetailsFragment
-import com.shykun.volodymyr.movieviewer.presentation.tv.details.TvRateDialogFragment
 import com.shykun.volodymyr.movieviewer.presentation.tv.list.TvListFragment
 import com.shykun.volodymyr.movieviewer.presentation.tv.tab.TvTabFragment
 import dagger.Component
@@ -40,7 +39,6 @@ interface AppComponent {
     fun inject(target: PersonDetailsFragment)
     fun inject(target: ProfileFragment)
     fun inject(target: LoginFragment)
-    fun inject(target: MovieRateDialogFragment)
-    fun inject(target: TvRateDialogFragment)
+    fun inject(target: RateDialogFragment)
     fun inject(target: SearchFragment)
 }

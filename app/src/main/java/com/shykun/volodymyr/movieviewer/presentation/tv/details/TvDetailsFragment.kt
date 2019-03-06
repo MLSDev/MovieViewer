@@ -27,6 +27,8 @@ import com.shykun.volodymyr.movieviewer.data.network.response.TvDetailsResponse
 import com.shykun.volodymyr.movieviewer.databinding.FragmentTvDetailsBinding
 import com.shykun.volodymyr.movieviewer.presentation.AppActivity
 import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
+import com.shykun.volodymyr.movieviewer.presentation.common.RateDialogFragment
+import com.shykun.volodymyr.movieviewer.presentation.common.RateListener
 import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
 import com.shykun.volodymyr.movieviewer.presentation.common.adapters.HorizontalListAdapter
 import com.shykun.volodymyr.movieviewer.presentation.common.adapters.ReviewAdapter
@@ -48,7 +50,7 @@ private const val deleteFromWatchlistActionId = 3
 private const val markAsFavoriteActionId = 4
 private const val deleteFromFavoritesActionsId = 5
 
-class TvDetailsFragment : Fragment(), BackButtonListener {
+class TvDetailsFragment : Fragment(), BackButtonListener, RateListener {
 
     private var tvId = -1
     private var viewWasLoaded = false
@@ -180,6 +182,11 @@ class TvDetailsFragment : Fragment(), BackButtonListener {
         actorsAdapter.clickObservable.subscribe { router.navigateTo(PERSON_DETAILS_FRAGMENT_KEY, it.id) }
     }
 
+    override fun onRateClickListener(rating: Float) {
+        val sessionId = prefs.getString(SESSION_ID_KEY, null)
+        viewModel.rateTv(tvId, rating, sessionId)
+    }
+
     private fun performMenuAction(action: (sessionId: String) -> Unit): Boolean {
         val sessionId = prefs.getString(SESSION_ID_KEY, null)
         if (sessionId == null) {
@@ -191,7 +198,7 @@ class TvDetailsFragment : Fragment(), BackButtonListener {
     }
 
     private fun rateTv() = performMenuAction { sessionId ->
-        TvRateDialogFragment.newInstance(tvId, sessionId).show(childFragmentManager, RATE_DIALOG_TAG)
+        RateDialogFragment().show(childFragmentManager, RATE_DIALOG_TAG)
     }
 
     private fun deleteRatig() = performMenuAction { sessionId ->

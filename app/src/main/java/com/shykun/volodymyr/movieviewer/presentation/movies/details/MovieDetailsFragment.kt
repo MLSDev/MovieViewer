@@ -26,6 +26,8 @@ import com.shykun.volodymyr.movieviewer.data.network.response.MovieDetailsRespon
 import com.shykun.volodymyr.movieviewer.data.network.response.PostResponse
 import com.shykun.volodymyr.movieviewer.databinding.FragmentMovieDetailsBinding
 import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
+import com.shykun.volodymyr.movieviewer.presentation.common.RateDialogFragment
+import com.shykun.volodymyr.movieviewer.presentation.common.RateListener
 import com.shykun.volodymyr.movieviewer.presentation.common.adapters.HorizontalListAdapter
 import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
 import com.shykun.volodymyr.movieviewer.presentation.common.adapters.ReviewAdapter
@@ -47,7 +49,7 @@ private const val deleteFromWatchlistActionId = 3
 private const val markAsFavoriteActionId = 4
 private const val deleteFromFavoritesActionsId = 5
 
-class MovieDetailsFragment : Fragment(), BackButtonListener {
+class MovieDetailsFragment : Fragment(), BackButtonListener, RateListener {
 
     private var movieId = -1
     private var viewWasLoaded = false
@@ -183,6 +185,11 @@ class MovieDetailsFragment : Fragment(), BackButtonListener {
         actorsAdapter.clickObservable.subscribe { router.navigateTo(PERSON_DETAILS_FRAGMENT_KEY, it.id) }
     }
 
+    override fun onRateClickListener(rating: Float) {
+        val sessionId = prefs.getString(SESSION_ID_KEY, null)
+        viewModel.rateMovie(movieId, rating, sessionId)
+    }
+
     private fun performMenuAction(action: (sessionId: String) -> Unit): Boolean {
         val sessionId = prefs.getString(SESSION_ID_KEY, null)
         if (sessionId == null) {
@@ -194,7 +201,7 @@ class MovieDetailsFragment : Fragment(), BackButtonListener {
     }
 
     private fun rateMovie() = performMenuAction { sessionId ->
-        MovieRateDialogFragment.newInstance(movieId, sessionId).show(childFragmentManager, RATE_DIALOG_TAG)
+        RateDialogFragment().show(childFragmentManager, RATE_DIALOG_TAG)
     }
 
     private fun deleteRatig() = performMenuAction { sessionId ->
