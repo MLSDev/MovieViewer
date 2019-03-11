@@ -4,17 +4,18 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.shykun.volodymyr.movieviewer.data.entity.TvType
+import com.shykun.volodymyr.movieviewer.domain.DiscoverUseCase
 import com.shykun.volodymyr.movieviewer.domain.ProfileUseCase
 import com.shykun.volodymyr.movieviewer.domain.SearchUseCase
 import com.shykun.volodymyr.movieviewer.domain.TvUseCase
 import com.shykun.volodymyr.movieviewer.presentation.model.VerticalItemList
 import com.shykun.volodymyr.movieviewer.presentation.utils.ioMainSubscribe
 import com.shykun.volodymyr.movieviewer.presentation.utils.tvResponseToVerticalItemList
-import io.reactivex.android.schedulers.AndroidSchedulers
 
 class TvListViewModel(private val tvUseCase: TvUseCase,
                       private val profileUseCase: ProfileUseCase,
-                      private val searchUseCase: SearchUseCase) : ViewModel() {
+                      private val searchUseCase: SearchUseCase,
+                      private val discoverUseCase: DiscoverUseCase) : ViewModel() {
 
     private val tvListMutableLiveData = MutableLiveData<VerticalItemList>()
     private val loadingErrorMutableLiveData = MutableLiveData<String>()
@@ -37,6 +38,14 @@ class TvListViewModel(private val tvUseCase: TvUseCase,
                     { response -> tvListMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
+
+    fun discoverTv(airDate: String?, rating: Int?, genres: String?, page: Int) =
+            discoverUseCase.discoverTv(airDate, rating, genres, page)
+                    .map { tvResponseToVerticalItemList(it) }
+                    .ioMainSubscribe(
+                            { response -> tvListMutableLiveData.value = response },
+                            { error -> loadingErrorMutableLiveData.value = error.message }
+                    )
 
     fun getRatedTv(sessionId: String, page: Int) = profileUseCase
             .getRatedTv(sessionId, page)

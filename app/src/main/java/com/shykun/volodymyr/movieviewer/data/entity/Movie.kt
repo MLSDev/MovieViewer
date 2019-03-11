@@ -26,5 +26,6 @@ enum class MoviesType(val path: String) {
     SEARCHED("query"),
     RATED("rated"),
     WATCHLIST("watchlist"),
-    FAVORITE("favorite")
+    FAVORITE("favorite"),
+    DISCOVERED("discover")
 }

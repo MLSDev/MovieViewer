@@ -13,12 +13,15 @@ import android.widget.Toast
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.MoviesType
 import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
-import com.shykun.volodymyr.movieviewer.presentation.utils.ScrollObservable
 import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
 import com.shykun.volodymyr.movieviewer.presentation.common.adapters.VerticalListAdapter
+import com.shykun.volodymyr.movieviewer.presentation.discover.tab.GENRES_KEY
+import com.shykun.volodymyr.movieviewer.presentation.discover.tab.RATING_KEY
+import com.shykun.volodymyr.movieviewer.presentation.discover.tab.RELEASE_YEAR_KEY
 import com.shykun.volodymyr.movieviewer.presentation.model.VerticalItemList
 import com.shykun.volodymyr.movieviewer.presentation.movies.details.MOVIE_DETAILS_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.profile.SESSION_ID_KEY
+import com.shykun.volodymyr.movieviewer.presentation.utils.ScrollObservable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_movie_list.*
 import ru.terrakok.cicerone.Router
@@ -77,6 +80,7 @@ class MovieListFragment : Fragment(), BackButtonListener {
             MoviesType.RATED -> getString(R.string.rated_movies)
             MoviesType.FAVORITE -> getString(R.string.favorite_movies)
             MoviesType.WATCHLIST -> getString(R.string.movie_watchlist)
+            MoviesType.DISCOVERED -> getString(R.string.results)
         }
     }
 
@@ -129,6 +133,12 @@ class MovieListFragment : Fragment(), BackButtonListener {
                         }
                         MoviesType.WATCHLIST -> {
                             viewModel.getMovieWatchlist(sessionId, movieListAdapter.nextPage)
+                        }
+                        MoviesType.DISCOVERED -> {
+                            val year = arguments?.getInt(RELEASE_YEAR_KEY)
+                            val rating = arguments?.getInt(RATING_KEY)
+                            val genres = arguments?.getString(GENRES_KEY)
+                            viewModel.discoverMovies(year, rating, genres, movieListAdapter.nextPage)
                         }
                     }
                     movieListAdapter.nextPage++

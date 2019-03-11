@@ -26,5 +26,6 @@ enum class TvType(val path: String) {
     SEARCHED("search"),
     RATED("rated"),
     WATCHLIST("watchlist"),
-    FAVORITE("favorite")
+    FAVORITE("favorite"),
+    DISCOVERED("discover")
 }

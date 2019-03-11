@@ -12,12 +12,12 @@ import android.widget.Toast
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.Person
 import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
-import com.shykun.volodymyr.movieviewer.presentation.utils.ScrollObservable
 import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
 import com.shykun.volodymyr.movieviewer.presentation.model.ItemType
 import com.shykun.volodymyr.movieviewer.presentation.people.details.PERSON_DETAILS_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.search.ITEM_TYPE_KEY
 import com.shykun.volodymyr.movieviewer.presentation.search.SEARCH_FRAGMENT_KEY
+import com.shykun.volodymyr.movieviewer.presentation.utils.ScrollObservable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_people_tab.*
 import ru.terrakok.cicerone.Router

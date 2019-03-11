@@ -12,6 +12,13 @@
         <item name="android:editTextColor">@color/snow</item>
         <item name="android:textColorHint">@color/darkGrey</item>
         <item name="android:textColorSecondary">@color/white</item>
+        <item name="android:dialogTheme">@style/DialogTheme</item>
+    </style>
+
+    <style name="DialogTheme" parent="Base.Theme.AppCompat.Dialog">
+        <item name="android:textColor">@color/snow</item>
+        <item name="android:textColorPrimary">@color/snow</item>
+        <item name="android:colorAccent">@color/colorAccent</item>
     </style>
 
 </resources>

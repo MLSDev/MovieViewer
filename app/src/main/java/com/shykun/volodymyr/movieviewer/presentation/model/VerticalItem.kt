@@ -4,7 +4,7 @@ data class VerticalItem(
         val itemType: ItemType,
         val id: Int,
         val title: String,
-        val imageUrl: String,
+        val imageUrl: String?,
         val rating: Double,
         val genreIds: List<Int>,
         val releaseDate: String

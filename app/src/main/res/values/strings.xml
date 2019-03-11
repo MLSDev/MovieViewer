@@ -30,7 +30,6 @@
     <string name="search_tv">Search fo TV</string>
     <string name="search_people">Search for people</string>
     <string name="trailer">Trailer</string>
-    <string name="results">Results</string>
     <string name="profile">Profile</string>
     <string name="rate">Rate</string>
     <string name="discover">Discover</string>
@@ -42,4 +41,5 @@
     <string name="rated_tv">Rated TV</string>
     <string name="tv_watchlist">TV watchlist</string>
     <string name="favorite_tv">Favorite TV</string>
+    <string name="results">Results</string>
 </resources>

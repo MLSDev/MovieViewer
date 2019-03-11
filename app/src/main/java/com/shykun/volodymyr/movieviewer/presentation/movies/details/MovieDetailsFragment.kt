@@ -26,10 +26,10 @@ import com.shykun.volodymyr.movieviewer.data.network.response.MovieDetailsRespon
 import com.shykun.volodymyr.movieviewer.data.network.response.PostResponse
 import com.shykun.volodymyr.movieviewer.databinding.FragmentMovieDetailsBinding
 import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
-import com.shykun.volodymyr.movieviewer.presentation.common.RateDialogFragment
-import com.shykun.volodymyr.movieviewer.presentation.common.RateListener
-import com.shykun.volodymyr.movieviewer.presentation.common.adapters.HorizontalListAdapter
+import com.shykun.volodymyr.movieviewer.presentation.common.dialog.RateDialog
+import com.shykun.volodymyr.movieviewer.presentation.common.dialog.RateListener
 import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
+import com.shykun.volodymyr.movieviewer.presentation.common.adapters.HorizontalListAdapter
 import com.shykun.volodymyr.movieviewer.presentation.common.adapters.ReviewAdapter
 import com.shykun.volodymyr.movieviewer.presentation.model.HorizontalItem
 import com.shykun.volodymyr.movieviewer.presentation.people.details.PERSON_DETAILS_FRAGMENT_KEY
@@ -201,7 +201,7 @@ class MovieDetailsFragment : Fragment(), BackButtonListener, RateListener {
     }
 
     private fun rateMovie() = performMenuAction { sessionId ->
-        RateDialogFragment().show(childFragmentManager, RATE_DIALOG_TAG)
+        RateDialog().show(childFragmentManager, RATE_DIALOG_TAG)
     }
 
     private fun deleteRatig() = performMenuAction { sessionId ->

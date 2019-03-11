@@ -6,14 +6,8 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
 import android.support.v4.app.FragmentManager
-import com.shykun.volodymyr.movieviewer.presentation.discover.filter.FILTER_LIST_FRAGMENT_KEY
-import com.shykun.volodymyr.movieviewer.presentation.discover.filter.FilterListFragment
-import com.shykun.volodymyr.movieviewer.presentation.discover.filter.FilterType
-import com.shykun.volodymyr.movieviewer.presentation.discover.list.DISCOVER_LIST_FRAGMENT_KEY
-import com.shykun.volodymyr.movieviewer.presentation.discover.list.DiscoverListFragment
 import com.shykun.volodymyr.movieviewer.presentation.discover.tab.DISCOVER_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.discover.tab.DiscoverFragment
-import com.shykun.volodymyr.movieviewer.presentation.model.ItemType
 import com.shykun.volodymyr.movieviewer.presentation.movies.details.MOVIE_DETAILS_FRAGMENT_KEY
 import com.shykun.volodymyr.movieviewer.presentation.movies.details.MovieDetailsFragment
 import com.shykun.volodymyr.movieviewer.presentation.movies.list.MOVIE_LIST_FRAGMENT_KEY
@@ -58,9 +52,7 @@ class FlowNavigator(activity: FragmentActivity, fm: FragmentManager, containerId
             PEOPLE_TAB_FRAGMENT_KEY -> PeopleTabFragment.newInstance(data as Bundle?)
             PERSON_DETAILS_FRAGMENT_KEY -> PersonDetailsFragment.newInstance(data as Int)
 
-            DISCOVER_FRAGMENT_KEY -> (DiscoverFragment())
-            DISCOVER_LIST_FRAGMENT_KEY -> (DiscoverListFragment())
-            FILTER_LIST_FRAGMENT_KEY -> FilterListFragment.newInstance(data as FilterType)
+            DISCOVER_FRAGMENT_KEY -> DiscoverFragment()
 
             PROFILE_FRAGMENT_KEY -> ProfileFragment()
             LOGIN_FRAGMENT_KEY -> LoginFragment()

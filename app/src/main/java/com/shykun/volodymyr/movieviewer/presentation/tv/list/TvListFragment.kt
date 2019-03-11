@@ -13,12 +13,15 @@ import android.widget.Toast
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.TvType
 import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
-import com.shykun.volodymyr.movieviewer.presentation.utils.ScrollObservable
 import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
 import com.shykun.volodymyr.movieviewer.presentation.common.adapters.VerticalListAdapter
+import com.shykun.volodymyr.movieviewer.presentation.discover.tab.GENRES_KEY
+import com.shykun.volodymyr.movieviewer.presentation.discover.tab.RATING_KEY
+import com.shykun.volodymyr.movieviewer.presentation.discover.tab.RELEASE_YEAR_KEY
 import com.shykun.volodymyr.movieviewer.presentation.model.VerticalItemList
 import com.shykun.volodymyr.movieviewer.presentation.profile.SESSION_ID_KEY
 import com.shykun.volodymyr.movieviewer.presentation.tv.details.TV_DETAILS_FRAGMENT_KEY
+import com.shykun.volodymyr.movieviewer.presentation.utils.ScrollObservable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_movie_list.*
 import ru.terrakok.cicerone.Router
@@ -77,6 +80,7 @@ class TvListFragment : Fragment(), BackButtonListener {
             TvType.RATED -> getString(R.string.rated_tv)
             TvType.WATCHLIST -> getString(R.string.tv_watchlist)
             TvType.FAVORITE -> getString(R.string.favorite_tv)
+            TvType.DISCOVERED -> getString(R.string.results)
         }
     }
 
@@ -128,6 +132,15 @@ class TvListFragment : Fragment(), BackButtonListener {
                         }
                         TvType.WATCHLIST -> {
                             viewModel.getTvWatchlist(sessionId, tvListAdapter.nextPage)
+                        }
+                        TvType.DISCOVERED -> {
+                            val year = arguments?.getInt(RELEASE_YEAR_KEY)
+                            val rating = arguments?.getInt(RATING_KEY)
+                            val genres = arguments?.getString(GENRES_KEY)
+
+                            val airDate = if (year != null) "$year-01-01" else null
+
+                            viewModel.discoverTv(airDate, rating, genres, tvListAdapter.nextPage)
                         }
                     }
                     tvListAdapter.nextPage++

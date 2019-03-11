@@ -1,10 +1,8 @@
 package com.shykun.volodymyr.movieviewer.presentation.di
 
 import com.shykun.volodymyr.movieviewer.presentation.AppActivity
-import com.shykun.volodymyr.movieviewer.presentation.common.RateDialogFragment
 import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
-import com.shykun.volodymyr.movieviewer.presentation.discover.filter.FilterListFragment
-import com.shykun.volodymyr.movieviewer.presentation.discover.list.DiscoverListFragment
+import com.shykun.volodymyr.movieviewer.presentation.common.dialog.RateDialog
 import com.shykun.volodymyr.movieviewer.presentation.discover.tab.DiscoverFragment
 import com.shykun.volodymyr.movieviewer.presentation.movies.details.MovieDetailsFragment
 import com.shykun.volodymyr.movieviewer.presentation.movies.list.MovieListFragment
@@ -27,10 +25,8 @@ interface AppComponent {
     fun inject(target: MovieTabFragment)
     fun inject(target: AppActivity)
     fun inject(target: DiscoverFragment)
-    fun inject(target: FilterListFragment)
     fun inject(target: MovieListFragment)
     fun inject(target: TvListFragment)
-    fun inject(target: DiscoverListFragment)
     fun inject(target: MovieDetailsFragment)
     fun inject(target: TabNavigationFragment)
     fun inject(target: TvTabFragment)
@@ -39,6 +35,6 @@ interface AppComponent {
     fun inject(target: PersonDetailsFragment)
     fun inject(target: ProfileFragment)
     fun inject(target: LoginFragment)
-    fun inject(target: RateDialogFragment)
+    fun inject(target: RateDialog)
     fun inject(target: SearchFragment)
 }

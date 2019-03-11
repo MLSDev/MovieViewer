@@ -1,4 +1,4 @@
-package com.shykun.volodymyr.movieviewer.presentation.common
+package com.shykun.volodymyr.movieviewer.presentation.common.dialog
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -9,7 +9,7 @@ import android.view.LayoutInflater
 import android.widget.TextView
 import com.shykun.volodymyr.movieviewer.R
 
-class RateDialogFragment : DialogFragment() {
+class RateDialog : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val view = LayoutInflater.from(this.context).inflate(R.layout.fragment_dialog_rate, null)

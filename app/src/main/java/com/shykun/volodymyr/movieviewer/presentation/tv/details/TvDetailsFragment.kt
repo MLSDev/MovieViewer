@@ -27,8 +27,8 @@ import com.shykun.volodymyr.movieviewer.data.network.response.TvDetailsResponse
 import com.shykun.volodymyr.movieviewer.databinding.FragmentTvDetailsBinding
 import com.shykun.volodymyr.movieviewer.presentation.AppActivity
 import com.shykun.volodymyr.movieviewer.presentation.common.BackButtonListener
-import com.shykun.volodymyr.movieviewer.presentation.common.RateDialogFragment
-import com.shykun.volodymyr.movieviewer.presentation.common.RateListener
+import com.shykun.volodymyr.movieviewer.presentation.common.dialog.RateDialog
+import com.shykun.volodymyr.movieviewer.presentation.common.dialog.RateListener
 import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragment
 import com.shykun.volodymyr.movieviewer.presentation.common.adapters.HorizontalListAdapter
 import com.shykun.volodymyr.movieviewer.presentation.common.adapters.ReviewAdapter
@@ -198,7 +198,7 @@ class TvDetailsFragment : Fragment(), BackButtonListener, RateListener {
     }
 
     private fun rateTv() = performMenuAction { sessionId ->
-        RateDialogFragment().show(childFragmentManager, RATE_DIALOG_TAG)
+        RateDialog().show(childFragmentManager, RATE_DIALOG_TAG)
     }
 
     private fun deleteRatig() = performMenuAction { sessionId ->
