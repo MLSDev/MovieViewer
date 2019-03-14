@@ -48,6 +48,7 @@ dependencies {
     //Rxjava
     implementation "io.reactivex.rxjava2:rxjava:2.2.4"
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
+    kaptTest 'com.google.dagger:dagger-compiler:<version>'
 
     //Dagger
     implementation 'com.google.dagger:dagger:2.20'
@@ -72,4 +73,10 @@ dependencies {
 
     //Expandable TextView
     implementation 'com.ms-square:expandableTextView:0.1.4'
+
+    //Mockito
+    testImplementation "org.mockito:mockito-core:2.15.0"
+
+    //Robolectric
+    testImplementation "org.robolectric:robolectric:4.2"
 }
