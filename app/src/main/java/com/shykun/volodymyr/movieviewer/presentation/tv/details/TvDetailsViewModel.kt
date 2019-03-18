@@ -9,16 +9,14 @@ import com.shykun.volodymyr.movieviewer.data.entity.Review
 import com.shykun.volodymyr.movieviewer.data.network.response.ItemAccountStateResponse
 import com.shykun.volodymyr.movieviewer.data.network.response.PostResponse
 import com.shykun.volodymyr.movieviewer.data.network.response.TvDetailsResponse
-import com.shykun.volodymyr.movieviewer.data.network.response.TvResponse
-import com.shykun.volodymyr.movieviewer.domain.ProfileUseCase
 import com.shykun.volodymyr.movieviewer.domain.TvDetailsUseCase
 import com.shykun.volodymyr.movieviewer.presentation.model.HorizontalItem
-import com.shykun.volodymyr.movieviewer.presentation.utils.ioMainSubscribe
-import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.Scheduler
 
 class TvDetailsViewModel(
         private val tvDetailsUseCase: TvDetailsUseCase,
-        private val profileUseCase: ProfileUseCase) : ViewModel() {
+        private val backgroundScheduler: Scheduler,
+        private val mainScheduler: Scheduler) : ViewModel() {
 
     private val tvDetailsMutableLiveData = MutableLiveData<TvDetailsResponse>()
     private val recommendedTvMutableLiveData = MutableLiveData<List<HorizontalItem>>()
@@ -30,11 +28,6 @@ class TvDetailsViewModel(
     private val markAsFavoriteMutableLiveData = MutableLiveData<PostResponse>()
 
     private val tvAccountStatesMutableLiveData = MutableLiveData<ItemAccountStateResponse>()
-
-    private val ratedTvMutableLiveData = MutableLiveData<TvResponse>()
-    private val tvWatchlistMutableLiveData = MutableLiveData<TvResponse>()
-    private val favoriteTvMutableLiveData = MutableLiveData<TvResponse>()
-
 
     private val loadingErrorMutableLiveData = MutableLiveData<String>()
 
@@ -68,14 +61,18 @@ class TvDetailsViewModel(
         getTvCast(tvId)
     }
 
-    private fun getTvDetails(tvId: Int) = tvDetailsUseCase.getTvDetails(tvId)
-            .ioMainSubscribe(
+    fun getTvDetails(tvId: Int) = tvDetailsUseCase.getTvDetails(tvId)
+            .subscribeOn(backgroundScheduler)
+            .observeOn(mainScheduler)
+            .subscribe(
                     { response -> tvDetailsMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
 
-    private fun getRecommendedTv(tvId: Int) = tvDetailsUseCase.getRecommendedTv(tvId)
-            .ioMainSubscribe(
+    fun getRecommendedTv(tvId: Int) = tvDetailsUseCase.getRecommendedTv(tvId)
+            .subscribeOn(backgroundScheduler)
+            .observeOn(mainScheduler)
+            .subscribe(
                     { response ->
                         recommendedTvMutableLiveData.value = response
                         if (response.isNotEmpty()) {
@@ -86,8 +83,10 @@ class TvDetailsViewModel(
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
 
-    private fun getTvReviews(tvId: Int) = tvDetailsUseCase.getTvReviews(tvId)
-            .ioMainSubscribe(
+    fun getTvReviews(tvId: Int) = tvDetailsUseCase.getTvReviews(tvId)
+            .subscribeOn(backgroundScheduler)
+            .observeOn(mainScheduler)
+            .subscribe(
                     { response ->
                         tvReviewsMutableLiveData.value = response
                         if (response.isNotEmpty()) {
@@ -98,8 +97,10 @@ class TvDetailsViewModel(
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
 
-    private fun getTvCast(tvId: Int) = tvDetailsUseCase.getTvCast(tvId)
-            .ioMainSubscribe(
+    fun getTvCast(tvId: Int) = tvDetailsUseCase.getTvCast(tvId)
+            .subscribeOn(backgroundScheduler)
+            .observeOn(mainScheduler)
+            .subscribe(
                     { response ->
                         tvActorsMutableLiveData.value = response
                         if (response.isNotEmpty()) {
@@ -111,44 +112,58 @@ class TvDetailsViewModel(
             )
 
     fun rateTv(tvId: Int, rating: Float, sessionId: String) = tvDetailsUseCase.rateTv(tvId, rating, sessionId)
-            .ioMainSubscribe(
+            .subscribeOn(backgroundScheduler)
+            .observeOn(mainScheduler)
+            .subscribe(
                     { response -> rateTvMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
 
 
     fun deleteTvRating(tvId: Int, sessionId: String) = tvDetailsUseCase.deleteTvRating(tvId, sessionId)
-            .ioMainSubscribe(
+            .subscribeOn(backgroundScheduler)
+            .observeOn(mainScheduler)
+            .subscribe(
                     { response -> rateTvMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
 
     fun addToWatchlist(tvId: Int, sessionId: String) = tvDetailsUseCase.addToWatchlist(tvId, sessionId)
-            .ioMainSubscribe(
+            .subscribeOn(backgroundScheduler)
+            .observeOn(mainScheduler)
+            .subscribe(
                     { response -> addToWatchListMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
 
-    fun deleteFromWatchlist(tvId: Int, sessionId: String) = tvDetailsUseCase.removeFromWatchlist(tvId, sessionId)
-            .ioMainSubscribe(
+    fun deleteFromWatchlist(tvId: Int, sessionId: String) = tvDetailsUseCase.deleteFromWatchlist(tvId, sessionId)
+            .subscribeOn(backgroundScheduler)
+            .observeOn(mainScheduler)
+            .subscribe(
                     { response -> addToWatchListMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
 
-    fun markAsFavorite(tvId: Int, sessionId: String) = tvDetailsUseCase.markAsFavorite(tvId, sessionId)
-            .ioMainSubscribe(
+    fun addToFavorites(tvId: Int, sessionId: String) = tvDetailsUseCase.addToFavorites(tvId, sessionId)
+            .subscribeOn(backgroundScheduler)
+            .observeOn(mainScheduler)
+            .subscribe(
                     { response -> markAsFavoriteMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
 
-    fun deleteFromFavorites(tvId: Int, sessionId: String) = tvDetailsUseCase.removeFromFavorites(tvId, sessionId)
-            .ioMainSubscribe(
+    fun deleteFromFavorites(tvId: Int, sessionId: String) = tvDetailsUseCase.deleteFromFavorites(tvId, sessionId)
+            .subscribeOn(backgroundScheduler)
+            .observeOn(mainScheduler)
+            .subscribe(
                     { response -> markAsFavoriteMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
 
     fun getTvAccountStates(tvId: Int, sessionId: String) = tvDetailsUseCase.getTvAccountStates(tvId, sessionId)
-            .ioMainSubscribe(
+            .subscribeOn(backgroundScheduler)
+            .observeOn(mainScheduler)
+            .subscribe(
                     { response -> tvAccountStatesMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )

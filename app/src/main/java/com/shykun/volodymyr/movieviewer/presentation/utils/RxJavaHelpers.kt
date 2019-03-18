@@ -3,6 +3,7 @@ package com.shykun.volodymyr.movieviewer.presentation.utils
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import io.reactivex.Observable
+import io.reactivex.Scheduler
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers

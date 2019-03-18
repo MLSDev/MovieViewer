@@ -10,6 +10,7 @@ import com.shykun.volodymyr.movieviewer.presentation.model.VerticalItemList
 import com.shykun.volodymyr.movieviewer.presentation.utils.ioMainSubscribe
 import com.shykun.volodymyr.movieviewer.presentation.utils.movieResponseToVerticalItemList
 import com.shykun.volodymyr.movieviewer.presentation.utils.tvResponseToVerticalItemList
+import io.reactivex.disposables.Disposable
 
 const val MOVIE_TYPE = 0
 const val TV_TYPE = 1
@@ -66,7 +67,7 @@ class DiscoverViewModel(private val discoverUseCase: DiscoverUseCase) : ViewMode
         val tmpRating = if (rating.get() == -1) null else rating.get()
         val tmpGenres = if (genres.get()!!.isEmpty()) null else genres.get()!!.joinToString(separator = ",") { it.id.toString() }
 
-        return discoverUseCase
+        discoverUseCase
                 .discoverMovies(tmpYear, tmpRating, tmpGenres, page)
                 .map { movieResponseToVerticalItemList(it) }
                 .ioMainSubscribe(

@@ -10,14 +10,13 @@ import com.shykun.volodymyr.movieviewer.data.network.response.ItemAccountStateRe
 import com.shykun.volodymyr.movieviewer.data.network.response.MovieDetailsResponse
 import com.shykun.volodymyr.movieviewer.data.network.response.PostResponse
 import com.shykun.volodymyr.movieviewer.domain.MovieDetailsUseCase
-import com.shykun.volodymyr.movieviewer.domain.ProfileUseCase
 import com.shykun.volodymyr.movieviewer.presentation.model.HorizontalItem
-import com.shykun.volodymyr.movieviewer.presentation.utils.ioMainSubscribe
-import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.Scheduler
 
 class MovieDetailsViewModel(
         private val movieDetailsUseCase: MovieDetailsUseCase,
-        private val profileUseCase: ProfileUseCase) : ViewModel() {
+        private val backgroundScheduler: Scheduler,
+        private val mainScheduler: Scheduler) : ViewModel() {
 
     private val movieDetailsMutableLiveData = MutableLiveData<MovieDetailsResponse>()
     private val movieActorsMutableLiveData = MutableLiveData<List<HorizontalItem>>()
@@ -62,14 +61,18 @@ class MovieDetailsViewModel(
     }
 
     fun getMovieDetails(movieId: Int) = movieDetailsUseCase.getMovieDetails(movieId)
-            .ioMainSubscribe(
+            .subscribeOn(backgroundScheduler)
+            .observeOn(mainScheduler)
+            .subscribe(
                     { response -> movieDetailsMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
 
 
     fun getMovieCast(movieId: Int) = movieDetailsUseCase.getMovieCredits(movieId)
-            .ioMainSubscribe(
+            .subscribeOn(backgroundScheduler)
+            .observeOn(mainScheduler)
+            .subscribe(
                     { response ->
                         movieActorsMutableLiveData.value = response
                         if (response.isNotEmpty()) {
@@ -81,7 +84,9 @@ class MovieDetailsViewModel(
             )
 
     fun getMovieReviews(movieId: Int) = movieDetailsUseCase.getMovieReviews(movieId)
-            .ioMainSubscribe(
+            .subscribeOn(backgroundScheduler)
+            .observeOn(mainScheduler)
+            .subscribe(
                     { response ->
                         movieReviewsMutableLiveData.value = response
                         if (response.isNotEmpty()) {
@@ -93,7 +98,9 @@ class MovieDetailsViewModel(
             )
 
     fun getRecommendedMovies(movieId: Int) = movieDetailsUseCase.getRecommendedMovies(movieId)
-            .ioMainSubscribe(
+            .subscribeOn(backgroundScheduler)
+            .observeOn(mainScheduler)
+            .subscribe(
                     { response ->
                         recommendedMoviesMutableLiveData.value = response
                         if (response.isNotEmpty()) {
@@ -105,43 +112,57 @@ class MovieDetailsViewModel(
             )
 
     fun rateMovie(movieId: Int, rating: Float, sessionId: String) = movieDetailsUseCase.rateMovie(movieId, rating, sessionId)
-            .ioMainSubscribe(
+            .subscribeOn(backgroundScheduler)
+            .observeOn(mainScheduler)
+            .subscribe(
                     { response -> rateMovieMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
 
     fun deleteMovieRating(movieId: Int, sessionId: String) = movieDetailsUseCase.deleteMovieRating(movieId, sessionId)
-            .ioMainSubscribe(
+            .subscribeOn(backgroundScheduler)
+            .observeOn(mainScheduler)
+            .subscribe(
                     { response -> rateMovieMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
 
     fun addToWatchList(movieId: Int, sessionId: String) = movieDetailsUseCase.addToWatchlist(movieId, sessionId)
-            .ioMainSubscribe(
+            .subscribeOn(backgroundScheduler)
+            .observeOn(mainScheduler)
+            .subscribe(
                     { response -> addToWatchlistMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
 
     fun deleteFromWatchList(movieId: Int, sessionId: String) = movieDetailsUseCase.removeFromWatchList(movieId, sessionId)
-            .ioMainSubscribe(
+            .subscribeOn(backgroundScheduler)
+            .observeOn(mainScheduler)
+            .subscribe(
                     { response -> addToWatchlistMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
 
     fun markAsFavorite(movieId: Int, sessionId: String) = movieDetailsUseCase.markAsFavorite(movieId, sessionId)
-            .ioMainSubscribe(
+            .subscribeOn(backgroundScheduler)
+            .observeOn(mainScheduler)
+            .subscribe(
                     { response -> markAsFavoriteMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
 
-    fun deleteFromFavorites(movieId: Int, sessionId: String) = movieDetailsUseCase.removeFromFavorites(movieId, sessionId)
-            .ioMainSubscribe(
+    fun deleteFromFavorites(movieId: Int, sessionId: String) = movieDetailsUseCase.deleteFromFavorites(movieId, sessionId)
+            .subscribeOn(backgroundScheduler)
+            .observeOn(mainScheduler)
+            .subscribe(
                     { response -> markAsFavoriteMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
 
     fun getMovieAccountStates(movieId: Int, sessionId: String) = movieDetailsUseCase.getMovieAccountStates(movieId, sessionId)
-            .ioMainSubscribe(
+            .subscribeOn(backgroundScheduler)
+            .observeOn(mainScheduler)
+            .subscribe(
                     { response -> movieAccountStatesMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )

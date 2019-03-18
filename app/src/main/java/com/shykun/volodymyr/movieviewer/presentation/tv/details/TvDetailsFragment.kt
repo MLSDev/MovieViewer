@@ -214,7 +214,7 @@ class TvDetailsFragment : Fragment(), BackButtonListener, RateListener {
     }
 
     private fun markAsFavorite() = performMenuAction { sessionId ->
-        viewModel.markAsFavorite(tvId, sessionId)
+        viewModel.addToFavorites(tvId, sessionId)
     }
 
     private fun deleteFromFavorites() = performMenuAction { sessionId ->

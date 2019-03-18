@@ -21,7 +21,7 @@ class MovieDetailsUseCase @Inject constructor(private val apiClient: ApiClient) 
     fun addToWatchlist(movieId: Int, sessionId: String) = apiClient.addToWatchlist(AddToWatchlistBody("movie", movieId, true), sessionId)
 
     fun deleteMovieRating(movieId: Int, sessionId: String) = apiClient.deleteMovieRating(movieId, sessionId)
-    fun removeFromFavorites(movieId: Int, sessionId: String) = apiClient.markAsFavorite(MarkAsFavoriteBody("movie", movieId, false), sessionId)
+    fun deleteFromFavorites(movieId: Int, sessionId: String) = apiClient.markAsFavorite(MarkAsFavoriteBody("movie", movieId, false), sessionId)
     fun removeFromWatchList(movieId: Int, sessionId: String) = apiClient.addToWatchlist(AddToWatchlistBody("movie", movieId, false), sessionId)
 
     fun getMovieAccountStates(movieId: Int, sessionId: String) = apiClient.getMovieAccountStates(movieId, sessionId)

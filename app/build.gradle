@@ -75,8 +75,11 @@ dependencies {
     implementation 'com.ms-square:expandableTextView:0.1.4'
 
     //Mockito
-    testImplementation "org.mockito:mockito-core:2.15.0"
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0"
+    testImplementation 'org.mockito:mockito-inline:2.8.47'
 
     //Robolectric
     testImplementation "org.robolectric:robolectric:4.2"
+
+    testImplementation "android.arch.core:core-testing:1.1.1"
 }

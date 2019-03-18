@@ -17,12 +17,12 @@ class TvDetailsUseCase @Inject constructor(private val apiClient: ApiClient) {
     fun getTvReviews(tvId: Int) = apiClient.getTvReviews(tvId).map { it.results }
 
     fun rateTv(tvId: Int, rating: Float, sessionId: String) = apiClient.rateTv(tvId, RateBody(rating), sessionId)
-    fun markAsFavorite(tvId: Int, sessionId: String) = apiClient.markAsFavorite(MarkAsFavoriteBody("tv", tvId, true), sessionId)
+    fun addToFavorites(tvId: Int, sessionId: String) = apiClient.markAsFavorite(MarkAsFavoriteBody("tv", tvId, true), sessionId)
     fun addToWatchlist(tvId: Int, sessionId: String) = apiClient.addToWatchlist(AddToWatchlistBody("tv", tvId, true), sessionId)
 
     fun deleteTvRating(tvId: Int, sessionId: String) = apiClient.deleteTvRating(tvId, sessionId)
-    fun removeFromFavorites(tvId: Int, sessionId: String) = apiClient.markAsFavorite(MarkAsFavoriteBody("tv", tvId, false), sessionId)
-    fun removeFromWatchlist(tvId: Int, sessionId: String) = apiClient.addToWatchlist(AddToWatchlistBody("tv", tvId, false), sessionId)
+    fun deleteFromFavorites(tvId: Int, sessionId: String) = apiClient.markAsFavorite(MarkAsFavoriteBody("tv", tvId, false), sessionId)
+    fun deleteFromWatchlist(tvId: Int, sessionId: String) = apiClient.addToWatchlist(AddToWatchlistBody("tv", tvId, false), sessionId)
 
     fun getTvAccountStates(tvId: Int, sessionId: String) = apiClient.getTvAccountStates(tvId, sessionId)
             .map { jsonElement ->
