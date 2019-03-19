@@ -9,13 +9,15 @@ import com.shykun.volodymyr.movieviewer.domain.ProfileUseCase
 import com.shykun.volodymyr.movieviewer.domain.SearchUseCase
 import com.shykun.volodymyr.movieviewer.domain.TvUseCase
 import com.shykun.volodymyr.movieviewer.presentation.model.VerticalItemList
-import com.shykun.volodymyr.movieviewer.presentation.utils.ioMainSubscribe
 import com.shykun.volodymyr.movieviewer.presentation.utils.tvResponseToVerticalItemList
+import io.reactivex.Scheduler
 
 class TvListViewModel(private val tvUseCase: TvUseCase,
                       private val profileUseCase: ProfileUseCase,
                       private val searchUseCase: SearchUseCase,
-                      private val discoverUseCase: DiscoverUseCase) : ViewModel() {
+                      private val discoverUseCase: DiscoverUseCase,
+                      private val backgroundScheduler: Scheduler,
+                      private val mainScheduler: Scheduler) : ViewModel() {
 
     private val tvListMutableLiveData = MutableLiveData<VerticalItemList>()
     private val loadingErrorMutableLiveData = MutableLiveData<String>()
@@ -26,7 +28,9 @@ class TvListViewModel(private val tvUseCase: TvUseCase,
     fun getTvList(tvType: TvType, page: Int) = tvUseCase
             .getTv(tvType, page)
             .map { tvResponseToVerticalItemList(it) }
-            .ioMainSubscribe(
+            .subscribeOn(backgroundScheduler)
+            .observeOn(mainScheduler)
+            .subscribe(
                     { response -> tvListMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
@@ -34,7 +38,9 @@ class TvListViewModel(private val tvUseCase: TvUseCase,
     fun searchTv(query: String, page: Int) = searchUseCase
             .searchTv(query, page)
             .map { tvResponseToVerticalItemList(it) }
-            .ioMainSubscribe(
+            .subscribeOn(backgroundScheduler)
+            .observeOn(mainScheduler)
+            .subscribe(
                     { response -> tvListMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
@@ -42,7 +48,9 @@ class TvListViewModel(private val tvUseCase: TvUseCase,
     fun discoverTv(airDate: String?, rating: Int?, genres: String?, page: Int) =
             discoverUseCase.discoverTv(airDate, rating, genres, page)
                     .map { tvResponseToVerticalItemList(it) }
-                    .ioMainSubscribe(
+                    .subscribeOn(backgroundScheduler)
+                    .observeOn(mainScheduler)
+                    .subscribe(
                             { response -> tvListMutableLiveData.value = response },
                             { error -> loadingErrorMutableLiveData.value = error.message }
                     )
@@ -50,7 +58,9 @@ class TvListViewModel(private val tvUseCase: TvUseCase,
     fun getRatedTv(sessionId: String, page: Int) = profileUseCase
             .getRatedTv(sessionId, page)
             .map { tvResponseToVerticalItemList(it) }
-            .ioMainSubscribe(
+            .subscribeOn(backgroundScheduler)
+            .observeOn(mainScheduler)
+            .subscribe(
                     { response -> tvListMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
@@ -58,7 +68,9 @@ class TvListViewModel(private val tvUseCase: TvUseCase,
     fun getTvWatchlist(sessionId: String, page: Int) = profileUseCase
             .getTvWatchList(sessionId, page)
             .map { tvResponseToVerticalItemList(it) }
-            .ioMainSubscribe(
+            .subscribeOn(backgroundScheduler)
+            .observeOn(mainScheduler)
+            .subscribe(
                     { response -> tvListMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
@@ -66,7 +78,9 @@ class TvListViewModel(private val tvUseCase: TvUseCase,
     fun getFavoriteTv(sessionId: String, page: Int) = profileUseCase
             .getFavoriteTv(sessionId, page)
             .map { tvResponseToVerticalItemList(it) }
-            .ioMainSubscribe(
+            .subscribeOn(backgroundScheduler)
+            .observeOn(mainScheduler)
+            .subscribe(
                     { response -> tvListMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
