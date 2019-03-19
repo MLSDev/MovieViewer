@@ -12,7 +12,7 @@ import com.shykun.volodymyr.movieviewer.presentation.utils.tvOnTheAirToHorizonta
 import io.reactivex.Scheduler
 
 class TvTabViewModel(
-        private val TVUseCase: TvUseCase,
+        private val TvUseCase: TvUseCase,
         private val backgroundScheduler: Scheduler,
         private val mainScheduler: Scheduler) : ViewModel() {
 
@@ -33,36 +33,35 @@ class TvTabViewModel(
         getTVOnTheAir(1)
     }
 
-    fun getPopularTV(page: Int) {
-        TVUseCase.getTv(TvType.POPULAR, page)
-                .map { it.results.mapIndexed { position, tv -> popularTvToHorizontalListItem(tv, position) } }
-                .subscribeOn(backgroundScheduler)
-                .observeOn(mainScheduler)
-                .subscribe(
-                        { response -> popularTvMutableLiveData.value = response },
-                        { error -> loadingErrorMutableLiveData.value = error.message }
-                )
-    }
+    fun getPopularTV(page: Int) =
+            TvUseCase.getTv(TvType.POPULAR, page)
+                    .map { it.results.mapIndexed { position, tv -> popularTvToHorizontalListItem(tv, position) } }
+                    .subscribeOn(backgroundScheduler)
+                    .observeOn(mainScheduler)
+                    .subscribe(
+                            { response -> popularTvMutableLiveData.value = response },
+                            { error -> loadingErrorMutableLiveData.value = error.message }
+                    )
 
-    fun getTopRatedTV(page: Int) {
-        TVUseCase.getTv(TvType.TOP_RATED, page)
-                .map { it.results.map { topRatedTvToHorizontalListItem(it) } }
-                .subscribeOn(backgroundScheduler)
-                .observeOn(mainScheduler)
-                .subscribe(
-                        { response -> topRatedTvMutableLiveData.value = response },
-                        { error -> loadingErrorMutableLiveData.value = error.message }
-                )
-    }
+    fun getTopRatedTV(page: Int) =
+            TvUseCase.getTv(TvType.TOP_RATED, page)
+                    .map { it.results.map { topRatedTvToHorizontalListItem(it) } }
+                    .subscribeOn(backgroundScheduler)
+                    .observeOn(mainScheduler)
+                    .subscribe(
+                            { response -> topRatedTvMutableLiveData.value = response },
+                            { error -> loadingErrorMutableLiveData.value = error.message }
+                    )
 
-    fun getTVOnTheAir(page: Int) {
-        TVUseCase.getTv(TvType.ON_THE_AIR, page)
-                .map { it.results.map { tvOnTheAirToHorizontalListItem(it) } }
-                .subscribeOn(backgroundScheduler)
-                .observeOn(mainScheduler)
-                .subscribe(
-                        { response -> tvOnTheAirMutableLiveData.value = response },
-                        { error -> loadingErrorMutableLiveData.value = error.message }
-                )
-    }
+
+    fun getTVOnTheAir(page: Int) =
+            TvUseCase.getTv(TvType.ON_THE_AIR, page)
+                    .map { it.results.map { tvOnTheAirToHorizontalListItem(it) } }
+                    .subscribeOn(backgroundScheduler)
+                    .observeOn(mainScheduler)
+                    .subscribe(
+                            { response -> tvOnTheAirMutableLiveData.value = response },
+                            { error -> loadingErrorMutableLiveData.value = error.message }
+                    )
+
 }
