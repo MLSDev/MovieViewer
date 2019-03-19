@@ -7,15 +7,17 @@ import android.databinding.ObservableField
 import com.shykun.volodymyr.movieviewer.data.entity.Genre
 import com.shykun.volodymyr.movieviewer.domain.DiscoverUseCase
 import com.shykun.volodymyr.movieviewer.presentation.model.VerticalItemList
-import com.shykun.volodymyr.movieviewer.presentation.utils.ioMainSubscribe
 import com.shykun.volodymyr.movieviewer.presentation.utils.movieResponseToVerticalItemList
 import com.shykun.volodymyr.movieviewer.presentation.utils.tvResponseToVerticalItemList
-import io.reactivex.disposables.Disposable
+import io.reactivex.Scheduler
 
 const val MOVIE_TYPE = 0
 const val TV_TYPE = 1
 
-class DiscoverViewModel(private val discoverUseCase: DiscoverUseCase) : ViewModel() {
+class DiscoverViewModel(
+        private val discoverUseCase: DiscoverUseCase,
+        private val backgroundScheduler: Scheduler,
+        private val mainScheduler: Scheduler) : ViewModel() {
 
     val genreNames = ObservableField<String>("All genres")
 
@@ -70,7 +72,9 @@ class DiscoverViewModel(private val discoverUseCase: DiscoverUseCase) : ViewMode
         discoverUseCase
                 .discoverMovies(tmpYear, tmpRating, tmpGenres, page)
                 .map { movieResponseToVerticalItemList(it) }
-                .ioMainSubscribe(
+                .subscribeOn(backgroundScheduler)
+                .observeOn(mainScheduler)
+                .subscribe(
                         { response ->
                             discoveredMoviesMutableLiveData.value = response
                             totalPageCount = response.totalItemsCount
@@ -87,7 +91,9 @@ class DiscoverViewModel(private val discoverUseCase: DiscoverUseCase) : ViewMode
         discoverUseCase
                 .discoverTv(tmpYear, tmpRating, tmpGenres, page)
                 .map { tvResponseToVerticalItemList(it) }
-                .ioMainSubscribe(
+                .subscribeOn(backgroundScheduler)
+                .observeOn(mainScheduler)
+                .subscribe(
                         { response ->
                             discoveredTvMutableLiveData.value = response
                             totalPageCount = response.totalItemsCount

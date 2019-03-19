@@ -9,11 +9,13 @@ import com.shykun.volodymyr.movieviewer.data.network.response.LogoutResponse
 import com.shykun.volodymyr.movieviewer.data.network.response.RequestTokenResponse
 import com.shykun.volodymyr.movieviewer.data.network.response.SessionIdResponse
 import com.shykun.volodymyr.movieviewer.domain.ProfileUseCase
-import com.shykun.volodymyr.movieviewer.presentation.utils.ioMainSubscribe
-import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.Scheduler
 
-class ProfileViewModel(private val profileUseCase: ProfileUseCase,
-                       private val prefs: SharedPreferences) : ViewModel() {
+class ProfileViewModel(
+        private val profileUseCase: ProfileUseCase,
+        private val prefs: SharedPreferences,
+        private val backgroundScheduler: Scheduler,
+        private val mainScheduler: Scheduler) : ViewModel() {
 
     private val requestTokenMutableLiveData = MutableLiveData<RequestTokenResponse>()
     private val sessionIdMutableLiveData = MutableLiveData<SessionIdResponse>()
@@ -29,13 +31,17 @@ class ProfileViewModel(private val profileUseCase: ProfileUseCase,
 
 
     fun getRequestToken() = profileUseCase.getRequestToken()
-            .ioMainSubscribe(
+            .subscribeOn(backgroundScheduler)
+            .observeOn(mainScheduler)
+            .subscribe(
                     { response -> requestTokenMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
 
     fun createSessionId(requestToken: String) = profileUseCase.createSessionId(requestToken)
-            .ioMainSubscribe(
+            .subscribeOn(backgroundScheduler)
+            .observeOn(mainScheduler)
+            .subscribe(
                     { response ->
                         sessionIdMutableLiveData.value = response
                         logoutMutableLiveData.value = null
@@ -46,7 +52,9 @@ class ProfileViewModel(private val profileUseCase: ProfileUseCase,
             )
 
     fun getAccountDetails(sessionId: String) = profileUseCase.getAccountDetails(sessionId)
-            .ioMainSubscribe(
+            .subscribeOn(backgroundScheduler)
+            .observeOn(mainScheduler)
+            .subscribe(
                     { response ->
                         accountDetailsMutableLiveData.value = response
                     },
@@ -54,7 +62,9 @@ class ProfileViewModel(private val profileUseCase: ProfileUseCase,
             )
 
     fun logout(sessionId: String) = profileUseCase.logout(sessionId)
-            .ioMainSubscribe(
+            .subscribeOn(backgroundScheduler)
+            .observeOn(mainScheduler)
+            .subscribe(
                     { response -> logoutMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )

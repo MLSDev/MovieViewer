@@ -21,7 +21,7 @@ import org.junit.runners.JUnit4
 
 
 @RunWith(JUnit4::class)
-class MovieListTest {
+class MovieListViewModelTest {
 
     private lateinit var viewModel: MovieListViewModel
     private lateinit var moviesUseCaseMock: MoviesUseCase

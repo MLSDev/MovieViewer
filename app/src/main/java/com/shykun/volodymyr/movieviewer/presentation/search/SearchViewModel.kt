@@ -6,12 +6,15 @@ import android.arch.lifecycle.ViewModel
 import com.shykun.volodymyr.movieviewer.domain.SearchUseCase
 import com.shykun.volodymyr.movieviewer.presentation.model.ItemType
 import com.shykun.volodymyr.movieviewer.presentation.model.SearchItem
-import com.shykun.volodymyr.movieviewer.presentation.utils.ioMainSubscribe
 import com.shykun.volodymyr.movieviewer.presentation.utils.movieToSearchListItem
 import com.shykun.volodymyr.movieviewer.presentation.utils.personToSearchListItem
 import com.shykun.volodymyr.movieviewer.presentation.utils.tvToSearchListItem
+import io.reactivex.Scheduler
 
-class SearchViewModel(private val searchUseCase: SearchUseCase) : ViewModel() {
+class SearchViewModel(
+        private val searchUseCase: SearchUseCase,
+        private val backgroundScheduler: Scheduler,
+        private val mainScheduler: Scheduler) : ViewModel() {
 
     private val searchResultsMutableLiveData = MutableLiveData<List<SearchItem>>()
     private val loadingErrorMutableLiveData = MutableLiveData<String>()
@@ -26,19 +29,25 @@ class SearchViewModel(private val searchUseCase: SearchUseCase) : ViewModel() {
     }
 
     fun searchMovies(query: String) = searchUseCase.searchMovies(query)
-            .ioMainSubscribe(
+            .subscribeOn(backgroundScheduler)
+            .observeOn(mainScheduler)
+            .subscribe(
                     { response -> searchResultsMutableLiveData.value = response.results.map { movieToSearchListItem(it) } },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
 
     fun searchTv(query: String) = searchUseCase.searchTv(query)
-            .ioMainSubscribe(
+            .subscribeOn(backgroundScheduler)
+            .observeOn(mainScheduler)
+            .subscribe(
                     { response -> searchResultsMutableLiveData.value = response.results.map { tvToSearchListItem(it) } },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
 
     fun searchPeople(query: String) = searchUseCase.searchPeople(query)
-            .ioMainSubscribe(
+            .subscribeOn(backgroundScheduler)
+            .observeOn(mainScheduler)
+            .subscribe(
                     { response -> searchResultsMutableLiveData.value = response.map { personToSearchListItem(it) } },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )

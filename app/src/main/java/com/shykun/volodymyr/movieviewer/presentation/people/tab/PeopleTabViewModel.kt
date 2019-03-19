@@ -6,11 +6,13 @@ import android.arch.lifecycle.ViewModel
 import com.shykun.volodymyr.movieviewer.data.entity.Person
 import com.shykun.volodymyr.movieviewer.domain.PeopleUseCase
 import com.shykun.volodymyr.movieviewer.domain.SearchUseCase
-import com.shykun.volodymyr.movieviewer.presentation.utils.ioMainSubscribe
+import io.reactivex.Scheduler
 
 class PeopleTabViewModel(
         private val peopleUseCase: PeopleUseCase,
-        private val searchUseCase: SearchUseCase) : ViewModel() {
+        private val searchUseCase: SearchUseCase,
+        private val backgroundScheduler: Scheduler,
+        private val mainScheduler: Scheduler) : ViewModel() {
 
     private val peopleMutableLiveData = MutableLiveData<List<Person>>()
     private val loadingErrorMutableLiveData = MutableLiveData<String>()
@@ -19,13 +21,17 @@ class PeopleTabViewModel(
     val loadingErrorLiveData: LiveData<String> = loadingErrorMutableLiveData
 
     fun getPeople(page: Int) = peopleUseCase.getPopularPeople(page)
-            .ioMainSubscribe(
+            .subscribeOn(backgroundScheduler)
+            .observeOn(mainScheduler)
+            .subscribe(
                     { response -> peopleMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
 
     fun searchPeople(query: String, page: Int) = searchUseCase.searchPeople(query, page)
-            .ioMainSubscribe(
+            .subscribeOn(backgroundScheduler)
+            .observeOn(mainScheduler)
+            .subscribe(
                     { response -> peopleMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )

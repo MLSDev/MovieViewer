@@ -20,7 +20,7 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
 @RunWith(JUnit4::class)
-class TvListTest {
+class TvListViewModelTest {
 
     private lateinit var viewModel: TvListViewModel
     private lateinit var tvuseCaseMock: TvUseCase
