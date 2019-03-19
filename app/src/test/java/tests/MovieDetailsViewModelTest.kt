@@ -29,7 +29,6 @@ class MovieDetailsViewModelTest {
     @JvmField
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
-
     @Before
     fun setUp() {
         movieDetailsUseCaseMock = mock()

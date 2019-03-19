@@ -6,6 +6,8 @@ import com.shykun.volodymyr.movieviewer.domain.DiscoverUseCase
 import com.shykun.volodymyr.movieviewer.domain.MoviesUseCase
 import com.shykun.volodymyr.movieviewer.domain.ProfileUseCase
 import com.shykun.volodymyr.movieviewer.domain.SearchUseCase
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class MovieListViewModelFactory @Inject constructor(
@@ -16,6 +18,12 @@ class MovieListViewModelFactory @Inject constructor(
     : ViewModelProvider.NewInstanceFactory() {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return MovieListViewModel(moviesUseCase, profileUseCase, searchUseCase, discoverUseCase) as T
+        return MovieListViewModel(
+                moviesUseCase,
+                profileUseCase,
+                searchUseCase,
+                discoverUseCase,
+                Schedulers.io(),
+                AndroidSchedulers.mainThread()) as T
     }
 }

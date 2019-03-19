@@ -119,7 +119,7 @@ class MovieListFragment : Fragment(), BackButtonListener {
                 .doOnNext {
                     when (moviesType) {
                         MoviesType.TOP_RATED, MoviesType.POPULAR, MoviesType.UPCOMING -> {
-                            viewModel.getMovies(movieListAdapter.nextPage, moviesType)
+                            viewModel.getMovies(moviesType, movieListAdapter.nextPage)
                         }
                         MoviesType.SEARCHED -> {
                             val query = arguments?.getString(SEARCH_QUERY_KEY)

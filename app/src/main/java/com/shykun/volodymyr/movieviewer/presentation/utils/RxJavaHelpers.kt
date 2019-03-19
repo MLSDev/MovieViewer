@@ -27,8 +27,7 @@ object ScrollObservable {
     }
 }
 
-fun <T> Single<T>.ioMainSubscribe(onSuccess: (T) -> Unit, onError: (error: Throwable) -> Unit) {
+fun <T> Single<T>.ioMainSubscribe(onSuccess: (T) -> Unit, onError: (error: Throwable) -> Unit) =
     this.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(onSuccess, onError)
-}
