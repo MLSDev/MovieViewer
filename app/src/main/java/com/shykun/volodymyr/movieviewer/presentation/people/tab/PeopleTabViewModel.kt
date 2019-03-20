@@ -32,7 +32,7 @@ class PeopleTabViewModel(
             .subscribeOn(backgroundScheduler)
             .observeOn(mainScheduler)
             .subscribe(
-                    { response -> peopleMutableLiveData.value = response },
+                    { response -> peopleMutableLiveData.value = response.results },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
 }

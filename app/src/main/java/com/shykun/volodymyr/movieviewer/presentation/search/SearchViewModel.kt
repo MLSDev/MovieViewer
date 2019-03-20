@@ -29,26 +29,29 @@ class SearchViewModel(
     }
 
     fun searchMovies(query: String) = searchUseCase.searchMovies(query)
+            .map { it.results.map { movieToSearchListItem(it) } }
             .subscribeOn(backgroundScheduler)
             .observeOn(mainScheduler)
             .subscribe(
-                    { response -> searchResultsMutableLiveData.value = response.results.map { movieToSearchListItem(it) } },
+                    { response -> searchResultsMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
 
     fun searchTv(query: String) = searchUseCase.searchTv(query)
+            .map { it.results.map { tvToSearchListItem(it) } }
             .subscribeOn(backgroundScheduler)
             .observeOn(mainScheduler)
             .subscribe(
-                    { response -> searchResultsMutableLiveData.value = response.results.map { tvToSearchListItem(it) } },
+                    { response -> searchResultsMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
 
     fun searchPeople(query: String) = searchUseCase.searchPeople(query)
+            .map { it.results.map { personToSearchListItem(it) } }
             .subscribeOn(backgroundScheduler)
             .observeOn(mainScheduler)
             .subscribe(
-                    { response -> searchResultsMutableLiveData.value = response.map { personToSearchListItem(it) } },
+                    { response -> searchResultsMutableLiveData.value = response },
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
 }
