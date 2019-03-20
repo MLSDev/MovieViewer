@@ -29,7 +29,7 @@ class PersonDetailsViewModel(
         getPersonCast(personId)
     }
 
-    private fun getPersonDetails(personId: Int) = personDetailsUseCase.getPersonDetails(personId)
+    fun getPersonDetails(personId: Int) = personDetailsUseCase.getPersonDetails(personId)
             .subscribeOn(backgroundScheduler)
             .observeOn(mainScheduler)
             .subscribe(
@@ -37,7 +37,7 @@ class PersonDetailsViewModel(
                     { error -> loadingErrorMutableLiveData.value = error.message }
             )
 
-    private fun getPersonCast(personId: Int) = personDetailsUseCase.getPersonCast(personId)
+    fun getPersonCast(personId: Int) = personDetailsUseCase.getPersonCast(personId)
             .subscribeOn(backgroundScheduler)
             .observeOn(mainScheduler)
             .subscribe(
