@@ -7,6 +7,7 @@ import android.databinding.ObservableField
 import com.shykun.volodymyr.movieviewer.data.network.response.PersonDetailsResponse
 import com.shykun.volodymyr.movieviewer.domain.PersonDetailsUseCase
 import com.shykun.volodymyr.movieviewer.presentation.model.HorizontalItem
+import com.shykun.volodymyr.movieviewer.presentation.utils.roleToHorizontalListItem
 import io.reactivex.Scheduler
 
 class PersonDetailsViewModel(
@@ -38,6 +39,7 @@ class PersonDetailsViewModel(
             )
 
     fun getPersonCast(personId: Int) = personDetailsUseCase.getPersonCast(personId)
+            .map { it.cast.map { roleToHorizontalListItem(it) } }
             .subscribeOn(backgroundScheduler)
             .observeOn(mainScheduler)
             .subscribe(

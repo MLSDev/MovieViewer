@@ -11,6 +11,9 @@ import com.shykun.volodymyr.movieviewer.data.network.response.PostResponse
 import com.shykun.volodymyr.movieviewer.data.network.response.TvDetailsResponse
 import com.shykun.volodymyr.movieviewer.domain.TvDetailsUseCase
 import com.shykun.volodymyr.movieviewer.presentation.model.HorizontalItem
+import com.shykun.volodymyr.movieviewer.presentation.utils.actorToHorizontalListItem
+import com.shykun.volodymyr.movieviewer.presentation.utils.jsonElementToItemAccountStateResponse
+import com.shykun.volodymyr.movieviewer.presentation.utils.topRatedTvToHorizontalListItem
 import io.reactivex.Scheduler
 
 class TvDetailsViewModel(
@@ -70,6 +73,7 @@ class TvDetailsViewModel(
             )
 
     fun getRecommendedTv(tvId: Int) = tvDetailsUseCase.getRecommendedTv(tvId)
+            .map { it.results.map { topRatedTvToHorizontalListItem(it) } }
             .subscribeOn(backgroundScheduler)
             .observeOn(mainScheduler)
             .subscribe(
@@ -84,6 +88,7 @@ class TvDetailsViewModel(
             )
 
     fun getTvReviews(tvId: Int) = tvDetailsUseCase.getTvReviews(tvId)
+            .map { it.results }
             .subscribeOn(backgroundScheduler)
             .observeOn(mainScheduler)
             .subscribe(
@@ -98,6 +103,7 @@ class TvDetailsViewModel(
             )
 
     fun getTvCast(tvId: Int) = tvDetailsUseCase.getTvCast(tvId)
+            .map { it.cast.map { actorToHorizontalListItem(it) } }
             .subscribeOn(backgroundScheduler)
             .observeOn(mainScheduler)
             .subscribe(
@@ -161,6 +167,7 @@ class TvDetailsViewModel(
             )
 
     fun getTvAccountStates(tvId: Int, sessionId: String) = tvDetailsUseCase.getTvAccountStates(tvId, sessionId)
+            .map { jsonElementToItemAccountStateResponse(it) }
             .subscribeOn(backgroundScheduler)
             .observeOn(mainScheduler)
             .subscribe(

@@ -21,6 +21,7 @@ class PeopleTabViewModel(
     val loadingErrorLiveData: LiveData<String> = loadingErrorMutableLiveData
 
     fun getPeople(page: Int) = peopleUseCase.getPopularPeople(page)
+            .map { it.results }
             .subscribeOn(backgroundScheduler)
             .observeOn(mainScheduler)
             .subscribe(

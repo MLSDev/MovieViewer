@@ -1,6 +1,10 @@
 package com.shykun.volodymyr.movieviewer.presentation
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.HandlerThread
+import android.support.v4.content.CursorLoader
+import android.support.v4.content.Loader
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
 import com.shykun.volodymyr.movieviewer.R

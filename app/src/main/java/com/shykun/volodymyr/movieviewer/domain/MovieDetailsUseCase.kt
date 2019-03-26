@@ -12,9 +12,9 @@ import javax.inject.Inject
 class MovieDetailsUseCase @Inject constructor(private val apiClient: ApiClient) {
 
     fun getMovieDetails(movieId: Int) = apiClient.getMovieDetails(movieId)
-    fun getMovieCredits(movieId: Int) = apiClient.getMovieCredits(movieId).map { it.cast.map { actorToHorizontalListItem(it) } }
-    fun getMovieReviews(movieId: Int) = apiClient.getMovieReviews(movieId).map { it.results }
-    fun getRecommendedMovies(movieId: Int) = apiClient.getRecommendedMovies(movieId).map { it.results.map { topRatedMovieToHorizontalListItem(it) } }
+    fun getMovieCredits(movieId: Int) = apiClient.getMovieCredits(movieId)
+    fun getMovieReviews(movieId: Int) = apiClient.getMovieReviews(movieId)
+    fun getRecommendedMovies(movieId: Int) = apiClient.getRecommendedMovies(movieId)
 
     fun rateMovie(movieId: Int, rating: Float, sessionId: String) = apiClient.rateMovie(movieId, RateBody(rating), sessionId)
     fun markAsFavorite(movieId: Int, sessionId: String) = apiClient.markAsFavorite(MarkAsFavoriteBody("movie", movieId, true), sessionId)
@@ -25,14 +25,4 @@ class MovieDetailsUseCase @Inject constructor(private val apiClient: ApiClient) 
     fun removeFromWatchList(movieId: Int, sessionId: String) = apiClient.addToWatchlist(AddToWatchlistBody("movie", movieId, false), sessionId)
 
     fun getMovieAccountStates(movieId: Int, sessionId: String) = apiClient.getMovieAccountStates(movieId, sessionId)
-            .map {
-                jsonElement ->
-                val json = jsonElement.asJsonObject
-                val id = json.getAsJsonPrimitive("id").asInt
-                val favorite = json.getAsJsonPrimitive("favorite").asBoolean
-                val watchlist = json.getAsJsonPrimitive("watchlist").asBoolean
-                val rated = json.get("rated").isJsonObject
-
-                ItemAccountStateResponse(id, favorite, rated, watchlist)
-            }
 }

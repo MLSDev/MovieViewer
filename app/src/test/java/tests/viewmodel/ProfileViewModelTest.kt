@@ -1,4 +1,4 @@
-package tests
+package tests.viewmodel
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import android.content.Context

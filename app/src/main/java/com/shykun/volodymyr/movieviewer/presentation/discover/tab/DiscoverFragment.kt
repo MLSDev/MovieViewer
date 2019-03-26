@@ -17,7 +17,6 @@ import com.shykun.volodymyr.movieviewer.presentation.common.TabNavigationFragmen
 import com.shykun.volodymyr.movieviewer.presentation.common.dialog.MultipleSelectionDialog
 import com.shykun.volodymyr.movieviewer.presentation.common.dialog.SingleSelectionDialog
 import com.shykun.volodymyr.movieviewer.presentation.discover.DiscoverViewModel
-import com.shykun.volodymyr.movieviewer.presentation.discover.DiscoverViewModelFactory
 import com.shykun.volodymyr.movieviewer.presentation.discover.MOVIE_TYPE
 import com.shykun.volodymyr.movieviewer.presentation.discover.TV_TYPE
 import com.shykun.volodymyr.movieviewer.presentation.movies.list.MOVIE_LIST_FRAGMENT_KEY
@@ -44,8 +43,6 @@ class DiscoverFragment : Fragment(), BackButtonListener {
 
     @Inject
     lateinit var router: Router
-    @Inject
-    lateinit var viewModelFactory: DiscoverViewModelFactory
     private lateinit var viewModel: DiscoverViewModel
     private lateinit var binding: FragmentDiscoverBinding
 
@@ -53,8 +50,7 @@ class DiscoverFragment : Fragment(), BackButtonListener {
         super.onCreate(savedInstanceState)
         (parentFragment as TabNavigationFragment).component?.inject(this)
 
-        viewModel = ViewModelProviders.of(activity as AppActivity, viewModelFactory)
-                .get(DiscoverViewModel::class.java)
+        viewModel = ViewModelProviders.of(activity as AppActivity).get(DiscoverViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

@@ -1,10 +1,13 @@
 package com.shykun.volodymyr.movieviewer.presentation.utils
 
+import com.google.gson.JsonElement
 import com.shykun.volodymyr.movieviewer.R
 import com.shykun.volodymyr.movieviewer.data.entity.*
+import com.shykun.volodymyr.movieviewer.data.network.response.ItemAccountStateResponse
 import com.shykun.volodymyr.movieviewer.data.network.response.MoviesResponse
 import com.shykun.volodymyr.movieviewer.data.network.response.TvResponse
 import com.shykun.volodymyr.movieviewer.presentation.model.*
+import io.reactivex.functions.Function
 
 fun topRatedMovieToHorizontalListItem(movie: Movie) = with(movie) {
     HorizontalItem(id, ItemType.MOVIE, posterPath, R.drawable.ic_star, voteAverage.toString())
@@ -67,4 +70,14 @@ fun movieResponseToVerticalItemList(moviesResponse: MoviesResponse) = with(movie
 
 fun tvResponseToVerticalItemList(tvResponse: TvResponse) = with(tvResponse) {
     VerticalItemList(tvResponse.results.map { tvToVerticalItem(it) }, totalResults)
+}
+
+fun jsonElementToItemAccountStateResponse(jsonElement: JsonElement) = with(jsonElement) {
+    val json = jsonElement.asJsonObject
+    val id = json.getAsJsonPrimitive("id").asInt
+    val favorite = json.getAsJsonPrimitive("favorite").asBoolean
+    val watchlist = json.getAsJsonPrimitive("watchlist").asBoolean
+    val rated = json.get("rated").isJsonObject
+
+    ItemAccountStateResponse(id, favorite, rated, watchlist)
 }

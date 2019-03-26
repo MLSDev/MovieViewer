@@ -1,4 +1,4 @@
-package tests
+package tests.viewmodel
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import com.nhaarman.mockitokotlin2.any

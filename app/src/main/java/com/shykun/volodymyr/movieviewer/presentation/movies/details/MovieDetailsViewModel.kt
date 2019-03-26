@@ -11,7 +11,11 @@ import com.shykun.volodymyr.movieviewer.data.network.response.MovieDetailsRespon
 import com.shykun.volodymyr.movieviewer.data.network.response.PostResponse
 import com.shykun.volodymyr.movieviewer.domain.MovieDetailsUseCase
 import com.shykun.volodymyr.movieviewer.presentation.model.HorizontalItem
+import com.shykun.volodymyr.movieviewer.presentation.utils.actorToHorizontalListItem
+import com.shykun.volodymyr.movieviewer.presentation.utils.jsonElementToItemAccountStateResponse
+import com.shykun.volodymyr.movieviewer.presentation.utils.topRatedMovieToHorizontalListItem
 import io.reactivex.Scheduler
+import io.reactivex.disposables.CompositeDisposable
 
 class MovieDetailsViewModel(
         private val movieDetailsUseCase: MovieDetailsUseCase,
@@ -70,6 +74,7 @@ class MovieDetailsViewModel(
 
 
     fun getMovieCast(movieId: Int) = movieDetailsUseCase.getMovieCredits(movieId)
+            .map { it.cast.map { actorToHorizontalListItem(it) } }
             .subscribeOn(backgroundScheduler)
             .observeOn(mainScheduler)
             .subscribe(
@@ -84,6 +89,7 @@ class MovieDetailsViewModel(
             )
 
     fun getMovieReviews(movieId: Int) = movieDetailsUseCase.getMovieReviews(movieId)
+            .map { it.results }
             .subscribeOn(backgroundScheduler)
             .observeOn(mainScheduler)
             .subscribe(
@@ -98,6 +104,7 @@ class MovieDetailsViewModel(
             )
 
     fun getRecommendedMovies(movieId: Int) = movieDetailsUseCase.getRecommendedMovies(movieId)
+            .map { it.results.map { topRatedMovieToHorizontalListItem(it) } }
             .subscribeOn(backgroundScheduler)
             .observeOn(mainScheduler)
             .subscribe(
@@ -160,6 +167,7 @@ class MovieDetailsViewModel(
             )
 
     fun getMovieAccountStates(movieId: Int, sessionId: String) = movieDetailsUseCase.getMovieAccountStates(movieId, sessionId)
+            .map { jsonElementToItemAccountStateResponse(it) }
             .subscribeOn(backgroundScheduler)
             .observeOn(mainScheduler)
             .subscribe(

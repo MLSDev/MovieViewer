@@ -12,6 +12,6 @@ class TvDetailsViewModelFactory @Inject constructor(
         private val tvDetailsUseCase: TvDetailsUseCase) : ViewModelProvider.NewInstanceFactory() {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return TvDetailsViewModel(tvDetailsUseCase, AndroidSchedulers.mainThread(), Schedulers.io()) as T
+        return TvDetailsViewModel(tvDetailsUseCase, Schedulers.io(), AndroidSchedulers.mainThread()) as T
     }
 }
