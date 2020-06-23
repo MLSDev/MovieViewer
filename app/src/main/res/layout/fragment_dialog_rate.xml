@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorPrimary">
+
+    <TextView
+        android:layout_margin="16dp"
+        android:id="@+id/ratingTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:layout_gravity="center_horizontal"/>
+
+    <android.support.v7.widget.AppCompatRatingBar
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/ratingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Base.Widget.AppCompat.RatingBar.Indicator"
+        android:numStars="10"
+        android:isIndicator="false"
+        android:scaleY="0.8"
+        android:scaleX="0.8"
+        android:progressBackgroundTint="@color/darkGrey"/>
+
+</LinearLayout>

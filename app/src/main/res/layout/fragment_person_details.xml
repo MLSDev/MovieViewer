@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="personDetails"
+            type="com.shykun.volodymyr.movieviewer.data.network.response.PersonDetailsResponse" />
+
+        <variable
+            name="viewModel"
+            type="com.shykun.volodymyr.movieviewer.presentation.people.details.PersonDetailsViewModel" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="@{personDetails == null? View.GONE: View.VISIBLE}">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/personDetailsToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/colorPrimary"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
+                app:title="@{personDetails.name}" />
+
+            <android.support.v4.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+
+                    <ImageView
+                        android:id="@+id/personProfilePhoto"
+                        android:layout_width="170dp"
+                        android:layout_height="260dp"
+                        android:layout_margin="10dp"
+                        app:url="@{personDetails.profilePath}" />
+
+                    <TextView
+                        android:id="@+id/personBirthDay"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_toEndOf="@+id/personProfilePhoto"
+                        android:text="@{personDetails.birthday}"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/personPlaceOfBirth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/personBirthDay"
+                        android:layout_marginEnd="10dp"
+                        android:layout_toEndOf="@+id/personProfilePhoto"
+                        android:text="@{personDetails.placeOfBirth}"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/personBiographyTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/personProfilePhoto"
+                        android:layout_marginStart="10dp"
+                        android:text="@string/biography"
+                        android:textSize="25sp"
+                        android:textStyle="bold"
+                        android:visibility='@{personDetails.biography.equals("") ? View.GONE : View.VISIBLE}' />
+
+                    <com.ms.square.android.expandabletextview.ExpandableTextView xmlns:android="http://schemas.android.com/apk/res/android"
+                        xmlns:expandableTextView="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/personBiography"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/personBiographyTitle"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginStart="10dp"
+                        android:text="@{personDetails.biography}"
+                        expandableTextView:animDuration="200"
+                        expandableTextView:maxCollapsedLines="4">
+
+                        <TextView
+                            android:id="@id/expandable_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:textColor="@color/snow"
+                            android:textSize="16sp" />
+
+                        <ImageButton
+                            android:id="@id/expand_collapse"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right|bottom"
+                            android:background="@android:color/transparent"
+                            android:padding="16dp" />
+                    </com.ms.square.android.expandabletextview.ExpandableTextView>
+
+                    <TextView
+                        android:id="@+id/castTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/personBiography"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginStart="10dp"
+                        android:text="@string/movies"
+                        android:textSize="25sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/castCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBaseline="@id/castTitle"
+                        android:layout_below="@id/personBiography"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_toEndOf="@id/castTitle"
+                        android:text="@{viewModel.castCount}"
+                        android:textColor="@color/darkGrey"
+                        android:textSize="20sp" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/personCast"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/castTitle"
+                        android:layout_marginTop="10dp" />
+
+                </RelativeLayout>
+
+            </android.support.v4.widget.NestedScrollView>
+
+        </LinearLayout>
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="@{personDetails == null? View.VISIBLE: View.GONE}" />
+    </RelativeLayout>
+
+</layout>

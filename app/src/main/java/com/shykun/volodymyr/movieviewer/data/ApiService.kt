@@ -4,7 +4,7 @@ import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-private const val API_KEY = "a44576f6889f55561580856f29b6fe14"
+private const val API_KEY = "your_api_key"
 
 interface ApiService {
     @GET("movie/popular")

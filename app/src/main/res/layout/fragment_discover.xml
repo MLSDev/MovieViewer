@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tool="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.shykun.volodymyr.movieviewer.presentation.discover.DiscoverViewModel"/>
+    </data>
+
+    <RelativeLayout
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".presentation.discover.tab.DiscoverFragment">
+
+        <TextView
+            android:id="@+id/filtersTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="@string/filters"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/clearFiltersButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/filtersTitle"
+            android:layout_alignEnd="@+id/genreField"
+            android:text="@string/clear"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+
+        <RelativeLayout
+            android:id="@+id/genreField"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_below="@id/filtersTitle"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@color/colorPrimary">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="6dp"
+                android:text="@string/genres"
+                android:textColor="@color/darkGrey"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginBottom="6dp"
+                android:layout_marginStart="10dp"
+                android:layout_toStartOf="@id/genreArrowIcon"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@{viewModel.genreNames}"
+                android:textSize="20sp" />
+
+            <ImageView
+                android:id="@+id/genreArrowIcon"
+                android:layout_width="30dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_arrow_right" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/ratingField"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_below="@id/genreField"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@color/colorPrimary">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="6dp"
+                android:text="@string/min_rating"
+                android:textColor="@color/darkGrey"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginBottom="6dp"
+                android:layout_marginStart="10dp"
+                android:layout_toStartOf="@id/voteArrowIcon"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text='@{viewModel.rating != -1 ? String.valueOf(viewModel.rating) : "All ratings"}'
+                android:textSize="20sp" />
+
+            <ImageView
+                android:id="@+id/voteArrowIcon"
+                android:layout_width="30dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_arrow_right" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/releaseYearField"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_below="@id/ratingField"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@color/colorPrimary">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="6dp"
+                android:text="@string/min_release_year"
+                android:textColor="@color/darkGrey"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginBottom="6dp"
+                android:layout_marginStart="10dp"
+                android:layout_toStartOf="@id/yearArrowIcon"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text='@{viewModel.year != -1 ? String.valueOf(viewModel.year) : "All years"}'
+                android:textSize="20sp" />
+
+            <ImageView
+                android:id="@+id/yearArrowIcon"
+                android:layout_width="30dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_arrow_right" />
+
+        </RelativeLayout>
+
+        <RadioGroup
+            android:id="@+id/typeRadioGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/releaseYearField"
+            android:layout_marginLeft="16dp"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.AppCompatRadioButton
+                android:id="@+id/movieRadioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/colorAccent"
+                android:text="@string/movies"
+                android:checked="@{viewModel.type == 0}"
+                android:textColor="@color/snow"
+                android:textSize="20sp" />
+
+            <android.support.v7.widget.AppCompatRadioButton
+                android:id="@+id/tvRadioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/colorAccent"
+                android:checked="@{viewModel.type == 1}"
+                android:text="@string/tv"
+                android:textColor="@color/snow"
+                android:textSize="20sp" />
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/showResultsButton"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="16dp"
+            android:background="@drawable/button_rounded"
+            android:text="@string/show_results"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+</layout>
